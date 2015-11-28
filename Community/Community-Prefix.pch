@@ -1,0 +1,30 @@
+//
+//  Community-Prefix.pch
+//  Community
+//
+//  Created by amber on 15/11/8.
+//  Copyright © 2015年 shlity. All rights reserved.
+//
+
+#ifndef Community_Prefix_pch
+#define Community_Prefix_pch
+
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
+
+#import "ModelHeader.h"
+#import "LocalDefine.h"
+#import "Commen.h"
+
+#endif /* Community_Prefix_pch */
+
+//***********
+//是否为空或是[NSNull null]
+#define NotNilAndNull(_ref)  (((_ref) != nil) && (![(_ref) isEqual:[NSNull null]]))
+#define isNilOrNull(_ref)   (((_ref) == nil) || ([(_ref) isEqual:[NSNull null]]))
+
+//字符串是否为空
+#define isStrEmpty(_ref)    (((_ref) == nil) || ([(_ref) isEqual:[NSNull null]]) ||([(_ref)isEqualToString:@""]))
+//数组是否为空
+#define isArrEmpty(_ref)    (((_ref) == nil) || ([(_ref) isEqual:[NSNull null]]) ||([(_ref) count] == 0))

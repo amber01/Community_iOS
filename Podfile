@@ -1,0 +1,11 @@
+platform :ios, '7.0'
+
+pod 'MJRefresh'
+pod 'AFNetworking', '~>2.2'
+pod 'SDWebImage', '~>3.7'
+pod 'MBProgressHUD'
+pod 'TTTAttributedLabel'
+pod 'SBJson','3.1'
+pod 'libextobjc'
+pod 'PopMenu'
+pod 'JSONModel'
