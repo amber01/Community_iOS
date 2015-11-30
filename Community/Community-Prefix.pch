@@ -6,9 +6,10 @@
 //  Copyright © 2015年 shlity. All rights reserved.
 //
 
-#ifndef Community_Prefix_pch
+
 #define Community_Prefix_pch
 
+#ifdef __OBJC__
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
@@ -16,6 +17,7 @@
 #import "ModelHeader.h"
 #import "LocalDefine.h"
 #import "Commen.h"
+
 
 #endif /* Community_Prefix_pch */
 

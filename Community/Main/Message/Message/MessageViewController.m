@@ -8,6 +8,7 @@
 
 #import "MessageViewController.h"
 #import "MsgCommentViewController.h"
+#import "EaseMessageViewController.h"
 
 @interface MessageViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -113,10 +114,13 @@
         if (indexPath.row == 0) {
             MsgCommentViewController *msgCommentVC = [[MsgCommentViewController alloc]init];
             [self.navigationController pushViewController:msgCommentVC animated:YES];
+        }else if (indexPath.row == 1){
+            EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:@"1" conversationType:eConversationTypeChat];
+            [easeMessageVC setHidesBottomBarWhenPushed:YES];
+            [self.navigationController pushViewController:easeMessageVC animated:YES];
         }
     }
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

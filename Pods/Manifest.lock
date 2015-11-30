@@ -20,6 +20,7 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - EaseMobSDKFull (2.2.1)
   - JSONModel (1.1.2)
   - libextobjc (0.4.1):
     - libextobjc/EXTADT (= 0.4.1)
@@ -71,6 +72,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
+  - EaseMobSDKFull (from `https://github.com/easemob/sdk-ios-cocoapods-integration.git`)
   - JSONModel
   - libextobjc
   - MBProgressHUD
@@ -80,8 +82,18 @@ DEPENDENCIES:
   - SDWebImage (~> 3.7)
   - TTTAttributedLabel
 
+EXTERNAL SOURCES:
+  EaseMobSDKFull:
+    :git: https://github.com/easemob/sdk-ios-cocoapods-integration.git
+
+CHECKOUT OPTIONS:
+  EaseMobSDKFull:
+    :commit: c4a63a69518d396309e8d6c267f2756cac3877ee
+    :git: https://github.com/easemob/sdk-ios-cocoapods-integration.git
+
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  EaseMobSDKFull: 4a18d6ad47b4ccca564833963511bddd151e1654
   JSONModel: 216584d0311b053ff714f1d6cb700dbf890847bc
   libextobjc: a650fc1bf489a3d3a9bc2e621efa3e1006fc5471
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
