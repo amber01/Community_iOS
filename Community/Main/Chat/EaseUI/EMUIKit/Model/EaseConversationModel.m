@@ -19,7 +19,7 @@
         _conversation = conversation;
         _title = _conversation.chatter;
         if (conversation.conversationType == eConversationTypeChat) {
-            _avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
+            _avatarImage = [UIImage imageNamed:@"mine_login.png"];
         }
         else{
             _avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/group"];

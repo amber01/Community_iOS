@@ -18,7 +18,7 @@
     if (self) {
         _buddy = buddy;
         _nickname = _buddy.username;
-        _avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
+        _avatarImage = [UIImage imageNamed:@"mine_login.png"];
     }
     
     return self;

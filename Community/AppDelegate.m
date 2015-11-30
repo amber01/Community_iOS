@@ -63,20 +63,15 @@
     sharedInfo.postnum = [[NSUserDefaults standardUserDefaults] objectForKey:@"postnum"];
     sharedInfo.totalscore = [[NSUserDefaults standardUserDefaults] objectForKey:@"totalscore"];
     
-    [[EaseMob sharedInstance].chatManager asyncRegisterNewAccount:sharedInfo.username password:@"123456" withCompletion:^(NSString *username, NSString *password, EMError *error) {
-        if (!error) {
-            NSLog(@"注册成功");
-        }
-    } onQueue:nil];
     
     EaseMob *easemob = [EaseMob sharedInstance];
     //登陆时记住HuanXin密码
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:sharedInfo.username forKey:@"username"];
     [userDefaults setObject:@"123456" forKey:@"password"];
-    [easemob.chatManager asyncLoginWithUsername:sharedInfo.user_id password:@"123456"];
+    [easemob.chatManager asyncLoginWithUsername:sharedInfo.username password:@"123456"];
     
-    NSLog(@"userid:%@",sharedInfo.user_id);
+    NSLog(@"username:%@",sharedInfo.username);
     
     //退出
     //[easemob.chatManager asyncLogoffWithUnbindDeviceToken:YES];

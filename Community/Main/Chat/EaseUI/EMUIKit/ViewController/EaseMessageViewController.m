@@ -70,6 +70,8 @@
     self.tableView.backgroundColor = [UIColor colorWithRed:240 / 255.0 green:240 / 255.0 blue:240 / 255.0 alpha:1.0];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
+    [self setupBarButtonItem];
+    
     //初始化页面
     CGFloat chatbarHeight = [EaseChatToolbar defaultHeight];
     EMChatToolbarType barType = self.conversation.conversationType == eConversationTypeChat ? EMChatToolbarTypeChat : EMChatToolbarTypeGroup;
@@ -83,6 +85,7 @@
     EaseEmotionManager *manager= [[EaseEmotionManager alloc] initWithType:EMEmotionDefault emotionRow:3 emotionCol:7 emotions:[EaseEmoji allEmoji]];
     [self.faceView setEmotionManagers:@[manager]];
     
+
     /**
      *  自定义聊天背景图片
      */
@@ -113,6 +116,57 @@
                                              selector:@selector(didBecomeActive)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
+    
+    //保存和用户的聊天记录
+    [self tableViewDidTriggerHeaderRefresh];
+}
+
+- (void)setupBarButtonItem
+{
+    UIButton *clearButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+    [clearButton setImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
+    [clearButton addTarget:self action:@selector(removeAllMessages:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:clearButton];
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];  //自定义返回按钮
+    button.frame = CGRectMake(0, 0, 30, 40);
+    [button setImage:[UIImage imageNamed:@"back_btn_image"] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithCustomView:button];
+    [self setHidesBottomBarWhenPushed:YES];
+    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    negativeSpacer.width = -12;
+    self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:negativeSpacer, backItem,nil];
+}
+
+#pragma mark -- action
+- (void)backAction
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark -- 删除与用户之间的聊天记录
+- (void)removeAllMessages:(id)sender
+{
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"删除提醒" message:@"您确定要删除与Ta的全部聊天吗?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alertView show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        if (self.dataArray.count > 0) {
+            [self showHint:@"删除成功"];
+            [self.dataArray removeAllObjects];
+            [_messsagesSource removeAllObjects];
+            [self.conversation removeAllMessages];
+            [self.tableView reloadData];
+            [self hideHud];
+        }else{
+            [self showHint:@"没有聊天记录可删除"];
+            [self hideHud];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -1414,7 +1468,7 @@
                         }
                         else{
                             model = [[EaseMessageModel alloc] initWithMessage:message];
-                            model.avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
+                            model.avatarImage = [UIImage imageNamed:@"mine_login.png"];;
                             model.failImageName = @"imageDownloadFail";
                         }
                         
@@ -1590,8 +1644,11 @@
             model = [_dataSource messageViewController:self modelForMessage:message];
         }
         else{
+            SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
+            NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,shareInfo.picture];
             model = [[EaseMessageModel alloc] initWithMessage:message];
-            model.avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
+            [[EaseBaseMessageCell appearance] setAvatarCornerRadius:15]; //将头像设置成圆形
+            model.avatarURLPath = imageURL;
             model.failImageName = @"imageDownloadFail";
         }
 

@@ -9,6 +9,7 @@
 #import "LoginViewController.h"
 #import "LoginView.h"
 #import "RegisterViewController.h"
+#import "EaseMob.h"
 
 @interface LoginViewController ()
 {
@@ -101,9 +102,19 @@
                 sharedInfo.totalscore = [dic objectForKey:@"totalscore"];
             }
             
+            
             [self initMBProgress:@"登录成功" withModeType:MBProgressHUDModeText afterDelay:1];
             [[NSNotificationCenter defaultCenter]postNotificationName:kSendIsLoginNotification object:userInfoArr];
             [self performBlock:^{
+                
+                SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+                EaseMob *easemob = [EaseMob sharedInstance];
+                //登陆时记住HuanXin密码
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                [userDefaults setObject:sharedInfo.username forKey:@"username"];
+                [userDefaults setObject:@"123456" forKey:@"password"];
+                [easemob.chatManager asyncLoginWithUsername:sharedInfo.username password:@"123456"];
+                
                 [self.navigationController popViewControllerAnimated:YES];
             } afterDelay:1];
         }else{
