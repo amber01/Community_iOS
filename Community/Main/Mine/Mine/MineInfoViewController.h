@@ -10,4 +10,6 @@
 
 @interface MineInfoViewController : BaseViewController
 
+@property (nonatomic,copy)NSString  *user_id;
+
 @end

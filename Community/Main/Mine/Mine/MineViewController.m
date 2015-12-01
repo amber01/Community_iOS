@@ -10,6 +10,7 @@
 #import "MineInfoTableViewCell.h"
 #import "MineBtnTableViewCell.h"
 #import "LoginViewController.h"
+#import "MineInfoViewController.h"
 
 @interface MineViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -216,9 +217,15 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            LoginViewController *loginVC = [[LoginViewController alloc]init];
-            [loginVC setHidesBottomBarWhenPushed:YES];
-            [self.navigationController pushViewController:loginVC animated:YES];
+            if (isLogin) {
+                MineInfoViewController *mineInfoVC = [[MineInfoViewController alloc]init];
+                [mineInfoVC setHidesBottomBarWhenPushed:YES];
+                [self.navigationController pushViewController:mineInfoVC animated:YES];
+            }else{
+                LoginViewController *loginVC = [[LoginViewController alloc]init];
+                [loginVC setHidesBottomBarWhenPushed:YES];
+                [self.navigationController pushViewController:loginVC animated:YES];
+            }
         }
     }
 }
