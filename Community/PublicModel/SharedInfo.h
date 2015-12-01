@@ -25,6 +25,8 @@
 @property (nonatomic,copy)NSString *mytofansnum; //我的关注
 @property (nonatomic,copy)NSString *postnum;  // 我的帖子数
 @property (nonatomic,copy)NSString *totalscore; //我的积分
+@property (nonatomic,copy)NSString *sex;
+@property (nonatomic,copy)NSString *client;
 
 +(SharedInfo *)sharedDataInfo;
 

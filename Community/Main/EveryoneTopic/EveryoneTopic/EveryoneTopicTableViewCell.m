@@ -10,10 +10,11 @@
 #import "TouchImageButton.h"
 #import "LoginViewController.h"
 #import "CommentViewController.h"
+#import "MineInfoViewController.h"
 
 @implementation EveryoneTopicTableViewCell
 {
-    UIImageView         *avatarImageView;
+    PubliButton         *avatarImageView;
     UILabel             *nicknameLabel;
     UILabel             *dateLabel;
     
@@ -36,8 +37,7 @@
     if (self) {
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        avatarImageView = [[UIImageView alloc]initWithFrame:CGRectMake(15, 15, 45, 45)];
-        avatarImageView.image = [UIImage imageNamed:@"001"];
+        avatarImageView = [[PubliButton alloc]initWithFrame:CGRectMake(15, 15, 45, 45)];
         [UIUtils setupViewRadius:avatarImageView cornerRadius:45/2];
         
         nicknameLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right+10, 18, ScreenWidth - avatarImageView.width - 40, 20)];
@@ -120,7 +120,7 @@
 
 - (void)configureCellWithInfo:(EveryoneTopicModel *)model withImages:(NSArray *)imageArray
 {
-    [avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,model.logopicture]]];
+    [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
     nicknameLabel.text = model.nickname;
     dateLabel.text = model.createtime;
     
@@ -139,7 +139,9 @@
     
     likeBtn.post_id = model.id;
     commentBtn.post_id = model.id;
-    
+    avatarImageView.user_id = model.userid;
+    avatarImageView.nickname = model.nickname;
+    [avatarImageView addTarget:self action:@selector(checkUserInfo:) forControlEvents:UIControlEventTouchUpInside];
     contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, contentHeight.height);
     
     /**
@@ -302,6 +304,16 @@
     commentVC.post_id = button.post_id;
     [commentVC setHidesBottomBarWhenPushed:YES];
     [self.viewController.navigationController pushViewController:commentVC animated:YES];
+}
+
+- (void)checkUserInfo:(PubliButton *)button
+{
+    MineInfoViewController *userInfoVC = [[MineInfoViewController alloc]init];
+    userInfoVC.user_id = button.user_id;
+    userInfoVC.nickname = button.nickname;
+    [userInfoVC setHidesBottomBarWhenPushed:YES];
+    [self.viewController.navigationController pushViewController:userInfoVC animated:YES];
+    NSLog(@"user_id:%@",button.user_id);
 }
 
 - (void)awakeFromNib {

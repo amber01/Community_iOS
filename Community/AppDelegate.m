@@ -62,7 +62,8 @@
     sharedInfo.mytofansnum = [[NSUserDefaults standardUserDefaults] objectForKey:@"mytofansnum"];
     sharedInfo.postnum = [[NSUserDefaults standardUserDefaults] objectForKey:@"postnum"];
     sharedInfo.totalscore = [[NSUserDefaults standardUserDefaults] objectForKey:@"totalscore"];
-    
+    sharedInfo.sex = [[NSUserDefaults standardUserDefaults] objectForKey:@"sex"];
+    sharedInfo.client = [[NSUserDefaults standardUserDefaults] objectForKey:@"client"];
     
     EaseMob *easemob = [EaseMob sharedInstance];
     //登陆时记住HuanXin密码

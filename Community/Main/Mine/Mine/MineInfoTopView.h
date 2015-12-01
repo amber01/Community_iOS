@@ -10,4 +10,6 @@
 
 @interface MineInfoTopView : UIView
 
+- (instancetype)initWithFrame:(CGRect)frame withUserID:(NSString *)user_id andNickname:(NSString *)nickname;
+
 @end

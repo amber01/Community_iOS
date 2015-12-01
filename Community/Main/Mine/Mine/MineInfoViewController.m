@@ -57,11 +57,12 @@
     _header = [[WSHeaderView alloc]init];
     
     //set header view
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 244/2)];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 216/2)];
     [imageView setImage:[UIImage imageNamed:@"mine_info_background"]];
     _header = [WSHeaderView expandWithScrollView:_tableView expandView:imageView];
     
-    MineInfoTopView *mineInfoTopView = [[MineInfoTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 150)];
+    SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
+    MineInfoTopView *mineInfoTopView = [[MineInfoTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 150) withUserID:isStrEmpty(self.user_id) ? shareInfo.user_id : self.user_id andNickname:isStrEmpty(self.nickname) ? @"" : self.nickname];
     _tableView.tableHeaderView = mineInfoTopView;
 }
 

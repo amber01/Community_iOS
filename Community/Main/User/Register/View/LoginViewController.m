@@ -58,7 +58,7 @@
         return;
     }
     
-    NSDictionary *parameters = @{@"Method":@"ClientLogin",@"RunnerUserID":@"0",@"RunnerIP":@"",@"Detail":@[@{@"UserName":loginView.phoneNumTextField.text,@"Pwd":loginView.passwordTextField.text}]};
+    NSDictionary *parameters = @{@"Method":@"ClientLogin",@"RunnerUserID":@"0",@"RunnerIP":@"",@"Detail":@[@{@"UserName":loginView.phoneNumTextField.text,@"Pwd":loginView.passwordTextField.text,@"Client":@"iPhone"}]};
     [CKHttpRequest createRequest:HTTP_METHOD_LOGIN WithParam:parameters withMethod:@"POST" success:^(id result) {
         
         if (result && [[result objectForKey:@"Success"]intValue] > 0) {
@@ -86,6 +86,8 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"mytofansnum"] forKey:@"mytofansnum"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"postnum"] forKey:@"postnum"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"totalscore"] forKey:@"totalscore"];
+                [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"sex"] forKey:@"sex"];
+                [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"client"] forKey:@"client"];
                 
                 SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
                 sharedInfo.user_id  = [dic objectForKey:@"id"];
@@ -100,6 +102,8 @@
                 sharedInfo.mytofansnum = [dic objectForKey:@"mytofansnum"];
                 sharedInfo.postnum = [dic objectForKey:@"postnum"];
                 sharedInfo.totalscore = [dic objectForKey:@"totalscore"];
+                sharedInfo.sex = [dic objectForKey:@"sex"];
+                sharedInfo.client = [dic objectForKey:@"client"];
             }
             
             
