@@ -72,7 +72,7 @@
         return;
     }
     
-    NSDictionary *params = @{@"Method":@"AddUserInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":@"",@"Detail":@[@{@"Mobile":registerView.phoneNumTextField.text,@"PassWord":registerView.passwordTextField.text,@"VerCode":registerView.codeTextField.text}]};
+    NSDictionary *params = @{@"Method":@"AddUserInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":@"",@"Detail":@[@{@"Mobile":registerView.phoneNumTextField.text,@"PassWord":[UIUtils md5:registerView.passwordTextField.text],@"VerCode":registerView.codeTextField.text}]};
     NSLog(@"params:%@",params);
     
     [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:params withMethod:@"POST" success:^(id result) {

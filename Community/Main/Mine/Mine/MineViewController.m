@@ -11,6 +11,7 @@
 #import "MineBtnTableViewCell.h"
 #import "LoginViewController.h"
 #import "MineInfoViewController.h"
+#import "SettingsViewController.h"
 
 @interface MineViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -215,16 +216,26 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section == 0) {
-        if (indexPath.row == 0) {
-            if (isLogin) {
+    if (isLogin) { //已登录
+        if (indexPath.section == 0) {
+            if (indexPath.row == 0) {
                 MineInfoViewController *mineInfoVC = [[MineInfoViewController alloc]init];
                 [mineInfoVC setHidesBottomBarWhenPushed:YES];
                 [self.navigationController pushViewController:mineInfoVC animated:YES];
-            }else{
+            }
+        }
+    }else{ //未登录
+        if (indexPath.section == 0) {
+            if (indexPath.row == 0) {
                 LoginViewController *loginVC = [[LoginViewController alloc]init];
                 [loginVC setHidesBottomBarWhenPushed:YES];
                 [self.navigationController pushViewController:loginVC animated:YES];
+            }
+        }else if (indexPath.section == 2){
+            if (indexPath.row == 0) {
+                SettingsViewController *settingsVC = [[SettingsViewController alloc]init];
+                [settingsVC setHidesBottomBarWhenPushed:YES];
+                [self.navigationController pushViewController:settingsVC animated:YES];
             }
         }
     }

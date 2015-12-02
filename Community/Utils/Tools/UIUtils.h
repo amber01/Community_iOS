@@ -118,4 +118,7 @@ void RunBlockAfterDelay(NSTimeInterval delay, void (^block)(void));
 //根据2个经纬度计算距离
 +(double) LantitudeLongitudeDist:(double)lon1 other_Lat:(double)lat1 self_Lon:(double)lon2 self_Lat:(double)lat2;
 
+//md5 32位 加密 （小写）
++ (NSString *)md5:(NSString *)str;
+
 @end

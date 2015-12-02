@@ -10,6 +10,7 @@
 #import "LoginView.h"
 #import "RegisterViewController.h"
 #import "EaseMob.h"
+#import "FindPasswordViewController.h"
 
 @interface LoginViewController ()
 {
@@ -37,6 +38,7 @@
     loginView = [[LoginView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     [loginView.registBtn addTarget:self action:@selector(registAction) forControlEvents:UIControlEventTouchUpInside];
     [loginView.loginBtn addTarget:self action:@selector(loginAction) forControlEvents:UIControlEventTouchUpInside];
+    [loginView.findPassword addTarget:self action:@selector(findPassword) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:loginView];
 }
 
@@ -58,7 +60,7 @@
         return;
     }
     
-    NSDictionary *parameters = @{@"Method":@"ClientLogin",@"RunnerUserID":@"0",@"RunnerIP":@"",@"Detail":@[@{@"UserName":loginView.phoneNumTextField.text,@"Pwd":loginView.passwordTextField.text,@"Client":@"iPhone"}]};
+    NSDictionary *parameters = @{@"Method":@"ClientLogin",@"RunnerUserID":@"0",@"RunnerIP":@"",@"Detail":@[@{@"UserName":loginView.phoneNumTextField.text,@"Pwd":[UIUtils md5:loginView.passwordTextField.text],@"Client":@"iPhone"}]};
     [CKHttpRequest createRequest:HTTP_METHOD_LOGIN WithParam:parameters withMethod:@"POST" success:^(id result) {
         
         if (result && [[result objectForKey:@"Success"]intValue] > 0) {
@@ -127,6 +129,12 @@
     } failure:^(NSError *erro) {
         
     }];
+}
+
+- (void)findPassword
+{
+    FindPasswordViewController *findPasswordVC = [[FindPasswordViewController alloc]init];
+    [self.navigationController pushViewController:findPasswordVC animated:YES];
 }
 
 #pragma mark -- other

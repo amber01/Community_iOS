@@ -336,6 +336,9 @@
 		96D508311C0C94A8001DFA49 /* mine_share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 96D508301C0C94A8001DFA49 /* mine_share@2x.png */; };
 		96D508341C0C9660001DFA49 /* ModifyUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96D508331C0C9660001DFA49 /* ModifyUserInfoViewController.m */; };
 		96D508371C0C9BC5001DFA49 /* ModifyUserInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96D508361C0C9BC5001DFA49 /* ModifyUserInfoTableViewCell.m */; };
+		96D5083E1C0DE5E5001DFA49 /* FindPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96D5083D1C0DE5E5001DFA49 /* FindPasswordViewController.m */; };
+		96D508411C0DE635001DFA49 /* FindPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96D508401C0DE635001DFA49 /* FindPasswordView.m */; };
+		96D508481C0DEFD4001DFA49 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96D508471C0DEFD4001DFA49 /* SettingsViewController.m */; };
 		96EAD3251C015F78008D760A /* TodayTopicMoreTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EAD3241C015F78008D760A /* TodayTopicMoreTableViewCell.m */; };
 		96EAD3281C0169C6008D760A /* TodayTopicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EAD3271C0169C6008D760A /* TodayTopicModel.m */; };
 		96F301A71BF0E2840089AE14 /* TodayTopicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F301A61BF0E2840089AE14 /* TodayTopicTableViewCell.m */; };
@@ -915,6 +918,12 @@
 		96D508331C0C9660001DFA49 /* ModifyUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyUserInfoViewController.m; sourceTree = "<group>"; };
 		96D508351C0C9BC5001DFA49 /* ModifyUserInfoTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyUserInfoTableViewCell.h; sourceTree = "<group>"; };
 		96D508361C0C9BC5001DFA49 /* ModifyUserInfoTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyUserInfoTableViewCell.m; sourceTree = "<group>"; };
+		96D5083C1C0DE5E5001DFA49 /* FindPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindPasswordViewController.h; sourceTree = "<group>"; };
+		96D5083D1C0DE5E5001DFA49 /* FindPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindPasswordViewController.m; sourceTree = "<group>"; };
+		96D5083F1C0DE635001DFA49 /* FindPasswordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindPasswordView.h; sourceTree = "<group>"; };
+		96D508401C0DE635001DFA49 /* FindPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindPasswordView.m; sourceTree = "<group>"; };
+		96D508461C0DEFD4001DFA49 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		96D508471C0DEFD4001DFA49 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		96EAD3231C015F78008D760A /* TodayTopicMoreTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicMoreTableViewCell.h; sourceTree = "<group>"; };
 		96EAD3241C015F78008D760A /* TodayTopicMoreTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicMoreTableViewCell.m; sourceTree = "<group>"; };
 		96EAD3261C0169C6008D760A /* TodayTopicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicModel.h; sourceTree = "<group>"; };
@@ -1837,6 +1846,7 @@
 			isa = PBXGroup;
 			children = (
 				964A9FD21BEF60CF007CE0E9 /* Mine */,
+				96D508421C0DEFAA001DFA49 /* Settings */,
 			);
 			path = Mine;
 			sourceTree = "<group>";
@@ -2084,6 +2094,7 @@
 			children = (
 				96B2D1061BFCD63400FE6185 /* Login */,
 				96B2D10A1BFCD63400FE6185 /* Register */,
+				96D508381C0DE5A1001DFA49 /* FindPassword */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -2278,6 +2289,74 @@
 				96D508251C0C823D001DFA49 /* WSHeaderView.m */,
 			);
 			path = WSHeaderView;
+			sourceTree = "<group>";
+		};
+		96D508381C0DE5A1001DFA49 /* FindPassword */ = {
+			isa = PBXGroup;
+			children = (
+				96D508391C0DE5A1001DFA49 /* Controller */,
+				96D5083A1C0DE5A1001DFA49 /* Model */,
+				96D5083B1C0DE5A1001DFA49 /* View */,
+			);
+			path = FindPassword;
+			sourceTree = "<group>";
+		};
+		96D508391C0DE5A1001DFA49 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				96D5083C1C0DE5E5001DFA49 /* FindPasswordViewController.h */,
+				96D5083D1C0DE5E5001DFA49 /* FindPasswordViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		96D5083A1C0DE5A1001DFA49 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		96D5083B1C0DE5A1001DFA49 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				96D5083F1C0DE635001DFA49 /* FindPasswordView.h */,
+				96D508401C0DE635001DFA49 /* FindPasswordView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		96D508421C0DEFAA001DFA49 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				96D508431C0DEFAA001DFA49 /* Controller */,
+				96D508441C0DEFAA001DFA49 /* Model */,
+				96D508451C0DEFAA001DFA49 /* View */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		96D508431C0DEFAA001DFA49 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				96D508461C0DEFD4001DFA49 /* SettingsViewController.h */,
+				96D508471C0DEFD4001DFA49 /* SettingsViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		96D508441C0DEFAA001DFA49 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		96D508451C0DEFAA001DFA49 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		96F3019F1BF0DBC50089AE14 /* View */ = {
@@ -2800,6 +2879,7 @@
 				963DC4921C0ACFD9005D1955 /* UIButton+EMWebCache.m in Sources */,
 				963DC4AC1C0ACFD9005D1955 /* NSDateFormatter+Category.m in Sources */,
 				964AA10C1BEF7B5E007CE0E9 /* HyperlinksButton.m in Sources */,
+				96D5083E1C0DE5E5001DFA49 /* FindPasswordViewController.m in Sources */,
 				963DC4BF1C0ACFD9005D1955 /* EaseBaseMessageCell.m in Sources */,
 				966EE5411C0028440039325F /* ELCAssetTablePicker.m in Sources */,
 				963DC4821C0ACFD9005D1955 /* MWGridViewController.m in Sources */,
@@ -2855,6 +2935,7 @@
 				964AA11B1BEF7B5E007CE0E9 /* UIResponder+Router.m in Sources */,
 				963DC46A1C0ACFD9005D1955 /* EMCDDeviceManager+Microphone.m in Sources */,
 				963DC49F1C0ACFD9005D1955 /* PSTCollectionViewItemKey.m in Sources */,
+				96D508481C0DEFD4001DFA49 /* SettingsViewController.m in Sources */,
 				964AA11E1BEF7B5E007CE0E9 /* UIView+Toast.m in Sources */,
 				96C8D22A1C0A0B7C004642FC /* MineInfoViewController.m in Sources */,
 				960BE3101BF4DD5600082E78 /* SendTopicKeyboardView.m in Sources */,
@@ -2863,6 +2944,7 @@
 				963DC4B31C0ACFD9005D1955 /* EaseMessageReadManager.m in Sources */,
 				964AA1181BEF7B5E007CE0E9 /* UIImage+Mycategory.m in Sources */,
 				963DC4C21C0ACFD9005D1955 /* EaseBubbleView+File.m in Sources */,
+				96D508411C0DE635001DFA49 /* FindPasswordView.m in Sources */,
 				964A9FEE1BEF74C5007CE0E9 /* BaseNavigationController.m in Sources */,
 				966EE53E1C0028440039325F /* ELCAlbumPickerController.m in Sources */,
 				964AA1191BEF7B5E007CE0E9 /* UIImage+Scale.m in Sources */,
@@ -2973,7 +3055,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "7b311591-483d-4658-abb0-7785cd93b42e";
+				PROVISIONING_PROFILE = "f6ec2f93-9108-4ef6-85a3-a3155b9d3e5a";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3012,7 +3094,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "7b311591-483d-4658-abb0-7785cd93b42e";
+				PROVISIONING_PROFILE = "f6ec2f93-9108-4ef6-85a3-a3155b9d3e5a";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
