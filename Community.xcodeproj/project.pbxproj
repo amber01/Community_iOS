@@ -352,6 +352,7 @@
 		DBE54E121C0D6DBD0057D68F /* user_info_addfollow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E101C0D6DBD0057D68F /* user_info_addfollow@2x.png */; };
 		DBE54E131C0D6DBD0057D68F /* user_info_follow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E111C0D6DBD0057D68F /* user_info_follow@2x.png */; };
 		DBE54E151C0D70180057D68F /* user_info_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E141C0D70180057D68F /* user_info_chat@2x.png */; };
+		DBF5358D1C0EE062004E8C04 /* SettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF5358C1C0EE062004E8C04 /* SettingTableViewCell.m */; };
 		DBF9E8F41BFD74FA00C5D5B4 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B2D10F1BFCD66200FE6185 /* RegisterViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -944,6 +945,8 @@
 		DBE54E101C0D6DBD0057D68F /* user_info_addfollow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_addfollow@2x.png"; sourceTree = "<group>"; };
 		DBE54E111C0D6DBD0057D68F /* user_info_follow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_follow@2x.png"; sourceTree = "<group>"; };
 		DBE54E141C0D70180057D68F /* user_info_chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_chat@2x.png"; sourceTree = "<group>"; };
+		DBF5358B1C0EE062004E8C04 /* SettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingTableViewCell.h; sourceTree = "<group>"; };
+		DBF5358C1C0EE062004E8C04 /* SettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2330,8 +2333,8 @@
 			isa = PBXGroup;
 			children = (
 				96D508431C0DEFAA001DFA49 /* Controller */,
-				96D508441C0DEFAA001DFA49 /* Model */,
-				96D508451C0DEFAA001DFA49 /* View */,
+				DBF5358A1C0EE050004E8C04 /* View */,
+				DBF535891C0EE050004E8C04 /* Model */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2343,20 +2346,6 @@
 				96D508471C0DEFD4001DFA49 /* SettingsViewController.m */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		96D508441C0DEFAA001DFA49 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		96D508451C0DEFAA001DFA49 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		96F3019F1BF0DBC50089AE14 /* View */ = {
@@ -2440,6 +2429,22 @@
 				1181DD7D94E49915A43A9DDC /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DBF535891C0EE050004E8C04 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DBF5358A1C0EE050004E8C04 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DBF5358B1C0EE062004E8C04 /* SettingTableViewCell.h */,
+				DBF5358C1C0EE062004E8C04 /* SettingTableViewCell.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2783,6 +2788,7 @@
 				964AA1171BEF7B5E007CE0E9 /* UIDevice+Resolutions.m in Sources */,
 				963DC4C31C0ACFD9005D1955 /* EaseBubbleView+Image.m in Sources */,
 				963DC4C71C0ACFD9005D1955 /* EaseBubbleView+Voice.m in Sources */,
+				DBF5358D1C0EE062004E8C04 /* SettingTableViewCell.m in Sources */,
 				963DC4B11C0ACFD9005D1955 /* EaseChineseToPinyin.m in Sources */,
 				963DC4BD1C0ACFD9005D1955 /* EaseViewController.m in Sources */,
 				963DC48F1C0ACFD9005D1955 /* EMSDWebImagePrefetcher.m in Sources */,
@@ -3055,7 +3061,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "f6ec2f93-9108-4ef6-85a3-a3155b9d3e5a";
+				PROVISIONING_PROFILE = "a736d577-1a75-499c-8918-8d5d12cc4ace";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3094,7 +3100,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "f6ec2f93-9108-4ef6-85a3-a3155b9d3e5a";
+				PROVISIONING_PROFILE = "a736d577-1a75-499c-8918-8d5d12cc4ace";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

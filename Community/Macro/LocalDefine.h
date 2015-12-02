@@ -31,6 +31,8 @@
 #define kHideSendTopicNotification    @"kHideSendTopicNotification"
 #define kIsShowPhotoNotification      @"kIsShowPhotoNotification"
 #define kSendIsLoginNotification      @"kSendIsLoginNotification"
+#define kSendIsLogoutNotification     @"kSendIsLogoutNotification"
+
 
 #endif /* LocalDefine_h */
 

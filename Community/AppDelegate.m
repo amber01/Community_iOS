@@ -73,9 +73,6 @@
     [easemob.chatManager asyncLoginWithUsername:sharedInfo.username password:@"123456"];
     
     NSLog(@"username:%@",sharedInfo.username);
-    
-    //退出
-    //[easemob.chatManager asyncLogoffWithUnbindDeviceToken:YES];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

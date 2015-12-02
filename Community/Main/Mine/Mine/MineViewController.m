@@ -40,6 +40,8 @@
     }
     [self setupTableView];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginFinish:) name:kSendIsLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(logoutFinish) name:kSendIsLogoutNotification object:nil];
+    
 }
 
 - (UITableView *)setupTableView
@@ -56,6 +58,13 @@
 - (void)loginFinish:(NSNotification *)notifi
 {
     isLogin = YES;
+    _tableView = nil;
+    [self  setupTableView];
+}
+
+- (void)logoutFinish
+{
+    isLogin = NO;
     _tableView = nil;
     [self  setupTableView];
 }
@@ -222,6 +231,12 @@
                 MineInfoViewController *mineInfoVC = [[MineInfoViewController alloc]init];
                 [mineInfoVC setHidesBottomBarWhenPushed:YES];
                 [self.navigationController pushViewController:mineInfoVC animated:YES];
+            }
+        }else if (indexPath.section == 3){
+            if (indexPath.row == 0) {
+                SettingsViewController *settingsVC = [[SettingsViewController alloc]init];
+                [settingsVC setHidesBottomBarWhenPushed:YES];
+                [self.navigationController pushViewController:settingsVC animated:YES];
             }
         }
     }else{ //未登录

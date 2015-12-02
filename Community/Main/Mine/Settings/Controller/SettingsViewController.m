@@ -7,8 +7,14 @@
 //
 
 #import "SettingsViewController.h"
+#import "EaseMob.h"
+#import "SettingTableViewCell.h"
+#import "ModifyUserInfoViewController.h"
 
 @interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource>
+{
+    BOOL  isLogin;
+}
 
 @property (nonatomic,retain) UITableView   *tableView;
 
@@ -18,6 +24,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginFinish) name:kSendIsLoginNotification object:nil];
+    if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"username"]length]> 0) {
+        isLogin = YES;
+    }else{
+        isLogin = NO;
+    }
+    
     self.title = @"设置";
     self.view.backgroundColor = [UIColor whiteColor];
     [self setupTableView];
@@ -34,6 +47,12 @@
     return _tableView;
 }
 
+- (void)loginFinish
+{
+    isLogin = YES;
+    [_tableView reloadData];
+}
+
 #pragma mark -- UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -42,28 +61,43 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger sections[3] = {4,4,1};
-    return sections[section];
+    if (isLogin) {
+        NSInteger sections[3] = {4,4,1};
+        return sections[section];
+    }else{
+        NSInteger sections[3] = {3,4,1};
+        return sections[section];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identityCell = @"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
-    const static char *cTitle[3][4] = {{"修改资料","切换城市","消息推送","省流量模式"},{"清除缓存数据和图片","新版本检测","意见反馈","关于微温州"},{""}};
-    
+    SettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
+
     if (!cell) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
-        if (indexPath.section == 2 && indexPath.row == 0) {
-            UILabel *logoutTitle = [[UILabel alloc]initWithFrame:CGRectMake(0, 44/2-10, ScreenWidth, 20)];
-            logoutTitle.textColor = BASE_COLOR;
-            logoutTitle.text = @"退出当前账号";
-            logoutTitle.textAlignment=NSTextAlignmentCenter;
-            [cell.contentView addSubview:logoutTitle];
-        }
+        cell = [[SettingTableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
     }
     
-    cell.textLabel.text = [NSString stringWithCString:cTitle[indexPath.section][indexPath.row] encoding:NSUTF8StringEncoding];
+    if (isLogin) {
+        const static char *cTitle[3][4] = {{"修改资料","切换城市","消息推送","省流量模式"},{"清除缓存数据和图片","新版本检测","意见反馈","关于微温州"},{""}};
+        cell.textLabel.text = [NSString stringWithCString:cTitle[indexPath.section][indexPath.row] encoding:NSUTF8StringEncoding];
+        if (indexPath.section == 2 && indexPath.row == 0) {
+            cell.logoutTitle.text = @"退出当前账号";
+            cell.logoutTitle.hidden = NO;
+        }else{
+            cell.logoutTitle.hidden = YES;
+        }
+    }else{
+        const static char *cTitle[3][4] = {{"切换城市","消息推送","省流量模式"},{"清除缓存数据和图片","新版本检测","意见反馈","关于微温州"},{""}};
+        cell.textLabel.text = [NSString stringWithCString:cTitle[indexPath.section][indexPath.row] encoding:NSUTF8StringEncoding];
+        if (indexPath.section == 2 && indexPath.row == 0) {
+            cell.logoutTitle.hidden = NO;
+            cell.logoutTitle.text = @"立即登录";
+        }else{
+            cell.logoutTitle.hidden = YES;
+        }
+    }
     
     return cell;
 }
@@ -75,8 +109,70 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section == 2) {
+        if (indexPath.row == 0) {
+            if (isLogin) {
+                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"确定要退出当前账号吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+                [alertView show];
+            }else{
+                LoginViewController *loginVC = [[LoginViewController alloc]init];
+                [self.navigationController pushViewController:loginVC animated:YES];
+            }
+        }
+    }else if (indexPath.section == 0){
+        if (indexPath.row == 0) {
+            if (isLogin) {
+                ModifyUserInfoViewController *modifyUserInfoVC = [[ModifyUserInfoViewController alloc]init];
+                [self.navigationController pushViewController:modifyUserInfoVC animated:YES];
+            }else{
+                
+            }
+        }
+    }
 }
 
+#pragma mark -- UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        EaseMob *easemob = [EaseMob sharedInstance];
+        [easemob.chatManager asyncLogoffWithUnbindDeviceToken:YES]; //退出环信登陆的账号
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"user_id"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"nickname"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"mobile"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"username"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"area"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"address"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"createtime"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"picture"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"myfansnum"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"mytofansnum"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"postnum"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"totalscore"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"sex"];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"client"];
+        
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        sharedInfo.user_id  = @"";
+        sharedInfo.nickname  = @"";
+        sharedInfo.mobile  = @"";
+        sharedInfo.username  = @"";
+        sharedInfo.area  = @"";
+        sharedInfo.address  = @"";
+        sharedInfo.createtime  = @"";
+        sharedInfo.picture = @"";
+        sharedInfo.myfansnum = @"";
+        sharedInfo.mytofansnum = @"";
+        sharedInfo.postnum = @"";
+        sharedInfo.totalscore = @"";
+        sharedInfo.sex = @"";
+        sharedInfo.client = @"";
+        [[NSNotificationCenter defaultCenter]postNotificationName:kSendIsLogoutNotification object:nil];
+        isLogin = NO;
+        [_tableView reloadData];
+        [self initMBProgress:@"退出成功" withModeType:MBProgressHUDModeText afterDelay:1.0];
+    }
+}
 
 #pragma mark -- other
 - (void)didReceiveMemoryWarning {
@@ -84,14 +180,9 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
-*/
 
 @end
