@@ -16,6 +16,9 @@
 @property (nonatomic,copy  ) NSString  *nickname;
 @property (nonatomic,copy  ) NSString  *userName;
 
+@property (nonatomic,copy  ) NSString  *praisenum;
+@property (nonatomic,copy  ) NSString  *isPraise;
+
 @property (nonatomic,copy  ) NSString  *avatarUrl;
 
 @property (nonatomic,assign) NSInteger row;

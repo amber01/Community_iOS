@@ -11,11 +11,13 @@
 
 @interface EveryoneTopicTableViewCell : UITableViewCell<SDPhotoBrowserDelegate>
 
-- (void)configureCellWithInfo:(EveryoneTopicModel *)model withImages:(NSArray *)imageArray andPraiseData:(NSArray *)praiseArray;
+- (void)configureCellWithInfo:(EveryoneTopicModel *)model withImages:(NSArray *)imageArray andPraiseData:(NSArray *)praiseArray andRow:(NSInteger )row;
 
 @property (nonatomic,retain) NSMutableArray *photoUrlArray;
 
 @property (nonatomic,retain) PubliButton         *likeBtn;
 @property (nonatomic,retain) UILabel             *likeLabel;
+
+@property (nonatomic,retain) UIImageView         *likeImageView;
 
 @end

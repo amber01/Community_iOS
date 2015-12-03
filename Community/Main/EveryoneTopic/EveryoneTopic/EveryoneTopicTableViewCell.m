@@ -68,12 +68,12 @@
         self.likeBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
         _likeBtn.frame = CGRectMake(0, photoImageBtn1.bottom + 15, 34, 26);
         _likeBtn.backgroundColor = [UIColor whiteColor];
-        UIImageView *likeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(15, 26/2 - 13, 34/2, 26/2)];
-        likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
-        likeImageView.userInteractionEnabled = YES;
-        [_likeBtn addSubview:likeImageView];
+        self.likeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(15, 26/2 - 13, 34/2, 26/2)];
+        _likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+        _likeImageView.userInteractionEnabled = YES;
+        [_likeBtn addSubview:_likeImageView];
         
-        self.likeLabel = [[UILabel alloc]initWithFrame:CGRectMake(likeImageView.right + 5,-2, 70, 20)];
+        self.likeLabel = [[UILabel alloc]initWithFrame:CGRectMake(_likeImageView.right + 5,-2, 70, 20)];
         _likeLabel.textColor = [UIColor grayColor];
         _likeLabel.font = [UIFont systemFontOfSize:10];
         _likeLabel.text = @"顶 232";
@@ -116,16 +116,24 @@
     return self;
 }
 
-- (void)configureCellWithInfo:(EveryoneTopicModel *)model withImages:(NSArray *)imageArray andPraiseData:(NSArray *)praiseArray
+- (void)configureCellWithInfo:(EveryoneTopicModel *)model withImages:(NSArray *)imageArray andPraiseData:(NSArray *)praiseArray andRow:(NSInteger )row
 {
     [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
     nicknameLabel.text = model.nickname;
     dateLabel.text = model.createtime;
     
-    /**
-     *  判断是否点过赞
-     */
     
+    NSDictionary *dic = praiseArray[row];
+    NSString *post_id = [dic objectForKey:@"postid"];
+    NSString *isPraise = [dic objectForKey:@"value"];
+    
+    if ([post_id intValue] == [model.id intValue]) {
+        if ([isPraise intValue] == 1) {
+            _likeImageView.image = [UIImage imageNamed:@"everyone_topic_cancel_like"];
+        }else{
+            _likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+        }
+    }
     
     /**
      *  动态计算内容高度

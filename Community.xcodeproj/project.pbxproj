@@ -338,6 +338,7 @@
 		96D5083E1C0DE5E5001DFA49 /* FindPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96D5083D1C0DE5E5001DFA49 /* FindPasswordViewController.m */; };
 		96D508411C0DE635001DFA49 /* FindPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96D508401C0DE635001DFA49 /* FindPasswordView.m */; };
 		96D508481C0DEFD4001DFA49 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96D508471C0DEFD4001DFA49 /* SettingsViewController.m */; };
+		96D5084D1C106993001DFA49 /* everyone_topic_cancel_like@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 96D5084C1C106993001DFA49 /* everyone_topic_cancel_like@2x.png */; };
 		96EAD3251C015F78008D760A /* TodayTopicMoreTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EAD3241C015F78008D760A /* TodayTopicMoreTableViewCell.m */; };
 		96EAD3281C0169C6008D760A /* TodayTopicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EAD3271C0169C6008D760A /* TodayTopicModel.m */; };
 		96F301A71BF0E2840089AE14 /* TodayTopicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F301A61BF0E2840089AE14 /* TodayTopicTableViewCell.m */; };
@@ -924,6 +925,7 @@
 		96D508401C0DE635001DFA49 /* FindPasswordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindPasswordView.m; sourceTree = "<group>"; };
 		96D508461C0DEFD4001DFA49 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		96D508471C0DEFD4001DFA49 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		96D5084C1C106993001DFA49 /* everyone_topic_cancel_like@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "everyone_topic_cancel_like@2x.png"; sourceTree = "<group>"; };
 		96EAD3231C015F78008D760A /* TodayTopicMoreTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicMoreTableViewCell.h; sourceTree = "<group>"; };
 		96EAD3241C015F78008D760A /* TodayTopicMoreTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicMoreTableViewCell.m; sourceTree = "<group>"; };
 		96EAD3261C0169C6008D760A /* TodayTopicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicModel.h; sourceTree = "<group>"; };
@@ -1786,6 +1788,7 @@
 				DBE54E101C0D6DBD0057D68F /* user_info_addfollow@2x.png */,
 				DBE54E111C0D6DBD0057D68F /* user_info_follow@2x.png */,
 				DBE54E141C0D70180057D68F /* user_info_chat@2x.png */,
+				96D5084C1C106993001DFA49 /* everyone_topic_cancel_like@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -2693,6 +2696,7 @@
 				96C8D2C21C0A0F4E004642FC /* topic_send_shareinfo@2x.png in Resources */,
 				96C8D2CE1C0A0F4E004642FC /* topic_send_funny@3x.png in Resources */,
 				96C8D2C81C0A0F4E004642FC /* topic_send_city@3x.png in Resources */,
+				96D5084D1C106993001DFA49 /* everyone_topic_cancel_like@2x.png in Resources */,
 				96C8D2D91C0A0F4E004642FC /* everyoneTopic_tabbar_high@2x.png in Resources */,
 				96C8D2D71C0A0F4E004642FC /* topic_send_topic@3x.png in Resources */,
 				96C8D2C71C0A0F4E004642FC /* everyoneTopic_send_down@3x.png in Resources */,
@@ -3063,7 +3067,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "a736d577-1a75-499c-8918-8d5d12cc4ace";
+				PROVISIONING_PROFILE = "f6ec2f93-9108-4ef6-85a3-a3155b9d3e5a";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3102,7 +3106,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "a736d577-1a75-499c-8918-8d5d12cc4ace";
+				PROVISIONING_PROFILE = "f6ec2f93-9108-4ef6-85a3-a3155b9d3e5a";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

@@ -31,6 +31,7 @@
 @property (nonatomic,copy)   NSString       *isEssence;
 
 @property (nonatomic,retain) NSMutableArray *likeDataArray;  //记录本地点赞的状态
+@property (nonatomic,retain) NSMutableArray *isLikeDataArray;  //是否已经点赞
 
 @end
 
@@ -169,11 +170,9 @@
     NSDictionary *parameters = @{@"Method":@"RePostInfo",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"FldSort":fldSort,@"FldSortType":@"1",@"CityID":@"0",@"ProvinceID":@"0",@"IsEssence":isEssence,@"ClassID":@""}]};
     
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
-        NSLog(@"result:%@",result);
-        
         NSArray *items = [EveryoneTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
         NSArray *imageItems = [TodayTopicImagesModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
-        NSArray *praiseItems = [TodayTopicPraiseModel arrayOfModelsFromDictionaries:[result objectForKey:@"IsPraise"]];
+        NSArray *praiseItems = [result objectForKey:@"IsPraise"];
         
         if (page == 1) {
             [self.dataArray removeAllObjects];
@@ -205,7 +204,7 @@
         [self setMBProgreeHiden:YES];
         [self.tableView reloadData];
     } failure:^(NSError *erro) {
-        
+        [self setMBProgreeHiden:YES];
     }];
 }
 
@@ -257,20 +256,23 @@
         [cell.likeBtn addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     
-    TodayTopicPraiseModel *praiseModel = [self.praiseDataArray objectAtIndex:indexPath.row];
-    NSLog(@"praiseModel:%@",praiseModel.postid);
-    
     EveryoneTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
-    [cell configureCellWithInfo:model withImages:self.imagesArray andPraiseData:self.praiseDataArray];
     
     cell.likeBtn.post_id = model.id;
     cell.likeBtn.row = indexPath.row;
-    
+
     if (!_likeDataArray) {
         self.likeDataArray = [[NSMutableArray alloc]init];
     }
     [_likeDataArray addObject:model.praisenum];
+    
+    [cell configureCellWithInfo:model withImages:self.imagesArray andPraiseData:self.praiseDataArray andRow:indexPath.row];
+    
+    NSDictionary *dic = [self.praiseDataArray objectAtIndex:indexPath.row];
+    cell.likeBtn.post_id = [dic objectForKey:@"postid"];
+    cell.likeBtn.isPraise = [dic objectForKey:@"value"];
     cell.likeLabel.text = _likeDataArray[indexPath.row];
+    cell.likeBtn.praisenum = _likeDataArray[indexPath.row];
     
     return cell;
 }
@@ -297,29 +299,80 @@
         return;
     }
     
-    NSDictionary *parameters = @{@"Method":@"AddPostToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIp":@"1",@"Detail":@[@{@"PostID":button.post_id,@"UserID":sharedInfo.user_id}]};
-    
-    [CKHttpRequest createRequest:HTTP_METHOD_PRAISE WithParam:parameters withMethod:@"POST" success:^(id result) {
+    //点赞
+    if ([button.isPraise intValue] == 0) {
+        NSDictionary *parameters = @{@"Method":@"AddPostToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIp":@"1",@"Detail":@[@{@"PostID":button.post_id,@"UserID":sharedInfo.user_id}]};
         
-        if (result && [[result objectForKey:@"Success"]intValue] > 0) {
-            [self initMBProgress:@"点赞+1" withModeType:MBProgressHUDModeText afterDelay:1.5];
-            EveryoneTopicModel *model = [self.dataArray objectAtIndex:button.row];
-            int praisenum = [model.praisenum intValue];
-            praisenum = praisenum + 1;
-            [self.likeDataArray insertObject:[NSString stringWithFormat:@"%d",praisenum] atIndex:button.row];
+        [CKHttpRequest createRequest:HTTP_METHOD_PRAISE WithParam:parameters withMethod:@"POST" success:^(id result) {
             
-            //点赞之后改变点赞的状态
-            NSIndexPath *index =  [NSIndexPath indexPathForItem:button.row inSection:0];
-            EveryoneTopicTableViewCell *cell =  [_tableView cellForRowAtIndexPath:index];
-            cell.likeLabel.text = _likeDataArray[button.row];
+            if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                [self initMBProgress:@"点赞+1" withModeType:MBProgressHUDModeText afterDelay:1.5];
+                int praisenum = [button.praisenum intValue];
+                praisenum = praisenum + 1;
+                
+                /**
+                 *  先删除原来的点赞数，然后再重新加上
+                 */
+                [self.likeDataArray removeObjectAtIndex:button.row];
+                [self.likeDataArray insertObject:[NSString stringWithFormat:@"%d",praisenum] atIndex:button.row];
+                
+                /**
+                 *  记录点赞状态
+                 */
+                [self.praiseDataArray removeObjectAtIndex:button.row];
+                [self.praiseDataArray insertObject:@{@"postid":button.post_id,@"value":@"1"} atIndex:button.row];
+                
+                //点赞之后改变点赞的状态
+                NSIndexPath *index =  [NSIndexPath indexPathForItem:button.row inSection:0];
+                EveryoneTopicTableViewCell *cell =  [_tableView cellForRowAtIndexPath:index];
+                cell.likeLabel.text = _likeDataArray[button.row];
+                
+                cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_cancel_like"];
+                [_tableView reloadData];
+            }else{
+                [self initMBProgress:@"你已经赞过了" withModeType:MBProgressHUDModeText afterDelay:1.5];
+            }
             
-        }else{
-            [self initMBProgress:@"你已经赞过了" withModeType:MBProgressHUDModeText afterDelay:1.5];
-        }
+        } failure:^(NSError *erro) {
+            
+        }];
+    }else{  //取消点赞
+        NSDictionary *parameters = @{@"Method":@"DelPostToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIp":@"1",@"Detail":@[@{@"PostID":button.post_id,@"UserID":sharedInfo.user_id}]};
         
-    } failure:^(NSError *erro) {
-        
-    }];
+        [CKHttpRequest createRequest:HTTP_METHOD_PRAISE WithParam:parameters withMethod:@"POST" success:^(id result) {
+            
+            if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                [self initMBProgress:@"取消点赞" withModeType:MBProgressHUDModeText afterDelay:1.5];
+                int praisenum = [button.praisenum intValue];
+                praisenum = praisenum - 1;
+                
+                /**
+                 *  先删除原来的点赞数，然后再重新加上
+                 */
+                [self.likeDataArray removeObjectAtIndex:button.row];
+                [self.likeDataArray insertObject:[NSString stringWithFormat:@"%d",praisenum] atIndex:button.row];
+                
+                /**
+                 *  记录点赞状态
+                 */
+                [self.praiseDataArray removeObjectAtIndex:button.row];
+                [self.praiseDataArray insertObject:@{@"postid":button.post_id,@"value":@"0"} atIndex:button.row];
+                
+                //点赞之后改变点赞的状态
+                NSIndexPath *index =  [NSIndexPath indexPathForItem:button.row inSection:0];
+                EveryoneTopicTableViewCell *cell =  [_tableView cellForRowAtIndexPath:index];
+                cell.likeLabel.text = _likeDataArray[button.row];
+                
+                cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+                [_tableView reloadData];
+            }else{
+                [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.5];
+            }
+            
+        } failure:^(NSError *erro) {
+            
+        }];
+    }
 }
 
 #pragma mark--

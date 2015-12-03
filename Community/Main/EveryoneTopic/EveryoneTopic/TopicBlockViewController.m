@@ -30,6 +30,8 @@
 @property (nonatomic,copy)   NSString       *fldSort;
 @property (nonatomic,copy)   NSString       *isEssence;
 
+@property (nonatomic,retain) NSMutableArray *isLikeDataArray;  //是否已经点赞
+
 @end
 
 @implementation TopicBlockViewController
@@ -267,9 +269,7 @@
     
     EveryoneTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
     TodayTopicPraiseModel *praiseModel = [self.praiseDataArray objectAtIndex:indexPath.row];
-    NSLog(@"praiseModel:%@",praiseModel.postid);
-    
-    [cell configureCellWithInfo:model withImages:self.imagesArray andPraiseData:self.praiseDataArray];
+    //[cell configureCellWithInfo:model withImages:self.imagesArray andPraiseData:praiseModel];
     
     return cell;
 }

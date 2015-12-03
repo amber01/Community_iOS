@@ -149,7 +149,8 @@
     }
     
     EveryoneTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
-    [cell configureCellWithInfo:model withImages:self.imagesArray andPraiseData:self.praiseDataArray];
+    TodayTopicPraiseModel *praiseModel = [self.praiseDataArray objectAtIndex:indexPath.row];
+    //[cell configureCellWithInfo:model withImages:self.imagesArray andPraiseData:praiseModel];
     
     return cell;
 }
