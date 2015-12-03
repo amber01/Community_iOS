@@ -12,5 +12,7 @@
 
 @property (nonatomic,copy)NSString  *user_id;
 @property (nonatomic,copy)NSString  *nickname;
+@property (nonatomic,copy)NSString  *userName;
+@property (nonatomic,copy)NSString  *avatarUrl;
 
 @end

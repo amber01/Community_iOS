@@ -13,5 +13,6 @@
 #import "TodayTopicModel.h"
 #import "TodayTopicImagesModel.h"
 #import "EveryoneTopicModel.h"
+#import "TodayTopicPraiseModel.h"
 
 #endif /* ModelHeader_h */

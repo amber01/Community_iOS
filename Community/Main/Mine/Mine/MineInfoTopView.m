@@ -29,7 +29,7 @@
     UILabel         *addFollowLabel;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame withUserID:(NSString *)user_id andNickname:(NSString *)nickname;
+- (instancetype)initWithFrame:(CGRect)frame withUserID:(NSString *)user_id andNickname:(NSString *)nickname andUserName:(NSString *)userName andAvararUrl:(NSString *)avatarUrl;
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -129,7 +129,9 @@
             chatBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
             chatBtn.frame = CGRectMake((ScreenWidth - 236/2) - 30, followBtn.bottom + 18,236/2, 75/2);
             chatBtn.user_id = user_id;
+            chatBtn.userName = userName;
             chatBtn.nickname = nickname;
+            chatBtn.avatarUrl = avatarUrl;
             [chatBtn setImage:[UIImage imageNamed:@"user_info_chat.png"] forState:UIControlStateNormal];
             UILabel *chatLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, chatBtn.height/2-10, chatBtn.width - 50, 20)];
             [chatBtn addTarget:self action:@selector(chatAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -180,7 +182,8 @@
 {
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     if (!isStrEmpty(sharedInfo.user_id)) {
-        EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:button.user_id conversationType:eConversationTypeChat];
+        EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:button.userName conversationType:eConversationTypeChat];
+        easeMessageVC.avatarUrl = button.avatarUrl;
         easeMessageVC.title = button.nickname;
         [self.viewController.navigationController pushViewController:easeMessageVC animated:YES];
     }else{

@@ -239,7 +239,6 @@
 		96C8D24B1C0A0D20004642FC /* CommentTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C8D2461C0A0D20004642FC /* CommentTopView.m */; };
 		96C8D2A31C0A0F4E004642FC /* topic_topView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 96C8D24C1C0A0F4E004642FC /* topic_topView@2x.png */; };
 		96C8D2A41C0A0F4E004642FC /* topic_topView@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 96C8D24D1C0A0F4E004642FC /* topic_topView@3x.png */; };
-		96C8D2A51C0A0F4E004642FC /* 001.png in Resources */ = {isa = PBXBuildFile; fileRef = 96C8D24E1C0A0F4E004642FC /* 001.png */; };
 		96C8D2A61C0A0F4E004642FC /* back_btn_image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 96C8D24F1C0A0F4E004642FC /* back_btn_image@2x.png */; };
 		96C8D2A71C0A0F4E004642FC /* send_close_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 96C8D2501C0A0F4E004642FC /* send_close_btn@2x.png */; };
 		96C8D2A81C0A0F4E004642FC /* send_close_btn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 96C8D2511C0A0F4E004642FC /* send_close_btn@3x.png */; };
@@ -345,6 +344,7 @@
 		96F301B61BF225E40089AE14 /* SendTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F301B51BF225E40089AE14 /* SendTopicViewController.m */; };
 		96F301B91BF226710089AE14 /* SendTopicTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F301B81BF226710089AE14 /* SendTopicTextView.m */; };
 		B5BF3EE606232C1A4F2F8411 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1181DD7D94E49915A43A9DDC /* libPods.a */; };
+		DB4F25991C104B21005FBEA2 /* TodayTopicPraiseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4F25981C104B21005FBEA2 /* TodayTopicPraiseModel.m */; };
 		DB62F95C1C0C4321004AB454 /* delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DB62F95B1C0C4321004AB454 /* delete@2x.png */; };
 		DB84257C1BF1988D00D1C273 /* OptionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DB84257B1BF1988D00D1C273 /* OptionButton.m */; };
 		DB8425831BF19B7A00D1C273 /* SendTopicBtnView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8425821BF19B7A00D1C273 /* SendTopicBtnView.m */; };
@@ -815,7 +815,6 @@
 		96C8D2461C0A0D20004642FC /* CommentTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentTopView.m; sourceTree = "<group>"; };
 		96C8D24C1C0A0F4E004642FC /* topic_topView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topic_topView@2x.png"; sourceTree = "<group>"; };
 		96C8D24D1C0A0F4E004642FC /* topic_topView@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topic_topView@3x.png"; sourceTree = "<group>"; };
-		96C8D24E1C0A0F4E004642FC /* 001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 001.png; sourceTree = "<group>"; };
 		96C8D24F1C0A0F4E004642FC /* back_btn_image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_btn_image@2x.png"; sourceTree = "<group>"; };
 		96C8D2501C0A0F4E004642FC /* send_close_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send_close_btn@2x.png"; sourceTree = "<group>"; };
 		96C8D2511C0A0F4E004642FC /* send_close_btn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send_close_btn@3x.png"; sourceTree = "<group>"; };
@@ -935,6 +934,8 @@
 		96F301B51BF225E40089AE14 /* SendTopicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendTopicViewController.m; sourceTree = "<group>"; };
 		96F301B71BF226710089AE14 /* SendTopicTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendTopicTextView.h; sourceTree = "<group>"; };
 		96F301B81BF226710089AE14 /* SendTopicTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendTopicTextView.m; sourceTree = "<group>"; };
+		DB4F25971C104B21005FBEA2 /* TodayTopicPraiseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicPraiseModel.h; sourceTree = "<group>"; };
+		DB4F25981C104B21005FBEA2 /* TodayTopicPraiseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicPraiseModel.m; sourceTree = "<group>"; };
 		DB62F95B1C0C4321004AB454 /* delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete@2x.png"; sourceTree = "<group>"; };
 		DB84257A1BF1988D00D1C273 /* OptionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionButton.h; sourceTree = "<group>"; };
 		DB84257B1BF1988D00D1C273 /* OptionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionButton.m; sourceTree = "<group>"; };
@@ -1692,7 +1693,6 @@
 			children = (
 				96C8D24C1C0A0F4E004642FC /* topic_topView@2x.png */,
 				96C8D24D1C0A0F4E004642FC /* topic_topView@3x.png */,
-				96C8D24E1C0A0F4E004642FC /* 001.png */,
 				96C8D24F1C0A0F4E004642FC /* back_btn_image@2x.png */,
 				96C8D2501C0A0F4E004642FC /* send_close_btn@2x.png */,
 				96C8D2511C0A0F4E004642FC /* send_close_btn@3x.png */,
@@ -2368,6 +2368,8 @@
 				96EAD3271C0169C6008D760A /* TodayTopicModel.m */,
 				968426211C01734E00774538 /* TodayTopicImagesModel.h */,
 				968426221C01734E00774538 /* TodayTopicImagesModel.m */,
+				DB4F25971C104B21005FBEA2 /* TodayTopicPraiseModel.h */,
+				DB4F25981C104B21005FBEA2 /* TodayTopicPraiseModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2605,7 +2607,6 @@
 				96C8D2C31C0A0F4E004642FC /* topic_send_suggestion@2x.png in Resources */,
 				9643D72E1BF781DD003A394D /* recent_n@2x.png in Resources */,
 				9643D70F1BF781DD003A394D /* backspace_n.png in Resources */,
-				96C8D2A51C0A0F4E004642FC /* 001.png in Resources */,
 				96C8D2DD1C0A0F4E004642FC /* message_tabbar_high@2x.png in Resources */,
 				96C8D2DA1C0A0F4E004642FC /* everyoneTopic_tabbar_high@3x.png in Resources */,
 				96C8D2F61C0A0F4E004642FC /* send_add_image@2x.png in Resources */,
@@ -2782,6 +2783,7 @@
 				96B2D1101BFCD66200FE6185 /* RegisterViewController.m in Sources */,
 				963DC4CB1C0ACFD9005D1955 /* EaseImageView.m in Sources */,
 				963DC4C01C0ACFD9005D1955 /* EaseMessageCell.m in Sources */,
+				DB4F25991C104B21005FBEA2 /* TodayTopicPraiseModel.m in Sources */,
 				96C8D2471C0A0D20004642FC /* CommentViewController.m in Sources */,
 				963DC48A1C0ACFD9005D1955 /* EMSDWebImageCompat.m in Sources */,
 				964AA1111BEF7B5E007CE0E9 /* NSMutableArray+InsertArray.m in Sources */,

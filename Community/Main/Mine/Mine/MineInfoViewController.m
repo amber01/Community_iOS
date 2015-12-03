@@ -20,6 +20,8 @@
 
 @property (nonatomic,retain) NSMutableArray *dataArray;
 @property (nonatomic,retain) NSMutableArray *imagesArray;
+@property (nonatomic,retain) NSMutableArray *praiseDataArray;
+
 @property (nonatomic,copy)   NSString       *fldSort;
 @property (nonatomic,copy)   NSString       *isEssence;
 
@@ -62,7 +64,8 @@
     _header = [WSHeaderView expandWithScrollView:_tableView expandView:imageView];
     
     SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
-    MineInfoTopView *mineInfoTopView = [[MineInfoTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 150) withUserID:isStrEmpty(self.user_id) ? shareInfo.user_id : self.user_id andNickname:isStrEmpty(self.nickname) ? @"" : self.nickname];
+    MineInfoTopView *mineInfoTopView = [[MineInfoTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 150) withUserID:isStrEmpty(self.user_id) ? shareInfo.user_id : self.user_id andNickname:isStrEmpty(self.nickname) ? @"" : self.nickname andUserName:isStrEmpty(self.userName)? @"" : self.userName andAvararUrl:isStrEmpty(self.avatarUrl) ? @"" : self.avatarUrl];
+    
     _tableView.tableHeaderView = mineInfoTopView;
 }
 
@@ -90,7 +93,14 @@
         
         NSArray *items = [EveryoneTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
         NSArray *imageItems = [TodayTopicImagesModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
-                
+        NSArray *praiseItems = [TodayTopicPraiseModel arrayOfModelsFromDictionaries:[result objectForKey:@"IsPraise"]];
+        
+        if (page == 1) {
+            [self.dataArray removeAllObjects];
+            [self.imagesArray removeAllObjects];
+            [self.praiseDataArray removeAllObjects];
+        }
+        
         for (int i = 0; i < items.count; i ++) {
             if (!self.dataArray) {
                 self.dataArray = [[NSMutableArray alloc]init];
@@ -104,6 +114,14 @@
             }
             [self.imagesArray addObject:[imageItems objectAtIndex:i]];
         }
+        
+        for (int i = 0; i < praiseItems.count; i ++) {
+            if (!self.praiseDataArray) {
+                self.praiseDataArray = [[NSMutableArray alloc]init];
+            }
+            [self.praiseDataArray addObject:[praiseItems objectAtIndex:i]];
+        }
+
         [self setMBProgreeHiden:YES];
         [_tableView reloadData];
     } failure:^(NSError *erro) {
@@ -131,7 +149,7 @@
     }
     
     EveryoneTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
-    [cell configureCellWithInfo:model withImages:self.imagesArray];
+    [cell configureCellWithInfo:model withImages:self.imagesArray andPraiseData:self.praiseDataArray];
     
     return cell;
 }

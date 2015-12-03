@@ -25,6 +25,7 @@
 @property (nonatomic,retain) UITableView    *tableView;
 @property (nonatomic,retain) NSMutableArray *dataArray;
 @property (nonatomic,retain) NSMutableArray *imagesArray;
+@property (nonatomic,retain) NSMutableArray *praiseDataArray;
 
 @property (nonatomic,copy)   NSString       *fldSort;
 @property (nonatomic,copy)   NSString       *isEssence;
@@ -181,10 +182,12 @@
         
         NSArray *items = [EveryoneTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
         NSArray *imageItems = [TodayTopicImagesModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
+        NSArray *praiseItems = [TodayTopicPraiseModel arrayOfModelsFromDictionaries:[result objectForKey:@"IsPraise"]];
         
         if (page == 1) {
             [self.dataArray removeAllObjects];
             [self.imagesArray removeAllObjects];
+            [self.praiseDataArray removeAllObjects];
         }
         
         for (int i = 0; i < items.count; i ++) {
@@ -200,6 +203,14 @@
             }
             [self.imagesArray addObject:[imageItems objectAtIndex:i]];
         }
+        
+        for (int i = 0; i < praiseItems.count; i ++) {
+            if (!self.praiseDataArray) {
+                self.praiseDataArray = [[NSMutableArray alloc]init];
+            }
+            [self.praiseDataArray addObject:[praiseItems objectAtIndex:i]];
+        }
+        
         [self setMBProgreeHiden:YES];
         [self.tableView reloadData];
     } failure:^(NSError *erro) {
@@ -255,7 +266,10 @@
     }
     
     EveryoneTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
-    [cell configureCellWithInfo:model withImages:self.imagesArray];
+    TodayTopicPraiseModel *praiseModel = [self.praiseDataArray objectAtIndex:indexPath.row];
+    NSLog(@"praiseModel:%@",praiseModel.postid);
+    
+    [cell configureCellWithInfo:model withImages:self.imagesArray andPraiseData:self.praiseDataArray];
     
     return cell;
 }

@@ -343,19 +343,14 @@
                 }
             }
         }
-    }
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (actionSheet.tag != 2000 | actionSheet.tag != 2001) {
+    }else{
         if (buttonIndex == 0) {
             UIImageView *imageView = (UIImageView *)[self.view viewWithTag:actionSheet.tag];
             [imageView removeFromSuperview];
-            
-            NSLog(@"tag:%ld",actionSheet.tag - 500);
-            int index = (int)actionSheet.tag - 500;
-            [_locaPhotoArr removeObjectAtIndex:index];
+            if (_locaPhotoArr.count > 0) {
+                [_locaPhotoArr removeObjectAtIndex:actionSheet.tag - 500];
+                [self createImageList];
+            }
         }
     }
 }
@@ -472,6 +467,51 @@
     sheet.actionSheetStyle =UIActionSheetStyleAutomatic;
     [sheet showInView:self.view];
     sheet.tag = recognizer.view.tag;
+}
+
+- (void)createImageList
+{
+    float start_x = 5.0f;
+    float width_space = 5.0f;
+    float height = 50.0f;
+    float width = 50.0f;
+    if (photoScrollView) {
+        [photoScrollView removeFromSuperview];
+    }
+    
+    photoScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 50)];
+    photoScrollView.showsVerticalScrollIndicator = FALSE;
+    photoScrollView.showsHorizontalScrollIndicator = FALSE;
+    [photoBackgroundView addSubview:photoScrollView];
+    
+    addImageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [addImageBtn addTarget:self action:@selector(selectPhotoAction) forControlEvents:UIControlEventTouchUpInside];
+    [addImageBtn setBackgroundImage:[UIImage imageNamed:@"send_add_image"] forState:UIControlStateNormal];
+    [photoScrollView addSubview:addImageBtn];
+    
+    photoScrollView.contentSize = CGSizeMake(((50 + 10)*_locaPhotoArr.count) + 20, 0);
+    for (int i = 0; i < _locaPhotoArr.count; i ++) {
+        NSDictionary *dict = [_locaPhotoArr objectAtIndex:i];
+        UIImage *image = [dict objectForKey:UIImagePickerControllerOriginalImage];
+        
+        photoImageview= [[UIImageView alloc] initWithImage:image];
+        [photoImageview setContentScaleFactor:[[UIScreen mainScreen] scale]];
+        photoImageview.contentMode =  UIViewContentModeScaleAspectFill;
+        photoImageview.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        photoImageview.clipsToBounds  = YES;
+        photoImageview.userInteractionEnabled = YES;
+        
+        photoImageview.frame = CGRectMake(i * (width + width_space) + start_x, 0, width, height);
+        
+        [photoScrollView addSubview:photoImageview];
+        
+        UITapGestureRecognizer *deleteImageTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(deleteImageAction:)];
+        photoImageview.userInteractionEnabled = YES;
+        photoImageview.tag = 500 + i;
+        [photoImageview addGestureRecognizer:deleteImageTapGesture];
+    }
+    
+    addImageBtn.frame = CGRectMake(photoImageview.right + 10, 2.5, 45, 45);
 }
 
 /**

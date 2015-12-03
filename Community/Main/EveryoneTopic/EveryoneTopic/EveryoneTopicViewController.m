@@ -25,9 +25,12 @@
 @property (nonatomic,retain) UITableView    *tableView;
 @property (nonatomic,retain) NSMutableArray *dataArray;
 @property (nonatomic,retain) NSMutableArray *imagesArray;
+@property (nonatomic,retain) NSMutableArray *praiseDataArray; //自己是否点赞的数据
 
 @property (nonatomic,copy)   NSString       *fldSort;
 @property (nonatomic,copy)   NSString       *isEssence;
+
+@property (nonatomic,retain) NSMutableArray *likeDataArray;  //记录本地点赞的状态
 
 @end
 
@@ -160,19 +163,22 @@
 #pragma mark -- HTTP
 - (void)getEveryoneTopicData:(int)pageIndex withFldSort:(NSString *)fldSort andIsEssence:(NSString *)isEssence
 {
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     [self initMBProgress:@"数据加载中..."];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
-    NSDictionary *parameters = @{@"Method":@"RePostInfo",@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"FldSort":fldSort,@"FldSortType":@"1",@"CityID":@"0",@"ProvinceID":@"0",@"IsEssence":isEssence,@"ClassID":@""}]};
+    NSDictionary *parameters = @{@"Method":@"RePostInfo",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"FldSort":fldSort,@"FldSortType":@"1",@"CityID":@"0",@"ProvinceID":@"0",@"IsEssence":isEssence,@"ClassID":@""}]};
     
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
         
         NSArray *items = [EveryoneTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
         NSArray *imageItems = [TodayTopicImagesModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
+        NSArray *praiseItems = [TodayTopicPraiseModel arrayOfModelsFromDictionaries:[result objectForKey:@"IsPraise"]];
         
         if (page == 1) {
             [self.dataArray removeAllObjects];
             [self.imagesArray removeAllObjects];
+            [self.praiseDataArray removeAllObjects];
         }
         
         for (int i = 0; i < items.count; i ++) {
@@ -188,6 +194,14 @@
             }
             [self.imagesArray addObject:[imageItems objectAtIndex:i]];
         }
+        
+        for (int i = 0; i < praiseItems.count; i ++) {
+            if (!self.praiseDataArray) {
+                self.praiseDataArray = [[NSMutableArray alloc]init];
+            }
+            [self.praiseDataArray addObject:[praiseItems objectAtIndex:i]];
+        }
+        
         [self setMBProgreeHiden:YES];
         [self.tableView reloadData];
     } failure:^(NSError *erro) {
@@ -240,10 +254,23 @@
     EveryoneTopicTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
     if (!cell) {
         cell = [[EveryoneTopicTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
+        [cell.likeBtn addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     
+    TodayTopicPraiseModel *praiseModel = [self.praiseDataArray objectAtIndex:indexPath.row];
+    NSLog(@"praiseModel:%@",praiseModel.postid);
+    
     EveryoneTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
-    [cell configureCellWithInfo:model withImages:self.imagesArray];
+    [cell configureCellWithInfo:model withImages:self.imagesArray andPraiseData:self.praiseDataArray];
+    
+    cell.likeBtn.post_id = model.id;
+    cell.likeBtn.row = indexPath.row;
+    
+    if (!_likeDataArray) {
+        self.likeDataArray = [[NSMutableArray alloc]init];
+    }
+    [_likeDataArray addObject:model.praisenum];
+    cell.likeLabel.text = _likeDataArray[indexPath.row];
     
     return cell;
 }
@@ -257,6 +284,42 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
+#pragma mark -- action
+- (void)likeAction:(PubliButton *)button
+{
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    if (isStrEmpty(sharedInfo.user_id)) {
+        LoginViewController *loginVC = [[LoginViewController  alloc]init];
+        [loginVC setHidesBottomBarWhenPushed:YES];
+        [self.navigationController pushViewController:loginVC animated:YES];
+        return;
+    }
+    
+    NSDictionary *parameters = @{@"Method":@"AddPostToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIp":@"1",@"Detail":@[@{@"PostID":button.post_id,@"UserID":sharedInfo.user_id}]};
+    
+    [CKHttpRequest createRequest:HTTP_METHOD_PRAISE WithParam:parameters withMethod:@"POST" success:^(id result) {
+        
+        if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+            [self initMBProgress:@"点赞+1" withModeType:MBProgressHUDModeText afterDelay:1.5];
+            EveryoneTopicModel *model = [self.dataArray objectAtIndex:button.row];
+            int praisenum = [model.praisenum intValue];
+            praisenum = praisenum + 1;
+            [self.likeDataArray insertObject:[NSString stringWithFormat:@"%d",praisenum] atIndex:button.row];
+            
+            //点赞之后改变点赞的状态
+            NSIndexPath *index =  [NSIndexPath indexPathForItem:button.row inSection:0];
+            EveryoneTopicTableViewCell *cell =  [_tableView cellForRowAtIndexPath:index];
+            cell.likeLabel.text = _likeDataArray[button.row];
+            
+        }else{
+            [self initMBProgress:@"你已经赞过了" withModeType:MBProgressHUDModeText afterDelay:1.5];
+        }
+        
+    } failure:^(NSError *erro) {
+        
+    }];
 }
 
 #pragma mark--

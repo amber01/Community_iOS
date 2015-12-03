@@ -44,9 +44,9 @@ typedef NS_ENUM(NSInteger,HTTP_COMMAND_LIST){
     HTTP_COMMAND_SEND_TOPIC,
     //首页滚动广告5
     HTTP_COMMAND_ADVERTIS,
-    //点赞
+    //点赞6
     HTTP_METHOD_PRAISE,
-    //获取评论列表
+    //获取评论列表7
     HTTP_METHOD_COMMENT,
     
     /*******************/

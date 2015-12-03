@@ -197,6 +197,8 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 
 @property (strong, nonatomic) UIImagePickerController *imagePicker;
 
+@property (copy, nonatomic) NSString  *avatarUrl;
+
 - (instancetype)initWithConversationChatter:(NSString *)conversationChatter
                            conversationType:(EMConversationType)conversationType;
 

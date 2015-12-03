@@ -14,6 +14,9 @@
 @property (nonatomic,copy  ) NSString  *user_id;
 @property (nonatomic,copy  ) NSString  *like_num;
 @property (nonatomic,copy  ) NSString  *nickname;
+@property (nonatomic,copy  ) NSString  *userName;
+
+@property (nonatomic,copy  ) NSString  *avatarUrl;
 
 @property (nonatomic,assign) NSInteger row;
 @property (nonatomic,assign) NSInteger section;

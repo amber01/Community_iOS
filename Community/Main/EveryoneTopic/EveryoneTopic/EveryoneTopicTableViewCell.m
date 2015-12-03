@@ -23,11 +23,9 @@
     UIButton            *photoImageBtn2;
     UIButton            *photoImageBtn3;
     
-    UILabel             *likeLabel;
     UILabel             *commentLabel;
     UILabel             *fromLabel;
     
-    PubliButton         *likeBtn;
     PubliButton         *commentBtn;
 }
 
@@ -67,20 +65,19 @@
         
         
         
-        likeBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
-        likeBtn.frame = CGRectMake(0, photoImageBtn1.bottom + 15, 34, 26);
-        likeBtn.backgroundColor = [UIColor whiteColor];
-        [likeBtn addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.likeBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
+        _likeBtn.frame = CGRectMake(0, photoImageBtn1.bottom + 15, 34, 26);
+        _likeBtn.backgroundColor = [UIColor whiteColor];
         UIImageView *likeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(15, 26/2 - 13, 34/2, 26/2)];
         likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
         likeImageView.userInteractionEnabled = YES;
-        [likeBtn addSubview:likeImageView];
+        [_likeBtn addSubview:likeImageView];
         
-        likeLabel = [[UILabel alloc]initWithFrame:CGRectMake(likeImageView.right + 5,-2, 70, 20)];
-        likeLabel.textColor = [UIColor grayColor];
-        likeLabel.font = [UIFont systemFontOfSize:10];
-        likeLabel.text = @"顶 232";
-        [likeBtn addSubview:likeLabel];
+        self.likeLabel = [[UILabel alloc]initWithFrame:CGRectMake(likeImageView.right + 5,-2, 70, 20)];
+        _likeLabel.textColor = [UIColor grayColor];
+        _likeLabel.font = [UIFont systemFontOfSize:10];
+        _likeLabel.text = @"顶 232";
+        [_likeBtn addSubview:_likeLabel];
         
         commentBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
         commentBtn.frame = CGRectMake(35 + 55, photoImageBtn1.bottom + 15, 90, 30);
@@ -103,9 +100,10 @@
         fromLabel.textAlignment = NSTextAlignmentRight;
         fromLabel.text = @"灌水区";
         
+        
         [self.contentView addSubview:fromLabel];
         [self.contentView addSubview:commentBtn];
-        [self.contentView addSubview:likeBtn];
+        [self.contentView addSubview:_likeBtn];
         [self.contentView addSubview:photoImageBtn3];
         [self.contentView addSubview:photoImageBtn1];
         [self.contentView addSubview:photoImageBtn2];
@@ -118,11 +116,16 @@
     return self;
 }
 
-- (void)configureCellWithInfo:(EveryoneTopicModel *)model withImages:(NSArray *)imageArray
+- (void)configureCellWithInfo:(EveryoneTopicModel *)model withImages:(NSArray *)imageArray andPraiseData:(NSArray *)praiseArray
 {
     [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
     nicknameLabel.text = model.nickname;
     dateLabel.text = model.createtime;
+    
+    /**
+     *  判断是否点过赞
+     */
+    
     
     /**
      *  动态计算内容高度
@@ -137,10 +140,11 @@
         contentHeight.height = 0;
     }
     
-    likeBtn.post_id = model.id;
     commentBtn.post_id = model.id;
     avatarImageView.user_id = model.userid;
     avatarImageView.nickname = model.nickname;
+    avatarImageView.userName = model.username;
+    avatarImageView.avatarUrl = model.logopicture;
     [avatarImageView addTarget:self action:@selector(checkUserInfo:) forControlEvents:UIControlEventTouchUpInside];
     contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, contentHeight.height);
     
@@ -220,10 +224,12 @@
     }
     
     commentLabel.text = [NSString stringWithFormat:@"评论%@",model.commentnum];
-    likeLabel.text = [NSString stringWithFormat:@"顶%@",model.praisenum];
+
+    
+    //likeLabel.text = [NSString stringWithFormat:@"顶%@",likeArrayData[row]];
     fromLabel.text = model.classname;
     
-    likeBtn.frame = CGRectMake(0, imageHeight + 10, 90, 26);
+    _likeBtn.frame = CGRectMake(0, imageHeight + 10, 90, 26);
     commentBtn.frame = CGRectMake(35 + 40, imageHeight + 10, 100, 30);
     fromLabel.frame = CGRectMake(100, imageHeight + 8, ScreenWidth - 100 - 15, 20);
     self.frame = CGRectMake(0, 0, ScreenWidth,avatarImageView.height + imageHeight - 10);
@@ -273,30 +279,6 @@
 }
 
 #pragma mark -- action
-- (void)likeAction:(PubliButton *)button
-{
-    NSLog(@"id:%@",button.post_id);
-    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-    if (isStrEmpty(sharedInfo.user_id)) {
-        LoginViewController *loginVC = [[LoginViewController  alloc]init];
-        [loginVC setHidesBottomBarWhenPushed:YES];
-        [self.viewController.navigationController pushViewController:loginVC animated:YES];
-        return;
-    }
-    
-    NSDictionary *parameters = @{@"Method":@"AddPostToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIp":@"1",@"Detail":@[@{@"PostID":button.post_id,@"UserID":sharedInfo.user_id}]};
-    
-    [CKHttpRequest createRequest:HTTP_METHOD_PRAISE WithParam:parameters withMethod:@"POST" success:^(id result) {
-        
-        if (result && [[result objectForKey:@"Success"]intValue] > 0) {
-            likeLabel.text = @"顶10";
-        }
-        
-        } failure:^(NSError *erro) {
-        
-    }];
-}
-
 - (void)commentAction:(PubliButton *)button
 {
     NSLog(@"button:%@",button.post_id);
@@ -311,6 +293,8 @@
     MineInfoViewController *userInfoVC = [[MineInfoViewController alloc]init];
     userInfoVC.user_id = button.user_id;
     userInfoVC.nickname = button.nickname;
+    userInfoVC.userName = button.userName;
+    userInfoVC.avatarUrl = button.avatarUrl;
     [userInfoVC setHidesBottomBarWhenPushed:YES];
     [self.viewController.navigationController pushViewController:userInfoVC animated:YES];
     NSLog(@"user_id:%@",button.user_id);

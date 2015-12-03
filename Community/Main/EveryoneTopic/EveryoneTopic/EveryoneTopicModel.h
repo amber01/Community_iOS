@@ -10,22 +10,21 @@
 
 @interface EveryoneTopicModel : JSONModel
 
-@property (nonatomic,retain)NSString  *address;
-@property (nonatomic,retain)NSString  *classname;
-@property (nonatomic,retain)NSString  *commentnum; //回复数
-@property (nonatomic,retain)NSString  *praisenum;  //点赞数
-@property (nonatomic,retain)NSString  *createtime; //发布时间
-@property (nonatomic,retain)NSString  *detail;     //内容
-@property (nonatomic,retain)NSString  *hitnumber;  //缩略图
-@property (nonatomic,retain)NSString  *id;
-@property (nonatomic,retain)NSString  *imagecount;
-@property (nonatomic,retain)NSString  *isshow;
-@property (nonatomic,retain)NSString  *logopicture;
-@property (nonatomic,retain)NSString  *nickname;
-@property (nonatomic,retain)NSString  *name; 
-@property (nonatomic,retain)NSString  *sort;
-@property (nonatomic,retain)NSString  *username;
-@property (nonatomic,retain)NSString  *userid;
-
+@property (nonatomic,copy)NSString  *address;
+@property (nonatomic,copy)NSString  *classname;
+@property (nonatomic,copy)NSString  *commentnum; //回复数
+@property (nonatomic,copy)NSString  *praisenum;  //点赞数
+@property (nonatomic,copy)NSString  *createtime; //发布时间
+@property (nonatomic,copy)NSString  *detail;     //内容
+@property (nonatomic,copy)NSString  *hitnumber;  //缩略图
+@property (nonatomic,copy)NSString  *id;
+@property (nonatomic,copy)NSString  *imagecount;
+@property (nonatomic,copy)NSString  *isshow;
+@property (nonatomic,copy)NSString  *logopicture;
+@property (nonatomic,copy)NSString  *nickname;
+@property (nonatomic,copy)NSString  *name;
+@property (nonatomic,copy)NSString  *sort;
+@property (nonatomic,copy)NSString  *username;
+@property (nonatomic,copy)NSString  *userid;
 
 @end
