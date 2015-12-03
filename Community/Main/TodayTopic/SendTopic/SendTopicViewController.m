@@ -28,6 +28,7 @@
     UIButton              *addImageBtn;
     UIView                *photoBackgroundView;
     NSMutableDictionary   *Exparams;
+    int                   deleteCount;
 }
 
 @property (nonatomic,retain)NSMutableArray *locaPhotoArr;
@@ -57,6 +58,8 @@
     tapGesture.delegate = self;
     tapGesture.cancelsTouchesInView =NO;
     [self.view addGestureRecognizer:tapGesture];
+    
+    deleteCount = -1;
 }
 
 #pragma mark -- UI
@@ -77,7 +80,7 @@
     [photoBackgroundView addSubview:photoScrollView];
     
     addImageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [addImageBtn addTarget:self action:@selector(addImageAction) forControlEvents:UIControlEventTouchUpInside];
+    [addImageBtn addTarget:self action:@selector(selectPhotoAction) forControlEvents:UIControlEventTouchUpInside];
     [addImageBtn setBackgroundImage:[UIImage imageNamed:@"send_add_image"] forState:UIControlStateNormal];
     [photoScrollView addSubview:addImageBtn];
     
@@ -156,7 +159,7 @@
         UIImage *image = [dict objectForKey:UIImagePickerControllerOriginalImage];
         
         NSString *indexStr = [NSString stringWithFormat:@"picturename%d",i];
-        NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
+        NSData *imageData = UIImageJPEGRepresentation(image, 0.0f);
         [Exparams addEntriesFromDictionary:[NSDictionary dictionaryWithObjectsAndKeys:imageData,indexStr, nil]];
     }
     [self sendTopicImageToServer:Exparams];
@@ -172,9 +175,11 @@
         if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         {
             actionSheet  = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"从相册中选择", @"立即拍照上传", nil];
+            actionSheet.tag = 2000;
         }
         else {
             actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消"destructiveButtonTitle:nil otherButtonTitles:@"从相册选择", nil];
+            actionSheet.tag = 2001;
         }
         
         actionSheet.actionSheetStyle =UIActionSheetStyleAutomatic;
@@ -283,44 +288,74 @@
 #pragma mark -- UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    //支持相机的情况下
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        if (buttonIndex == 0) { //相册
-            ELCImagePickerController *elcPicker = [[ELCImagePickerController alloc] initImagePicker];
-            
-            elcPicker.maximumImagesCount = 9 - _locaPhotoArr.count;
-            elcPicker.returnsOriginalImage = NO; //Only return the fullScreenImage, not the fullResolutionImage
-            elcPicker.imagePickerDelegate = self;
-            
-            [self presentViewController:elcPicker animated:YES completion:nil];
-            
-        }else if (buttonIndex == 1){  //照相机
-            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-            imagePicker.delegate = self;
-            imagePicker.allowsEditing = NO;
-            imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-            [self presentViewController:imagePicker animated:YES completion:nil];
-        }else{
-            
-            if (isInput == YES) {
-                [sendTopicView.titleTextField becomeFirstResponder];
+    if (actionSheet.tag == 2000 | actionSheet.tag == 2001) {
+        //支持相机的情况下
+        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            if (buttonIndex == 0) { //相册
+                if (_locaPhotoArr.count == 9) {
+                    [self initMBProgress:@"最多只能上传9张图片" withModeType:MBProgressHUDModeText afterDelay:1.5];
+                }else{
+                    ELCImagePickerController *elcPicker = [[ELCImagePickerController alloc] initImagePicker];
+                    
+                    elcPicker.maximumImagesCount = 9 - _locaPhotoArr.count;
+                    elcPicker.returnsOriginalImage = NO; //Only return the fullScreenImage, not the fullResolutionImage
+                    elcPicker.imagePickerDelegate = self;
+                    
+                    [self presentViewController:elcPicker animated:YES completion:nil];
+                }
+            }else if (buttonIndex == 1){  //照相机
+                if (_locaPhotoArr.count == 9) {
+                    [self initMBProgress:@"最多只能上传9张图片" withModeType:MBProgressHUDModeText afterDelay:1.5];
+                }else{
+                    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+                    imagePicker.delegate = self;
+                    imagePicker.allowsEditing = NO;
+                    imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+                    [self presentViewController:imagePicker animated:YES completion:nil];
+                }
+                
             }else{
-                [sendTopicView.contentTextView becomeFirstResponder];
+                
+                if (isInput == YES) {
+                    [sendTopicView.titleTextField becomeFirstResponder];
+                }else{
+                    [sendTopicView.contentTextView becomeFirstResponder];
+                }
+            }
+        }else{
+            if (buttonIndex == 0) {
+                if (_locaPhotoArr.count == 9) {
+                    [self initMBProgress:@"最多只能上传9张图片" withModeType:MBProgressHUDModeText afterDelay:1.5];
+                }else{
+                    ELCImagePickerController *elcPicker = [[ELCImagePickerController alloc] initImagePicker];
+                    
+                    elcPicker.maximumImagesCount = 9 - _locaPhotoArr.count;
+                    elcPicker.returnsOriginalImage = NO; //Only return the fullScreenImage, not the fullResolutionImage
+                    elcPicker.imagePickerDelegate = self;
+                    
+                    [self presentViewController:elcPicker animated:YES completion:nil];
+                }
+            }else{
+                if (isInput == YES) {
+                    [sendTopicView.titleTextField becomeFirstResponder];
+                }else{
+                    [sendTopicView.contentTextView becomeFirstResponder];
+                }
             }
         }
-    }else{
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag != 2000 | actionSheet.tag != 2001) {
         if (buttonIndex == 0) {
-            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-            imagePicker.delegate = self;
-            imagePicker.allowsEditing = NO;
-            imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            [self presentViewController:imagePicker animated:YES completion:nil];
-        }else{
-            if (isInput == YES) {
-                [sendTopicView.titleTextField becomeFirstResponder];
-            }else{
-                [sendTopicView.contentTextView becomeFirstResponder];
-            }
+            UIImageView *imageView = (UIImageView *)[self.view viewWithTag:actionSheet.tag];
+            [imageView removeFromSuperview];
+            
+            NSLog(@"tag:%ld",actionSheet.tag - 500);
+            int index = (int)actionSheet.tag - 500;
+            [_locaPhotoArr removeObjectAtIndex:index];
         }
     }
 }
@@ -364,14 +399,60 @@
         photoImageview.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         photoImageview.clipsToBounds  = YES;
         photoImageview.userInteractionEnabled = YES;
-        photoImageview.tag = i+200;
-        
         photoImageview.frame = CGRectMake(i * (width + width_space) + start_x, 0, width, height);
-        
         [photoScrollView addSubview:photoImageview];
+        
+        UITapGestureRecognizer *deleteImageTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(deleteImageAction:)];
+        photoImageview.userInteractionEnabled = YES;
+        photoImageview.tag = 500 + i;
+        [photoImageview addGestureRecognizer:deleteImageTapGesture];
     }
+    
     addImageBtn.frame = CGRectMake(photoImageview.right + 10, 2.5, 45, 45);
 }
+
+#pragma UIImagePickerController Delegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    [picker dismissViewControllerAnimated:YES completion:^{
+        
+        if (!self.locaPhotoArr) {
+            _locaPhotoArr = [[NSMutableArray alloc]init];
+        }
+        [_locaPhotoArr addObject:info];
+        
+        float start_x = 5.0f;
+        float width_space = 5.0f;
+        float height = 50.0f;
+        float width = 50.0f;
+        
+        photoScrollView.contentSize = CGSizeMake(((50 + 10)*_locaPhotoArr.count) + 20, 0);
+        for (int i = 0; i < _locaPhotoArr.count; i ++) {
+            NSDictionary *dict = [_locaPhotoArr objectAtIndex:i];
+            UIImage *image = [dict objectForKey:UIImagePickerControllerOriginalImage];
+            
+            photoImageview= [[UIImageView alloc] initWithImage:image];
+            [photoImageview setContentScaleFactor:[[UIScreen mainScreen] scale]];
+            photoImageview.contentMode =  UIViewContentModeScaleAspectFill;
+            photoImageview.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+            photoImageview.clipsToBounds  = YES;
+            photoImageview.userInteractionEnabled = YES;
+            
+            photoImageview.frame = CGRectMake(i * (width + width_space) + start_x, 0, width, height);
+            
+            [photoScrollView addSubview:photoImageview];
+            
+            UITapGestureRecognizer *deleteImageTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(deleteImageAction:)];
+            photoImageview.userInteractionEnabled = YES;
+            photoImageview.tag = 500 + i;
+            [photoImageview addGestureRecognizer:deleteImageTapGesture];
+        }
+        
+        addImageBtn.frame = CGRectMake(photoImageview.right + 10, 2.5, 45, 45);
+        
+    }];
+}
+
 
 #pragma mark--UIGestureRecognizerDelegate
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
@@ -384,12 +465,13 @@
 }
 
 #pragma makr -- action
-- (void)addImageAction{
-    ELCImagePickerController *elcPicker = [[ELCImagePickerController alloc] initImagePicker];
-    elcPicker.maximumImagesCount = 9 - _locaPhotoArr.count;
-    elcPicker.returnsOriginalImage = NO; //Only return the fullScreenImage, not the fullResolutionImage
-    elcPicker.imagePickerDelegate = self;
-    [self presentViewController:elcPicker animated:YES completion:nil];
+
+- (void)deleteImageAction:(UITapGestureRecognizer *)recognizer
+{
+    UIActionSheet *sheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"删除图片", nil];
+    sheet.actionSheetStyle =UIActionSheetStyleAutomatic;
+    [sheet showInView:self.view];
+    sheet.tag = recognizer.view.tag;
 }
 
 /**
