@@ -31,7 +31,6 @@
 @property (nonatomic,copy)   NSString       *isEssence;
 
 @property (nonatomic,retain) NSMutableArray *likeDataArray;  //记录本地点赞的状态
-@property (nonatomic,retain) NSMutableArray *isLikeDataArray;  //是否已经点赞
 
 @end
 
@@ -178,9 +177,11 @@
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     [self initMBProgress:@"数据加载中..."];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
-    NSDictionary *parameters = @{@"Method":@"RePostInfo",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"FldSort":fldSort,@"FldSortType":@"1",@"CityID":@"0",@"ProvinceID":@"0",@"IsEssence":isEssence,@"ClassID":@""}]};
+    NSDictionary *parameters = @{@"Method":@"RePostInfo",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"FldSort":fldSort,@"FldSortType":@"1",@"CityID":@"0",@"ProvinceID":@"0",@"IsEssence":isEssence,@"ClassID":@""}]};
     
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
+        NSLog(@"result:%@",result);
+        NSLog(@"msg:%@",[result objectForKey:@"Msg"]);
         NSArray *items = [EveryoneTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
         NSArray *imageItems = [TodayTopicImagesModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
         NSArray *praiseItems = [result objectForKey:@"IsPraise"];
@@ -291,7 +292,6 @@
     return cell;
 }
 
-//cell动态计算高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UITableViewCell * cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];

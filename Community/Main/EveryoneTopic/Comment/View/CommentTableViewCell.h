@@ -10,4 +10,14 @@
 
 @interface CommentTableViewCell : UITableViewCell
 
+@property (nonatomic,retain) NSMutableArray *photoUrlArray;
+
+@property (nonatomic,retain) PubliButton         *likeBtn;
+@property (nonatomic,retain) UILabel             *likeLabel;
+
+@property (nonatomic,retain) UIImageView         *likeImageView;
+
+
+- (void)configureCellWithInfo:(CommentModel *)model  withRow:(NSInteger )row andPraiseData:(NSArray *)praiseArray;
+
 @end

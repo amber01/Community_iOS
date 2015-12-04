@@ -339,6 +339,8 @@
 		96D508411C0DE635001DFA49 /* FindPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96D508401C0DE635001DFA49 /* FindPasswordView.m */; };
 		96D508481C0DEFD4001DFA49 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96D508471C0DEFD4001DFA49 /* SettingsViewController.m */; };
 		96D5084D1C106993001DFA49 /* everyone_topic_cancel_like@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 96D5084C1C106993001DFA49 /* everyone_topic_cancel_like@2x.png */; };
+		96D508501C11E615001DFA49 /* CommentSortView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96D5084F1C11E615001DFA49 /* CommentSortView.m */; };
+		96D508531C11E8CA001DFA49 /* CommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 96D508521C11E8CA001DFA49 /* CommentModel.m */; };
 		96EAD3251C015F78008D760A /* TodayTopicMoreTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EAD3241C015F78008D760A /* TodayTopicMoreTableViewCell.m */; };
 		96EAD3281C0169C6008D760A /* TodayTopicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EAD3271C0169C6008D760A /* TodayTopicModel.m */; };
 		96F301A71BF0E2840089AE14 /* TodayTopicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F301A61BF0E2840089AE14 /* TodayTopicTableViewCell.m */; };
@@ -926,6 +928,10 @@
 		96D508461C0DEFD4001DFA49 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		96D508471C0DEFD4001DFA49 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		96D5084C1C106993001DFA49 /* everyone_topic_cancel_like@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "everyone_topic_cancel_like@2x.png"; sourceTree = "<group>"; };
+		96D5084E1C11E615001DFA49 /* CommentSortView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentSortView.h; sourceTree = "<group>"; };
+		96D5084F1C11E615001DFA49 /* CommentSortView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentSortView.m; sourceTree = "<group>"; };
+		96D508511C11E8CA001DFA49 /* CommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentModel.h; sourceTree = "<group>"; };
+		96D508521C11E8CA001DFA49 /* CommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentModel.m; sourceTree = "<group>"; };
 		96EAD3231C015F78008D760A /* TodayTopicMoreTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicMoreTableViewCell.h; sourceTree = "<group>"; };
 		96EAD3241C015F78008D760A /* TodayTopicMoreTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicMoreTableViewCell.m; sourceTree = "<group>"; };
 		96EAD3261C0169C6008D760A /* TodayTopicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicModel.h; sourceTree = "<group>"; };
@@ -2259,6 +2265,8 @@
 		96C8D23F1C0A0D20004642FC /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				96D508511C11E8CA001DFA49 /* CommentModel.h */,
+				96D508521C11E8CA001DFA49 /* CommentModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2272,6 +2280,8 @@
 				96C8D2441C0A0D20004642FC /* CommentTableViewCell.m */,
 				96C8D2451C0A0D20004642FC /* CommentTopView.h */,
 				96C8D2461C0A0D20004642FC /* CommentTopView.m */,
+				96D5084E1C11E615001DFA49 /* CommentSortView.h */,
+				96D5084F1C11E615001DFA49 /* CommentSortView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2930,6 +2940,7 @@
 				9643D7471BF86746003A394D /* MineBtnTableViewCell.m in Sources */,
 				96C8D24B1C0A0D20004642FC /* CommentTopView.m in Sources */,
 				963DC4851C0ACFD9005D1955 /* MWTapDetectingImageView.m in Sources */,
+				96D508531C11E8CA001DFA49 /* CommentModel.m in Sources */,
 				963DC4A51C0ACFD9005D1955 /* PSTGridLayoutSection.m in Sources */,
 				963DC4A71C0ACFD9005D1955 /* EaseSDKHelper.m in Sources */,
 				96F301B61BF225E40089AE14 /* SendTopicViewController.m in Sources */,
@@ -2963,6 +2974,7 @@
 				963DC4951C0ACFD9005D1955 /* UIImage+EMWebP.m in Sources */,
 				DB84257C1BF1988D00D1C273 /* OptionButton.m in Sources */,
 				96D508371C0C9BC5001DFA49 /* ModifyUserInfoTableViewCell.m in Sources */,
+				96D508501C11E615001DFA49 /* CommentSortView.m in Sources */,
 				963DC4A21C0ACFD9005D1955 /* PSTGridLayoutInfo.m in Sources */,
 				963DC4B41C0ACFD9005D1955 /* EaseEmoji.m in Sources */,
 				963DC4811C0ACFD9005D1955 /* MWGridCell.m in Sources */,

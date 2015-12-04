@@ -20,6 +20,8 @@
 }
 
 @property (nonatomic,retain)NSMutableArray *dataArray;
+@property (nonatomic,retain) NSMutableArray *likeDataArray;  //记录本地点赞的状态
+@property (nonatomic,retain) NSMutableArray *praiseDataArray; //自己是否点赞的数据
 
 @end
 
@@ -74,15 +76,20 @@
 #pragma mark -- HTTP
 - (void)getCommentListData:(int)pageIndex
 {
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
-    NSDictionary *parameters = @{@"Method":@"ReCommentInfobyPostID",@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"Sort":@"0",@"FldSortType":@"1",@"PostID":self.post_id}]};
+    NSDictionary *parameters = @{@"Method":@"ReCommentInfobyPostID",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"Sort":@"0",@"FldSortType":@"1",@"PostID":self.post_id}]};
     
     [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
-        NSArray *items = [EveryoneTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+        NSArray *items = [CommentModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+        NSArray *praiseItems = [result objectForKey:@"IsPraise"];
+        
+        
         
         if (page == 1) {
             [self.dataArray removeAllObjects];
+            [self.praiseDataArray removeAllObjects];
         }
         
         for (int i = 0; i < items.count; i ++) {
@@ -91,7 +98,17 @@
             }
             [self.dataArray addObject:[items objectAtIndex:i]];
         }
+        
+        for (int i = 0; i < praiseItems.count; i ++) {
+            if (!self.praiseDataArray) {
+                self.praiseDataArray = [[NSMutableArray alloc]init];
+            }
+            [self.praiseDataArray addObject:[praiseItems objectAtIndex:i]];
+        }
+        
+        
         [_tableView reloadData];
+        
     } failure:^(NSError *erro) {
         
     }];
@@ -111,11 +128,28 @@
         cell = [[CommentTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
     }
     
+    CommentModel *model = self.dataArray[indexPath.row];
+    
+    if (!isArrEmpty(self.dataArray)) {
+        [cell configureCellWithInfo:model withRow:indexPath.row andPraiseData:self.praiseDataArray];
+    }
+    
+    if (!isArrEmpty(self.praiseDataArray)) {
+        NSDictionary *dic = [self.praiseDataArray objectAtIndex:indexPath.row];
+        cell.likeBtn.post_id = [dic objectForKey:@"commentid"];
+        cell.likeBtn.isPraise = [dic objectForKey:@"value"];
+    }
+    
+    cell.likeLabel.text = _likeDataArray[indexPath.row];
+    cell.likeBtn.praisenum = _likeDataArray[indexPath.row];
+    
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 104;
+    
+    UITableViewCell * cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    return cell.frame.size.height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -139,13 +173,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

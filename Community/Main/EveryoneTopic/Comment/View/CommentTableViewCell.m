@@ -7,16 +7,23 @@
 //
 
 #import "CommentTableViewCell.h"
+#import "MineInfoViewController.h"
 
 @implementation CommentTableViewCell
 {
-    UIImageView         *avatarImageView;
+    PubliButton         *avatarImageView;
     UILabel             *nicknameLabel;
     UILabel             *dateLabel;
     
     UILabel             *contentLabel;
-    UIButton            *likeBtn;
-    UILabel             *likeLabel;
+    UIButton            *photoImageBtn1;
+    UIButton            *photoImageBtn2;
+    UIButton            *photoImageBtn3;
+    
+    UILabel             *commentLabel;
+    UILabel             *fromLabel;
+    
+    PubliButton         *commentBtn;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -24,8 +31,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        avatarImageView = [[UIImageView alloc]initWithFrame:CGRectMake(15, 10, 45, 45)];
-        avatarImageView.image = [UIImage imageNamed:@"001"];
+        avatarImageView = [[PubliButton alloc]initWithFrame:CGRectMake(15, 10, 45, 45)];
         [UIUtils setupViewRadius:avatarImageView cornerRadius:45/2];
         
         nicknameLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right+10, 12, ScreenWidth - avatarImageView.width - 40, 20)];
@@ -43,29 +49,83 @@
         contentLabel.lineBreakMode = NSLineBreakByWordWrapping;
         contentLabel.numberOfLines = 0;
         [contentLabel setFont:[UIFont systemFontOfSize:15]];
-        likeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        likeBtn.frame = CGRectMake(ScreenWidth - 13 - 15,15, 13 + 15, 26);
-        likeBtn.backgroundColor = [UIColor whiteColor];
-        [likeBtn addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.likeBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
+        _likeBtn.frame = CGRectMake(ScreenWidth - 13 - 15,15, 13 + 15, 26);
+        _likeBtn.backgroundColor = [UIColor whiteColor];
+        [_likeBtn addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
         UIImageView *likeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 26/2 - 13, 34/2, 26/2)];
         likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
         likeImageView.userInteractionEnabled = YES;
-        [likeBtn addSubview:likeImageView];
+        [_likeBtn addSubview:likeImageView];
         
-        likeLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth - likeBtn.width - 10 - 55,12, 60, 20)];
-        likeLabel.textColor = [UIColor grayColor];
-        likeLabel.textAlignment = NSTextAlignmentRight;
-        likeLabel.font = [UIFont systemFontOfSize:10];
-        likeLabel.text = @"顶 232";
+        self.likeLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth - _likeBtn.width - 10 - 55,12, 60, 20)];
+        _likeLabel.textColor = [UIColor grayColor];
+        _likeLabel.textAlignment = NSTextAlignmentRight;
+        _likeLabel.font = [UIFont systemFontOfSize:10];
+        _likeLabel.text = @"顶 232";
         
         [self addSubview:avatarImageView];
         [self addSubview:nicknameLabel];
         [self addSubview:dateLabel];
         [self addSubview:contentLabel];
-        [self addSubview:likeBtn];
-        [self addSubview:likeLabel];
+        [self addSubview:_likeBtn];
+        [self addSubview:_likeLabel];
     }
     return self;
+}
+
+- (void)configureCellWithInfo:(CommentModel *)model  withRow:(NSInteger )row andPraiseData:(NSArray *)praiseArray
+{
+    
+    [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
+    nicknameLabel.text = model.nickname;
+    dateLabel.text = model.createtime;
+    _likeLabel.text = model.praisenum;
+    
+    /**
+     *  获取是否点赞过的数据状态
+     */
+    if (!isArrEmpty(praiseArray)) {
+        NSDictionary *dic = praiseArray[row];
+        NSString *post_id = [dic objectForKey:@"commentid"];
+        NSString *isPraise = [dic objectForKey:@"value"];
+        
+        if ([post_id intValue] == [model.id intValue]) {
+            if ([isPraise intValue] == 1) {
+                _likeImageView.image = [UIImage imageNamed:@"everyone_topic_cancel_like"];
+            }else{
+                _likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+            }
+        }
+    }
+    
+    /**
+     *  动态计算内容高度
+     */
+    
+    contentLabel.text = model.detail;
+    NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
+    CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+    
+    if (contentLabel.text.length == 0) {
+        contentHeight.height = 0;
+    }
+    
+    [avatarImageView addTarget:self action:@selector(checkUserInfo:) forControlEvents:UIControlEventTouchUpInside];
+    contentLabel.frame = CGRectMake(10, avatarImageView.bottom + 10, ScreenWidth - 20, contentHeight.height);
+    self.frame = CGRectMake(0, 0, ScreenWidth,avatarImageView.height + 10 + contentHeight.height + 10);
+}
+
+- (void)checkUserInfo:(PubliButton *)button
+{
+    MineInfoViewController *userInfoVC = [[MineInfoViewController alloc]init];
+    userInfoVC.user_id = button.user_id;
+    userInfoVC.nickname = button.nickname;
+    userInfoVC.userName = button.userName;
+    userInfoVC.avatarUrl = button.avatarUrl;
+    [userInfoVC setHidesBottomBarWhenPushed:YES];
+    [self.viewController.navigationController pushViewController:userInfoVC animated:YES];
+    NSLog(@"user_id:%@",button.user_id);
 }
 
 - (void)awakeFromNib {
