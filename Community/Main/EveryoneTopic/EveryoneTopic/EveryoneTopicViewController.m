@@ -50,6 +50,8 @@
     [self setupRefreshHeader];
     [self setupUploadMore];
     isFirst = YES;
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginFinish) name:kSendIsLoginNotification object:nil];
 }
 
 - (UITableView *)setupTableView
@@ -121,6 +123,15 @@
     checkMoreView.hidden= YES;
 }
 
+#pragma mark -- Notification
+- (void)loginFinish
+{
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    header.lastUpdatedTimeLabel.hidden = YES;
+    [header beginRefreshing];
+    self.tableView.mj_header = header;
+}
+
 #pragma mark -- action
 - (void)checkNewSendAction
 {
@@ -167,7 +178,7 @@
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     [self initMBProgress:@"数据加载中..."];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
-    NSDictionary *parameters = @{@"Method":@"RePostInfo",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"FldSort":fldSort,@"FldSortType":@"1",@"CityID":@"0",@"ProvinceID":@"0",@"IsEssence":isEssence,@"ClassID":@""}]};
+    NSDictionary *parameters = @{@"Method":@"RePostInfo",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"FldSort":fldSort,@"FldSortType":@"1",@"CityID":@"0",@"ProvinceID":@"0",@"IsEssence":isEssence,@"ClassID":@""}]};
     
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSArray *items = [EveryoneTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
@@ -268,9 +279,12 @@
     
     [cell configureCellWithInfo:model withImages:self.imagesArray andPraiseData:self.praiseDataArray andRow:indexPath.row];
     
-    NSDictionary *dic = [self.praiseDataArray objectAtIndex:indexPath.row];
-    cell.likeBtn.post_id = [dic objectForKey:@"postid"];
-    cell.likeBtn.isPraise = [dic objectForKey:@"value"];
+    if (!isArrEmpty(self.praiseDataArray)) {
+        NSDictionary *dic = [self.praiseDataArray objectAtIndex:indexPath.row];
+        cell.likeBtn.post_id = [dic objectForKey:@"postid"];
+        cell.likeBtn.isPraise = [dic objectForKey:@"value"];
+    }
+    
     cell.likeLabel.text = _likeDataArray[indexPath.row];
     cell.likeBtn.praisenum = _likeDataArray[indexPath.row];
     
@@ -386,7 +400,6 @@
     return YES;
 }
 
-
 #pragma mark -- other
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -396,6 +409,7 @@
 - (void)dealloc
 {
     [checkMoreView removeFromSuperview];
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 @end

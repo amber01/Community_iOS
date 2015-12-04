@@ -214,7 +214,7 @@
         {
             topicBlockVC.imageName = btnImageOne[tag];
             topicBlockVC.blockName = titleArrOne[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",tag + 1];
+            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",(tag + 1)+8];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }
@@ -223,7 +223,7 @@
         {
             topicBlockVC.imageName = btnImageOne[tag];
             topicBlockVC.blockName = titleArrOne[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",tag + 1];
+            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",(tag + 1)+8];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }
@@ -232,7 +232,7 @@
         {
             topicBlockVC.imageName = btnImageOne[tag];
             topicBlockVC.blockName = titleArrOne[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",tag + 1];
+            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",(tag + 1)+8];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }
@@ -241,7 +241,7 @@
         {
             topicBlockVC.imageName = btnImageOne[tag];
             topicBlockVC.blockName = titleArrOne[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",tag + 1];
+            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",(tag + 1)+8];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }
@@ -250,7 +250,7 @@
         {
             topicBlockVC.imageName = btnImageOne[tag];
             topicBlockVC.blockName = titleArrOne[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",tag + 1];
+            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",(tag + 1)+8];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }

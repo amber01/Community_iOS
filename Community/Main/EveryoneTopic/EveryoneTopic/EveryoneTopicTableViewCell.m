@@ -122,18 +122,23 @@
     nicknameLabel.text = model.nickname;
     dateLabel.text = model.createtime;
     
-    
-    NSDictionary *dic = praiseArray[row];
-    NSString *post_id = [dic objectForKey:@"postid"];
-    NSString *isPraise = [dic objectForKey:@"value"];
-    
-    if ([post_id intValue] == [model.id intValue]) {
-        if ([isPraise intValue] == 1) {
-            _likeImageView.image = [UIImage imageNamed:@"everyone_topic_cancel_like"];
-        }else{
-            _likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+    /**
+     *  获取是否点赞过的数据状态
+     */
+    if (!isArrEmpty(praiseArray)) {
+        NSDictionary *dic = praiseArray[row];
+        NSString *post_id = [dic objectForKey:@"postid"];
+        NSString *isPraise = [dic objectForKey:@"value"];
+        
+        if ([post_id intValue] == [model.id intValue]) {
+            if ([isPraise intValue] == 1) {
+                _likeImageView.image = [UIImage imageNamed:@"everyone_topic_cancel_like"];
+            }else{
+                _likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+            }
         }
     }
+
     
     /**
      *  动态计算内容高度
