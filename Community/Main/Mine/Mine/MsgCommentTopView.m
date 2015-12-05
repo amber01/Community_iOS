@@ -43,9 +43,4 @@
     return self;
 }
 
--(void)segmentAction:(UISegmentedControl *)segmented{
-    NSInteger index = segmented.selectedSegmentIndex;
-    NSLog(@"%ld",index);
-}
-
 @end

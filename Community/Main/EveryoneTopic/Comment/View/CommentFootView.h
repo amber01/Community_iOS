@@ -10,6 +10,6 @@
 
 @interface CommentFootView : UIView
 
-@property (nonatomic,retain)UIButton *writeCommentBtn;
+@property (nonatomic,retain)PubliButton *writeCommentBtn;
 
 @end

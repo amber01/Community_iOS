@@ -10,15 +10,15 @@
 #import "SendTopicTextView.h"
 #import "SendTopicKeyboardView.h"
 #import "AGEmojiKeyBoardView.h"
-
+#import "WriteCommentTextView.h"
 
 @interface WriteCommentViewController ()<UITextFieldDelegate,UITextViewDelegate,UIGestureRecognizerDelegate,AGEmojiKeyboardViewDelegate, AGEmojiKeyboardViewDataSource>
 {
-    SendTopicTextView     *sendTopicView;
-    SendTopicKeyboardView *sendKeyboardView;
-    BOOL                  isInput;
-    AGEmojiKeyboardView   *emojiKeyboardView;
-    BOOL                  isKeyboardHide;
+    WriteCommentTextView     *sendTopicView;
+    SendTopicKeyboardView    *sendKeyboardView;
+    BOOL                     isInput;
+    AGEmojiKeyboardView      *emojiKeyboardView;
+    BOOL                     isKeyboardHide;
 }
 
 @end
@@ -36,7 +36,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
     
+    [self setupSendTopicTextView];
+    
     sendKeyboardView = [[SendTopicKeyboardView alloc]initWithFrame:CGRectMake(0, ScreenHeight - 64 - 45, ScreenWidth, 45)];
+    sendKeyboardView.sendPhotoBtn.hidden = YES;
+    sendKeyboardView.sendEmojiBtn.frame = CGRectMake(15, sendKeyboardView.height/2 - 12.5, 25, 25);
+    
     [sendKeyboardView.sendEmojiBtn addTarget:self action:@selector(selectEmojiAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:sendKeyboardView];
     
@@ -49,11 +54,11 @@
 #pragma mark -- UI
 - (void)setupSendTopicTextView
 {
-    sendTopicView = [[SendTopicTextView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-    sendTopicView.titleTextField.delegate = self;
+    
+    sendTopicView = [[WriteCommentTextView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     sendTopicView.contentTextView.delegate = self;
     sendTopicView.contentTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [sendTopicView.titleTextField becomeFirstResponder];
+    [sendTopicView.contentTextView becomeFirstResponder];
     
     [self.view addSubview:sendTopicView];
 }
@@ -77,12 +82,6 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    if (textView.text.length>0) {
-        sendTopicView.defaultLabel.hidden = YES;
-    }else{
-        sendTopicView.defaultLabel.hidden = NO;
-    }
-    
     //动态改变textView 高度
     CGSize size = [textView sizeThatFits:CGSizeMake(CGRectGetWidth(textView.frame), MAXFLOAT)];
     CGRect frame = textView.frame;
@@ -121,7 +120,26 @@
 }
 
 - (void)sendTopicAction{
-
+    
+    if (sendTopicView.contentTextView.text.length < 1) {
+        [self initMBProgress:@"评论不能为空" withModeType:MBProgressHUDModeText afterDelay:1.5];
+        return;
+    }
+    
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    NSDictionary *parameters = @{@"Method":@"AddCommentInfo",@"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"PostID":self.post_id,@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":sendTopicView.contentTextView.text,@"IP":@"",@"IsReplay":@"0",@"ReplayContent":@"",@"CommentID":@""}]};
+    
+    [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
+        if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+            [self.navigationController dismissViewControllerAnimated:YES completion:^{
+                [[NSNotificationCenter defaultCenter]postNotificationName:kReloadDataNotification object:nil];
+                [self initMBProgress:@"发布成功" withModeType:MBProgressHUDModeText afterDelay:1.5];
+            }];
+        }
+        NSLog(@"result:%@",result);
+    } failure:^(NSError *erro) {
+        
+    }];
 }
 
 
@@ -151,11 +169,6 @@
 - (void)emojiKeyBoardView:(AGEmojiKeyboardView *)emojiKeyBoardView didUseEmoji:(NSString *)emoji {
     NSLog(@"emoji:%@",emoji);
     sendTopicView.contentTextView.text = [NSMutableString stringWithFormat:@"%@%@",sendTopicView.contentTextView.text,emoji];
-    if (sendTopicView.contentTextView.text.length>0) {
-        sendTopicView.defaultLabel.hidden = YES;
-    }else{
-        sendTopicView.defaultLabel.hidden = NO;
-    }
 }
 
 - (void)emojiKeyBoardViewDidPressBackSpace:(AGEmojiKeyboardView *)emojiKeyBoardView {

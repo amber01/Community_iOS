@@ -7,6 +7,7 @@
 //
 
 #import "MineInfoTableViewCell.h"
+#import "MineInfoViewController.h"
 
 @implementation MineInfoTableViewCell
 {
@@ -43,6 +44,7 @@
         prestigeLabel.text = @"威望:V2";
         
         postsBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [postsBtn addTarget:self action:@selector(checkPostListAction) forControlEvents:UIControlEventTouchUpInside];
         postsBtn.frame = CGRectMake(0, bgView.height - 53, ScreenWidth/4, 40);
         
         fansBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -135,6 +137,14 @@
     fansNumLabel.text = shareInfo.myfansnum;
     followNumLabel.text = shareInfo.mytofansnum;
     scoreNumLabel.text = shareInfo.totalscore;
+}
+
+- (void)checkPostListAction
+{
+    MineInfoViewController *mineInfoVC = [[MineInfoViewController alloc]init];
+    mineInfoVC.status = @"0";
+    [mineInfoVC setHidesBottomBarWhenPushed:YES];
+    [self.viewController.navigationController pushViewController:mineInfoVC animated:YES];
 }
 
 - (void)awakeFromNib {

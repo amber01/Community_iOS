@@ -343,6 +343,7 @@
 		96D508531C11E8CA001DFA49 /* CommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 96D508521C11E8CA001DFA49 /* CommentModel.m */; };
 		96EAD3251C015F78008D760A /* TodayTopicMoreTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EAD3241C015F78008D760A /* TodayTopicMoreTableViewCell.m */; };
 		96EAD3281C0169C6008D760A /* TodayTopicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EAD3271C0169C6008D760A /* TodayTopicModel.m */; };
+		96ED34311C12E5BE0021C9C4 /* WriteCommentTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED34301C12E5BE0021C9C4 /* WriteCommentTextView.m */; };
 		96F301A71BF0E2840089AE14 /* TodayTopicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F301A61BF0E2840089AE14 /* TodayTopicTableViewCell.m */; };
 		96F301B61BF225E40089AE14 /* SendTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F301B51BF225E40089AE14 /* SendTopicViewController.m */; };
 		96F301B91BF226710089AE14 /* SendTopicTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F301B81BF226710089AE14 /* SendTopicTextView.m */; };
@@ -936,6 +937,8 @@
 		96EAD3241C015F78008D760A /* TodayTopicMoreTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicMoreTableViewCell.m; sourceTree = "<group>"; };
 		96EAD3261C0169C6008D760A /* TodayTopicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicModel.h; sourceTree = "<group>"; };
 		96EAD3271C0169C6008D760A /* TodayTopicModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicModel.m; sourceTree = "<group>"; };
+		96ED342F1C12E5BE0021C9C4 /* WriteCommentTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WriteCommentTextView.h; sourceTree = "<group>"; };
+		96ED34301C12E5BE0021C9C4 /* WriteCommentTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WriteCommentTextView.m; sourceTree = "<group>"; };
 		96F301A51BF0E2840089AE14 /* TodayTopicTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicTableViewCell.h; sourceTree = "<group>"; };
 		96F301A61BF0E2840089AE14 /* TodayTopicTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicTableViewCell.m; sourceTree = "<group>"; };
 		96F301B41BF225E40089AE14 /* SendTopicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendTopicViewController.h; sourceTree = "<group>"; };
@@ -2282,6 +2285,8 @@
 				96C8D2461C0A0D20004642FC /* CommentTopView.m */,
 				96D5084E1C11E615001DFA49 /* CommentSortView.h */,
 				96D5084F1C11E615001DFA49 /* CommentSortView.m */,
+				96ED342F1C12E5BE0021C9C4 /* WriteCommentTextView.h */,
+				96ED34301C12E5BE0021C9C4 /* WriteCommentTextView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2808,6 +2813,7 @@
 				963DC4B11C0ACFD9005D1955 /* EaseChineseToPinyin.m in Sources */,
 				963DC4BD1C0ACFD9005D1955 /* EaseViewController.m in Sources */,
 				963DC48F1C0ACFD9005D1955 /* EMSDWebImagePrefetcher.m in Sources */,
+				96ED34311C12E5BE0021C9C4 /* WriteCommentTextView.m in Sources */,
 				9643D7411BF864A4003A394D /* MineInfoTableViewCell.m in Sources */,
 				964A9FF31BEF77DC007CE0E9 /* MainViewController.m in Sources */,
 				963DC4B61C0ACFD9005D1955 /* EaseEmotionEscape.m in Sources */,

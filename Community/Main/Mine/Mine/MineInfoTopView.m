@@ -17,9 +17,6 @@
     UILabel         *nicknameLabel;
     UILabel         *prestigeLabel;
     UILabel         *scoreLabel;
-    UIButton        *topicBtn;
-    UIButton        *myFansBtn;
-    UIButton        *followBtn;
     UIButton        *editUserInfoBtn;
     UIImageView     *sexImageView;
     
@@ -27,6 +24,7 @@
     PubliButton     *chatBtn;
     
     UILabel         *addFollowLabel;
+    BOOL            isToFans;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame withUserID:(NSString *)user_id andNickname:(NSString *)nickname andUserName:(NSString *)userName andAvararUrl:(NSString *)avatarUrl;
@@ -43,8 +41,7 @@
         nicknameLabel.font = [UIFont systemFontOfSize:15];
         
         sexImageView = [[UIImageView alloc]initWithFrame:CGRectMake(avatarImageView.right + 2, avatarImageView.bottom - 16,25/2, 28/2)];
-        
-        
+
         prestigeLabel = [[UILabel alloc]initWithFrame:CGRectMake(sexImageView.right + 10, avatarImageView.bottom - 19, 60, 20)];
         prestigeLabel.textColor = TEXT_COLOR;
         prestigeLabel.font = [UIFont systemFontOfSize:12];
@@ -56,32 +53,32 @@
         
         
         
-        topicBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        topicBtn.frame = CGRectMake(0, prestigeLabel.bottom + 15, ScreenWidth/3, 20);
-        [CommonClass setBorderWithView:topicBtn top:NO left:NO bottom:NO right:YES borderColor:LINE_COLOR borderWidth:0.5];
-        topicBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-        [topicBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        _topicBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _topicBtn.frame = CGRectMake(0, prestigeLabel.bottom + 15, ScreenWidth/3, 20);
+        [CommonClass setBorderWithView:_topicBtn top:NO left:NO bottom:NO right:YES borderColor:LINE_COLOR borderWidth:0.5];
+        _topicBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+        [_topicBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         
         
         
-        myFansBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        myFansBtn.frame = CGRectMake(topicBtn.right, prestigeLabel.bottom + 15, ScreenWidth/3, 20);
-        [CommonClass setBorderWithView:myFansBtn top:NO left:NO bottom:NO right:YES borderColor:LINE_COLOR borderWidth:0.5];
-        myFansBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-        [myFansBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        _myFansBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _myFansBtn.frame = CGRectMake(_topicBtn.right, prestigeLabel.bottom + 15, ScreenWidth/3, 20);
+        [CommonClass setBorderWithView:_myFansBtn top:NO left:NO bottom:NO right:YES borderColor:LINE_COLOR borderWidth:0.5];
+        _myFansBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+        [_myFansBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         
         
-        followBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        followBtn.frame = CGRectMake(myFansBtn.right, prestigeLabel.bottom + 15, ScreenWidth/3, 20);
-        followBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-        [followBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        _followBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _followBtn.frame = CGRectMake(_myFansBtn.right, prestigeLabel.bottom + 15, ScreenWidth/3, 20);
+        _followBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+        [_followBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         
         /**
          *  查看自己的
          */
         if ([share.user_id isEqualToString:user_id]) {
             editUserInfoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-            editUserInfoBtn.frame = CGRectMake(ScreenWidth/2 - (236/2)/2, followBtn.bottom + 18, 236/2, 75/2);
+            editUserInfoBtn.frame = CGRectMake(ScreenWidth/2 - (236/2)/2, _followBtn.bottom + 18, 236/2, 75/2);
             [editUserInfoBtn addTarget:self action:@selector(editUserInfoAction) forControlEvents:UIControlEventTouchUpInside];
             [editUserInfoBtn setImage:[UIImage imageNamed:@"mine_user_edit"] forState:UIControlStateNormal];
             UILabel *btnTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, editUserInfoBtn.height/2-10, editUserInfoBtn.width - 20, 20)];
@@ -105,15 +102,15 @@
             
             scoreLabel.text = [NSString stringWithFormat:@"积分:%@",share.totalscore];
             
-            [topicBtn setTitle:[NSString stringWithFormat:@"%@帖子",share.postnum] forState:UIControlStateNormal];
+            [_topicBtn setTitle:[NSString stringWithFormat:@"%@帖子",share.postnum] forState:UIControlStateNormal];
             
-            [myFansBtn setTitle:[NSString stringWithFormat:@"%@粉丝",share.myfansnum] forState:UIControlStateNormal];
+            [_myFansBtn setTitle:[NSString stringWithFormat:@"%@粉丝",share.myfansnum] forState:UIControlStateNormal];
             
-            [followBtn setTitle:[NSString stringWithFormat:@"%@关注",share.mytofansnum] forState:UIControlStateNormal];
+            [_followBtn setTitle:[NSString stringWithFormat:@"%@关注",share.mytofansnum] forState:UIControlStateNormal];
             
         }else{ //查看他人
             addFollowBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
-            addFollowBtn.frame = CGRectMake(30, followBtn.bottom + 18,236/2, 75/2);
+            addFollowBtn.frame = CGRectMake(30, _followBtn.bottom + 18,236/2, 75/2);
             addFollowBtn.user_id = user_id;
             [addFollowBtn addTarget:self action:@selector(addFollowAction:) forControlEvents:UIControlEventTouchUpInside];
             [addFollowBtn setImage:[UIImage imageNamed:@"user_info_addfollow.png"] forState:UIControlStateNormal];
@@ -127,7 +124,7 @@
             
             //
             chatBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
-            chatBtn.frame = CGRectMake((ScreenWidth - 236/2) - 30, followBtn.bottom + 18,236/2, 75/2);
+            chatBtn.frame = CGRectMake((ScreenWidth - 236/2) - 30, _followBtn.bottom + 18,236/2, 75/2);
             chatBtn.user_id = user_id;
             chatBtn.userName = userName;
             chatBtn.nickname = nickname;
@@ -151,14 +148,16 @@
         [CommonClass setBorderWithView:lineView top:YES left:NO bottom:YES right:NO borderColor:LINE_COLOR borderWidth:0.5];
         lineView.backgroundColor = CELL_COLOR;
         
+        [self getIsFollowStatusData:user_id];
+        
         [self addSubview:lineView];
         [self addSubview:avatarImageView];
         [self addSubview:nicknameLabel];
         [self addSubview:prestigeLabel];
         [self addSubview:scoreLabel];
-        [self addSubview:topicBtn];
-        [self addSubview:myFansBtn];
-        [self addSubview:followBtn];
+        [self addSubview:_topicBtn];
+        [self addSubview:_myFansBtn];
+        [self addSubview:_followBtn];
         [self addSubview:editUserInfoBtn];
         [self addSubview:sexImageView];
     }
@@ -173,9 +172,71 @@
     [self.viewController.navigationController pushViewController:modifyUserVC animated:YES];
 }
 
+- (void)getIsFollowStatusData:(NSString *)toFansID
+{
+    /**
+     *  需要先调用接口判断一下是否关注过对方
+     */
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    NSDictionary *parameters = @{@"Method":@"ReMyFansInfo",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"ToUserID":toFansID,@"IsShow":@"888"}]};
+    [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:parameters withMethod:@"POST" success:^(id result) {
+        NSLog(@"is resutl:%@",result);
+        
+        if (result) {
+            NSArray *detailArray = [result objectForKey:@"Detail"];
+            for (int i = 0; i < detailArray.count; i ++) {
+                NSDictionary *dic = [detailArray objectAtIndex:i];
+                if ([sharedInfo.user_id intValue] == [[dic objectForKey:@"userid"]intValue]) {
+                    isToFans = YES; //已经关注过了
+                    [addFollowBtn setImage:[UIImage imageNamed:@"user_info_follow"] forState:UIControlStateNormal];
+                    addFollowLabel.text = @"已关注";
+                }else{
+                    isToFans = NO;  //未关注过
+                    [addFollowBtn setImage:[UIImage imageNamed:@"user_info_addfollow.png"] forState:UIControlStateNormal];
+                    addFollowLabel.text = @"关注";
+                }
+            }
+        }
+    } failure:^(NSError *erro) {
+        
+    }];
+}
+
 - (void)addFollowAction:(PubliButton *)button
 {
-    
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    if (isStrEmpty(sharedInfo.user_id)) {
+        LoginViewController *loginVC = [[LoginViewController alloc]init];
+        [self.viewController.navigationController pushViewController:loginVC animated:YES];
+    }else{
+        [self initMBProgress:@""];
+        //关注
+        if (isToFans == NO) {
+            NSDictionary *params = @{@"Method":@"AddMyFansInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"ToUserID":button.user_id}]};
+            [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:params withMethod:@"POST" success:^(id result) {
+                if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                    [addFollowBtn setImage:[UIImage imageNamed:@"user_info_follow"] forState:UIControlStateNormal];
+                    addFollowLabel.text = @"已关注";
+                    [self setMBProgreeHiden:YES];
+                    isToFans = YES;
+                }
+            } failure:^(NSError *erro) {
+                
+            }];
+        }else{ //取消关注
+            NSDictionary *params = @{@"Method":@"CancelMyFansInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"ToUserID":button.user_id}]};
+            [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:params withMethod:@"POST" success:^(id result) {
+                if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                    [addFollowBtn setImage:[UIImage imageNamed:@"user_info_addfollow.png"] forState:UIControlStateNormal];
+                    addFollowLabel.text = @"关注";
+                    [self setMBProgreeHiden:YES];
+                    isToFans = NO;
+                }
+            } failure:^(NSError *erro) {
+                
+            }];
+        }
+    }
 }
 
 - (void)chatAction:(PubliButton *)button
@@ -219,17 +280,33 @@
                 
                 scoreLabel.text = [NSString stringWithFormat:@"积分:%@",[dic objectForKey:@"totalscore"]];
                 
-                [topicBtn setTitle:[NSString stringWithFormat:@"%@帖子",[dic objectForKey:@"postnum"]] forState:UIControlStateNormal];
+                [_topicBtn setTitle:[NSString stringWithFormat:@"%@帖子",[dic objectForKey:@"postnum"]] forState:UIControlStateNormal];
                 
-                [myFansBtn setTitle:[NSString stringWithFormat:@"%@粉丝",[dic objectForKey:@"myfansnum"]] forState:UIControlStateNormal];
+                [_myFansBtn setTitle:[NSString stringWithFormat:@"%@粉丝",[dic objectForKey:@"myfansnum"]] forState:UIControlStateNormal];
                 
-                [followBtn setTitle:[NSString stringWithFormat:@"%@关注",[dic objectForKey:@"mytofansnum"]] forState:UIControlStateNormal];
+                [_followBtn setTitle:[NSString stringWithFormat:@"%@关注",[dic objectForKey:@"mytofansnum"]] forState:UIControlStateNormal];
             }
         }
     } failure:^(NSError *erro) {
         
     }];
+}
 
+- (void)initMBProgress:(NSString *)title
+{
+    progress = [[MBProgressHUD alloc]initWithView:self];
+    progress.labelText = title;
+    [self addSubview:progress];
+    [progress setMode:MBProgressHUDModeIndeterminate];
+    progress.taskInProgress = YES;
+    [progress show:YES];
+}
+- (void)setMBProgreeHiden:(BOOL)isHiden
+{
+    [progress hide:isHiden];
+    if (progress != nil) {
+        [progress removeFromSuperview];
+    }
 }
 
 @end

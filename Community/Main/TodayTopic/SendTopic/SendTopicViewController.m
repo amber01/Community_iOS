@@ -550,6 +550,7 @@
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {
                 [self.navigationController dismissViewControllerAnimated:YES completion:^{
                     [self initMBProgress:@"发布成功" withModeType:MBProgressHUDModeText afterDelay:1];
+                    [[NSNotificationCenter defaultCenter]postNotificationName:kReloadDataNotification object:nil];
                 }];
             }else{
                 [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.5];
@@ -583,6 +584,7 @@
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {
                 [self.navigationController dismissViewControllerAnimated:YES completion:^{
                     [self initMBProgress:@"发布成功" withModeType:MBProgressHUDModeText afterDelay:1];
+                    [[NSNotificationCenter defaultCenter]postNotificationName:kReloadDataNotification object:nil];
                 }];
             }else{
                 [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.5];

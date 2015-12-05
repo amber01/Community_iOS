@@ -52,11 +52,10 @@
         self.likeBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
         _likeBtn.frame = CGRectMake(ScreenWidth - 13 - 15,15, 13 + 15, 26);
         _likeBtn.backgroundColor = [UIColor whiteColor];
-        [_likeBtn addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
-        UIImageView *likeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 26/2 - 13, 34/2, 26/2)];
-        likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
-        likeImageView.userInteractionEnabled = YES;
-        [_likeBtn addSubview:likeImageView];
+        self.likeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 26/2 - 13, 34/2, 26/2)];
+        _likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+        _likeImageView.userInteractionEnabled = YES;
+        [_likeBtn addSubview:_likeImageView];
         
         self.likeLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth - _likeBtn.width - 10 - 55,12, 60, 20)];
         _likeLabel.textColor = [UIColor grayColor];
@@ -80,7 +79,12 @@
     [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
     nicknameLabel.text = model.nickname;
     dateLabel.text = model.createtime;
-    _likeLabel.text = model.praisenum;
+    
+    avatarImageView.user_id = model.userid;
+    avatarImageView.nickname = model.nickname;
+    avatarImageView.userName = model.username;
+    avatarImageView.avatarUrl = model.logopicture;
+    [avatarImageView addTarget:self action:@selector(checkUserInfo:) forControlEvents:UIControlEventTouchUpInside];
     
     /**
      *  获取是否点赞过的数据状态
@@ -112,8 +116,8 @@
     }
     
     [avatarImageView addTarget:self action:@selector(checkUserInfo:) forControlEvents:UIControlEventTouchUpInside];
-    contentLabel.frame = CGRectMake(10, avatarImageView.bottom + 10, ScreenWidth - 20, contentHeight.height);
-    self.frame = CGRectMake(0, 0, ScreenWidth,avatarImageView.height + 10 + contentHeight.height + 10);
+    contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, contentHeight.height);
+    self.frame = CGRectMake(0, 0, ScreenWidth,avatarImageView.height + 10 + contentHeight.height + 10 + 10);
 }
 
 - (void)checkUserInfo:(PubliButton *)button

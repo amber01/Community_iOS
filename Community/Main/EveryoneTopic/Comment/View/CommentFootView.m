@@ -16,7 +16,7 @@
     if (self) {
         self.backgroundColor = [UIColor colorWithHexString:@"#fafafa"];
         [CommonClass setBorderWithView:self top:YES left:NO bottom:NO right:NO borderColor:LINE_COLOR borderWidth:0.5];
-        self.writeCommentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.writeCommentBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
         self.writeCommentBtn.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
         
         UIImageView *writeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(ScreenWidth/2-40,frame.size.height/2-12.5, 25, 25)];

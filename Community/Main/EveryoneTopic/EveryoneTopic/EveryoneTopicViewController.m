@@ -51,6 +51,7 @@
     isFirst = YES;
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginFinish) name:kSendIsLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadDataList) name:kReloadDataNotification object:nil];
 }
 
 - (UITableView *)setupTableView
@@ -248,6 +249,16 @@
     [self.tableView.mj_footer endRefreshing];
 }
 
+#pragma mark -- NSNotificationCenter
+- (void)reloadDataList
+{
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    header.lastUpdatedTimeLabel.hidden = YES;
+    topView.topicHeadView.lastTimeLabel.text = header.lastUpdatedTimeLabel.text;
+    [header beginRefreshing];
+    _tableView.mj_header = header;
+}
+
 #pragma mark -- UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -269,8 +280,6 @@
     }
     
     EveryoneTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
-    
-    cell.likeBtn.post_id = model.id;
     cell.likeBtn.row = indexPath.row;
 
     if (!_likeDataArray) {
@@ -313,12 +322,13 @@
         return;
     }
     
+    [self initMBProgress:@""];
     //点赞
     if ([button.isPraise intValue] == 0) {
-        NSDictionary *parameters = @{@"Method":@"AddPostToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIp":@"1",@"Detail":@[@{@"PostID":button.post_id,@"UserID":sharedInfo.user_id}]};
+        NSDictionary *parameters = @{@"Method":@"AddPostToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"PostID":button.post_id,@"UserID":sharedInfo.user_id}]};
         
         [CKHttpRequest createRequest:HTTP_METHOD_PRAISE WithParam:parameters withMethod:@"POST" success:^(id result) {
-            
+            [self setMBProgreeHiden:YES];
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {
                 [self initMBProgress:@"点赞+1" withModeType:MBProgressHUDModeText afterDelay:1.5];
                 int praisenum = [button.praisenum intValue];
@@ -351,10 +361,10 @@
             
         }];
     }else{  //取消点赞
-        NSDictionary *parameters = @{@"Method":@"DelPostToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIp":@"1",@"Detail":@[@{@"PostID":button.post_id,@"UserID":sharedInfo.user_id}]};
+        NSDictionary *parameters = @{@"Method":@"DelPostToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"PostID":button.post_id,@"UserID":sharedInfo.user_id}]};
         
         [CKHttpRequest createRequest:HTTP_METHOD_PRAISE WithParam:parameters withMethod:@"POST" success:^(id result) {
-            
+            [self setMBProgreeHiden:YES];
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {
                 [self initMBProgress:@"取消点赞" withModeType:MBProgressHUDModeText afterDelay:1.5];
                 int praisenum = [button.praisenum intValue];

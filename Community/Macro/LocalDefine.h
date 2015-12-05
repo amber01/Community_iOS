@@ -32,6 +32,7 @@
 #define kIsShowPhotoNotification      @"kIsShowPhotoNotification"
 #define kSendIsLoginNotification      @"kSendIsLoginNotification"
 #define kSendIsLogoutNotification     @"kSendIsLogoutNotification"
+#define kReloadDataNotification       @"kReloadDataNotification"
 
 
 #endif /* LocalDefine_h */

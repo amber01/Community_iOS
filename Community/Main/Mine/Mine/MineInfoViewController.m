@@ -13,10 +13,11 @@
 
 @interface MineInfoViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
-    UITableView  *_tableView;
     WSHeaderView *_header;
     int          page;
 }
+
+@property (nonatomic,retain) UITableView *tableView;
 
 @property (nonatomic,retain) NSMutableArray *dataArray;
 @property (nonatomic,retain) NSMutableArray *imagesArray;
@@ -70,7 +71,7 @@
     
     SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
     MineInfoTopView *mineInfoTopView = [[MineInfoTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 155) withUserID:isStrEmpty(self.user_id) ? shareInfo.user_id : self.user_id andNickname:isStrEmpty(self.nickname) ? @"" : self.nickname andUserName:isStrEmpty(self.userName)? @"" : self.userName andAvararUrl:isStrEmpty(self.avatarUrl) ? @"" : self.avatarUrl];
-    
+    [mineInfoTopView.topicBtn addTarget:self action:@selector(checkTopicListAction) forControlEvents:UIControlEventTouchUpInside];
     _tableView.tableHeaderView = mineInfoTopView;
 }
 
@@ -84,6 +85,7 @@
 - (void)loadMoreData{
     page = page + 1;
     [self getEveryoneTopicData:page withFldSort:self.fldSort andIsEssence:self.isEssence];
+    self.status = @"1";
     [_tableView.mj_footer endRefreshing];
 }
 
@@ -138,6 +140,11 @@
         
         [self setMBProgreeHiden:YES];
         [_tableView reloadData];
+        
+        if ([self.status isEqualToString:@"0"]) {
+            [_tableView setContentOffset:CGPointMake(0, 155)];
+        }
+        
     } failure:^(NSError *erro) {
         [self setMBProgreeHiden:YES];
     }];
@@ -291,6 +298,11 @@
     
 }
 
+- (void)checkTopicListAction
+{
+    [_tableView setContentOffset:CGPointMake(0, 155)];
+}
+
 #pragma mark -- other
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -299,6 +311,12 @@
 
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    self.status = @"1";
 }
 
 /*
