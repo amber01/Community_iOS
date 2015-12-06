@@ -26,12 +26,12 @@
         self.topicNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(topicImageView.right + 10, _blockNameLabel.bottom + 5, (ScreenWidth - topicImageView.width - 20)/2, 20)];
         _topicNumberLabel.textColor = [UIColor grayColor];
         _topicNumberLabel.font = [UIFont systemFontOfSize:15];
-        _topicNumberLabel.text = @"总帖数：2332";
+        _topicNumberLabel.text = @"总帖数：0";
         
         self.todayNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(_topicNumberLabel.right + 15, _blockNameLabel.bottom + 5, (ScreenWidth - topicImageView.width - 20)/2, 20)];
         _todayNumberLabel.textColor = [UIColor grayColor];
         _todayNumberLabel.font = [UIFont systemFontOfSize:15];
-        _todayNumberLabel.text = @"今日：232";
+        _todayNumberLabel.text = @"今日：0";
         
         [self addSubview:_blockNameLabel];
         [self addSubview:_todayNumberLabel];

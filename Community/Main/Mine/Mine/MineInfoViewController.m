@@ -15,6 +15,7 @@
 {
     WSHeaderView *_header;
     int          page;
+    MineInfoTopView *mineInfoTopView;
 }
 
 @property (nonatomic,retain) UITableView *tableView;
@@ -44,8 +45,9 @@
     [shareBtn addTarget:self action:@selector(shareAction) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithCustomView:shareBtn];
     self.navigationItem.rightBarButtonItem = rightItem;
-    
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginFinish) name:kSendIsLoginNotification object:nil];
+
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadUserInfoData) name:@"kReloadUserDataNotification" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadUserInfoData) name:kReloadDataNotification object:nil];
     
     page = 1;
     self.fldSort = @"0";
@@ -70,7 +72,7 @@
     _header = [WSHeaderView expandWithScrollView:_tableView expandView:imageView];
     
     SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
-    MineInfoTopView *mineInfoTopView = [[MineInfoTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 155) withUserID:isStrEmpty(self.user_id) ? shareInfo.user_id : self.user_id andNickname:isStrEmpty(self.nickname) ? @"" : self.nickname andUserName:isStrEmpty(self.userName)? @"" : self.userName andAvararUrl:isStrEmpty(self.avatarUrl) ? @"" : self.avatarUrl];
+    mineInfoTopView = [[MineInfoTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 155) withUserID:isStrEmpty(self.user_id) ? shareInfo.user_id : self.user_id andNickname:isStrEmpty(self.nickname) ? @"" : self.nickname andUserName:isStrEmpty(self.userName)? @"" : self.userName andAvararUrl:isStrEmpty(self.avatarUrl) ? @"" : self.avatarUrl];
     [mineInfoTopView.topicBtn addTarget:self action:@selector(checkTopicListAction) forControlEvents:UIControlEventTouchUpInside];
     _tableView.tableHeaderView = mineInfoTopView;
 }
@@ -90,12 +92,15 @@
 }
 
 #pragma mark -- Notification
-- (void)loginFinish
+- (void)reloadUserInfoData
 {
-    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
-    header.lastUpdatedTimeLabel.hidden = YES;
-    [header beginRefreshing];
-    _tableView.mj_header = header;
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    mineInfoTopView.nicknameLabel.text = sharedInfo.nickname;
+    if ([sharedInfo.sex isEqualToString:@"女"]) {
+        mineInfoTopView.sexImageView.image = [UIImage imageNamed:@"user_women"];
+    }else{
+        mineInfoTopView.sexImageView.image = [UIImage imageNamed:@"user_man.png"];
+    }
 }
 
 #pragma mark -- HTTP

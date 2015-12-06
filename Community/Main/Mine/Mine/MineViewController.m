@@ -43,7 +43,6 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginFinish:) name:kSendIsLoginNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(logoutFinish) name:kSendIsLogoutNotification object:nil];
-    
 }
 
 - (UITableView *)setupTableView

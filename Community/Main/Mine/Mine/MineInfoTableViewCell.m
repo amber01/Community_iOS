@@ -31,6 +31,8 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadListData) name:kReloadDataNotification object:nil];
+        
         UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 125)];
         avatarImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 60, 60)];
         [UIUtils setupViewRadius:avatarImageView cornerRadius:30];
@@ -179,6 +181,12 @@
     [fansVC setHidesBottomBarWhenPushed:YES];
     fansVC.status = @"1";
     [self.viewController.navigationController pushViewController:fansVC animated:YES];
+}
+
+- (void)reloadListData
+{
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    nicknameLabel.text = sharedInfo.nickname;
 }
 
 - (void)awakeFromNib {

@@ -192,10 +192,13 @@
     NSDictionary *parameters = @{@"Method":@"RePostInfo",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"FldSort":fldSort,@"FldSortType":@"1",@"CityID":@"0",@"ProvinceID":@"0",@"IsEssence":isEssence,@"ClassID":self.cate_id}]};
     
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
+        NSString *allTopicCount = [result objectForKey:@"Counts"];
+        topicBlockTopView.topicNumberLabel.text = [NSString stringWithFormat:@"总帖数：%@",allTopicCount];
+        
         NSArray *items = [EveryoneTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
         NSArray *imageItems = [TodayTopicImagesModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
         NSArray *praiseItems = [result objectForKey:@"IsPraise"];
-        
+        NSLog(@"result:%@",result);
         if (page == 1) {
             [self.dataArray removeAllObjects];
             [self.imagesArray removeAllObjects];

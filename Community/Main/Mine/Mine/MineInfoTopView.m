@@ -15,11 +15,9 @@
 @implementation MineInfoTopView
 {
     UIImageView     *avatarImageView;
-    UILabel         *nicknameLabel;
     UILabel         *prestigeLabel;
     UILabel         *scoreLabel;
     UIButton        *editUserInfoBtn;
-    UIImageView     *sexImageView;
     
     PubliButton     *addFollowBtn;
     PubliButton     *chatBtn;
@@ -38,12 +36,12 @@
         [UIUtils setupViewRadius:avatarImageView cornerRadius:avatarImageView.width/2];
         
         
-        nicknameLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right + 10, 5, ScreenWidth - avatarImageView.width + 20 + 10, 20)];
-        nicknameLabel.font = [UIFont systemFontOfSize:15];
+        self.nicknameLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right + 10, 5, ScreenWidth - avatarImageView.width + 20 + 10, 20)];
+        _nicknameLabel.font = [UIFont systemFontOfSize:15];
         
-        sexImageView = [[UIImageView alloc]initWithFrame:CGRectMake(avatarImageView.right + 2, avatarImageView.bottom - 16,25/2, 28/2)];
+        _sexImageView = [[UIImageView alloc]initWithFrame:CGRectMake(avatarImageView.right + 2, avatarImageView.bottom - 16,25/2, 28/2)];
 
-        prestigeLabel = [[UILabel alloc]initWithFrame:CGRectMake(sexImageView.right + 10, avatarImageView.bottom - 19, 60, 20)];
+        prestigeLabel = [[UILabel alloc]initWithFrame:CGRectMake(_sexImageView.right + 10, avatarImageView.bottom - 19, 60, 20)];
         prestigeLabel.textColor = TEXT_COLOR;
         prestigeLabel.font = [UIFont systemFontOfSize:12];
         
@@ -93,14 +91,14 @@
             btnTitleLabel.text = @"编辑资料";
             [editUserInfoBtn addSubview:btnTitleLabel];
             
-            nicknameLabel.text = share.nickname;
+            _nicknameLabel.text = share.nickname;
             
             [avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,share.picture]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
             
             if ([share.sex isEqualToString:@"女"]) {
-                sexImageView.image = [UIImage imageNamed:@"user_women"];
+                _sexImageView.image = [UIImage imageNamed:@"user_women"];
             }else{
-                sexImageView.image = [UIImage imageNamed:@"user_man.png"];
+                _sexImageView.image = [UIImage imageNamed:@"user_man.png"];
             }
             
             prestigeLabel.text = @"威望:V2";
@@ -157,14 +155,14 @@
         
         [self addSubview:lineView];
         [self addSubview:avatarImageView];
-        [self addSubview:nicknameLabel];
+        [self addSubview:_nicknameLabel];
         [self addSubview:prestigeLabel];
         [self addSubview:scoreLabel];
         [self addSubview:_topicBtn];
         [self addSubview:_myFansBtn];
         [self addSubview:_followBtn];
         [self addSubview:editUserInfoBtn];
-        [self addSubview:sexImageView];
+        [self addSubview:_sexImageView];
     }
     return self;
 }
@@ -272,14 +270,14 @@
                 [avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,[dic objectForKey:@"picture"]]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
                 
                 if ([[dic objectForKey:@"sex"] isEqualToString:@"女"]) {
-                    sexImageView.image = [UIImage imageNamed:@"user_women"];
+                    _sexImageView.image = [UIImage imageNamed:@"user_women"];
                 }else{
-                    sexImageView.image = [UIImage imageNamed:@"user_man.png"];
+                    _sexImageView.image = [UIImage imageNamed:@"user_man.png"];
                 }
                 
-                nicknameLabel.text = [dic objectForKey:@"nickname"];
+                _nicknameLabel.text = [dic objectForKey:@"nickname"];
                 
-                sexImageView.image = [UIImage imageNamed:@"user_women"];
+                _sexImageView.image = [UIImage imageNamed:@"user_women"];
                 
                 prestigeLabel.text = @"威望:V2";
                 

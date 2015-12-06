@@ -162,8 +162,9 @@
             [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:params withMethod:@"POST" success:^(id result) {
                 NSLog(@"result :%@",result);
                 if (result && [[result objectForKey:@"Success"]intValue] > 0) {
-                    [[NSUserDefaults standardUserDefaults] setObject:@"男" forKey:@"picture"];
+                    [[NSUserDefaults standardUserDefaults] setObject:@"男" forKey:@"sex"];
                     sharedInfo.sex = @"男";
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"kReloadUserDataNotification" object:nil];
                     [_tableView reloadData];
                 }else{
                     [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.0];
@@ -173,11 +174,12 @@
             }];
             
         }else if (buttonIndex == 1){
-            NSDictionary *params = @{@"Method":@"ModItemUserInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":sharedInfo.user_id,@"Detail":@[@{@"ID":sharedInfo.user_id,@"Sex":@"女",@"IsShow":@"3"}]};
+            NSDictionary *params = @{@"Method":@"ModItemUserInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":sharedInfo.user_id,@"Detail":@[@{@"ID":sharedInfo.user_id,@"Sex":@"女",@"IsShow":@"2"}]};
             [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:params withMethod:@"POST" success:^(id result) {
                 if (result && [[result objectForKey:@"Success"]intValue] > 0) {
-                    [[NSUserDefaults standardUserDefaults] setObject:@"女" forKey:@"picture"];
+                    [[NSUserDefaults standardUserDefaults] setObject:@"女" forKey:@"sex"];
                     sharedInfo.sex = @"女";
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"kReloadUserDataNotification" object:nil];
                     [_tableView reloadData];
                 }else{
                     [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.0];
