@@ -10,6 +10,7 @@
 #import "ModifyUserInfoViewController.h"
 #import "EaseMessageViewController.h"
 #import "PubliButton.h"
+#import "FansListViewController.h"
 
 @implementation MineInfoTopView
 {
@@ -61,14 +62,18 @@
         
         
         
-        _myFansBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _myFansBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
+        [_myFansBtn addTarget:self action:@selector(checkMyFansAction:) forControlEvents:UIControlEventTouchUpInside];
+        _myFansBtn.user_id = user_id;
         _myFansBtn.frame = CGRectMake(_topicBtn.right, prestigeLabel.bottom + 15, ScreenWidth/3, 20);
         [CommonClass setBorderWithView:_myFansBtn top:NO left:NO bottom:NO right:YES borderColor:LINE_COLOR borderWidth:0.5];
         _myFansBtn.titleLabel.font = [UIFont systemFontOfSize:14];
         [_myFansBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         
         
-        _followBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _followBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
+        [_followBtn addTarget:self action:@selector(checkFollowAction:) forControlEvents:UIControlEventTouchUpInside];
+        _followBtn.user_id = user_id;
         _followBtn.frame = CGRectMake(_myFansBtn.right, prestigeLabel.bottom + 15, ScreenWidth/3, 20);
         _followBtn.titleLabel.font = [UIFont systemFontOfSize:14];
         [_followBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
@@ -290,6 +295,24 @@
     } failure:^(NSError *erro) {
         
     }];
+}
+
+- (void)checkMyFansAction:(PubliButton *)button
+{
+    FansListViewController *fansVC = [[FansListViewController alloc]init];
+    fansVC.title = @"粉丝";
+    fansVC.status = @"0";
+    fansVC.user_id = button.user_id;
+    [self.viewController.navigationController pushViewController:fansVC animated:YES];
+}
+
+- (void)checkFollowAction:(PubliButton *)button
+{
+    FansListViewController *fansVC = [[FansListViewController alloc]init];
+    fansVC.title = @"关注";
+    fansVC.status = @"1";
+    fansVC.user_id = button.user_id;
+    [self.viewController.navigationController pushViewController:fansVC animated:YES];
 }
 
 - (void)initMBProgress:(NSString *)title

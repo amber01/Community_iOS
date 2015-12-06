@@ -19,6 +19,7 @@
 }
 
 @property (nonatomic,retain)UITableView *tableView;
+@property (nonatomic,retain)NSMutableArray *dataArray;
 
 @end
 
@@ -39,6 +40,7 @@
         isLogin = NO;
     }
     [self setupTableView];
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginFinish:) name:kSendIsLoginNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(logoutFinish) name:kSendIsLogoutNotification object:nil];
     
@@ -50,6 +52,7 @@
         self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64) style:UITableViewStyleGrouped];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        [self getUserInfoData];
         [self.view addSubview:_tableView];
     }
     return _tableView;
@@ -67,6 +70,33 @@
     isLogin = NO;
     _tableView = nil;
     [self  setupTableView];
+}
+
+#pragma mark -- HTTP
+- (void)getUserInfoData
+{
+    SharedInfo *shared = [SharedInfo sharedDataInfo];
+    
+    if (!isStrEmpty(shared.user_id)) {
+        NSDictionary *params = @{@"Method":@"ReUserInfo",@"Detail":@[@{@"ID":shared.user_id}]};
+        
+        [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:params withMethod:@"POST" success:^(id result) {
+            if (result) {
+                NSLog(@"result:%@",result);
+                NSArray *items = [UserModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+                
+                for (int i = 0; i < items.count; i ++) {
+                    if (!self.dataArray) {
+                        self.dataArray = [[NSMutableArray alloc]init];
+                    }
+                    [self.dataArray addObject:[items objectAtIndex:i]];
+                }
+            }
+            [_tableView reloadData];
+        } failure:^(NSError *erro) {
+            
+        }];
+    }
 }
 
 #pragma mark -- UITableViewDelegate
@@ -100,9 +130,8 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
-            
-            SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
-            [cell configureCellWithInfo:shareInfo];
+            UserModel *model = self.dataArray[indexPath.row];
+            [cell configureCellWithInfo:model];
             
             return cell;
             

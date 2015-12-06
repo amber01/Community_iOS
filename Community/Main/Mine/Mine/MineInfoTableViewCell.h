@@ -12,6 +12,6 @@
 
 @property (nonatomic,retain)NSArray *userDataInfo;
 
-- (void)configureCellWithInfo:(SharedInfo *)shareInfo;
+- (void)configureCellWithInfo:(UserModel *)model;
 
 @end

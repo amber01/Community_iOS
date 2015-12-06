@@ -13,9 +13,9 @@
     MBProgressHUD         * progress;
 }
 
-@property (nonatomic,retain) UIButton *topicBtn;
-@property (nonatomic,retain) UIButton *myFansBtn;
-@property (nonatomic,retain) UIButton *followBtn;
+@property (nonatomic,retain) UIButton     *topicBtn;
+@property (nonatomic,retain) PubliButton  *myFansBtn;
+@property (nonatomic,retain) PubliButton  *followBtn;
 
 - (instancetype)initWithFrame:(CGRect)frame withUserID:(NSString *)user_id andNickname:(NSString *)nickname andUserName:(NSString *)userName andAvararUrl:(NSString *)avatarUrl;
 

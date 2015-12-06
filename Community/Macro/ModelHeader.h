@@ -15,5 +15,6 @@
 #import "EveryoneTopicModel.h"
 #import "TodayTopicPraiseModel.h"
 #import "CommentModel.h"
+#import "FansListModel.h"
 
 #endif /* ModelHeader_h */

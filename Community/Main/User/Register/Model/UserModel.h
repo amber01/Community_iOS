@@ -18,6 +18,12 @@
 @property (nonatomic,copy)NSString *isshow;
 @property (nonatomic,copy)NSString *city;
 @property (nonatomic,copy)NSString *lasttime;
-@property (nonatomic,copy)NSString *user_id;
+@property (nonatomic,copy)NSString *id;
+@property (nonatomic,copy)NSString *picture;
+@property (nonatomic,copy)NSString *sex;
+@property (nonatomic,copy)NSString *totalscore;
+@property (nonatomic,copy)NSString *postnum;
+@property (nonatomic,copy)NSString *myfansnum;
+@property (nonatomic,copy)NSString *mytofansnum;
 
 @end

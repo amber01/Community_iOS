@@ -8,6 +8,7 @@
 
 #import "MineInfoTableViewCell.h"
 #import "MineInfoViewController.h"
+#import "FansListViewController.h"
 
 @implementation MineInfoTableViewCell
 {
@@ -48,9 +49,11 @@
         postsBtn.frame = CGRectMake(0, bgView.height - 53, ScreenWidth/4, 40);
         
         fansBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [fansBtn addTarget:self action:@selector(checkMyFansAction) forControlEvents:UIControlEventTouchUpInside];
         fansBtn.frame = CGRectMake(postsBtn.right, bgView.height - 53, ScreenWidth/4, 40);
         
         followBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [followBtn addTarget:self action:@selector(checkMyFollowAction) forControlEvents:UIControlEventTouchUpInside];
         followBtn.frame = CGRectMake(fansBtn.right, bgView.height - 53, ScreenWidth/4, 40);
         
         scoreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -128,15 +131,28 @@
     return self;
 }
 
-- (void)configureCellWithInfo:(SharedInfo *)shareInfo
+- (void)configureCellWithInfo:(UserModel *)model
 {
-    NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,shareInfo.picture];
+    NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,model.picture];
     [avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
-    nicknameLabel.text = shareInfo.nickname;
-    postsNumLabel.text = shareInfo.postnum;
-    fansNumLabel.text = shareInfo.myfansnum;
-    followNumLabel.text = shareInfo.mytofansnum;
-    scoreNumLabel.text = shareInfo.totalscore;
+    nicknameLabel.text = model.nickname;
+    postsNumLabel.text = model.postnum;
+    fansNumLabel.text = model.myfansnum;
+    followNumLabel.text = model.mytofansnum;
+    scoreNumLabel.text = model.totalscore;
+    
+    [[NSUserDefaults standardUserDefaults] setObject:model.nickname forKey:@"nickname"];
+    [[NSUserDefaults standardUserDefaults] setObject:model.postnum forKey:@"postnum"];
+    [[NSUserDefaults standardUserDefaults] setObject:model.myfansnum forKey:@"myfansnum"];
+    [[NSUserDefaults standardUserDefaults] setObject:model.mytofansnum forKey:@"mytofansnum"];
+    [[NSUserDefaults standardUserDefaults] setObject:model.totalscore forKey:@"totalscore"];
+    
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    sharedInfo.nickname = model.nickname;
+    sharedInfo.postnum = model.postnum;
+    sharedInfo.myfansnum = model.myfansnum;
+    sharedInfo.mytofansnum = model.mytofansnum;
+    sharedInfo.totalscore = model.totalscore;
 }
 
 - (void)checkPostListAction
@@ -145,6 +161,24 @@
     mineInfoVC.status = @"0";
     [mineInfoVC setHidesBottomBarWhenPushed:YES];
     [self.viewController.navigationController pushViewController:mineInfoVC animated:YES];
+}
+
+- (void)checkMyFansAction
+{
+    FansListViewController *fansVC = [[FansListViewController alloc]init];
+    fansVC.title = @"粉丝";
+    [fansVC setHidesBottomBarWhenPushed:YES];
+    fansVC.status = @"0";
+    [self.viewController.navigationController pushViewController:fansVC animated:YES];
+}
+
+- (void)checkMyFollowAction
+{
+    FansListViewController *fansVC = [[FansListViewController alloc]init];
+    fansVC.title = @"关注";
+    [fansVC setHidesBottomBarWhenPushed:YES];
+    fansVC.status = @"1";
+    [self.viewController.navigationController pushViewController:fansVC animated:YES];
 }
 
 - (void)awakeFromNib {

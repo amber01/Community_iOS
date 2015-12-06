@@ -94,7 +94,7 @@
                 SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
                 sharedInfo.user_id  = [dic objectForKey:@"id"];
                 sharedInfo.nickname  = [dic objectForKey:@"nickname"];
-                sharedInfo.mobile  = [dic objectForKey:@"username"];
+                sharedInfo.mobile  = [dic objectForKey:@"mobile"];
                 sharedInfo.username  = [dic objectForKey:@"username"];
                 sharedInfo.area  = [dic objectForKey:@"area"];
                 sharedInfo.address  = [dic objectForKey:@"address"];
