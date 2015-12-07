@@ -43,6 +43,7 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginFinish:) name:kSendIsLoginNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(logoutFinish) name:kSendIsLogoutNotification object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginFinish:) name:@"kReloadAvatarImageNotification" object:nil];
 }
 
 - (UITableView *)setupTableView
@@ -81,8 +82,11 @@
         
         [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:params withMethod:@"POST" success:^(id result) {
             if (result) {
-                NSLog(@"result:%@",result);
+                
                 NSArray *items = [UserModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+                if (self.dataArray.count > 1) {
+                    [self.dataArray removeAllObjects];
+                }
                 
                 for (int i = 0; i < items.count; i ++) {
                     if (!self.dataArray) {

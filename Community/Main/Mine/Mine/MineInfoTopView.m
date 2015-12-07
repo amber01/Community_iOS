@@ -14,7 +14,6 @@
 
 @implementation MineInfoTopView
 {
-    UIImageView     *avatarImageView;
     UILabel         *prestigeLabel;
     UILabel         *scoreLabel;
     UIButton        *editUserInfoBtn;
@@ -32,16 +31,16 @@
     if (self) {
         SharedInfo *share = [SharedInfo sharedDataInfo];
         
-        avatarImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, -15, 60, 60)];
-        [UIUtils setupViewRadius:avatarImageView cornerRadius:avatarImageView.width/2];
+        self.avatarImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, -15, 60, 60)];
+        [UIUtils setupViewRadius:_avatarImageView cornerRadius:_avatarImageView.width/2];
         
         
-        self.nicknameLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right + 10, 5, ScreenWidth - avatarImageView.width + 20 + 10, 20)];
+        self.nicknameLabel = [[UILabel alloc]initWithFrame:CGRectMake(_avatarImageView.right + 10, 5, ScreenWidth - _avatarImageView.width + 20 + 10, 20)];
         _nicknameLabel.font = [UIFont systemFontOfSize:15];
         
-        _sexImageView = [[UIImageView alloc]initWithFrame:CGRectMake(avatarImageView.right + 2, avatarImageView.bottom - 16,25/2, 28/2)];
+        _sexImageView = [[UIImageView alloc]initWithFrame:CGRectMake(_avatarImageView.right + 2, _avatarImageView.bottom - 16,25/2, 28/2)];
 
-        prestigeLabel = [[UILabel alloc]initWithFrame:CGRectMake(_sexImageView.right + 10, avatarImageView.bottom - 19, 60, 20)];
+        prestigeLabel = [[UILabel alloc]initWithFrame:CGRectMake(_sexImageView.right + 10, _avatarImageView.bottom - 19, 60, 20)];
         prestigeLabel.textColor = TEXT_COLOR;
         prestigeLabel.font = [UIFont systemFontOfSize:12];
         
@@ -93,7 +92,7 @@
             
             _nicknameLabel.text = share.nickname;
             
-            [avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,share.picture]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
+            [_avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,share.picture]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
             
             if ([share.sex isEqualToString:@"女"]) {
                 _sexImageView.image = [UIImage imageNamed:@"user_women"];
@@ -154,7 +153,7 @@
         [self getIsFollowStatusData:user_id];
         
         [self addSubview:lineView];
-        [self addSubview:avatarImageView];
+        [self addSubview:_avatarImageView];
         [self addSubview:_nicknameLabel];
         [self addSubview:prestigeLabel];
         [self addSubview:scoreLabel];
@@ -267,7 +266,7 @@
             for (int i = 0; i < dataArray.count; i ++) {
                 NSDictionary *dic = [dataArray objectAtIndex:i];
                 
-                [avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,[dic objectForKey:@"picture"]]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
+                [_avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,[dic objectForKey:@"picture"]]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
                 
                 if ([[dic objectForKey:@"sex"] isEqualToString:@"女"]) {
                     _sexImageView.image = [UIImage imageNamed:@"user_women"];

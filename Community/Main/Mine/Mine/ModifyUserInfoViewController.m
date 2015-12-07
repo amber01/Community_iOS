@@ -201,7 +201,7 @@
     UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
     
     NSData *imageData = UIImageJPEGRepresentation(image, 0.0f);
-    [Exparams addEntriesFromDictionary:[NSDictionary dictionaryWithObjectsAndKeys:imageData,@"picture", nil]];
+    [Exparams addEntriesFromDictionary:[NSDictionary dictionaryWithObjectsAndKeys:imageData,@"picturename", nil]];
     [self sendTopicImageToServer:Exparams];
 }
 
@@ -216,7 +216,7 @@
 - (void)sendTopicImageToServer:(NSMutableDictionary *)imageDic{
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-    [manager POST:SEND_TOPIC_IMAGE parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    [manager POST:SEND_AVATAR_IMAGE parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
         //图片上传
         if (imageDic.count > 0) {
@@ -242,8 +242,13 @@
                 NSLog(@"result:%@",result);
                 [[NSUserDefaults standardUserDefaults] setObject:pictureURL forKey:@"picture"];
                 sharedInfo.picture = pictureURL;
+
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"kReloadAvatarImageNotification" object:nil];
+                
                 [_tableView reloadData];
+                
                 [self.navigationController dismissViewControllerAnimated:YES completion:^{
+
                     
                 }];
             }else{

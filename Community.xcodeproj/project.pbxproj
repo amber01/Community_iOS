@@ -2608,7 +2608,7 @@
 				TargetAttributes = {
 					964A9F381BEF4198007CE0E9 = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = UXFL2567A5;
+						DevelopmentTeam = 3JU58E4EC9;
 					};
 					964A9F511BEF4198007CE0E9 = {
 						CreatedOnToolsVersion = 7.1;
@@ -3143,7 +3143,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: tank wang (VQVFQ692EG)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: tankvi@sina.com (4KA3EP9J59)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -3165,7 +3165,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "f6ec2f93-9108-4ef6-85a3-a3155b9d3e5a";
+				PROVISIONING_PROFILE = "a736d577-1a75-499c-8918-8d5d12cc4ace";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3189,7 +3189,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: tank wang (VQVFQ692EG)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: tankvi@sina.com (4KA3EP9J59)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -3204,7 +3204,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "f6ec2f93-9108-4ef6-85a3-a3155b9d3e5a";
+				PROVISIONING_PROFILE = "a736d577-1a75-499c-8918-8d5d12cc4ace";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

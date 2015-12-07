@@ -19,6 +19,7 @@
 
 @property (nonatomic,retain) UIImageView     *sexImageView;
 @property (nonatomic,retain) UILabel         *nicknameLabel;
+@property (nonatomic,retain) UIImageView     *avatarImageView;
 
 - (instancetype)initWithFrame:(CGRect)frame withUserID:(NSString *)user_id andNickname:(NSString *)nickname andUserName:(NSString *)userName andAvararUrl:(NSString *)avatarUrl;
 
