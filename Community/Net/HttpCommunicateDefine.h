@@ -52,6 +52,8 @@ typedef NS_ENUM(NSInteger,HTTP_COMMAND_LIST){
     HTTP_METHOD_COMMENT_LIKE,
     //关注相关 9
     HTTP_METHOD_FANS,
+    //获取城市列表 10
+    HTTP_METHOD_CITY_LIST,
     
     /*******************/
     HTTP_METHOD_RESERVE,
@@ -70,6 +72,7 @@ static char cHttpMethod[HTTP_METHOD_COUNT][64] = {
     "CommentInfo",//7
     "CommentToPraise", //8
     "MyFansInfo", //9
+    "Area", //10
 };
 
 /*****************************************************************************/

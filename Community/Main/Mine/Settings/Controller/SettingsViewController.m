@@ -10,6 +10,7 @@
 #import "EaseMob.h"
 #import "SettingTableViewCell.h"
 #import "ModifyUserInfoViewController.h"
+#import "SelectCityViewController.h"
 
 @interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -120,12 +121,19 @@
             }
         }
     }else if (indexPath.section == 0){
-        if (indexPath.row == 0) {
-            if (isLogin) {
+        if (isLogin) {
+            if (indexPath.row == 0) {
                 ModifyUserInfoViewController *modifyUserInfoVC = [[ModifyUserInfoViewController alloc]init];
                 [self.navigationController pushViewController:modifyUserInfoVC animated:YES];
-            }else{
-                
+            }else if (indexPath.row == 1){
+                //切换城市
+                SelectCityViewController *selectCityVC = [[SelectCityViewController alloc]init];
+                [self.navigationController pushViewController:selectCityVC animated:YES];
+            }
+        }else{
+            if (indexPath.row == 0) {
+                SelectCityViewController *selectCityVC = [[SelectCityViewController alloc]init];
+                [self.navigationController pushViewController:selectCityVC animated:YES];
             }
         }
     }
