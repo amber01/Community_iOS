@@ -15,7 +15,7 @@
 @property (nonatomic,copy)NSString *nickname;
 @property (nonatomic,copy)NSString *username;
 @property (nonatomic,copy)NSString *isshow;
-@property (nonatomic,copy)NSString *city;
+@property (nonatomic,copy)NSString *city;  //城市id
 @property (nonatomic,copy)NSString *lasttime;
 @property (nonatomic,copy)NSString *user_id;
 @property (nonatomic,copy)NSString *area;

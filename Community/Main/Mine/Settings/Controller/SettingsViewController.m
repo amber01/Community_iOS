@@ -78,6 +78,7 @@
 
     if (!cell) {
         cell = [[SettingTableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
     if (isLogin) {
@@ -89,6 +90,13 @@
         }else{
             cell.logoutTitle.hidden = YES;
         }
+        
+        if (indexPath.section == 1 && indexPath.row == 0) {
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%0.2fMB",[[SDImageCache sharedImageCache] getSize]/1024.0/1024.0];
+        }else{
+            cell.detailTextLabel.text = @"";
+        }
+        
     }else{
         const static char *cTitle[3][4] = {{"切换城市","消息推送","省流量模式"},{"清除缓存数据和图片","新版本检测","意见反馈","关于微温州"},{""}};
         cell.textLabel.text = [NSString stringWithCString:cTitle[indexPath.section][indexPath.row] encoding:NSUTF8StringEncoding];
@@ -97,6 +105,12 @@
             cell.logoutTitle.text = @"立即登录";
         }else{
             cell.logoutTitle.hidden = YES;
+        }
+        
+        if (indexPath.section == 1 && indexPath.row == 0) {
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%0.2fMB",[[SDImageCache sharedImageCache] getSize]/1024.0/1024.0];
+        }else{
+            cell.detailTextLabel.text = @"";
         }
     }
     
@@ -136,13 +150,17 @@
                 [self.navigationController pushViewController:selectCityVC animated:YES];
             }
         }
+    }else if (indexPath.section == 1){
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"您确定要清除缓存吗?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        alertView.tag = 1000;
+        [alertView show];
     }
 }
 
 #pragma mark -- UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 1) {
+    if (buttonIndex == 1 && alertView.tag != 1000) {
         EaseMob *easemob = [EaseMob sharedInstance];
         [easemob.chatManager asyncLogoffWithUnbindDeviceToken:YES]; //退出环信登陆的账号
         [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"user_id"];
@@ -179,6 +197,13 @@
         isLogin = NO;
         [_tableView reloadData];
         [self initMBProgress:@"退出成功" withModeType:MBProgressHUDModeText afterDelay:1.0];
+    }else{
+        if (buttonIndex == 1) {
+            [[SDImageCache sharedImageCache] clearDisk];
+            NSIndexPath *index =  [NSIndexPath indexPathForItem:0 inSection:1];
+            UITableViewCell *cell =  [_tableView cellForRowAtIndexPath:index];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%0.2fMB",[[SDImageCache sharedImageCache] getSize]/1024.0/1024.0];
+        }
     }
 }
 

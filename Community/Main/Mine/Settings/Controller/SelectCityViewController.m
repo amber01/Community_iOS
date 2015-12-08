@@ -15,9 +15,10 @@
     UITableView     *currentCityTabelView;
 }
 
+@property (nonatomic,retain) NSArray        *resultArray;
+
 @property (nonatomic,retain) NSMutableArray *cityArray;
 @property (nonatomic,retain) NSMutableArray *indexArray;
-@property (nonatomic,retain) NSMutableArray *cityID;
 //设置每个section下的cell内容
 @property (nonatomic,retain) NSMutableArray *LetterResultArr;
 
@@ -56,25 +57,20 @@
 #pragma mark -- HTTP
 - (void)getCityList
 {
-    NSMutableArray *tempArray = [[NSMutableArray alloc]init];
     NSDictionary *params = @{@"Method":@"ReArea",@"Detail":@[@{@"Pid":@"330000",@"PageSize":@"100",@"PageIndex":@"1"}]};
     [CKHttpRequest createRequest:HTTP_METHOD_CITY_LIST WithParam:params withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
         
         if (result) {
-            NSArray *items = [result objectForKey:@"Detail"];
-            for (int i = 0; i < items.count; i ++) {
-                NSDictionary *dic = [items objectAtIndex:i];
+            self.resultArray = [result objectForKey:@"Detail"];
+            for (int i = 0; i < self.resultArray.count; i ++) {
+                NSDictionary *dic = [self.resultArray objectAtIndex:i];
                 [self.cityArray addObject:[dic objectForKey:@"area_city"]];
-                [tempArray addObject:[dic objectForKey:@"area_id"]];
             }
 
             self.indexArray = [ChineseString IndexArray:self.cityArray];
             self.LetterResultArr = [ChineseString LetterSortArray:self.cityArray];
-            self.cityID = [ChineseString LetterSortArray:tempArray];
             
-            NSLog(@"indext:%@",self.indexArray );
-            NSLog(@":%@",self.LetterResultArr);
             [_tableView reloadData];
         }
     } failure:^(NSError *erro) {
@@ -216,9 +212,18 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             
+            
         }
         
         cell.textLabel.text = [[self.LetterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        NSString *cityName = [[self.LetterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
+        if ([sharedInfo.cityarea isEqualToString:cityName]) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }else{
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        
         return cell;
     }else{
         static NSString *identityCell = @"cityCell";
@@ -233,6 +238,12 @@
         if (isStrEmpty(self.currentCity)) {
             cell.textLabel.text = @"正在定位中...";
         }else{
+            SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+            if ([sharedInfo.cityarea isEqualToString:[self.currentCity stringByReplacingOccurrencesOfString:@"市" withString:@""]]) {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            }else{
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
             cell.textLabel.text = [self.currentCity stringByReplacingOccurrencesOfString:@"市" withString:@""];
         }
         return cell;
@@ -242,19 +253,26 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    
     if (tableView.tag != 1001) {
         SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
         NSString *cityName = [[self.LetterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
-        NSString *cityIDStr = [[self.cityID objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
         NSDictionary *params = @{@"Method":@"ModItemUserInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":@"",@"Detail":@[@{@"ID":isStrEmpty(shareInfo.user_id) ? @"" : shareInfo.user_id,@"Province":@"浙江省",@"City":cityName,@"IsShow":@"5"}]};
         [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:params withMethod:@"POST" success:^(id result) {
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {
-                NSLog(@"result:%@",result);
-                NSLog(@"cityIDStr:%@",cityIDStr);
-                [[NSUserDefaults standardUserDefaults] setObject:cityName forKey:@"cityarea"];
-                //[[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"city"] forKey:@"city"];
-                SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
-                //shareInfo.city =
+                [self.navigationController popViewControllerAnimated:YES];
+                for (int i = 0; i < self.resultArray.count; i ++) {
+                    NSDictionary *dic = [self.resultArray objectAtIndex:i];
+                    if ([cityName isEqualToString:[dic objectForKey:@"area_city"]]) {
+                        NSString *city_id = [dic objectForKey:@"area_id"];
+                        shareInfo.city = city_id;
+                        [[NSUserDefaults standardUserDefaults] setObject:city_id forKey:@"city"];
+                        [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"area_city"] forKey:@"cityarea"];
+                        shareInfo.cityarea = [dic objectForKey:@"area_city"];
+                    }
+                }
             }else{
                 [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.0];
             }
@@ -270,7 +288,20 @@
             NSDictionary *params = @{@"Method":@"ModItemUserInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":@"",@"Detail":@[@{@"ID":isStrEmpty(shareInfo.user_id) ? @"" : shareInfo.user_id,@"Province":self.currentProvince,@"City":[self.currentCity stringByReplacingOccurrencesOfString:@"市" withString:@""],@"IsShow":@"5"}]};
             [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:params withMethod:@"POST" success:^(id result) {
                 if (result && [[result objectForKey:@"Success"]intValue] > 0) {
-                    NSLog(@"result:%@",result);
+                    shareInfo.cityarea = [self.currentCity stringByReplacingOccurrencesOfString:@"市" withString:@""];
+                    
+                    [self.navigationController popViewControllerAnimated:YES];
+                    for (int i = 0; i < self.resultArray.count; i ++) {
+                        NSDictionary *dic = [self.resultArray objectAtIndex:i];
+                        if ([shareInfo.cityarea isEqualToString:[dic objectForKey:@"area_city"]]) {
+                            NSString *city_id = [dic objectForKey:@"area_id"];
+                            shareInfo.city = city_id;
+                            [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"area_city"] forKey:@"cityarea"];
+                            [[NSUserDefaults standardUserDefaults] setObject:city_id forKey:@"city"];
+                            shareInfo.cityarea = [dic objectForKey:@"area_city"];
+                        }
+                    }
+                    
                 }else{
                     [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.0];
                 }
@@ -294,15 +325,5 @@
     [super viewWillDisappear:YES];
     [self.locationManager stopUpdatingLocation];
 }
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 @end
