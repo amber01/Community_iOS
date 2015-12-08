@@ -111,7 +111,7 @@
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%0.2fMB",[[SDImageCache sharedImageCache] getSize]/1024.0/1024.0];
         }else{
             cell.detailTextLabel.text = @"";
-        }
+        } 
     }
     
     return cell;
