@@ -353,6 +353,9 @@
 		96ED34471C144B930021C9C4 /* ModifyNicknameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED34461C144B930021C9C4 /* ModifyNicknameViewController.m */; };
 		96ED344A1C144BE30021C9C4 /* ModifyPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED34491C144BE30021C9C4 /* ModifyPasswordViewController.m */; };
 		96ED344D1C144C6E0021C9C4 /* ModifyNicknameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED344C1C144C6E0021C9C4 /* ModifyNicknameView.m */; };
+		96ED34501C15B40A0021C9C4 /* SelectCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED344F1C15B40A0021C9C4 /* SelectCityViewController.m */; };
+		96ED34561C15BE110021C9C4 /* ChineseString.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED34531C15BE110021C9C4 /* ChineseString.m */; };
+		96ED34571C15BE110021C9C4 /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = 96ED34541C15BE110021C9C4 /* pinyin.c */; };
 		96F301A71BF0E2840089AE14 /* TodayTopicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F301A61BF0E2840089AE14 /* TodayTopicTableViewCell.m */; };
 		96F301B61BF225E40089AE14 /* SendTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F301B51BF225E40089AE14 /* SendTopicViewController.m */; };
 		96F301B91BF226710089AE14 /* SendTopicTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F301B81BF226710089AE14 /* SendTopicTextView.m */; };
@@ -963,6 +966,12 @@
 		96ED34491C144BE30021C9C4 /* ModifyPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyPasswordViewController.m; sourceTree = "<group>"; };
 		96ED344B1C144C6E0021C9C4 /* ModifyNicknameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyNicknameView.h; sourceTree = "<group>"; };
 		96ED344C1C144C6E0021C9C4 /* ModifyNicknameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyNicknameView.m; sourceTree = "<group>"; };
+		96ED344E1C15B40A0021C9C4 /* SelectCityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectCityViewController.h; sourceTree = "<group>"; };
+		96ED344F1C15B40A0021C9C4 /* SelectCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectCityViewController.m; sourceTree = "<group>"; };
+		96ED34521C15BE110021C9C4 /* ChineseString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChineseString.h; sourceTree = "<group>"; };
+		96ED34531C15BE110021C9C4 /* ChineseString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChineseString.m; sourceTree = "<group>"; };
+		96ED34541C15BE110021C9C4 /* pinyin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pinyin.c; sourceTree = "<group>"; };
+		96ED34551C15BE110021C9C4 /* pinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinyin.h; sourceTree = "<group>"; };
 		96F301A51BF0E2840089AE14 /* TodayTopicTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicTableViewCell.h; sourceTree = "<group>"; };
 		96F301A61BF0E2840089AE14 /* TodayTopicTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicTableViewCell.m; sourceTree = "<group>"; };
 		96F301B41BF225E40089AE14 /* SendTopicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendTopicViewController.h; sourceTree = "<group>"; };
@@ -990,10 +999,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				964AA1261BEF844E007CE0E9 /* CoreLocation.framework in Frameworks */,
 				9643D7361BF78528003A394D /* CoreGraphics.framework in Frameworks */,
 				963DC4721C0ACFD9005D1955 /* libopencore-amrwb.a in Frameworks */,
 				963DC4711C0ACFD9005D1955 /* libopencore-amrnb.a in Frameworks */,
-				964AA1261BEF844E007CE0E9 /* CoreLocation.framework in Frameworks */,
 				B5BF3EE606232C1A4F2F8411 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2014,6 +2023,7 @@
 		964AA0D61BEF7B5E007CE0E9 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				96ED34511C15BE110021C9C4 /* ChineseSorting */,
 				964AA0D71BEF7B5E007CE0E9 /* CommonClass.h */,
 				964AA0D81BEF7B5E007CE0E9 /* CommonClass.m */,
 				964AA0D91BEF7B5E007CE0E9 /* CONSTS.h */,
@@ -2396,6 +2406,8 @@
 			children = (
 				96D508461C0DEFD4001DFA49 /* SettingsViewController.h */,
 				96D508471C0DEFD4001DFA49 /* SettingsViewController.m */,
+				96ED344E1C15B40A0021C9C4 /* SelectCityViewController.h */,
+				96ED344F1C15B40A0021C9C4 /* SelectCityViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2435,6 +2447,17 @@
 				96ED343A1C1338460021C9C4 /* FansTableViewCell.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		96ED34511C15BE110021C9C4 /* ChineseSorting */ = {
+			isa = PBXGroup;
+			children = (
+				96ED34521C15BE110021C9C4 /* ChineseString.h */,
+				96ED34531C15BE110021C9C4 /* ChineseString.m */,
+				96ED34541C15BE110021C9C4 /* pinyin.c */,
+				96ED34551C15BE110021C9C4 /* pinyin.h */,
+			);
+			path = ChineseSorting;
 			sourceTree = "<group>";
 		};
 		96F3019F1BF0DBC50089AE14 /* View */ = {
@@ -2905,6 +2928,7 @@
 				963DC4971C0ACFD9005D1955 /* UIImageView+EMWebCache.m in Sources */,
 				96D508261C0C823D001DFA49 /* WSHeaderView.m in Sources */,
 				963DC48E1C0ACFD9005D1955 /* EMSDWebImageManager.m in Sources */,
+				96ED34571C15BE110021C9C4 /* pinyin.c in Sources */,
 				963DC4B51C0ACFD9005D1955 /* EaseEmojiEmoticons.m in Sources */,
 				963DC4BB1C0ACFD9005D1955 /* EaseRefreshTableViewController.m in Sources */,
 				964AA10D1BEF7B5E007CE0E9 /* HyperlinksLabel.m in Sources */,
@@ -2928,6 +2952,7 @@
 				9655677B1C00A3D7005F8744 /* EvenyoneTopView.m in Sources */,
 				963DC4C41C0ACFD9005D1955 /* EaseBubbleView+Location.m in Sources */,
 				963DC4681C0ACFD9005D1955 /* EMAudioRecorderUtil.m in Sources */,
+				96ED34561C15BE110021C9C4 /* ChineseString.m in Sources */,
 				963DC4981C0ACFD9005D1955 /* UIView+EMWebCacheOperation.m in Sources */,
 				963DC46E1C0ACFD9005D1955 /* amrFileCodec.mm in Sources */,
 				96C8D22D1C0A0C4C004642FC /* PubliButton.m in Sources */,
@@ -3043,6 +3068,7 @@
 				963DC4BE1C0ACFD9005D1955 /* EaseUserCell.m in Sources */,
 				964AA11B1BEF7B5E007CE0E9 /* UIResponder+Router.m in Sources */,
 				963DC46A1C0ACFD9005D1955 /* EMCDDeviceManager+Microphone.m in Sources */,
+				96ED34501C15B40A0021C9C4 /* SelectCityViewController.m in Sources */,
 				963DC49F1C0ACFD9005D1955 /* PSTCollectionViewItemKey.m in Sources */,
 				96D508481C0DEFD4001DFA49 /* SettingsViewController.m in Sources */,
 				964AA11E1BEF7B5E007CE0E9 /* UIView+Toast.m in Sources */,
