@@ -90,6 +90,8 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"totalscore"] forKey:@"totalscore"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"sex"] forKey:@"sex"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"client"] forKey:@"client"];
+                [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"cityarea"] forKey:@"cityarea"];
+                [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"provincearea"] forKey:@"provincearea"];
                 
                 SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
                 sharedInfo.user_id  = [dic objectForKey:@"id"];
@@ -106,6 +108,8 @@
                 sharedInfo.totalscore = [dic objectForKey:@"totalscore"];
                 sharedInfo.sex = [dic objectForKey:@"sex"];
                 sharedInfo.client = [dic objectForKey:@"client"];
+                sharedInfo.cityarea = [dic objectForKey:@"cityarea"];
+                sharedInfo.provincearea = [dic objectForKey:@"provincearea"];
             }
             
             

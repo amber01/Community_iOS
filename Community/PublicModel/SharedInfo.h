@@ -27,6 +27,8 @@
 @property (nonatomic,copy)NSString *totalscore; //我的积分
 @property (nonatomic,copy)NSString *sex;
 @property (nonatomic,copy)NSString *client;
+@property (nonatomic,copy)NSString *cityarea;  //城市名
+@property (nonatomic,copy)NSString *provincearea; //省份
 
 +(SharedInfo *)sharedDataInfo;
 

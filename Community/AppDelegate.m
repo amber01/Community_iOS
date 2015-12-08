@@ -64,6 +64,7 @@
     sharedInfo.totalscore = [[NSUserDefaults standardUserDefaults] objectForKey:@"totalscore"];
     sharedInfo.sex = [[NSUserDefaults standardUserDefaults] objectForKey:@"sex"];
     sharedInfo.client = [[NSUserDefaults standardUserDefaults] objectForKey:@"client"];
+    sharedInfo.cityarea = [[NSUserDefaults standardUserDefaults] objectForKey:@"cityarea"];
     
     EaseMob *easemob = [EaseMob sharedInstance];
     //登陆时记住HuanXin密码

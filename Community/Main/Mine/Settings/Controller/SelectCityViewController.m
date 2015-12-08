@@ -17,6 +17,7 @@
 
 @property (nonatomic,retain) NSMutableArray *cityArray;
 @property (nonatomic,retain) NSMutableArray *indexArray;
+@property (nonatomic,retain) NSMutableArray *cityID;
 //设置每个section下的cell内容
 @property (nonatomic,retain) NSMutableArray *LetterResultArr;
 
@@ -39,21 +40,23 @@
 #pragma mark -- UI
 - (void)initTableView
 {
-    currentCityTabelView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 44 + 30)];
-    currentCityTabelView.delegate = self;
-    currentCityTabelView.dataSource = self;
-    currentCityTabelView.tag = 1001;
-    [self.view addSubview:currentCityTabelView];
-    
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, currentCityTabelView.bottom, ScreenWidth, ScreenHeight - 64 - currentCityTabelView.height)style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
+    
+    currentCityTabelView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 44 + 30)];
+    currentCityTabelView.delegate = self;
+    currentCityTabelView.dataSource = self;
+    currentCityTabelView.tag = 1001;
+    currentCityTabelView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.tableHeaderView = currentCityTabelView;
 }
 
 #pragma mark -- HTTP
 - (void)getCityList
 {
+    NSMutableArray *tempArray = [[NSMutableArray alloc]init];
     NSDictionary *params = @{@"Method":@"ReArea",@"Detail":@[@{@"Pid":@"330000",@"PageSize":@"100",@"PageIndex":@"1"}]};
     [CKHttpRequest createRequest:HTTP_METHOD_CITY_LIST WithParam:params withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
@@ -63,10 +66,12 @@
             for (int i = 0; i < items.count; i ++) {
                 NSDictionary *dic = [items objectAtIndex:i];
                 [self.cityArray addObject:[dic objectForKey:@"area_city"]];
+                [tempArray addObject:[dic objectForKey:@"area_id"]];
             }
 
             self.indexArray = [ChineseString IndexArray:self.cityArray];
             self.LetterResultArr = [ChineseString LetterSortArray:self.cityArray];
+            self.cityID = [ChineseString LetterSortArray:tempArray];
             
             NSLog(@"indext:%@",self.indexArray );
             NSLog(@":%@",self.LetterResultArr);
@@ -240,10 +245,20 @@
     if (tableView.tag != 1001) {
         SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
         NSString *cityName = [[self.LetterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
+        NSString *cityIDStr = [[self.cityID objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
         NSDictionary *params = @{@"Method":@"ModItemUserInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":@"",@"Detail":@[@{@"ID":isStrEmpty(shareInfo.user_id) ? @"" : shareInfo.user_id,@"Province":@"浙江省",@"City":cityName,@"IsShow":@"5"}]};
         [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:params withMethod:@"POST" success:^(id result) {
-            NSLog(@"result:%@",result);
-            NSLog(@"msg:%@",[result objectForKey:@"Msg"]);
+            if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                NSLog(@"result:%@",result);
+                NSLog(@"cityIDStr:%@",cityIDStr);
+                [[NSUserDefaults standardUserDefaults] setObject:cityName forKey:@"cityarea"];
+                //[[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"city"] forKey:@"city"];
+                SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
+                //shareInfo.city =
+            }else{
+                [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.0];
+            }
+            
         } failure:^(NSError *erro) {
             
         }];
@@ -252,10 +267,13 @@
             [self initMBProgress:@"请开启定位" withModeType:MBProgressHUDModeText afterDelay:1.0];
         }else{
             SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
-            NSString *cityName = [[self.LetterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
-            NSDictionary *params = @{@"Method":@"ModItemUserInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":@"",@"Detail":@[@{@"ID":isStrEmpty(shareInfo.user_id) ? @"" : shareInfo.user_id,@"Province":self.currentProvince,@"City":cityName,@"IsShow":@"5"}]};
+            NSDictionary *params = @{@"Method":@"ModItemUserInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":@"",@"Detail":@[@{@"ID":isStrEmpty(shareInfo.user_id) ? @"" : shareInfo.user_id,@"Province":self.currentProvince,@"City":[self.currentCity stringByReplacingOccurrencesOfString:@"市" withString:@""],@"IsShow":@"5"}]};
             [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:params withMethod:@"POST" success:^(id result) {
-                NSLog(@"result:%@",result);
+                if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                    NSLog(@"result:%@",result);
+                }else{
+                    [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.0];
+                }
             } failure:^(NSError *erro) {
                 
             }];
