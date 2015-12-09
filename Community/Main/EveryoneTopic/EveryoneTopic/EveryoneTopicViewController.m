@@ -12,6 +12,9 @@
 #import "EveryoneTopicHeadView.h"
 #import "EveryoneTopicModel.h"
 #import "CheckMoreView.h"
+#import "PopMenu.h"
+#import "SendTopicViewController.h"
+#import "TopicSearchViewController.h"
 
 @interface EveryoneTopicViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
 {
@@ -20,6 +23,7 @@
     CheckMoreView *checkMoreView;
     BOOL    isShowMore;
     BOOL    isFirst;
+    PopMenu *_popMenu;
 }
 
 @property (nonatomic,retain) UITableView    *tableView;
@@ -31,6 +35,7 @@
 @property (nonatomic,copy)   NSString       *isEssence;
 
 @property (nonatomic,retain) NSMutableArray *likeDataArray;  //记录本地点赞的状态
+@property (nonatomic,retain) NSArray        *cateArray;
 
 @end
 
@@ -52,6 +57,18 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginFinish) name:kSendIsLoginNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadDataList) name:kReloadDataNotification object:nil];
+    
+    CustomButtonItem *buttonItem = [[CustomButtonItem alloc]initButtonItem:[UIImage imageNamed:@"today_send_topic.png"]];
+    [buttonItem.itemBtn addTarget:self action:@selector(selectSendCat) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = buttonItem;
+    
+    UIButton *leftBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 23, 23)];
+    [leftBtn setImage:[UIImage imageNamed:@"topic_search_icon"] forState:UIControlStateNormal];
+    [leftBtn addTarget:self action:@selector(searchAction) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithCustomView:leftBtn];
+    self.navigationItem.leftBarButtonItem = leftItem;
+    
+    self.cateArray = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12",@"13"];
 }
 
 - (UITableView *)setupTableView
@@ -170,6 +187,87 @@
     [checkMoreView.lastCommentBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [checkMoreView.lookGoodBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     checkMoreView.hidden= YES;
+}
+
+- (void)searchAction
+{
+    TopicSearchViewController *topicSearchVC = [[TopicSearchViewController alloc]init];
+    [topicSearchVC setHidesBottomBarWhenPushed:YES];
+    [self.navigationController pushViewController:topicSearchVC animated:YES];
+}
+
+-(void)selectSendCat
+{
+    SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
+    if (isStrEmpty(shareInfo.user_id)) {
+        LoginViewController *loginVC = [[LoginViewController alloc]init];
+        [loginVC setHidesBottomBarWhenPushed:YES];
+        [self.navigationController pushViewController:loginVC animated:YES];
+        return;
+    }
+    
+    NSMutableArray *items = [[NSMutableArray alloc] initWithCapacity:3];
+    
+    MenuItem *menuItem = [MenuItem itemWithTitle:@"同城互动" iconName:@"topic_send_city"];
+    [items addObject:menuItem];
+    
+    menuItem = [MenuItem itemWithTitle:@"秀自拍" iconName:@"topic_send_show" glowColor:[UIColor clearColor]];
+    [items addObject:menuItem];
+    
+    menuItem = [MenuItem itemWithTitle:@"百姓话题" iconName:@"topic_send_people" glowColor:[UIColor clearColor]];
+    [items addObject:menuItem];
+    
+    menuItem = [MenuItem itemWithTitle:@"看资讯" iconName:@"topic_send_information" glowColor:[UIColor clearColor]];
+    [items addObject:menuItem];
+    
+    menuItem = [MenuItem itemWithTitle:@"聊美食" iconName:@"topic_send_food" glowColor:[UIColor clearColor]];
+    [items addObject:menuItem];
+    
+    menuItem = [MenuItem itemWithTitle:@"去哪玩" iconName:@"topic_send_play" glowColor:[UIColor clearColor]];
+    [items addObject:menuItem];
+    
+    menuItem = [MenuItem itemWithTitle:@"谈感情" iconName:@"topic_send_feeling" glowColor:[UIColor clearColor]];
+    [items addObject:menuItem];
+    
+    menuItem = [MenuItem itemWithTitle:@"搞笑吧" iconName:@"topic_send_funny" glowColor:[UIColor clearColor]];
+    [items addObject:menuItem];
+    
+    menuItem = [MenuItem itemWithTitle:@"育儿经" iconName:@"topic_send_education" glowColor:[UIColor clearColor]];
+    [items addObject:menuItem];
+    
+    menuItem = [MenuItem itemWithTitle:@"爱健康" iconName:@"topic_send_health" glowColor:[UIColor clearColor]];
+    [items addObject:menuItem];
+    
+    menuItem = [MenuItem itemWithTitle:@"灌水区" iconName:@"topic_send_community" glowColor:[UIColor clearColor]];
+    [items addObject:menuItem];
+    
+    menuItem = [MenuItem itemWithTitle:@"供求信息" iconName:@"topic_send_shareinfo" glowColor:[UIColor clearColor]];
+    [items addObject:menuItem];
+    
+    menuItem = [MenuItem itemWithTitle:@"提建议" iconName:@"topic_send_suggestion" glowColor:[UIColor clearColor]];
+    [items addObject:menuItem];
+    
+    
+    if (!_popMenu) {
+        _popMenu = [[PopMenu alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) items:items];
+        _popMenu.perRowItemCount = 4;
+        _popMenu.menuAnimationType = kPopMenuAnimationTypeNetEase;
+    }
+    if (_popMenu.isShowed) {
+        return;
+    }
+    @weakify(self)
+    _popMenu.didSelectedItemCompletion = ^(MenuItem *selectedItem) {
+        @strongify(self)
+        SendTopicViewController *sendTopVC = [[SendTopicViewController alloc]init];
+        sendTopVC.title = selectedItem.title;
+        sendTopVC.cate_id = self.cateArray[selectedItem.index];
+        BaseNavigationController *navi =[[BaseNavigationController alloc] initWithRootViewController:sendTopVC];
+        [self.navigationController presentViewController:navi animated:YES completion:^{
+            
+        } ];
+    };
+    [_popMenu showMenuAtView:self.view.window];
 }
 
 #pragma mark -- HTTP
