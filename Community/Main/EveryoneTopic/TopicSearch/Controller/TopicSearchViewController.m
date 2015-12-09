@@ -27,7 +27,7 @@
     [self createTableView];
     
     self.view.backgroundColor = CELL_COLOR;
-    
+     
     TopicSearchTopView *searchTopView = [[TopicSearchTopView alloc]initWithFrame:CGRectMake(0, 0 , ScreenWidth, 42)];
     [searchTopView.segmentedView addTarget:self action:@selector(selectCatAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:searchTopView];
