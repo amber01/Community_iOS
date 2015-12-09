@@ -24,6 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self customBackView];
+    [self createTableView];
     
     self.view.backgroundColor = CELL_COLOR;
     
