@@ -120,7 +120,8 @@
 {
     [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
     nicknameLabel.text = model.nickname;
-    dateLabel.text = model.createtime;
+    
+    dateLabel.text = [NSString stringWithFormat:@"%@ %@",model.createtime,model.source];
     
     /**
      *  获取是否点赞过的数据状态

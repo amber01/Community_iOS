@@ -26,5 +26,6 @@
 @property (nonatomic,copy)NSString  *sort;
 @property (nonatomic,copy)NSString  *username;
 @property (nonatomic,copy)NSString  *userid;
+@property (nonatomic,copy)NSString  *source;
 
 @end

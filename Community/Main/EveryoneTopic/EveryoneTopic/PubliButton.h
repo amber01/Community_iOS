@@ -24,5 +24,6 @@
 @property (nonatomic,assign) NSInteger row;
 @property (nonatomic,assign) NSInteger section;
 
+@property (nonatomic,assign) NSString  *status;
 
 @end

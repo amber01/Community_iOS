@@ -1,14 +1,14 @@
 //
-//  FansTableViewCell.m
+//  TopicSearchTableViewCell.m
 //  Community
 //
-//  Created by amber on 15/12/5.
+//  Created by amber on 15/12/10.
 //  Copyright © 2015年 shlity. All rights reserved.
 //
 
-#import "FansTableViewCell.h"
+#import "TopicSearchTableViewCell.h"
 
-@implementation FansTableViewCell
+@implementation TopicSearchTableViewCell
 {
     UIImageView *avatarImageView;
 }
@@ -29,19 +29,11 @@
     return self;
 }
 
-- (void)configureCellWithInfo:(FansListModel *)model withStatus:(FansListType )status
+- (void)configureCellWithInfo:(UserModel *)model
 {
-    if (status == FansListCategory) {
-        NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,model.logopicture];
-        [avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
-        self.textLabel.text = model.username;
-    }else if (status == FollwListCategory) {
-        NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,model.tologopicture];
-        [avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
-        [_followBtn setImage:[UIImage imageNamed:@"user_finish_follow"] forState:UIControlStateNormal];
-        self.textLabel.text = model.tousername;
-
-    }
+    NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,model.picture];
+    [avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
+    self.textLabel.text = model.nickname;
 }
 
 - (void)layoutSubviews

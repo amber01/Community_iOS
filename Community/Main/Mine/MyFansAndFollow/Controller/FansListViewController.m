@@ -12,7 +12,6 @@
 
 @interface FansListViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
-    BOOL            isToFans;
     FansListType    currentFansType;
     int             page;
 }
@@ -54,25 +53,33 @@
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
     if (fansType == FansListCategory) {
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-        NSDictionary *parameters = @{@"Method":@"ReMyFansInfo",@"Detail":@[@{@"ToUserID":isStrEmpty(self.user_id) ? sharedInfo.user_id : self.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"FldSortType":@"1"}]};
+        NSDictionary *parameters = @{@"Method":@"ReMyFansInfo",@"RunnerUserID":sharedInfo.user_id,@"Detail":@[@{@"ToUserID":isStrEmpty(self.user_id) ? sharedInfo.user_id : self.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"FldSortType":@"1"}]};
         [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:parameters withMethod:@"POST" success:^(id result) {
             NSLog(@"is resutl:%@",result);
             if (result) {
                 NSArray *items = [FansListModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+                NSArray *praiseItems = [result objectForKey:@"IsPraise"];
                 for (int i = 0; i < items.count; i ++) {
                     if (!self.dataArray) {
                         self.dataArray = [[NSMutableArray alloc]init];
                     }
                     [self.dataArray addObject:[items objectAtIndex:i]];
                 }
-            }
+                
+                for (int i = 0; i < praiseItems.count; i ++) {
+                    if (!self.fansDtaArray) {
+                        self.fansDtaArray = [[NSMutableArray alloc]init];
+                    }
+                    [self.fansDtaArray addObject:[praiseItems objectAtIndex:i]];
+                }
+              }
             [_tableView reloadData];
         } failure:^(NSError *erro) {
             
         }];
     }else if (fansType == FollwListCategory){
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-        NSDictionary *parameters = @{@"Method":@"ReMyFansInfo",@"Detail":@[@{@"UserID":isStrEmpty(self.user_id) ? sharedInfo.user_id : self.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"FldSortType":@"1"}]};
+        NSDictionary *parameters = @{@"Method":@"ReMyFansInfo",@"RunnerUserID":sharedInfo.user_id,@"Detail":@[@{@"UserID":isStrEmpty(self.user_id) ? sharedInfo.user_id : self.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"FldSortType":@"1"}]};
         [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:parameters withMethod:@"POST" success:^(id result) {
             NSLog(@"is resutl:%@",result);
             if (result) {
@@ -122,9 +129,24 @@
     FansTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
     if (!cell) {
         cell = [[FansTableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
+        [cell.followBtn addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     FansListModel *model = self.dataArray[indexPath.row];
-    [cell configureCellWithInfo:model withFollowData:self.fansDtaArray andRow:indexPath.row withStatus:currentFansType];
+    [cell configureCellWithInfo:model withStatus:currentFansType];
+
+    if (currentFansType == FansListCategory) {
+        NSDictionary *dic = self.fansDtaArray[indexPath.row];
+        if ([[dic objectForKey:@"value"]isEqualToString:@"1"]) {
+            [cell.followBtn setImage:[UIImage imageNamed:@"user_finish_follow"] forState:UIControlStateNormal];
+        }else{
+            [cell.followBtn setImage:[UIImage imageNamed:@"user_add_follow"] forState:UIControlStateNormal];
+        }
+        
+        cell.followBtn.status = [dic objectForKey:@"value"];
+        cell.followBtn.user_id = model.userid;
+        cell.followBtn.row = indexPath.row;
+    }
+    
     return cell;
 }
 
@@ -144,6 +166,55 @@
     }else if (fansListType == FollwListCategory){
         mineInfoVC.user_id = model.touserid;
         [self.navigationController pushViewController:mineInfoVC animated:YES];
+    }
+}
+
+#pragma mark -- action
+- (void)followAction:(PubliButton *)button
+{
+    if (currentFansType != FansListCategory) {
+        return;
+    }
+    
+    //关注
+    if (currentFansType == FansListCategory && [button.status intValue] == 0) {
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        [self initMBProgress:@""];
+        
+        NSDictionary *params = @{@"Method":@"AddMyFansInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"ToUserID":button.user_id}]};
+        [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:params withMethod:@"POST" success:^(id result) {
+            if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                [button setImage:[UIImage imageNamed:@"user_finish_follow"] forState:UIControlStateNormal];
+                
+                /**
+                 *  先删除原来的点赞数，然后再重新加上
+                 */
+                [self.fansDtaArray removeObjectAtIndex:button.row];
+                [self.fansDtaArray insertObject:@{@"value":@"1",@"touserid":button.user_id} atIndex:button.row];
+                [_tableView reloadData];
+                [self setMBProgreeHiden:YES];
+            }
+        } failure:^(NSError *erro) {
+            
+        }];
+    }else{ //取消关注
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        [self initMBProgress:@""];
+        NSDictionary *params = @{@"Method":@"CancelMyFansInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"ToUserID":button.user_id}]};
+        [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:params withMethod:@"POST" success:^(id result) {
+            if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                [button setImage:[UIImage imageNamed:@"user_add_follow"] forState:UIControlStateNormal];
+                [self setMBProgreeHiden:YES];
+                /**
+                 *  先删除原来的点赞数，然后再重新加上
+                 */
+                [self.fansDtaArray removeObjectAtIndex:button.row];
+                [self.fansDtaArray insertObject:@{@"value":@"0",@"touserid":button.user_id} atIndex:button.row];
+                [_tableView reloadData];
+            }
+        } failure:^(NSError *erro) {
+            
+        }];
     }
 }
 

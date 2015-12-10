@@ -343,6 +343,8 @@
 		96D508531C11E8CA001DFA49 /* CommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 96D508521C11E8CA001DFA49 /* CommentModel.m */; };
 		96E4A4121C1879BC001562DF /* TopicSearchBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E4A4111C1879BC001562DF /* TopicSearchBarView.m */; };
 		96E4A4151C1880F0001562DF /* TopicSearchTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E4A4141C1880F0001562DF /* TopicSearchTopView.m */; };
+		96E4A4181C19BCAE001562DF /* TopicSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E4A4171C19BCAE001562DF /* TopicSearchTableViewCell.m */; };
+		96E4A41B1C19CED7001562DF /* SearchUserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E4A41A1C19CED7001562DF /* SearchUserInfoModel.m */; };
 		96EAD3251C015F78008D760A /* TodayTopicMoreTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EAD3241C015F78008D760A /* TodayTopicMoreTableViewCell.m */; };
 		96EAD3281C0169C6008D760A /* TodayTopicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 96EAD3271C0169C6008D760A /* TodayTopicModel.m */; };
 		96ED34311C12E5BE0021C9C4 /* WriteCommentTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ED34301C12E5BE0021C9C4 /* WriteCommentTextView.m */; };
@@ -953,6 +955,10 @@
 		96E4A4111C1879BC001562DF /* TopicSearchBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicSearchBarView.m; sourceTree = "<group>"; };
 		96E4A4131C1880F0001562DF /* TopicSearchTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicSearchTopView.h; sourceTree = "<group>"; };
 		96E4A4141C1880F0001562DF /* TopicSearchTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicSearchTopView.m; sourceTree = "<group>"; };
+		96E4A4161C19BCAE001562DF /* TopicSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicSearchTableViewCell.h; sourceTree = "<group>"; };
+		96E4A4171C19BCAE001562DF /* TopicSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicSearchTableViewCell.m; sourceTree = "<group>"; };
+		96E4A4191C19CED7001562DF /* SearchUserInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchUserInfoModel.h; sourceTree = "<group>"; };
+		96E4A41A1C19CED7001562DF /* SearchUserInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchUserInfoModel.m; sourceTree = "<group>"; };
 		96EAD3231C015F78008D760A /* TodayTopicMoreTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicMoreTableViewCell.h; sourceTree = "<group>"; };
 		96EAD3241C015F78008D760A /* TodayTopicMoreTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicMoreTableViewCell.m; sourceTree = "<group>"; };
 		96EAD3261C0169C6008D760A /* TodayTopicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicModel.h; sourceTree = "<group>"; };
@@ -2495,6 +2501,8 @@
 		96ED345C1C1878A90021C9C4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				96E4A4191C19CED7001562DF /* SearchUserInfoModel.h */,
+				96E4A41A1C19CED7001562DF /* SearchUserInfoModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2506,6 +2514,8 @@
 				96E4A4111C1879BC001562DF /* TopicSearchBarView.m */,
 				96E4A4131C1880F0001562DF /* TopicSearchTopView.h */,
 				96E4A4141C1880F0001562DF /* TopicSearchTopView.m */,
+				96E4A4161C19BCAE001562DF /* TopicSearchTableViewCell.h */,
+				96E4A4171C19BCAE001562DF /* TopicSearchTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -3060,6 +3070,7 @@
 				DBB586601BF031FA001DBD4C /* NSString+TextSize.m in Sources */,
 				963DC4C11C0ACFD9005D1955 /* EaseMessageTimeCell.m in Sources */,
 				963DC4921C0ACFD9005D1955 /* UIButton+EMWebCache.m in Sources */,
+				96E4A41B1C19CED7001562DF /* SearchUserInfoModel.m in Sources */,
 				963DC4AC1C0ACFD9005D1955 /* NSDateFormatter+Category.m in Sources */,
 				964AA10C1BEF7B5E007CE0E9 /* HyperlinksButton.m in Sources */,
 				96D5083E1C0DE5E5001DFA49 /* FindPasswordViewController.m in Sources */,
@@ -3110,6 +3121,7 @@
 				96ED344A1C144BE30021C9C4 /* ModifyPasswordViewController.m in Sources */,
 				96F301B61BF225E40089AE14 /* SendTopicViewController.m in Sources */,
 				964AA11F1BEF7B5E007CE0E9 /* UIViewExt.m in Sources */,
+				96E4A4181C19BCAE001562DF /* TopicSearchTableViewCell.m in Sources */,
 				9643D70C1BF781DD003A394D /* AGEmojiKeyBoardView.m in Sources */,
 				963DC46C1C0ACFD9005D1955 /* EMCDDeviceManager+Remind.m in Sources */,
 				963DC4C81C0ACFD9005D1955 /* EaseBubbleView.m in Sources */,
