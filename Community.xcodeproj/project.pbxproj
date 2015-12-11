@@ -225,7 +225,6 @@
 		96C8D21B1C0A0AA2004642FC /* TopicBlockTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C8D21A1C0A0AA2004642FC /* TopicBlockTopView.m */; };
 		96C8D21E1C0A0ACB004642FC /* TopicBlockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C8D21D1C0A0ACB004642FC /* TopicBlockViewController.m */; };
 		96C8D2211C0A0AE9004642FC /* EveryoneTopicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C8D2201C0A0AE9004642FC /* EveryoneTopicModel.m */; };
-		96C8D2241C0A0B32004642FC /* MsgCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C8D2231C0A0B32004642FC /* MsgCommentViewController.m */; };
 		96C8D2271C0A0B4E004642FC /* MsgCommentTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C8D2261C0A0B4E004642FC /* MsgCommentTopView.m */; };
 		96C8D22A1C0A0B7C004642FC /* MineInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C8D2291C0A0B7C004642FC /* MineInfoViewController.m */; };
 		96C8D22D1C0A0C4C004642FC /* PubliButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C8D22C1C0A0C4C004642FC /* PubliButton.m */; };
@@ -374,6 +373,9 @@
 		DBE54E121C0D6DBD0057D68F /* user_info_addfollow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E101C0D6DBD0057D68F /* user_info_addfollow@2x.png */; };
 		DBE54E131C0D6DBD0057D68F /* user_info_follow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E111C0D6DBD0057D68F /* user_info_follow@2x.png */; };
 		DBE54E151C0D70180057D68F /* user_info_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E141C0D70180057D68F /* user_info_chat@2x.png */; };
+		DBF503E71C1AA6A100AA02BE /* CommentStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF503E61C1AA6A100AA02BE /* CommentStatusViewController.m */; };
+		DBF503EA1C1AAF1700AA02BE /* MyReceiveCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF503E91C1AAF1700AA02BE /* MyReceiveCommentTableViewCell.m */; };
+		DBF503ED1C1AAF2300AA02BE /* MySendCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF503EC1C1AAF2300AA02BE /* MySendCommentTableViewCell.m */; };
 		DBF5358D1C0EE062004E8C04 /* SettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF5358C1C0EE062004E8C04 /* SettingTableViewCell.m */; };
 		DBF9E8F41BFD74FA00C5D5B4 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B2D10F1BFCD66200FE6185 /* RegisterViewController.m */; };
 /* End PBXBuildFile section */
@@ -810,8 +812,6 @@
 		96C8D21D1C0A0ACB004642FC /* TopicBlockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicBlockViewController.m; sourceTree = "<group>"; };
 		96C8D21F1C0A0AE9004642FC /* EveryoneTopicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EveryoneTopicModel.h; sourceTree = "<group>"; };
 		96C8D2201C0A0AE9004642FC /* EveryoneTopicModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EveryoneTopicModel.m; sourceTree = "<group>"; };
-		96C8D2221C0A0B32004642FC /* MsgCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MsgCommentViewController.h; path = ../../../../../../Documents/Community_iOS/Community/Main/Mine/Mine/MsgCommentViewController.h; sourceTree = "<group>"; };
-		96C8D2231C0A0B32004642FC /* MsgCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MsgCommentViewController.m; path = ../../../../../../Documents/Community_iOS/Community/Main/Mine/Mine/MsgCommentViewController.m; sourceTree = "<group>"; };
 		96C8D2251C0A0B4E004642FC /* MsgCommentTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MsgCommentTopView.h; path = Community/Main/Mine/Mine/MsgCommentTopView.h; sourceTree = SOURCE_ROOT; };
 		96C8D2261C0A0B4E004642FC /* MsgCommentTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MsgCommentTopView.m; path = Community/Main/Mine/Mine/MsgCommentTopView.m; sourceTree = SOURCE_ROOT; };
 		96C8D2281C0A0B7C004642FC /* MineInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MineInfoViewController.h; sourceTree = "<group>"; };
@@ -1007,6 +1007,12 @@
 		DBE54E101C0D6DBD0057D68F /* user_info_addfollow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_addfollow@2x.png"; sourceTree = "<group>"; };
 		DBE54E111C0D6DBD0057D68F /* user_info_follow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_follow@2x.png"; sourceTree = "<group>"; };
 		DBE54E141C0D70180057D68F /* user_info_chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_chat@2x.png"; sourceTree = "<group>"; };
+		DBF503E51C1AA6A100AA02BE /* CommentStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentStatusViewController.h; sourceTree = "<group>"; };
+		DBF503E61C1AA6A100AA02BE /* CommentStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentStatusViewController.m; sourceTree = "<group>"; };
+		DBF503E81C1AAF1700AA02BE /* MyReceiveCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReceiveCommentTableViewCell.h; sourceTree = "<group>"; };
+		DBF503E91C1AAF1700AA02BE /* MyReceiveCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReceiveCommentTableViewCell.m; sourceTree = "<group>"; };
+		DBF503EB1C1AAF2300AA02BE /* MySendCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySendCommentTableViewCell.h; sourceTree = "<group>"; };
+		DBF503EC1C1AAF2300AA02BE /* MySendCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySendCommentTableViewCell.m; sourceTree = "<group>"; };
 		DBF5358B1C0EE062004E8C04 /* SettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingTableViewCell.h; sourceTree = "<group>"; };
 		DBF5358C1C0EE062004E8C04 /* SettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1898,6 +1904,7 @@
 			isa = PBXGroup;
 			children = (
 				964A9FD01BEF60CF007CE0E9 /* Message */,
+				DBF503E11C1AA6A100AA02BE /* CommentStatus */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -1981,8 +1988,6 @@
 		964A9FD71BEF6125007CE0E9 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				96C8D2251C0A0B4E004642FC /* MsgCommentTopView.h */,
-				96C8D2261C0A0B4E004642FC /* MsgCommentTopView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1992,8 +1997,6 @@
 			children = (
 				960173631BEF8D7900F2E272 /* MessageViewController.h */,
 				960173641BEF8D7900F2E272 /* MessageViewController.m */,
-				96C8D2221C0A0B32004642FC /* MsgCommentViewController.h */,
-				96C8D2231C0A0B32004642FC /* MsgCommentViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -2605,6 +2608,45 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		DBF503E11C1AA6A100AA02BE /* CommentStatus */ = {
+			isa = PBXGroup;
+			children = (
+				DBF503E41C1AA6A100AA02BE /* ViewController */,
+				DBF503E31C1AA6A100AA02BE /* View */,
+				DBF503E21C1AA6A100AA02BE /* Model */,
+			);
+			path = CommentStatus;
+			sourceTree = "<group>";
+		};
+		DBF503E21C1AA6A100AA02BE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DBF503E31C1AA6A100AA02BE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				96C8D2251C0A0B4E004642FC /* MsgCommentTopView.h */,
+				96C8D2261C0A0B4E004642FC /* MsgCommentTopView.m */,
+				DBF503E81C1AAF1700AA02BE /* MyReceiveCommentTableViewCell.h */,
+				DBF503E91C1AAF1700AA02BE /* MyReceiveCommentTableViewCell.m */,
+				DBF503EB1C1AAF2300AA02BE /* MySendCommentTableViewCell.h */,
+				DBF503EC1C1AAF2300AA02BE /* MySendCommentTableViewCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DBF503E41C1AA6A100AA02BE /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DBF503E51C1AA6A100AA02BE /* CommentStatusViewController.h */,
+				DBF503E61C1AA6A100AA02BE /* CommentStatusViewController.m */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
 		DBF535891C0EE050004E8C04 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -3031,6 +3073,7 @@
 				964AA1141BEF7B5E007CE0E9 /* NSString+MD5.m in Sources */,
 				96F301B91BF226710089AE14 /* SendTopicTextView.m in Sources */,
 				9643D70D1BF781DD003A394D /* AGEmojiPageView.m in Sources */,
+				DBF503EA1C1AAF1700AA02BE /* MyReceiveCommentTableViewCell.m in Sources */,
 				963DC49D1C0ACFD9005D1955 /* PSTCollectionViewData.m in Sources */,
 				963DC4A81C0ACFD9005D1955 /* EaseConversationModel.m in Sources */,
 				96B2D1131BFCD70500FE6185 /* RegisterView.m in Sources */,
@@ -3096,7 +3139,6 @@
 				963DC4891C0ACFD9005D1955 /* EMSDImageCache.m in Sources */,
 				963DC4B71C0ACFD9005D1955 /* EaseEmotionManager.m in Sources */,
 				96E4A4151C1880F0001562DF /* TopicSearchTopView.m in Sources */,
-				96C8D2241C0A0B32004642FC /* MsgCommentViewController.m in Sources */,
 				966EE5441C0028440039325F /* ELCOverlayImageView.m in Sources */,
 				963DC4A31C0ACFD9005D1955 /* PSTGridLayoutItem.m in Sources */,
 				963DC4881C0ACFD9005D1955 /* DACircularProgressView.m in Sources */,
@@ -3138,6 +3180,7 @@
 				963DC49F1C0ACFD9005D1955 /* PSTCollectionViewItemKey.m in Sources */,
 				96D508481C0DEFD4001DFA49 /* SettingsViewController.m in Sources */,
 				964AA11E1BEF7B5E007CE0E9 /* UIView+Toast.m in Sources */,
+				DBF503E71C1AA6A100AA02BE /* CommentStatusViewController.m in Sources */,
 				96C8D22A1C0A0B7C004642FC /* MineInfoViewController.m in Sources */,
 				960BE3101BF4DD5600082E78 /* SendTopicKeyboardView.m in Sources */,
 				963DC4CC1C0ACFD9005D1955 /* EaseTextView.m in Sources */,
@@ -3160,6 +3203,7 @@
 				968426261C01A10B00774538 /* EveryoneTopicHeadView.m in Sources */,
 				964AA1121BEF7B5E007CE0E9 /* NSNull+NullCast.m in Sources */,
 				963DC4C51C0ACFD9005D1955 /* EaseBubbleView+Text.m in Sources */,
+				DBF503ED1C1AAF2300AA02BE /* MySendCommentTableViewCell.m in Sources */,
 				963DC4931C0ACFD9005D1955 /* UIImage+EMGIF.m in Sources */,
 				963DC4911C0ACFD9005D1955 /* NSData+EMImageContentType.m in Sources */,
 			);

@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Community/Main/Mine/Settings/Controller/SelectCityViewController.m"
-            timestampString = "471235136.719569"
+            filePath = "Community/Main/Message/CommentStatus/ViewController/CommentStatusViewController.m"
+            timestampString = "471511941.979146"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "270"
-            endingLineNumber = "270"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
+            landmarkName = "-segmentAction:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

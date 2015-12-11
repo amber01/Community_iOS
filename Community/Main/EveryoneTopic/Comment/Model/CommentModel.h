@@ -20,6 +20,7 @@
 @property (nonatomic,copy) NSString *nickname;
 @property (nonatomic,copy) NSString *postdetail;
 @property (nonatomic,copy) NSString *postid;
+@property (nonatomic,copy) NSString *logopicturedomain;
 @property (nonatomic,copy) NSString *praisenum;
 @property (nonatomic,copy) NSString *replaycontent;
 @property (nonatomic,copy) NSString *rownumber;

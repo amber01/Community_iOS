@@ -19,11 +19,11 @@ typedef NS_ENUM (NSInteger , HttpResponseCode)
 };
 
 
-#define URL_BASE            @"http://dnsimg.zhihuilv.com/sendjson/myapi.ashx"
-#define SEND_TOPIC_IMAGE    @"http://dnsimg.zhihuilv.com/sendjson/uploadfile.ashx?type=1"
-#define SEND_AVATAR_IMAGE   @"http://dnsimg.zhihuilv.com/sendjson/uploadfile.ashx?type=2"
+#define URL_BASE            @"http://wwww.jgysh.com/sendjson/myapi.ashx"
+#define SEND_TOPIC_IMAGE    @"http://wwww.jgysh.com/sendjson/uploadfile.ashx?type=1"
+#define SEND_AVATAR_IMAGE   @"http://wwww.jgysh.com/sendjson/uploadfile.ashx?type=2"
 
-#define BASE_IMAGE_URL      @"zhihuilv.com"
+#define BASE_IMAGE_URL      @"jgysh.com"
 
 #define postinfo @"/postinfo/small/" //帖子图片文件夹
 #define face @"/face/"  //头像图片文件夹

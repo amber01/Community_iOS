@@ -7,7 +7,7 @@
 //
 
 #import "MessageViewController.h"
-#import "MsgCommentViewController.h"
+#import "CommentStatusViewController.h"
 #import "EaseMessageViewController.h"
 
 @interface MessageViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -61,7 +61,7 @@
 {
     static NSString *identityCell = @"cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
-    const static char *cTitle[2][3] = {{"评论","顶","提到我的"},{"系统通知","user name"}};
+    const static char *cTitle[2][3] = {{"评论","帖子点赞","评论点赞"},{"系统通知","user name"}};
     const static char *cImage[2][3] = {{"msg_comment","msg_like","msg_about_me"},{"msg_notification","msg_about_me"}};
     
     if (!cell) {
@@ -111,7 +111,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            MsgCommentViewController *msgCommentVC = [[MsgCommentViewController alloc]init];
+            CommentStatusViewController *msgCommentVC = [[CommentStatusViewController alloc]init];
+            [msgCommentVC setHidesBottomBarWhenPushed:YES];
             [self.navigationController pushViewController:msgCommentVC animated:YES];
         }else if (indexPath.row == 1){
             EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:@"CO-7631387" conversationType:eConversationTypeChat];
