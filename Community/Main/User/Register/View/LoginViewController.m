@@ -92,6 +92,7 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"client"] forKey:@"client"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"cityarea"] forKey:@"cityarea"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"provincearea"] forKey:@"provincearea"];
+                [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"picturedomain"] forKey:@"picturedomain"];
                 
                 SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
                 sharedInfo.user_id  = [dic objectForKey:@"id"];
@@ -110,6 +111,7 @@
                 sharedInfo.client = [dic objectForKey:@"client"];
                 sharedInfo.cityarea = [dic objectForKey:@"cityarea"];
                 sharedInfo.provincearea = [dic objectForKey:@"provincearea"];
+                sharedInfo.picturedomain = [dic objectForKey:@"picturedomain"];
             }
             
             

@@ -10,4 +10,9 @@
 
 @interface MySendCommentTableViewCell : UITableViewCell
 
+@property (nonatomic,retain)UIButton  *commentBtn;
+
+- (void)configureWithCellInfo:(MyCommentModel *)model;
+
+
 @end

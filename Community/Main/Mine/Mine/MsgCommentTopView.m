@@ -30,7 +30,6 @@
         _segmentedView.tintColor= [UIColor colorWithHexString:@"#555555"];
         _segmentedView.selectedSegmentIndex = 0;
         _segmentedView.frame = CGRectMake(15, 6, ScreenWidth - 30, 30);
-        [_segmentedView addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged]; //点击事件
         
         //文字大小
         UIFont *font = [UIFont boldSystemFontOfSize:15.0f];

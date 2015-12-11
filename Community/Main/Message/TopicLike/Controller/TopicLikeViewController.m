@@ -1,17 +1,17 @@
 //
-//  CommentStatusViewController.m
+//  TopicLikeViewController.m
 //  Community
 //
-//  Created by shlity on 15/12/11.
+//  Created by amber on 15/12/11.
 //  Copyright © 2015年 shlity. All rights reserved.
 //
 
-#import "CommentStatusViewController.h"
+#import "TopicLikeViewController.h"
 #import "MsgCommentTopView.h"
-#import "MyReceiveCommentTableViewCell.h"
+#import "TopicLikeTableViewCell.h"
 #import "MySendCommentTableViewCell.h"
 
-@interface CommentStatusViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface TopicLikeViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     UITableView *_tableView;
     UITableView *_sendTabelView;
@@ -26,11 +26,11 @@
 
 @end
 
-@implementation CommentStatusViewController
+@implementation TopicLikeViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"评论";
+    self.title = @"帖子点赞";
     [self createCommentTopView];
     [self createTableView];
     
@@ -90,19 +90,19 @@
 }
 
 - (void)loadNewReceiveData{
-        if (commentTopView.segmentedView.selectedSegmentIndex == 0) {
-            page = 1;
-            [self getMyReceiveComment:page];
-        }
-        [_tableView.mj_header endRefreshing];
+    if (commentTopView.segmentedView.selectedSegmentIndex == 0) {
+        page = 1;
+        [self getMyReceiveComment:page];
+    }
+    [_tableView.mj_header endRefreshing];
 }
 
 - (void)loadMoreReceiveData{
-        if (commentTopView.segmentedView.selectedSegmentIndex == 0) {
-            page = page + 1;
-            [self getMyReceiveComment:page];
-        }
-        [_tableView.mj_footer endRefreshing];
+    if (commentTopView.segmentedView.selectedSegmentIndex == 0) {
+        page = page + 1;
+        [self getMyReceiveComment:page];
+    }
+    [_tableView.mj_footer endRefreshing];
 }
 
 //我发出的
@@ -120,19 +120,19 @@
 }
 
 - (void)loadNewSendData{
-        if (commentTopView.segmentedView.selectedSegmentIndex == 1) {
-            sendPage = 1;
-            [self getMySendComment:sendPage];
-        }
-        [_sendTabelView.mj_header endRefreshing];
+    if (commentTopView.segmentedView.selectedSegmentIndex == 1) {
+        sendPage = 1;
+        [self getMySendComment:sendPage];
+    }
+    [_sendTabelView.mj_header endRefreshing];
 }
 
 - (void)loadMoreSendData{
-        if (commentTopView.segmentedView.selectedSegmentIndex == 1) {
-            sendPage = sendPage + 1;
-            [self getMySendComment:sendPage];
-        }
-        [_sendTabelView.mj_footer endRefreshing];
+    if (commentTopView.segmentedView.selectedSegmentIndex == 1) {
+        sendPage = sendPage + 1;
+        [self getMySendComment:sendPage];
+    }
+    [_sendTabelView.mj_footer endRefreshing];
 }
 
 #pragma mark -- HTTP
@@ -142,11 +142,11 @@
     SharedInfo *sharedInfo  = [SharedInfo sharedDataInfo];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
     
-    NSDictionary *parameters = @{@"Method":@"ReCommentToPraise",@"RunnerUserID":sharedInfo.user_id,@"Detail":@[@{@"ToUserID":sharedInfo.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"FldSortType":@"1"}]};
-    [CKHttpRequest createRequest:HTTP_METHOD_COMMENT_LIKE WithParam:parameters withMethod:@"POST" success:^(id result) {
+    NSDictionary *parameters = @{@"Method":@"RePostToPraise",@"RunnerUserID":sharedInfo.user_id,@"Detail":@[@{@"ToUserID":sharedInfo.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"FldSortType":@"1"}]};
+    [CKHttpRequest createRequest:HTTP_METHOD_PRAISE WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
         if (result) {
-            NSArray *items = [MyCommentModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+            NSArray *items = [TopicLikeModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
             if (page == 1) {
                 [self.dataArray removeAllObjects];
             }
@@ -169,11 +169,11 @@
     SharedInfo *sharedInfo  = [SharedInfo sharedDataInfo];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
     
-    NSDictionary *parameters = @{@"Method":@"ReCommentToPraise",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"FldSortType":@"1"}]};
-    [CKHttpRequest createRequest:HTTP_METHOD_COMMENT_LIKE WithParam:parameters withMethod:@"POST" success:^(id result) {
+    NSDictionary *parameters = @{@"Method":@"RePostToPraise",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"FldSortType":@"1"}]};
+    [CKHttpRequest createRequest:HTTP_METHOD_PRAISE WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
         if (result) {
-            NSArray *items = [MyCommentModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+            NSArray *items = [TopicLikeModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
             if (sendPage == 1) {
                 [self.sendCommentArray removeAllObjects];
             }
@@ -188,7 +188,7 @@
     } failure:^(NSError *erro) {
         
     }];
-
+    
 }
 
 #pragma mark -- UITableViewDelegate
@@ -205,20 +205,20 @@
 {
     if (tableView.tag == 1000) {
         static NSString *identityCell = @"cell";
-        MyReceiveCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
+        TopicLikeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
         if (!cell) {
-            cell = [[MyReceiveCommentTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
+            cell = [[TopicLikeTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
         }
-        MyCommentModel *model = self.dataArray[indexPath.row];
+        TopicLikeModel *model = self.dataArray[indexPath.row];
         [cell configureWithCellInfo:model];
         return cell;
     }else{
         static NSString *identityCell = @"sendCommentCell";
-        MySendCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
+        TopicLikeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
         if (!cell) {
-            cell = [[MySendCommentTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
+            cell = [[TopicLikeTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
         }
-        MyCommentModel *model = self.sendCommentArray[indexPath.row];
+        TopicLikeModel *model = self.sendCommentArray[indexPath.row];
         [cell configureWithCellInfo:model];
         return cell;
     }
@@ -259,3 +259,4 @@
 
 
 @end
+

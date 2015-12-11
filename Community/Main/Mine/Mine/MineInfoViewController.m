@@ -97,7 +97,7 @@
 {
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     mineInfoTopView.nicknameLabel.text = sharedInfo.nickname;
-    [mineInfoTopView.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,sharedInfo.picture]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
+    [mineInfoTopView.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",sharedInfo.picturedomain],BASE_IMAGE_URL,face,sharedInfo.picture]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
     if ([sharedInfo.sex isEqualToString:@"女"]) {
         mineInfoTopView.sexImageView.image = [UIImage imageNamed:@"user_women"];
     }else{

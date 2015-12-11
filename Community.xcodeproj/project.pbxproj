@@ -210,6 +210,13 @@
 		966EE5491C0028440039325F /* Overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 966EE53D1C0028440039325F /* Overlay@2x.png */; };
 		968426231C01734E00774538 /* TodayTopicImagesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 968426221C01734E00774538 /* TodayTopicImagesModel.m */; };
 		968426261C01A10B00774538 /* EveryoneTopicHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 968426251C01A10B00774538 /* EveryoneTopicHeadView.m */; };
+		969345C41C1B11360056072F /* MyCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 969345C31C1B11360056072F /* MyCommentModel.m */; };
+		969345CF1C1B1FFE0056072F /* TopicLikeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 969345CE1C1B1FFE0056072F /* TopicLikeViewController.m */; };
+		969345D21C1B20120056072F /* CommentLikeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 969345D11C1B20120056072F /* CommentLikeViewController.m */; };
+		969345D51C1B26960056072F /* TopicLikeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 969345D41C1B26960056072F /* TopicLikeModel.m */; };
+		969345D81C1B28260056072F /* TopicLikeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 969345D71C1B28260056072F /* TopicLikeTableViewCell.m */; };
+		969345DB1C1B2CD90056072F /* CommentLikeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 969345DA1C1B2CD90056072F /* CommentLikeTableViewCell.m */; };
+		969345DE1C1B2CEA0056072F /* CommentLikeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 969345DD1C1B2CEA0056072F /* CommentLikeModel.m */; };
 		9697155F1BF08E4700D2364A /* TodayTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9697155E1BF08E4700D2364A /* TodayTopicViewController.m */; };
 		96B288281BF04C1E00F79252 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 964A9F451BEF4198007CE0E9 /* Main.storyboard */; };
 		96B288291BF04C1E00F79252 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 964A9F4A1BEF4198007CE0E9 /* LaunchScreen.storyboard */; };
@@ -786,6 +793,20 @@
 		968426221C01734E00774538 /* TodayTopicImagesModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicImagesModel.m; sourceTree = "<group>"; };
 		968426241C01A10B00774538 /* EveryoneTopicHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EveryoneTopicHeadView.h; sourceTree = "<group>"; };
 		968426251C01A10B00774538 /* EveryoneTopicHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EveryoneTopicHeadView.m; sourceTree = "<group>"; };
+		969345C21C1B11360056072F /* MyCommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyCommentModel.h; path = Community/Main/EveryoneTopic/TopicSearch/Model/MyCommentModel.h; sourceTree = SOURCE_ROOT; };
+		969345C31C1B11360056072F /* MyCommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyCommentModel.m; path = Community/Main/EveryoneTopic/TopicSearch/Model/MyCommentModel.m; sourceTree = SOURCE_ROOT; };
+		969345CD1C1B1FFE0056072F /* TopicLikeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicLikeViewController.h; sourceTree = "<group>"; };
+		969345CE1C1B1FFE0056072F /* TopicLikeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicLikeViewController.m; sourceTree = "<group>"; };
+		969345D01C1B20120056072F /* CommentLikeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentLikeViewController.h; sourceTree = "<group>"; };
+		969345D11C1B20120056072F /* CommentLikeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentLikeViewController.m; sourceTree = "<group>"; };
+		969345D31C1B26960056072F /* TopicLikeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicLikeModel.h; sourceTree = "<group>"; };
+		969345D41C1B26960056072F /* TopicLikeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicLikeModel.m; sourceTree = "<group>"; };
+		969345D61C1B28260056072F /* TopicLikeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicLikeTableViewCell.h; sourceTree = "<group>"; };
+		969345D71C1B28260056072F /* TopicLikeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicLikeTableViewCell.m; sourceTree = "<group>"; };
+		969345D91C1B2CD90056072F /* CommentLikeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentLikeTableViewCell.h; sourceTree = "<group>"; };
+		969345DA1C1B2CD90056072F /* CommentLikeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentLikeTableViewCell.m; sourceTree = "<group>"; };
+		969345DC1C1B2CEA0056072F /* CommentLikeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentLikeModel.h; sourceTree = "<group>"; };
+		969345DD1C1B2CEA0056072F /* CommentLikeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentLikeModel.m; sourceTree = "<group>"; };
 		9697155D1BF08E4700D2364A /* TodayTopicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicViewController.h; sourceTree = "<group>"; };
 		9697155E1BF08E4700D2364A /* TodayTopicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicViewController.m; sourceTree = "<group>"; };
 		96B2D10E1BFCD66200FE6185 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
@@ -1905,6 +1926,8 @@
 			children = (
 				964A9FD01BEF60CF007CE0E9 /* Message */,
 				DBF503E11C1AA6A100AA02BE /* CommentStatus */,
+				969345C91C1B1F780056072F /* TopicLike */,
+				969345C51C1B1F780056072F /* CommentLike */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -2148,6 +2171,80 @@
 				966EE53D1C0028440039325F /* Overlay@2x.png */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		969345C51C1B1F780056072F /* CommentLike */ = {
+			isa = PBXGroup;
+			children = (
+				969345C61C1B1F780056072F /* Controller */,
+				969345C81C1B1F780056072F /* View */,
+				969345C71C1B1F780056072F /* Model */,
+			);
+			path = CommentLike;
+			sourceTree = "<group>";
+		};
+		969345C61C1B1F780056072F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				969345D01C1B20120056072F /* CommentLikeViewController.h */,
+				969345D11C1B20120056072F /* CommentLikeViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		969345C71C1B1F780056072F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				969345DC1C1B2CEA0056072F /* CommentLikeModel.h */,
+				969345DD1C1B2CEA0056072F /* CommentLikeModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		969345C81C1B1F780056072F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				969345D91C1B2CD90056072F /* CommentLikeTableViewCell.h */,
+				969345DA1C1B2CD90056072F /* CommentLikeTableViewCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		969345C91C1B1F780056072F /* TopicLike */ = {
+			isa = PBXGroup;
+			children = (
+				969345CA1C1B1F780056072F /* Controller */,
+				969345CC1C1B1F780056072F /* View */,
+				969345CB1C1B1F780056072F /* Model */,
+			);
+			path = TopicLike;
+			sourceTree = "<group>";
+		};
+		969345CA1C1B1F780056072F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				969345CD1C1B1FFE0056072F /* TopicLikeViewController.h */,
+				969345CE1C1B1FFE0056072F /* TopicLikeViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		969345CB1C1B1F780056072F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				969345D31C1B26960056072F /* TopicLikeModel.h */,
+				969345D41C1B26960056072F /* TopicLikeModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		969345CC1C1B1F780056072F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				969345D61C1B28260056072F /* TopicLikeTableViewCell.h */,
+				969345D71C1B28260056072F /* TopicLikeTableViewCell.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		9697155B1BF08E4700D2364A /* TodayTopic */ = {
@@ -2621,6 +2718,8 @@
 		DBF503E21C1AA6A100AA02BE /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				969345C21C1B11360056072F /* MyCommentModel.h */,
+				969345C31C1B11360056072F /* MyCommentModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3018,6 +3117,7 @@
 				964A9FF31BEF77DC007CE0E9 /* MainViewController.m in Sources */,
 				963DC4B61C0ACFD9005D1955 /* EaseEmotionEscape.m in Sources */,
 				965567781C009A37005F8744 /* EveryoneTopicTableViewCell.m in Sources */,
+				969345D51C1B26960056072F /* TopicLikeModel.m in Sources */,
 				96D508291C0C8519001DFA49 /* MineInfoTopView.m in Sources */,
 				963DC4841C0ACFD9005D1955 /* MWPhotoBrowser.m in Sources */,
 				96C8D2121C0A09B2004642FC /* TopicDetailFootView.m in Sources */,
@@ -3025,6 +3125,7 @@
 				96F301A71BF0E2840089AE14 /* TodayTopicTableViewCell.m in Sources */,
 				9643D70E1BF781DD003A394D /* CustomImageView.m in Sources */,
 				966EE5431C0028440039325F /* ELCImagePickerController.m in Sources */,
+				969345D21C1B20120056072F /* CommentLikeViewController.m in Sources */,
 				963DC4CD1C0ACFD9005D1955 /* EaseFaceView.m in Sources */,
 				96C8D2481C0A0D20004642FC /* WriteCommentViewController.m in Sources */,
 				96ED34381C1337BC0021C9C4 /* FansListViewController.m in Sources */,
@@ -3036,6 +3137,7 @@
 				963DC4BB1C0ACFD9005D1955 /* EaseRefreshTableViewController.m in Sources */,
 				964AA10D1BEF7B5E007CE0E9 /* HyperlinksLabel.m in Sources */,
 				962A5DFB1BF8AC8400171C72 /* CKHttpRequest.m in Sources */,
+				969345DB1C1B2CD90056072F /* CommentLikeTableViewCell.m in Sources */,
 				963DC4A41C0ACFD9005D1955 /* PSTGridLayoutRow.m in Sources */,
 				963DC4991C0ACFD9005D1955 /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */,
 				964AA10F1BEF7B5E007CE0E9 /* NSDate+Category.m in Sources */,
@@ -3089,11 +3191,13 @@
 				963DC4871C0ACFD9005D1955 /* MWZoomingScrollView.m in Sources */,
 				96C8D21E1C0A0ACB004642FC /* TopicBlockViewController.m in Sources */,
 				96ED34471C144B930021C9C4 /* ModifyNicknameViewController.m in Sources */,
+				969345D81C1B28260056072F /* TopicLikeTableViewCell.m in Sources */,
 				963DC46B1C0ACFD9005D1955 /* EMCDDeviceManager+ProximitySensor.m in Sources */,
 				963DC4AF1C0ACFD9005D1955 /* UIViewController+DismissKeyboard.m in Sources */,
 				96ED34601C1878D90021C9C4 /* TopicSearchViewController.m in Sources */,
 				963DC4961C0ACFD9005D1955 /* UIImageView+EMHighlightedWebCache.m in Sources */,
 				96C8D2271C0A0B4E004642FC /* MsgCommentTopView.m in Sources */,
+				969345DE1C1B2CEA0056072F /* CommentLikeModel.m in Sources */,
 				964AA12C1BEF8631007CE0E9 /* EveryoneTopicViewController.m in Sources */,
 				96BCE23C1BF24536006D2CF6 /* JXBAdPageView.m in Sources */,
 				96BCE2341BF244E0006D2CF6 /* CustomButtonItem.m in Sources */,
@@ -3109,6 +3213,7 @@
 				96C8D2111C0A09B2004642FC /* TopicDetailViewController.m in Sources */,
 				963DC4941C0ACFD9005D1955 /* UIImage+EMMultiFormat.m in Sources */,
 				96C8D2181C0A0A8D004642FC /* CheckMoreView.m in Sources */,
+				969345C41C1B11360056072F /* MyCommentModel.m in Sources */,
 				963DC4831C0ACFD9005D1955 /* MWPhoto.m in Sources */,
 				DBB586601BF031FA001DBD4C /* NSString+TextSize.m in Sources */,
 				963DC4C11C0ACFD9005D1955 /* EaseMessageTimeCell.m in Sources */,
@@ -3168,6 +3273,7 @@
 				963DC46C1C0ACFD9005D1955 /* EMCDDeviceManager+Remind.m in Sources */,
 				963DC4C81C0ACFD9005D1955 /* EaseBubbleView.m in Sources */,
 				968426231C01734E00774538 /* TodayTopicImagesModel.m in Sources */,
+				969345CF1C1B1FFE0056072F /* TopicLikeViewController.m in Sources */,
 				964A9F3E1BEF4198007CE0E9 /* main.m in Sources */,
 				963DC4AA1C0ACFD9005D1955 /* EaseUserModel.m in Sources */,
 				963DC4CA1C0ACFD9005D1955 /* EaseChatToolbarItem.m in Sources */,

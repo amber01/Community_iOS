@@ -135,7 +135,7 @@
 
 - (void)configureCellWithInfo:(UserModel *)model
 {
-    NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,model.picture];
+    NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.picturedomain],BASE_IMAGE_URL,face,model.picture];
     [avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
     nicknameLabel.text = model.nickname;
     postsNumLabel.text = model.postnum;

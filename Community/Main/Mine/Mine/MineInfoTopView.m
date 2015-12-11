@@ -92,7 +92,7 @@
             
             _nicknameLabel.text = share.nickname;
             
-            [_avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,share.picture]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
+            [_avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",share.picturedomain],BASE_IMAGE_URL,face,share.picture]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
             
             if ([share.sex isEqualToString:@"女"]) {
                 _sexImageView.image = [UIImage imageNamed:@"user_women"];
@@ -266,7 +266,7 @@
             for (int i = 0; i < dataArray.count; i ++) {
                 NSDictionary *dic = [dataArray objectAtIndex:i];
                 
-                [_avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,[dic objectForKey:@"picture"]]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
+                [_avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",[dic objectForKey:@"picturedomain"]],BASE_IMAGE_URL,face,[dic objectForKey:@"picture"]]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
                 
                 if ([[dic objectForKey:@"sex"] isEqualToString:@"女"]) {
                     _sexImageView.image = [UIImage imageNamed:@"user_women"];

@@ -30,8 +30,6 @@ typedef NS_ENUM (NSInteger , HttpResponseCode)
 #define guanggao @"/guanggao/small" //广告图片文件夹
 #define BigImage @"/postinfo/big/" //帖子选中时返回的大图
 
-#define picturedomain @"http://img2." //图片域名
-
 //http后缀
 typedef NS_ENUM(NSInteger,HTTP_COMMAND_LIST){
     //登录方法1

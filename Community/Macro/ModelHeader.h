@@ -17,5 +17,8 @@
 #import "CommentModel.h"
 #import "FansListModel.h"
 #import "SearchUserInfoModel.h"
+#import "MyCommentModel.h"
+#import "TopicLikeModel.h"
+#import "CommentLikeModel.h"
 
 #endif /* ModelHeader_h */

@@ -82,7 +82,7 @@
     }
     
     if (isLogin) {
-        const static char *cTitle[3][4] = {{"修改资料","切换城市","消息推送","省流量模式"},{"清除缓存数据和图片","新版本检测","意见反馈","关于微温州"},{""}};
+        const static char *cTitle[3][4] = {{"修改资料","切换城市","消息推送","省流量模式"},{"清除缓存数据和图片","当前版本","意见反馈","关于微温州"},{""}};
         cell.textLabel.text = [NSString stringWithCString:cTitle[indexPath.section][indexPath.row] encoding:NSUTF8StringEncoding];
         if (indexPath.section == 2 && indexPath.row == 0) {
             cell.logoutTitle.text = @"退出当前账号";
@@ -98,7 +98,7 @@
         }
         
     }else{
-        const static char *cTitle[3][4] = {{"切换城市","消息推送","省流量模式"},{"清除缓存数据和图片","新版本检测","意见反馈","关于微温州"},{""}};
+        const static char *cTitle[3][4] = {{"切换城市","消息推送","省流量模式"},{"清除缓存数据和图片","当前版本","意见反馈","关于微温州"},{""}};
         cell.textLabel.text = [NSString stringWithCString:cTitle[indexPath.section][indexPath.row] encoding:NSUTF8StringEncoding];
         if (indexPath.section == 2 && indexPath.row == 0) {
             cell.logoutTitle.hidden = NO;
@@ -151,9 +151,15 @@
             }
         }
     }else if (indexPath.section == 1){
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"您确定要清除缓存吗?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-        alertView.tag = 1000;
-        [alertView show];
+        if (indexPath.row == 0) {
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"您确定要清除缓存吗?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+            alertView.tag = 1000;
+            [alertView show];
+        }else if (indexPath.row == 1){
+            NSString *version = [NSString stringWithFormat:@"您的当前版本为v%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"温馨提示" message:version delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alertView show];
+        }
     }
 }
 

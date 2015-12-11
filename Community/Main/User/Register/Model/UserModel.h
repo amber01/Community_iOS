@@ -25,5 +25,6 @@
 @property (nonatomic,copy)NSString *postnum;
 @property (nonatomic,copy)NSString *myfansnum;
 @property (nonatomic,copy)NSString *mytofansnum;
+@property (nonatomic,copy)NSString *picturedomain;
 
 @end

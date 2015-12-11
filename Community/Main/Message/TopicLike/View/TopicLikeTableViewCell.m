@@ -1,14 +1,14 @@
 //
-//  MyReceiveCommentTableViewCell.m
+//  TopicLikeTableViewCell.m
 //  Community
 //
-//  Created by shlity on 15/12/11.
+//  Created by amber on 15/12/11.
 //  Copyright © 2015年 shlity. All rights reserved.
 //
 
-#import "MyReceiveCommentTableViewCell.h"
+#import "TopicLikeTableViewCell.h"
 
-@implementation MyReceiveCommentTableViewCell
+@implementation TopicLikeTableViewCell
 {
     PubliButton         *avatarImageView;
     UILabel             *nicknameLabel;
@@ -16,6 +16,8 @@
     
     UILabel             *contentLabel;
     UILabel             *commentLabel;
+    
+    UILabel             *likeLabel;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -38,13 +40,19 @@
         [contentLabel verticalUpAlignmentWithText: @"说的方法第三方水电费水电费水电费说的方法第三方第三方第三方的说法是法师打发" maxHeight:10];
         contentLabel.lineBreakMode = NSLineBreakByWordWrapping;
         contentLabel.numberOfLines = 0;
-        [contentLabel setFont:[UIFont systemFontOfSize:15]];
+        contentLabel.textColor = TEXT_COLOR;
+        [contentLabel setFont:[UIFont systemFontOfSize:14]];
         
         commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, contentLabel.bottom + 10, ScreenHeight - 30, 20)];
         commentLabel.textColor = [UIColor grayColor];
         commentLabel.font = [UIFont systemFontOfSize:10];
         //commentLabel.text = @"师傅的说法第三方";
         
+        likeLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, contentLabel.bottom + 5,100,20)];
+        likeLabel.text = @"顶了你";
+        likeLabel.font = [UIFont systemFontOfSize:15];
+        
+        [self.contentView addSubview:likeLabel];
         [self.contentView addSubview:avatarImageView];
         [self.contentView addSubview:dateLabel];
         [self.contentView addSubview:contentLabel];
@@ -54,7 +62,7 @@
     return self;
 }
 
-- (void)configureWithCellInfo:(MyCommentModel *)model
+- (void)configureWithCellInfo:(TopicLikeModel *)model
 {
     [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.tologopicturedomain],BASE_IMAGE_URL,face,model.tologopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
     nicknameLabel.text = model.tonickname;
@@ -62,12 +70,13 @@
     /**
      *  动态计算内容高度
      */
-    contentLabel.text = model.detail;
+    contentLabel.text = [NSString stringWithFormat:@"@%@",model.detail];
     
-    NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
+    NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
     CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
     contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, contentHeight.height);
-    self.frame = CGRectMake(0, 0, ScreenWidth, avatarImageView.height + 10 + 10 + contentLabel.height + 10);
+    likeLabel.frame = CGRectMake(15, contentLabel.bottom + 5,100,20);
+    self.frame = CGRectMake(0, 0, ScreenWidth, avatarImageView.height + 10 + 10 + contentLabel.height + likeLabel.height + 10 + 5);
 }
 
 - (void)awakeFromNib {
@@ -76,7 +85,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
