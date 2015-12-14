@@ -36,6 +36,12 @@
     [self setupTableView];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    [self getMsgCount];
+}
+
 - (UITableView *)setupTableView
 {
     if (!self.tableView) {
@@ -45,6 +51,21 @@
         [self.view addSubview:_tableView];
     }
     return _tableView;
+}
+
+#pragma mark -- HTTP
+- (void)getMsgCount
+{
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    if (isStrEmpty(sharedInfo.user_id)) {
+        return;
+    }
+    NSDictionary *parameters = @{@"Method":@"ReCommentInfoRead",@"Detail":@[@{@"UserID":sharedInfo.user_id}]};
+    [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
+        NSLog(@"result:%@",result);
+    } failure:^(NSError *erro) {
+        
+    }];
 }
 
 #pragma mark -- UITableViewDelegate

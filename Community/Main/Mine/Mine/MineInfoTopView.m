@@ -180,7 +180,7 @@
      *  需要先调用接口判断一下是否关注过对方
      */
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-    NSDictionary *parameters = @{@"Method":@"ReMyFansInfo",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"ToUserID":toFansID,@"IsShow":@"888"}]};
+    NSDictionary *parameters = @{@"Method":@"ReMyFansInfo",@"Detail":@[@{@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"ToUserID":toFansID,@"IsShow":@"888"}]};
     [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"is resutl:%@",result);
         

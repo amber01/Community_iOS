@@ -14,6 +14,7 @@
 #import "SendTopicViewController.h"
 #import "NSString+MyCategory.h"
 #import "TodayTopicMoreTableViewCell.h"
+#import "WebDetailViewController.h"
 
 @interface TodayTopicViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
 {
@@ -58,13 +59,14 @@
 #pragma mark -- HTTP
 - (void)getTodayTopicDataInfo:(int)pageIndex
 {
-    [self initMBProgress:@"数据加载中..."];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
     NSDictionary *parameters = @{@"Method":@"RePostInfo",@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"2",@"PageIndex":pageStr,@"FldSort":@"3",@"FldSortType":@"1"}]};
     
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSArray *items = [TodayTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
         NSArray *imageItems = [TodayTopicImagesModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
+        
+        NSLog(@"detail:%@",result);
         
         if (page == 1) {
             [self.dataArray removeAllObjects];
@@ -84,7 +86,6 @@
             }
             [self.imagesArray addObject:[imageItems objectAtIndex:i]];
         }
-        [self setMBProgreeHiden:YES];
         [self.tableView reloadData];
     } failure:^(NSError *erro) {
         
@@ -105,13 +106,18 @@
                 NSDictionary *dic = [detailArray objectAtIndex:i];
                 NSString *tempStr = [dic objectForKey:@"filename"];
                 NSString *filedomain = [dic objectForKey:@"filedomain"];
-                NSString *imageStr = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",filedomain],BASE_IMAGE_URL,postinfo,tempStr];
+                NSString *imageStr = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",filedomain],BASE_IMAGE_URL,guanggao,tempStr];
                 [imageArray addObject:imageStr];
             }
             
             [_adView getCurrentAdData:detailArray];
             [_adView startAdsWithBlock:imageArray block:^(NSInteger clickIndex) {
-                
+                NSDictionary *dic = detailArray[clickIndex];
+                NSString     *url = [dic objectForKey:@"linkaddress"];
+                WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
+                webDetailVC.url = url;
+                [webDetailVC setHidesBottomBarWhenPushed:YES];
+                [self.navigationController pushViewController:webDetailVC animated:YES];
             }];
         }
         [self.tableView reloadData];
@@ -204,7 +210,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    TodayTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
     TopicDetailViewController *detailVC = [[TopicDetailViewController alloc]init];
+    detailVC.post_id = model.id;
     [detailVC setHidesBottomBarWhenPushed:YES];
     [self.navigationController pushViewController:detailVC animated:YES];
 }

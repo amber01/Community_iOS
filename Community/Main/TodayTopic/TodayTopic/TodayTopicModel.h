@@ -17,5 +17,6 @@
 @property (nonatomic,copy)NSString *picture; //图片
 @property (nonatomic,copy)NSString *imagecount;
 @property (nonatomic,copy)NSString *picturedomain;
+@property (nonatomic,copy)NSString *name;
 
 @end

@@ -26,8 +26,6 @@
 	<string>我们需要您当前所在位置喔</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>我们需要您当前所在位置喔</string>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

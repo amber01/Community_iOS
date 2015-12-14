@@ -10,6 +10,7 @@
 
 @interface MyCommentModel : JSONModel
 
+@property (nonatomic,copy)NSString *nickname;
 @property (nonatomic,copy)NSString *commentid;
 @property (nonatomic,copy)NSString *createtime;
 @property (nonatomic,copy)NSString *detail;
@@ -20,6 +21,10 @@
 @property (nonatomic,copy)NSString *tousername;
 @property (nonatomic,copy)NSString *touserid; //对方的
 @property (nonatomic,copy)NSString *userid; //自己的
-
+@property (nonatomic,copy)NSString *isreplay;
+@property (nonatomic,copy)NSString *postdetail;
+@property (nonatomic,copy)NSString *replaycontent;
+@property (nonatomic,copy)NSString *logopicture;
+@property (nonatomic,copy)NSString *logopicturedomain;
 
 @end

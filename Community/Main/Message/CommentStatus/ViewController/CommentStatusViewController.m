@@ -142,14 +142,16 @@
     SharedInfo *sharedInfo  = [SharedInfo sharedDataInfo];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
     
-    NSDictionary *parameters = @{@"Method":@"ReCommentToPraise",@"RunnerUserID":sharedInfo.user_id,@"Detail":@[@{@"ToUserID":sharedInfo.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"FldSortType":@"1"}]};
-    [CKHttpRequest createRequest:HTTP_METHOD_COMMENT_LIKE WithParam:parameters withMethod:@"POST" success:^(id result) {
+    NSDictionary *parameters = @{@"Method":@"ReCommentInfobyPostID",@"LoginUserID":sharedInfo.user_id,@"Detail":@[@{@"ToUserID":sharedInfo.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"Sort":@"0",@"FldSortType":@"1"}]};
+    [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
         if (result) {
             NSArray *items = [MyCommentModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
             if (page == 1) {
                 [self.dataArray removeAllObjects];
+                [self.sendCommentArray removeAllObjects];
             }
+            
             for (int i = 0; i < items.count; i ++) {
                 if (!self.dataArray) {
                     self.dataArray = [[NSMutableArray alloc]init];
@@ -169,8 +171,8 @@
     SharedInfo *sharedInfo  = [SharedInfo sharedDataInfo];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
     
-    NSDictionary *parameters = @{@"Method":@"ReCommentToPraise",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"FldSortType":@"1"}]};
-    [CKHttpRequest createRequest:HTTP_METHOD_COMMENT_LIKE WithParam:parameters withMethod:@"POST" success:^(id result) {
+    NSDictionary *parameters = @{@"Method":@"ReCommentInfobyPostID",@"LoginUserID":sharedInfo.user_id,@"Detail":@[@{@"UserID":sharedInfo.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"Sort":@"0",@"FldSortType":@"1"}]};
+    [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
         if (result) {
             NSArray *items = [MyCommentModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];

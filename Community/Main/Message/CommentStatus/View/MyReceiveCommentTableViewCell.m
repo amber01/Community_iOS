@@ -37,12 +37,15 @@
         contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, 20)];
         [contentLabel verticalUpAlignmentWithText: @"说的方法第三方水电费水电费水电费说的方法第三方第三方第三方的说法是法师打发" maxHeight:10];
         contentLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        contentLabel.numberOfLines = 0;
-        [contentLabel setFont:[UIFont systemFontOfSize:15]];
+        contentLabel.numberOfLines = 2;
+        contentLabel.textColor = TEXT_COLOR;
+        [contentLabel setFont:[UIFont systemFontOfSize:14]];
         
         commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, contentLabel.bottom + 10, ScreenHeight - 30, 20)];
-        commentLabel.textColor = [UIColor grayColor];
-        commentLabel.font = [UIFont systemFontOfSize:10];
+        commentLabel.textColor = [UIColor blackColor];
+        commentLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        commentLabel.numberOfLines = 0;
+        commentLabel.font = [UIFont systemFontOfSize:15];
         //commentLabel.text = @"师傅的说法第三方";
         
         [self.contentView addSubview:avatarImageView];
@@ -54,20 +57,47 @@
     return self;
 }
 
+//我收到的
 - (void)configureWithCellInfo:(MyCommentModel *)model
 {
-    [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.tologopicturedomain],BASE_IMAGE_URL,face,model.tologopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
-    nicknameLabel.text = model.tonickname;
+    [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
+    nicknameLabel.text = model.nickname;
     dateLabel.text = model.createtime;
     /**
-     *  动态计算内容高度
+     *  评论帖子
      */
-    contentLabel.text = model.detail;
+    if ([model.isreplay intValue] == 0) {
+        
+        //原内容
+        
+        contentLabel.text = [NSString stringWithFormat:@"@%@:%@",model.tonickname,model.postdetail];
+        //获取UILabel高度
+        CGFloat labelHeight = [contentLabel sizeThatFits:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT)].height;
+
+        contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, labelHeight);
+        
+        //评论的内容
+        commentLabel.text = model.detail;
+        
+        NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
+        CGSize commentHeight = [commentLabel.text boundingRectWithSize:CGSizeMake(commentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+        commentLabel.frame = CGRectMake(15, contentLabel.bottom + 2, ScreenWidth - 30, commentHeight.height);
+    }else{ //回复评论
+        //原内容
+        contentLabel.text = [NSString stringWithFormat:@"@%@:%@",model.tonickname,model.detail];
+        //获取UILabel高度
+        CGFloat labelHeight = [contentLabel sizeThatFits:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT)].height;
+        contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, labelHeight);
+        //评论的内容
+        commentLabel.text = model.replaycontent;
+        
+        NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
+        CGSize commentHeight = [commentLabel.text boundingRectWithSize:CGSizeMake(commentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+        commentLabel.frame = CGRectMake(15, contentLabel.bottom + 2, ScreenWidth - 30, commentHeight.height);
+    }
     
-    NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
-    CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-    contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, contentHeight.height);
-    self.frame = CGRectMake(0, 0, ScreenWidth, avatarImageView.height + 10 + 10 + contentLabel.height + 10);
+    
+    self.frame = CGRectMake(0, 0, ScreenWidth, avatarImageView.height + 10 + 10 + contentLabel.height + 10 + commentLabel.height + 5);
 }
 
 - (void)awakeFromNib {

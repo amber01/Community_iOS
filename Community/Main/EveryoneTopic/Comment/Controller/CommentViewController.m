@@ -14,7 +14,6 @@
 
 @interface CommentViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
-    UITableView    *_tableView;
     CommentTopView *commentTopView;
     int            page;
 }
@@ -90,6 +89,8 @@
 #pragma mark -- HTTP
 - (void)getCommentListData:(int)pageIndex
 {
+    NSLog(@"self.post_id:%@",self.post_id);
+    
     [self initMBProgress:@""];
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];

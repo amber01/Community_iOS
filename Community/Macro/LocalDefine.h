@@ -33,7 +33,8 @@
 #define kSendIsLoginNotification      @"kSendIsLoginNotification"
 #define kSendIsLogoutNotification     @"kSendIsLogoutNotification"
 #define kReloadDataNotification       @"kReloadDataNotification"
-
+#define kNotificationShowAlertDot     @"kNotificationShowAlertDot"
+#define kNotificationHideAlertDot     @"kNotificationHideAlertDot"
 
 #endif /* LocalDefine_h */
 

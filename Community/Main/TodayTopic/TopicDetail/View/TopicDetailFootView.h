@@ -15,4 +15,7 @@
 @property (nonatomic,retain)UIButton *likeBtn;
 @property (nonatomic,retain)UIButton *shareBtn;
 
+@property (nonatomic,retain)UILabel  *commentNumLabel;
+@property (nonatomic,retain)UILabel  *likeNumLabel;
+
 @end

@@ -10,6 +10,7 @@
 #import "WSHeaderView.h"
 #import "MineInfoTopView.h"
 #import "EveryoneTopicTableViewCell.h"
+#import "TopicDetailViewController.h"
 
 @interface MineInfoViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -109,7 +110,6 @@
 - (void)getEveryoneTopicData:(int)pageIndex withFldSort:(NSString *)fldSort andIsEssence:(NSString *)isEssence
 {
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-    [self initMBProgress:@"数据加载中..."];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
     NSDictionary *parameters = @{@"Method":@"RePostInfo",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"FldSort":fldSort,@"FldSortType":@"1",@"CityID":@"0",@"ProvinceID":@"0",@"IsEssence":isEssence,@"ClassID":@"",@"UserID":isStrEmpty(self.user_id) ? sharedInfo.user_id : self.user_id}]};
     
@@ -144,8 +144,7 @@
             }
             [self.praiseDataArray addObject:[praiseItems objectAtIndex:i]];
         }
-        
-        [self setMBProgreeHiden:YES];
+
         [_tableView reloadData];
         
         if ([self.status isEqualToString:@"0"]) {
@@ -210,6 +209,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    EveryoneTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
+    TopicDetailViewController *topicDetaiVC = [[TopicDetailViewController alloc]init];
+    topicDetaiVC.post_id = model.id;
+    [topicDetaiVC setHidesBottomBarWhenPushed:YES];
+    [self.navigationController pushViewController:topicDetaiVC animated:YES];
+
 }
 
 #pragma mark -- action

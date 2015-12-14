@@ -15,6 +15,8 @@
 
 @interface MainViewController ()
 
+@property (nonatomic,retain)UIImageView  *imageView;
+
 @end
 
 @implementation MainViewController
@@ -22,6 +24,9 @@
 //test update
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getMsgCount) name:kNotificationShowAlertDot object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(hideMsgCount) name:kNotificationHideAlertDot object:nil];
     [self createdTabBarView];
 }
 
@@ -73,10 +78,36 @@
     [self setViewControllers:array animated:YES];
 }
 
+/**
+ *  添加一个类似微信的小红点
+ */
+- (void)loadView{
+    [super loadView];
+    for (int i = 0; i< 4; i++) {
+        UIImage  *badgeImg = [UIImage imageWithColor:[UIColor redColor]];
+        if (i == 2) {
+            self.imageView = [[UIImageView alloc] initWithImage:badgeImg];
+            self.imageView.frame = CGRectMake(50 + i * 80, 7, 8, 8);
+            [UIUtils setupViewRadius:_imageView cornerRadius:8/2];
+        }
+    }
+}
+
+#pragma Notification
+- (void)getMsgCount
+{
+    _imageView.hidden = NO;
+    [self.tabBar addSubview:_imageView];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 /*

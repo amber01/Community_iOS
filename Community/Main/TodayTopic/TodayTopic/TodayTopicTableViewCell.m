@@ -41,7 +41,7 @@
 
 - (void)configureCellWithInfo:(TodayTopicModel *)model
 {
-    contentLabel.text = model.detail;
+    contentLabel.text = model.name;
     [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.picturedomain],BASE_IMAGE_URL,postinfo,model.picture]]placeholderImage:[UIImage imageNamed:@"default_background"]];
     commentLabel.text = [NSString stringWithFormat:@"%@评论",model.commentnum];
 }
