@@ -228,7 +228,6 @@
                 }else{
                     isLike = NO;
                 }
-                
             }
         }
     } failure:^(NSError *erro) {
