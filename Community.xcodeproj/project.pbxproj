@@ -861,8 +861,8 @@
 		96C5A32B1C1D1B500029FC74 /* pulldown_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pulldown_icon@3x.png"; sourceTree = "<group>"; };
 		96C5A32C1C1D1B500029FC74 /* pullup_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pullup_icon@2x.png"; sourceTree = "<group>"; };
 		96C5A32D1C1D1B500029FC74 /* pullup_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pullup_icon@3x.png"; sourceTree = "<group>"; };
-		96C5A32E1C1D1B500029FC74 /* ScorellButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScorellButtonView.h; sourceTree = "<group>"; };
-		96C5A32F1C1D1B500029FC74 /* ScorellButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScorellButtonView.m; sourceTree = "<group>"; };
+		96C5A32E1C1D1B500029FC74 /* ScorellButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScorellButtonView.h; path = ../../../../Vendors/WSPulldownCheckView/ScorellButtonView.h; sourceTree = "<group>"; };
+		96C5A32F1C1D1B500029FC74 /* ScorellButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScorellButtonView.m; path = ../../../../Vendors/WSPulldownCheckView/ScorellButtonView.m; sourceTree = "<group>"; };
 		96C8D20B1C0A09B2004642FC /* TopicDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicDetailViewController.h; sourceTree = "<group>"; };
 		96C8D20C1C0A09B2004642FC /* TopicDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicDetailViewController.m; sourceTree = "<group>"; };
 		96C8D20F1C0A09B2004642FC /* TopicDetailFootView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicDetailFootView.h; sourceTree = "<group>"; };
@@ -2427,8 +2427,6 @@
 				96C5A3271C1D1B500029FC74 /* GoodsLoadMoreTopView.h */,
 				96C5A3281C1D1B500029FC74 /* GoodsLoadMoreTopView.m */,
 				96C5A3291C1D1B500029FC74 /* Resource */,
-				96C5A32E1C1D1B500029FC74 /* ScorellButtonView.h */,
-				96C5A32F1C1D1B500029FC74 /* ScorellButtonView.m */,
 			);
 			path = WSPulldownCheckView;
 			sourceTree = "<group>";
@@ -2479,6 +2477,8 @@
 				96C8D2101C0A09B2004642FC /* TopicDetailFootView.m */,
 				969345F91C1C71250056072F /* TopicDetailView.h */,
 				969345FA1C1C71250056072F /* TopicDetailView.m */,
+				96C5A32E1C1D1B500029FC74 /* ScorellButtonView.h */,
+				96C5A32F1C1D1B500029FC74 /* ScorellButtonView.m */,
 				9671FE521C1DAB6800AE6401 /* TWebView.h */,
 				9671FE531C1DAB6800AE6401 /* TWebView.m */,
 			);

@@ -133,6 +133,7 @@ UIEdgeInsetsSetRight(UIEdgeInsets insets, CGFloat right)
 	
 	int webViewWidth = self.frame.size.width;
 	
+    
 	//缩小到小于webview宽度时
 	if (scrollView.contentSize.width < webViewWidth) {
 		CGSize contentSize = scrollView.contentSize;
@@ -163,6 +164,13 @@ UIEdgeInsetsSetRight(UIEdgeInsets insets, CGFloat right)
 		self.headerView.frame = CGRectSetX(self.headerView.frame, scrollView.contentOffset.x);
 		self.footerView.frame = CGRectSetX(self.footerView.frame, scrollView.contentOffset.x);
 	}
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (self.scorollDelegate && [self.scorollDelegate respondsToSelector:@selector(currentScorollDidEndDragging:)]) {
+        [self.scorollDelegate currentScorollDidEndDragging:scrollView];
+    }
 }
 
 @end

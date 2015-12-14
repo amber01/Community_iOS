@@ -133,6 +133,7 @@
         if (result && [[result objectForKey:@"Success"]intValue] > 0) {
             [self.navigationController dismissViewControllerAnimated:YES completion:^{
                 [[NSNotificationCenter defaultCenter]postNotificationName:kReloadDataNotification object:nil];
+                [[NSNotificationCenter defaultCenter]postNotificationName:kReloadCommentNotification object:nil];
                 [self initMBProgress:@"发布成功" withModeType:MBProgressHUDModeText afterDelay:1.5];
             }];
         }

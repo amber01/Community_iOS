@@ -28,13 +28,14 @@
 #define  IOS_VERSION        [[[UIDevice currentDevice]systemVersion]floatValue]
 
 //NSNotification
-#define kHideSendTopicNotification    @"kHideSendTopicNotification"
-#define kIsShowPhotoNotification      @"kIsShowPhotoNotification"
-#define kSendIsLoginNotification      @"kSendIsLoginNotification"
-#define kSendIsLogoutNotification     @"kSendIsLogoutNotification"
-#define kReloadDataNotification       @"kReloadDataNotification"
-#define kNotificationShowAlertDot     @"kNotificationShowAlertDot"
-#define kNotificationHideAlertDot     @"kNotificationHideAlertDot"
+#define kHideSendTopicNotification @"kHideSendTopicNotification"
+#define kIsShowPhotoNotification   @"kIsShowPhotoNotification"
+#define kSendIsLoginNotification   @"kSendIsLoginNotification"
+#define kSendIsLogoutNotification  @"kSendIsLogoutNotification"
+#define kReloadDataNotification    @"kReloadDataNotification"
+#define kNotificationShowAlertDot  @"kNotificationShowAlertDot"
+#define kNotificationHideAlertDot  @"kNotificationHideAlertDot"
+#define kReloadCommentNotification @"kReloadCommentNotification"
 
 #endif /* LocalDefine_h */
 

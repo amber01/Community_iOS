@@ -7,12 +7,32 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CommentViewController.h"
 
-@interface ScorellButtonView : UIView<UIScrollViewDelegate>
+@protocol CheckMoreDelegate <NSObject>
 
-@property (nonatomic,retain)UISegmentedControl *segmentedView;
-
-- (instancetype)initWithFrame:(CGRect)frame withPostID:(NSString *)postId;
+@optional
+- (void)checkMoreScorollDidEndDragging:(UIScrollView *)scrollView;
 
 @end
+
+@interface ScorellButtonView : UIView<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>
+{
+    int            page;
+    MBProgressHUD  *progress;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame withPostID:(NSString *)post_id;
+
+@property (nonatomic,retain  ) UITableView    *tableView;
+@property (nonatomic,copy    ) NSString       *post_id;
+
+@property (nonatomic,copy    ) NSString       *sortStr;
+
+@property (nonatomic,retain  ) NSMutableArray *dataArray;
+@property (nonatomic,retain  ) NSMutableArray *likeDataArray;//记录本地点赞的状态
+@property (nonatomic,retain  ) NSMutableArray *praiseDataArray;//自己是否点赞的数据
+
+@property (nonatomic,assign  ) id<CheckMoreDelegate> delegate;
+
+@end
+

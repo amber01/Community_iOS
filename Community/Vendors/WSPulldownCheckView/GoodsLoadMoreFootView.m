@@ -25,7 +25,7 @@
         UIView *rightLine = [[UIView alloc]initWithFrame:CGRectMake(frame.size.width-leftLine.frame.size.width-10, moreView.frame.size.height/2-0.25, frame.size.width/4-5, 0.5)];
         rightLine.backgroundColor = COLOR_BUTTON_NEW1;
         UILabel *moreLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, moreView.frame.size.height/2-10, frame.size.width, 20)];
-        moreLabel.text = @"上拉，查看图文详情";
+        moreLabel.text = @"上拉，查看全部评论";
         moreLabel.textAlignment = NSTextAlignmentCenter;
         moreLabel.font = [UIFont fontWithName:@"Helvetica" size:14];
         

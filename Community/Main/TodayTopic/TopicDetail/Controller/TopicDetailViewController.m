@@ -14,22 +14,25 @@
 #import "WriteCommentViewController.h"
 #import "TWebView.h"
 #import "CommentViewController.h"
+#import "GoodsLoadMoreFootView.h"
 
-@interface TopicDetailViewController ()<UIScrollViewDelegate>
+@interface TopicDetailViewController ()<UIScrollViewDelegate,UIWebViewDelegate,TWebScrollViewDelegate,CheckMoreDelegate>
 {
-    TopicDetailHeadView *headView;
-    TopicDetailFootView *footView;
-    GoodsLoadMoreTopView *loadMoreTopView1;
-    GoodsLoadMoreTopView *loadMoreTopView2;
+    ScorellButtonView    *scorllBtnView;
+    TopicDetailHeadView  *headView;
+    TopicDetailFootView  *footView;
+    GoodsLoadMoreTopView *loadMoreTopView;
     BOOL                 isLike;
     BOOL                 isLoadMore;
     BOOL                 isLoadTopMore;
-    TWebView            *webView;
+    TWebView             *webView;
+    
+    UIView               *loadingView;
 }
 
-@property (nonatomic,retain)UIScrollView  *myScrollView;
-@property (nonatomic,retain)ScorellButtonView    *scorllBtnView;
-@property (nonatomic,copy)  NSString    *likeNumber;
+@property (nonatomic,retain) UIScrollView      *myScrollView;
+@property (nonatomic,retain) ScorellButtonView *scorllBtnView;
+@property (nonatomic,copy  ) NSString          *likeNumber;
 
 @end
 
@@ -41,9 +44,17 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self createScrollView];
     
+    loadingView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+    loadingView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:loadingView];
+    
+    isLoadMore = NO;
+    isLoadTopMore = YES;
+    
     footView = [[TopicDetailFootView alloc]initWithFrame:CGRectMake(0, ScreenHeight - 64 - 42, ScreenWidth, 42)];
     [footView.writeCommentBtn addTarget:self action:@selector(writeCommentAction) forControlEvents:UIControlEventTouchUpInside];
     [footView.likeBtn addTarget:self action:@selector(likeAction) forControlEvents:UIControlEventTouchUpInside];
+    [footView.checkCommentBtn addTarget:self action:@selector(checkCommentAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:footView];
     [self getTopicDetail:self.post_id];
 }
@@ -54,6 +65,7 @@
     self.myScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 42)];
     self.myScrollView.backgroundColor = [UIColor whiteColor];
     self.myScrollView.delegate = self;
+    self.myScrollView.hidden = YES;
     [self.view addSubview:self.myScrollView];
     
     
@@ -63,32 +75,48 @@
 - (void)createWebView
 {
     webView = [[TWebView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 42 - 64) withPost:self.post_id];
-    
+    webView.delegate = self;
+    webView.scorollDelegate = self;
     headView = [[TopicDetailHeadView alloc]initWithFrame:CGRectMake(0, 0, ScreenHeight, 65)];
     [self.myScrollView addSubview:webView];
+    
+    GoodsLoadMoreFootView *goodsLoadMoreView = [[GoodsLoadMoreFootView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 49)];
+    
     /**
      *  再UIWebView的头视图上添加一个自定义View
      */
     webView.headerView = headView;
-    [self createCommentViewController];
+    webView.footerView = goodsLoadMoreView;
+    
+    [self createdFootMoreView];
 }
 
-- (void)createCommentViewController
+- (void)createdFootMoreView
 {
-    //CommentViewController *commentVC = [[CommentViewController alloc]init];
-    //commentVC.view.frame = CGRectMake(0, webView.bottom, ScreenWidth, ScreenHeight - 42);
-    //commentVC.post_id = self.post_id;
-    //[commentVC.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
+    scorllBtnView = [[ScorellButtonView alloc]initWithFrame:CGRectMake(0, webView.bottom, ScreenWidth, ScreenHeight) withPostID:self.post_id];
+    [scorllBtnView.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
     
-    loadMoreTopView1 = [[GoodsLoadMoreTopView alloc]initWithFrame:CGRectMake(0, -66, ScreenWidth, 66)];
-    loadMoreTopView2 = [[GoodsLoadMoreTopView alloc]initWithFrame:CGRectMake(0, -66, ScreenWidth, 66)];
-    //[commentVC.tableView addSubview:loadMoreTopView1];
+    loadMoreTopView = [[GoodsLoadMoreTopView alloc]initWithFrame:CGRectMake(0, -64, ScreenWidth, 64)];
+    [scorllBtnView.tableView addSubview:loadMoreTopView];
+    scorllBtnView.delegate = self;
+    [self.myScrollView addSubview:scorllBtnView];
     
-    //[self.myScrollView addSubview:commentVC.view];
 }
 
-#pragma mark -- ScrollViewDelegate
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+#pragma mark -- UIWebViewDelegate
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    loadingView.hidden = YES;
+    [NSTimer scheduledTimerWithTimeInterval:0.1f target:self selector:@selector(delayMethod) userInfo:nil repeats:NO];
+}
+
+- (void)delayMethod
+{
+    self.myScrollView.hidden = NO;
+}
+
+#pragma mark -- TWebScrollViewDelegate
+- (void)currentScorollDidEndDragging:(UIScrollView *)scrollView{
     
     float offset = scrollView.contentOffset.y;
     float contentHeight = scrollView.contentSize.height;
@@ -101,54 +129,55 @@
             [self scrollViewByPageControlPage:1];
         }
     }
-    
+}
+
+#pragma mark -- CheckMoreDelegate
+- (void)checkMoreScorollDidEndDragging:(UIScrollView *)scrollView
+{
+    float offset = scrollView.contentOffset.y;
     if (isLoadMore == YES && isLoadTopMore == NO) {
-        if (offset < -64) {
+        if (offset < -55) {
             isLoadTopMore = YES;
             [self scrollViewByPageControlPage:0];
         }
     }
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    float offset = scrollView.contentOffset.y;
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
     if (isLoadMore == YES && isLoadTopMore == NO) {
-        if (offset <= -64) {
-            loadMoreTopView1.pullTextLabe.text = @"松开,返回商品详情";
-            loadMoreTopView2.pullTextLabe.text = @"松开,返回商品详情";
+        CGFloat offset = scorllBtnView.tableView.contentOffset.y;
+        if (offset <= -55) {
+            loadMoreTopView.pullTextLabe.text = @"松开返回帖子";
             
             CGAffineTransform rotate = CGAffineTransformMakeRotation( 1.0 / 180.0 * 3.14 );
             [UIView animateWithDuration:0.2 animations:^{
-                [loadMoreTopView1.pulldownView setTransform:rotate];
-                [loadMoreTopView2.pulldownView setTransform:rotate];
+                [loadMoreTopView.pulldownView setTransform:rotate];
             }];
             
         }else{
             [UIView animateWithDuration:0.2 animations:^{
-                loadMoreTopView1.pulldownView.layer.transform = CATransform3DMakeRotation((M_PI * 180)/180,0,0,1);
-                loadMoreTopView2.pulldownView.layer.transform = CATransform3DMakeRotation((M_PI * 180)/180,0,0,1);
+                loadMoreTopView.pulldownView.layer.transform = CATransform3DMakeRotation((M_PI * 180)/180,0,0,1);
             }];
             
-            loadMoreTopView1.pullTextLabe.text = @"下拉,返回商品详情";
-            loadMoreTopView2.pullTextLabe.text = @"下拉,返回商品详情";
+            loadMoreTopView.pullTextLabe.text = @"下拉返回帖子";
         }
     }
 }
+
 
 #pragma mark -- 上拉加载图文详情页面
 - (void)scrollViewByPageControlPage:(NSInteger)page
 {
     [UIView animateWithDuration:0.2f animations:^{
-        [self scorllBtnView];
-        if (isLoadMore == NO) { //第二页
-            [self.myScrollView setContentOffset:CGPointMake(0, ((ScreenHeight)*page)-49)];
+        if (isLoadMore == NO) {
+            [self.myScrollView setContentOffset:CGPointMake(0,webView.bottom)];
         }else{
-            [self.myScrollView setContentOffset:CGPointMake(0, ((ScreenHeight- 64)*page))];
+            [self.myScrollView setContentOffset:CGPointMake(0,0)];
         }
         
     } completion:^(BOOL finished) {
         isLoadMore = YES;
-        
     }];
 }
 
@@ -218,6 +247,15 @@
     }];
 }
 
+- (void)checkCommentAction
+{
+    isLoadMore = YES;
+    isLoadTopMore = NO;
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.myScrollView setContentOffset:CGPointMake(0,webView.bottom)];
+    }];
+}
+
 - (void)likeAction
 {
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
@@ -274,6 +312,11 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [scorllBtnView.tableView removeObserver:self forKeyPath:@"contentOffset"];
 }
 
 /*

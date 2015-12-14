@@ -20,7 +20,7 @@
         [self.pulldownView setImage:[UIImage imageNamed:@"pullup_icon"]];
         
         self.pullTextLabe = [[UILabel alloc]initWithFrame:CGRectMake(0, _pulldownView.bottom+3,frame.size.width, 20)];
-        _pullTextLabe.text = @"下拉,返回商品详情";
+        _pullTextLabe.text = @"下拉返回帖子";
         _pullTextLabe.font = [UIFont systemFontOfSize:14];
         _pullTextLabe.textAlignment = NSTextAlignmentCenter;
         _pullTextLabe.textColor = [UIColor grayColor];
