@@ -9,6 +9,8 @@
 #import "MessageViewController.h"
 #import "CommentStatusViewController.h"
 #import "EaseMessageViewController.h"
+#import "TopicLikeViewController.h"
+#import "CommentLikeViewController.h"
 
 @interface MessageViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -34,6 +36,12 @@
     [self setupTableView];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    [self getMsgCount];
+}
+
 - (UITableView *)setupTableView
 {
     if (!self.tableView) {
@@ -43,6 +51,21 @@
         [self.view addSubview:_tableView];
     }
     return _tableView;
+}
+
+#pragma mark -- HTTP
+- (void)getMsgCount
+{
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    if (isStrEmpty(sharedInfo.user_id)) {
+        return;
+    }
+    NSDictionary *parameters = @{@"Method":@"ReCommentInfoRead",@"Detail":@[@{@"UserID":sharedInfo.user_id}]};
+    [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
+        NSLog(@"result:%@",result);
+    } failure:^(NSError *erro) {
+        
+    }];
 }
 
 #pragma mark -- UITableViewDelegate
@@ -108,17 +131,28 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (isStrEmpty(sharedInfo.user_id)) {
+        LoginViewController *loginVC = [[LoginViewController alloc]init];
+        [loginVC setHidesBottomBarWhenPushed:YES];
+        [self.navigationController pushViewController:loginVC animated:YES];
+        return;
+    }
+    
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             CommentStatusViewController *msgCommentVC = [[CommentStatusViewController alloc]init];
             [msgCommentVC setHidesBottomBarWhenPushed:YES];
             [self.navigationController pushViewController:msgCommentVC animated:YES];
         }else if (indexPath.row == 1){
-            EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:@"CO-7631387" conversationType:eConversationTypeChat];
-            easeMessageVC.title = @"CO-7631387";
-            [easeMessageVC setHidesBottomBarWhenPushed:YES];
-            [self.navigationController pushViewController:easeMessageVC animated:YES];
+            TopicLikeViewController *topicLikeVC = [[TopicLikeViewController alloc]init];
+            [topicLikeVC setHidesBottomBarWhenPushed:YES];
+            [self.navigationController pushViewController:topicLikeVC animated:YES];
+        }else if (indexPath.row ==2 ){
+            CommentLikeViewController *commentLikeVC = [[CommentLikeViewController alloc]init];
+            [commentLikeVC setHidesBottomBarWhenPushed:YES];
+            [self.navigationController pushViewController:commentLikeVC animated:YES];
         }
     }
 }

@@ -21,6 +21,7 @@
 @property (nonatomic,copy)NSString  *imagecount;
 @property (nonatomic,copy)NSString  *isshow;
 @property (nonatomic,copy)NSString  *logopicture;
+@property (nonatomic,copy)NSString  *logopicturedomain;
 @property (nonatomic,copy)NSString  *nickname;
 @property (nonatomic,copy)NSString  *name;
 @property (nonatomic,copy)NSString  *sort;

@@ -72,7 +72,7 @@
     [topPageView addSubview:_pageControl];
     
     self.adTextLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, topPageView.height/2-10, ScreenWidth - 100, 20)];
-    _adTextLabel.text = @"是的第三方是的范德萨发是的范德萨范德萨水电费水电费多少是的范德萨发";
+    //_adTextLabel.text = @"是的第三方是的范德萨发是的范德萨范德萨水电费水电费多少是的范德萨发";
     _adTextLabel.font = [UIFont systemFontOfSize:15.0];
     _adTextLabel.textColor = [UIColor whiteColor];
     [topPageView addSubview:_adTextLabel];

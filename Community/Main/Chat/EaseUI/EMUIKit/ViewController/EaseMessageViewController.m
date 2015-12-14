@@ -1646,13 +1646,13 @@
         else{
             model = [[EaseMessageModel alloc] initWithMessage:message];
             [[EaseBaseMessageCell appearance] setAvatarCornerRadius:15]; //将头像设置成圆形
-            
+            SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
             if (model.isSender) {
-                SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
-                NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,shareInfo.picture];
+                
+                NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",shareInfo.picturedomain],BASE_IMAGE_URL,face,shareInfo.picture];
                 model.avatarURLPath = imageURL;
             }else{
-                NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,self.avatarUrl];
+                NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",shareInfo.picturedomain],BASE_IMAGE_URL,face,self.avatarUrl];
                 model.avatarURLPath = imageURL;
             }
             

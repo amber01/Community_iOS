@@ -53,7 +53,7 @@
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
     if (fansType == FansListCategory) {
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-        NSDictionary *parameters = @{@"Method":@"ReMyFansInfo",@"RunnerUserID":sharedInfo.user_id,@"Detail":@[@{@"ToUserID":isStrEmpty(self.user_id) ? sharedInfo.user_id : self.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"FldSortType":@"1"}]};
+        NSDictionary *parameters = @{@"Method":@"ReMyFansInfo",@"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"ToUserID":isStrEmpty(self.user_id) ? sharedInfo.user_id : self.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"FldSortType":@"1"}]};
         [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:parameters withMethod:@"POST" success:^(id result) {
             NSLog(@"is resutl:%@",result);
             if (result) {
@@ -79,7 +79,7 @@
         }];
     }else if (fansType == FollwListCategory){
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-        NSDictionary *parameters = @{@"Method":@"ReMyFansInfo",@"RunnerUserID":sharedInfo.user_id,@"Detail":@[@{@"UserID":isStrEmpty(self.user_id) ? sharedInfo.user_id : self.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"FldSortType":@"1"}]};
+        NSDictionary *parameters = @{@"Method":@"ReMyFansInfo",@"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"UserID":isStrEmpty(self.user_id) ? sharedInfo.user_id : self.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"FldSortType":@"1"}]};
         [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:parameters withMethod:@"POST" success:^(id result) {
             NSLog(@"is resutl:%@",result);
             if (result) {
@@ -176,9 +176,16 @@
         return;
     }
     
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    if (isStrEmpty(sharedInfo.user_id)) {
+        LoginViewController *loginVC = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:loginVC animated:YES];
+        return;
+    }
+    
     //关注
     if (currentFansType == FansListCategory && [button.status intValue] == 0) {
-        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        
         [self initMBProgress:@""];
         
         NSDictionary *params = @{@"Method":@"AddMyFansInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"ToUserID":button.user_id}]};
@@ -198,7 +205,6 @@
             
         }];
     }else{ //取消关注
-        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
         [self initMBProgress:@""];
         NSDictionary *params = @{@"Method":@"CancelMyFansInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"ToUserID":button.user_id}]};
         [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:params withMethod:@"POST" success:^(id result) {

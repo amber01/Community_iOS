@@ -32,11 +32,11 @@
 - (void)configureCellWithInfo:(FansListModel *)model withStatus:(FansListType )status
 {
     if (status == FansListCategory) {
-        NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,model.logopicture];
+        NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture];
         [avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
         self.textLabel.text = model.username;
     }else if (status == FollwListCategory) {
-        NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,model.tologopicture];
+        NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.tologopicture];
         [avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
         [_followBtn setImage:[UIImage imageNamed:@"user_finish_follow"] forState:UIControlStateNormal];
         self.textLabel.text = model.tousername;

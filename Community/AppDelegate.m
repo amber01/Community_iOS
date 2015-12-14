@@ -13,6 +13,10 @@
 
 @interface AppDelegate ()
 
+@property (nonatomic,retain)  UIImageView   *adImageView;
+@property (nonatomic,retain)  UIImageView   *launchImage;
+@property (nonatomic,retain)  BaseNavigationController *baseNavi;
+
 @end
 
 @implementation AppDelegate
@@ -24,9 +28,10 @@
     [self.window makeKeyAndVisible];
     
     MainViewController *mainVC = [[MainViewController alloc]init];
-    BaseNavigationController *baseNavi = [[BaseNavigationController alloc]initWithRootViewController:mainVC];
-    self.window.rootViewController = baseNavi;
+    self.baseNavi = [[BaseNavigationController alloc]initWithRootViewController:mainVC];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    [self loadADimageView];
     
     /**
      *  环信
@@ -66,6 +71,7 @@
     sharedInfo.client = [[NSUserDefaults standardUserDefaults] objectForKey:@"client"];
     sharedInfo.cityarea = [[NSUserDefaults standardUserDefaults] objectForKey:@"cityarea"];
     sharedInfo.provincearea =  [[NSUserDefaults standardUserDefaults] objectForKey:@"provincearea"];
+    sharedInfo.picturedomain = [[NSUserDefaults standardUserDefaults] objectForKey:@"picturedomain"];
     
     EaseMob *easemob = [EaseMob sharedInstance];
     //登陆时记住HuanXin密码
@@ -74,8 +80,95 @@
     [userDefaults setObject:@"123456" forKey:@"password"];
     [easemob.chatManager asyncLoginWithUsername:sharedInfo.username password:@"123456"];
     
+    /**
+     *  启动app的时候发一个通知，调用接口判断用户是否有未读消息
+     */
+    if (!isStrEmpty(sharedInfo.user_id)) {
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        if (isStrEmpty(sharedInfo.user_id)) {
+            return;
+        }
+        NSDictionary *parameters = @{@"Method":@"ReCommentInfoRead",@"Detail":@[@{@"UserID":sharedInfo.user_id}]};
+        [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
+            if (result) {
+                NSArray *item = [result objectForKey:@"Detail"];
+                for (int i = 0; i < item.count; i ++ ) {
+                    NSDictionary *dic = [item objectAtIndex:i];
+                    NSString  *commentNum = [dic objectForKey:@"commentnum"];
+                    NSString  *commentpraisenum = [dic objectForKey:@"commentpraisenum"];
+                    NSString  *postpraisenum = [dic objectForKey:@"postpraisenum"];
+                    NSString  *sysmsgnum = [dic objectForKey:@"sysmsgnum"];
+                    if (([commentNum intValue] + [commentpraisenum intValue] + [postpraisenum intValue] + [sysmsgnum intValue] > 0)) {
+                        [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationShowAlertDot object:nil];
+                    }
+                }
+            }
+            NSLog(@"result:%@",result);
+        } failure:^(NSError *erro) {
+            
+        }];
+    }
+    
     NSLog(@"username:%@",sharedInfo.username);
 }
+
+- (void)loadADimageView{
+    
+    self.launchImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+    self.launchImage.backgroundColor = [UIColor clearColor];
+    if (ScreenWidth == 320 && ScreenHeight == 480) { //iPhone4
+        [_launchImage setImage:[UIImage imageNamed:@"launchimage_iphone4"]];
+    }else if (ScreenWidth == 320 && ScreenHeight == 568){ //iPhone5
+        [_launchImage setImage:[UIImage imageNamed:@"launchimage_iphone5"]];
+    }else if (ScreenWidth == 375){ //iPhone6
+        [_launchImage setImage:[UIImage imageNamed:@"launchimage_iphone6"]];
+    }else if (ScreenWidth == 414){ //iPhone6 Plus
+        [_launchImage setImage:[UIImage imageNamed:@"launchimage_iphone6p@3x"]];
+    }else{
+        [_launchImage setImage:[UIImage imageNamed:@"launchimage_iphone5"]];
+    }
+    
+    //启动页面加一个广告宣传
+    self.adImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 120 * scaleToScreenHeight)];
+    _adImageView.backgroundColor = [UIColor clearColor];
+    NSDictionary *params = @{@"Method":@"ReAdvertis",@"Detail":@[@{@"PageSize":@"1",@"PageIndex":@"1",@"IsShow":@"888",@"TypeID":@"3",@"STypeID":@"14"}]};
+    [CKHttpRequest createRequest:HTTP_COMMAND_ADVERTIS WithParam:params withMethod:@"POST" success:^(id result) {
+        NSLog(@"resultsss:%@",result);
+        if (result) {
+            NSArray  *items = [result objectForKey:@"Detail"];
+            for (int i = 0; i < items.count; i++) {
+                NSDictionary  *dic = [items objectAtIndex:i];
+                if (i == 0) {
+                    NSString *filedomain = [dic objectForKey:@"filedomain"];
+                    NSString *filename   = [dic objectForKey:@"filename"];
+                    NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",filedomain],BASE_IMAGE_URL,guanggao,filename];
+                    [_adImageView sd_setImageWithURL:[NSURL URLWithString:imageURL]];
+                    
+                    NSLog(@"imageURL:%@",imageURL);
+                }
+            }
+        }
+    } failure:^(NSError *erro) {
+        
+    }];
+    
+    [self.launchImage addSubview:_adImageView];
+    [self.window addSubview:self.launchImage];
+    [self.window bringSubviewToFront:self.launchImage];
+    [self performSelector:@selector(removeAdImageView) withObject:nil afterDelay:3];
+}
+
+/**
+ *  启动页面3s后移除
+ */
+- (void)removeAdImageView
+{
+    [self.adImageView removeFromSuperview];
+    [self.launchImage removeFromSuperview];
+    self.window.rootViewController = self.baseNavi;
+    self.window.backgroundColor = [UIColor clearColor];
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

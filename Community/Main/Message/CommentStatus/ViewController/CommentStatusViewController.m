@@ -34,6 +34,11 @@
     [self createCommentTopView];
     [self createTableView];
     
+    page = 1;
+    sendPage = 1;
+    
+    [self getMyReceiveComment:1];
+    
     [self setupRefreshHeaderWithReceive];
     [self setupUploadMoreWithReceive];
     
@@ -45,7 +50,7 @@
 
 - (void)createTableView
 {
-    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 42, ScreenWidth, ScreenHeight - 64 - 42 - 42) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 42, ScreenWidth, ScreenHeight - 64 - 42) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.tag = 1000;
@@ -54,7 +59,7 @@
     _tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_tableView];
     
-    _sendTabelView = [[UITableView alloc]initWithFrame:CGRectMake(0, 42, ScreenWidth, ScreenHeight - 64 - 42 - 42) style:UITableViewStylePlain];
+    _sendTabelView = [[UITableView alloc]initWithFrame:CGRectMake(0, 42, ScreenWidth, ScreenHeight - 64 - 42) style:UITableViewStylePlain];
     _sendTabelView.dataSource = self;
     _sendTabelView.delegate = self;
     _sendTabelView.hidden = YES;
@@ -131,19 +136,61 @@
 }
 
 #pragma mark -- HTTP
-//我发出的
+//我收到的
 - (void)getMyReceiveComment:(int)pageIndex
 {
     SharedInfo *sharedInfo  = [SharedInfo sharedDataInfo];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
     
-    //    NSDictionary *parameters = @{@"Method":@"AddCommentToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"CommentID":button.post_id,@"UserID":sharedInfo.user_id}]};
+    NSDictionary *parameters = @{@"Method":@"ReCommentInfobyPostID",@"LoginUserID":sharedInfo.user_id,@"Detail":@[@{@"ToUserID":sharedInfo.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"Sort":@"0",@"FldSortType":@"1"}]};
+    [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
+        NSLog(@"result:%@",result);
+        if (result) {
+            NSArray *items = [MyCommentModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+            if (page == 1) {
+                [self.dataArray removeAllObjects];
+                [self.sendCommentArray removeAllObjects];
+            }
+            
+            for (int i = 0; i < items.count; i ++) {
+                if (!self.dataArray) {
+                    self.dataArray = [[NSMutableArray alloc]init];
+                }
+                [self.dataArray addObject:[items objectAtIndex:i]];
+            }
+        }
+        [_tableView reloadData];
+    } failure:^(NSError *erro) {
+        
+    }];
 }
 
-//我收到的
+//我发出的
 - (void)getMySendComment:(int)pageIndex
 {
+    SharedInfo *sharedInfo  = [SharedInfo sharedDataInfo];
+    NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
     
+    NSDictionary *parameters = @{@"Method":@"ReCommentInfobyPostID",@"LoginUserID":sharedInfo.user_id,@"Detail":@[@{@"UserID":sharedInfo.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"Sort":@"0",@"FldSortType":@"1"}]};
+    [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
+        NSLog(@"result:%@",result);
+        if (result) {
+            NSArray *items = [MyCommentModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+            if (sendPage == 1) {
+                [self.sendCommentArray removeAllObjects];
+            }
+            for (int i = 0; i < items.count; i ++) {
+                if (!self.sendCommentArray) {
+                    self.sendCommentArray = [[NSMutableArray alloc]init];
+                }
+                [self.sendCommentArray addObject:[items objectAtIndex:i]];
+            }
+        }
+        [_sendTabelView reloadData];
+    } failure:^(NSError *erro) {
+        
+    }];
+
 }
 
 #pragma mark -- UITableViewDelegate
@@ -164,7 +211,8 @@
         if (!cell) {
             cell = [[MyReceiveCommentTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
         }
-        cell.textLabel.text = @"test";
+        MyCommentModel *model = self.dataArray[indexPath.row];
+        [cell configureWithCellInfo:model];
         return cell;
     }else{
         static NSString *identityCell = @"sendCommentCell";
@@ -172,7 +220,8 @@
         if (!cell) {
             cell = [[MySendCommentTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
         }
-        cell.textLabel.text = @"test";
+        MyCommentModel *model = self.sendCommentArray[indexPath.row];
+        [cell configureWithCellInfo:model];
         return cell;
     }
 }

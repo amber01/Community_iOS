@@ -14,6 +14,7 @@
 #import "SendTopicViewController.h"
 #import "NSString+MyCategory.h"
 #import "TodayTopicMoreTableViewCell.h"
+#import "WebDetailViewController.h"
 
 @interface TodayTopicViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
 {
@@ -49,16 +50,23 @@
     self.cateArray = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12",@"13"];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    [self.adView startTimerPlay];
+}
+
 #pragma mark -- HTTP
 - (void)getTodayTopicDataInfo:(int)pageIndex
 {
-    [self initMBProgress:@"数据加载中..."];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
     NSDictionary *parameters = @{@"Method":@"RePostInfo",@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"2",@"PageIndex":pageStr,@"FldSort":@"3",@"FldSortType":@"1"}]};
     
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSArray *items = [TodayTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
         NSArray *imageItems = [TodayTopicImagesModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
+        
+        NSLog(@"detail:%@",result);
         
         if (page == 1) {
             [self.dataArray removeAllObjects];
@@ -78,7 +86,6 @@
             }
             [self.imagesArray addObject:[imageItems objectAtIndex:i]];
         }
-        [self setMBProgreeHiden:YES];
         [self.tableView reloadData];
     } failure:^(NSError *erro) {
         
@@ -91,18 +98,26 @@
     
     [CKHttpRequest createRequest:HTTP_COMMAND_ADVERTIS WithParam:parameters withMethod:@"POST" success:^(id result) {
         if (self.adView) {
+            
             NSMutableArray *imageArray = [[NSMutableArray alloc]init];
             NSArray *detailArray = [result objectForKey:@"Detail"];
+            NSLog(@"detailArray:%@",detailArray);
             for (int i = 0; i < detailArray.count; i ++ ) {
                 NSDictionary *dic = [detailArray objectAtIndex:i];
                 NSString *tempStr = [dic objectForKey:@"filename"];
-                NSString *imageStr = [NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,postinfo,tempStr];
+                NSString *filedomain = [dic objectForKey:@"filedomain"];
+                NSString *imageStr = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",filedomain],BASE_IMAGE_URL,guanggao,tempStr];
                 [imageArray addObject:imageStr];
             }
             
             [_adView getCurrentAdData:detailArray];
             [_adView startAdsWithBlock:imageArray block:^(NSInteger clickIndex) {
-                
+                NSDictionary *dic = detailArray[clickIndex];
+                NSString     *url = [dic objectForKey:@"linkaddress"];
+                WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
+                webDetailVC.url = url;
+                [webDetailVC setHidesBottomBarWhenPushed:YES];
+                [self.navigationController pushViewController:webDetailVC animated:YES];
             }];
         }
         [self.tableView reloadData];
@@ -195,7 +210,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    TodayTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
     TopicDetailViewController *detailVC = [[TopicDetailViewController alloc]init];
+    detailVC.post_id = model.id;
     [detailVC setHidesBottomBarWhenPushed:YES];
     [self.navigationController pushViewController:detailVC animated:YES];
 }
@@ -276,11 +293,6 @@
 }
 
 #pragma mark -- ohter
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:YES];
-}
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
@@ -288,6 +300,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [self.adView.myTimer invalidate];
     [super viewWillDisappear:YES];
 }
 

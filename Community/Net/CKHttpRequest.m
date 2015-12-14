@@ -48,7 +48,6 @@
     return self;
 }
 
-
 + (void)createRequest:(HTTP_COMMAND_LIST)requestID WithParam:(NSDictionary *)param withMethod:(NSString*)method success:(void(^)(id result))success failure:(void(^)(NSError *erro))failure
 {
     [[CKHttpRequest sharedInstance] createUnloginedRequest:requestID WithParam:param withMethod:method success:success failure:failure];

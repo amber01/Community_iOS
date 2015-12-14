@@ -92,7 +92,7 @@
             
             _nicknameLabel.text = share.nickname;
             
-            [_avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,share.picture]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
+            [_avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",share.picturedomain],BASE_IMAGE_URL,face,share.picture]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
             
             if ([share.sex isEqualToString:@"女"]) {
                 _sexImageView.image = [UIImage imageNamed:@"user_women"];
@@ -180,7 +180,7 @@
      *  需要先调用接口判断一下是否关注过对方
      */
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-    NSDictionary *parameters = @{@"Method":@"ReMyFansInfo",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"ToUserID":toFansID,@"IsShow":@"888"}]};
+    NSDictionary *parameters = @{@"Method":@"ReMyFansInfo",@"Detail":@[@{@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"ToUserID":toFansID,@"IsShow":@"888"}]};
     [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"is resutl:%@",result);
         
@@ -266,7 +266,7 @@
             for (int i = 0; i < dataArray.count; i ++) {
                 NSDictionary *dic = [dataArray objectAtIndex:i];
                 
-                [_avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,[dic objectForKey:@"picture"]]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
+                [_avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",[dic objectForKey:@"picturedomain"]],BASE_IMAGE_URL,face,[dic objectForKey:@"picture"]]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
                 
                 if ([[dic objectForKey:@"sex"] isEqualToString:@"女"]) {
                     _sexImageView.image = [UIImage imageNamed:@"user_women"];

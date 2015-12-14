@@ -76,7 +76,7 @@
     }else if (indexPath.section == 0){
         if (indexPath.row == 0) {
             cell.accessoryType = UITableViewCellAccessoryNone;
-            [cell.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",picturedomain,BASE_IMAGE_URL,face,shareInfo.picture]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
+            [cell.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",shareInfo.picturedomain],BASE_IMAGE_URL,face,shareInfo.picture]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
         }else if (indexPath.row == 1){
             cell.detailTextLabel.text = shareInfo.sex;
         }else if (indexPath.row == 2){

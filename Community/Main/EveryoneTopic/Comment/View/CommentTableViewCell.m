@@ -76,8 +76,9 @@
 - (void)configureCellWithInfo:(CommentModel *)model  withRow:(NSInteger )row andPraiseData:(NSArray *)praiseArray
 {
     
-    [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
+    [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
     NSLog(@"%@",[NSString stringWithFormat:@"%@%@%@%@",model.logopicturedomain,BASE_IMAGE_URL,face,model.logopicture]);
+    NSLog(@"images:%@",[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]);
     nicknameLabel.text = model.nickname;
     dateLabel.text = model.createtime;
     

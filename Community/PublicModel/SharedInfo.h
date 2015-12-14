@@ -29,6 +29,8 @@
 @property (nonatomic,copy)NSString *client;
 @property (nonatomic,copy)NSString *cityarea;  //城市名
 @property (nonatomic,copy)NSString *provincearea; //省份
+@property (nonatomic,copy)NSString *picturedomain;
+
 
 +(SharedInfo *)sharedDataInfo;
 
