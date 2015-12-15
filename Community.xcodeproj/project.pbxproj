@@ -209,6 +209,7 @@
 		966EE5481C0028440039325F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 966EE53C1C0028440039325F /* MainWindow.xib */; };
 		966EE5491C0028440039325F /* Overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 966EE53D1C0028440039325F /* Overlay@2x.png */; };
 		9671FE541C1DAB6800AE6401 /* TWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9671FE531C1DAB6800AE6401 /* TWebView.m */; };
+		9671FE561C1EF59100AE6401 /* today_topic_log@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9671FE551C1EF59100AE6401 /* today_topic_log@2x.png */; };
 		968426231C01734E00774538 /* TodayTopicImagesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 968426221C01734E00774538 /* TodayTopicImagesModel.m */; };
 		968426261C01A10B00774538 /* EveryoneTopicHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 968426251C01A10B00774538 /* EveryoneTopicHeadView.m */; };
 		969345C41C1B11360056072F /* MyCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 969345C31C1B11360056072F /* MyCommentModel.m */; };
@@ -809,6 +810,7 @@
 		966EE53D1C0028440039325F /* Overlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Overlay@2x.png"; sourceTree = "<group>"; };
 		9671FE521C1DAB6800AE6401 /* TWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWebView.h; sourceTree = "<group>"; };
 		9671FE531C1DAB6800AE6401 /* TWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWebView.m; sourceTree = "<group>"; };
+		9671FE551C1EF59100AE6401 /* today_topic_log@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "today_topic_log@2x.png"; sourceTree = "<group>"; };
 		968426211C01734E00774538 /* TodayTopicImagesModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicImagesModel.h; sourceTree = "<group>"; };
 		968426221C01734E00774538 /* TodayTopicImagesModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicImagesModel.m; sourceTree = "<group>"; };
 		968426241C01A10B00774538 /* EveryoneTopicHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EveryoneTopicHeadView.h; sourceTree = "<group>"; };
@@ -1926,6 +1928,7 @@
 				969345F61C1C64270056072F /* topic_detail_like@2x.png */,
 				96ED343E1C133BCE0021C9C4 /* user_mutual_follow@2x.png */,
 				96ED34581C1877FF0021C9C4 /* topic_search_icon@2x.png */,
+				9671FE551C1EF59100AE6401 /* today_topic_log@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -2989,6 +2992,7 @@
 				96C8D2D01C0A0F4E004642FC /* topic_send_information@3x.png in Resources */,
 				966EE5461C0028440039325F /* ELCAssetPicker.xib in Resources */,
 				9643D7261BF781DD003A394D /* face_s@2x.png in Resources */,
+				9671FE561C1EF59100AE6401 /* today_topic_log@2x.png in Resources */,
 				96C8D2F21C0A0F4E004642FC /* mine_my_draft@2x.png in Resources */,
 				96C8D2B61C0A0F4E004642FC /* topic_send_city@2x.png in Resources */,
 				96C8D2F51C0A0F4E004642FC /* mine_my_draft@3x.png in Resources */,

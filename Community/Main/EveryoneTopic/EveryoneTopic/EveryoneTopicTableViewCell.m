@@ -27,6 +27,9 @@
     UILabel             *fromLabel;
     
     PubliButton         *commentBtn;
+    
+    float               firstImageHeight;
+    float               firstImageWidth;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -104,9 +107,10 @@
         [self.contentView addSubview:fromLabel];
         [self.contentView addSubview:commentBtn];
         [self.contentView addSubview:_likeBtn];
-        [self.contentView addSubview:photoImageBtn3];
+        
         [self.contentView addSubview:photoImageBtn1];
         [self.contentView addSubview:photoImageBtn2];
+        [self.contentView addSubview:photoImageBtn3];
         [self.contentView addSubview:dateLabel];
         [self.contentView addSubview:contentLabel];
         [self.contentView addSubview:nicknameLabel];
@@ -120,8 +124,6 @@
 {
     [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
     nicknameLabel.text = model.nickname;
-    
-    NSLog(@"image url ：%@",[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]);
     
     dateLabel.text = [NSString stringWithFormat:@"%@ %@",model.createtime,model.source];
     
@@ -141,7 +143,7 @@
             }
         }
     }
-
+    
     
     /**
      *  动态计算内容高度
@@ -167,8 +169,10 @@
     /**
      *  创建图片
      */
+    if (self.photoUrlArray) {
+        [self.photoUrlArray removeAllObjects];
+    }
     
-    [self.photoUrlArray removeAllObjects];
     
     float imageHeight;
     if ([model.imagecount intValue] > 0) {
@@ -176,10 +180,12 @@
         photoImageBtn1.frame = CGRectMake(15, contentLabel.bottom + 10, 80, 80);
         photoImageBtn2.frame = CGRectMake(photoImageBtn1.right + 7, contentLabel.bottom + 10, 80, 80);
         photoImageBtn3.frame = CGRectMake(photoImageBtn2.right + 7, contentLabel.bottom + 10, 80, 80);
-
+        
         photoImageBtn1.hidden = NO;
         photoImageBtn2.hidden = NO;
         photoImageBtn3.hidden = NO;
+        
+        
         
         
         imageHeight = 80 + contentLabel.bottom + 10;
@@ -194,16 +200,31 @@
                 
                 NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,BigImage,imagesModel.picture];
                 if (k==0) {
-                    [photoImageBtn1 sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_background"]];
-                    [self.photoUrlArray addObject:imageURL];
+                    if (!isStrEmpty(imagesModel.picture)) {
+                        
+                        [photoImageBtn1 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_background"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                            if (image) {
+                                firstImageWidth = image.size.width;
+                                firstImageHeight = image.size.height;
+                            }
+                        }];
+                        
+                        [photoImageBtn1 sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_background"]];
+                        
+                        [self.photoUrlArray addObject:imageURL];
+                    }
                     k=1;
                 }else if (k==1){
-                    [photoImageBtn2 sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_background"]];
-                    [self.photoUrlArray addObject:imageURL];
+                    if (!isStrEmpty(imagesModel.picture)) {
+                        [photoImageBtn2 sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_background"]];
+                        [self.photoUrlArray addObject:imageURL];
+                    }
                     k=2;
                 }else if (k == 2){
-                    [photoImageBtn3 sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_background"]];
-                    [self.photoUrlArray addObject:imageURL];
+                    if (!isStrEmpty(imagesModel.picture)) {
+                        [photoImageBtn3 sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_background"]];
+                        [self.photoUrlArray addObject:imageURL];
+                    }
                     k = 3;
                 }else if (k == 3){
                     [self.photoUrlArray addObject:imageURL];
@@ -223,10 +244,13 @@
                 }else if (k == 8){
                     [self.photoUrlArray addObject:imageURL];
                 }
+                [self showPhotoImage:self.photoUrlArray withTag:row];
             }else{
                 if (self.photoUrlArray.count == 2) {
                     photoImageBtn3.hidden = YES;
                 }else if (self.photoUrlArray.count == 1){
+                    photoImageBtn1.frame = CGRectMake(15, contentLabel.bottom + 12, firstImageWidth, firstImageHeight);
+                    
                     photoImageBtn2.hidden = YES;
                     photoImageBtn3.hidden = YES;
                 }
@@ -240,21 +264,27 @@
     }
     
     commentLabel.text = [NSString stringWithFormat:@"评论%@",model.commentnum];
-
     
-    //likeLabel.text = [NSString stringWithFormat:@"顶%@",likeArrayData[row]];
     fromLabel.text = model.classname;
     
-    _likeBtn.frame = CGRectMake(0, imageHeight + 10, 90, 26);
-    commentBtn.frame = CGRectMake(35 + 40, imageHeight + 10, 100, 30);
-    fromLabel.frame = CGRectMake(100, imageHeight + 8, ScreenWidth - 100 - 15, 20);
-    self.frame = CGRectMake(0, 0, ScreenWidth,avatarImageView.height + imageHeight - 10);
+    
+    if (self.photoUrlArray.count == 1) {
+        _likeBtn.frame = CGRectMake(0, imageHeight + 10 - 78 + firstImageHeight, 90, 26);
+        commentBtn.frame = CGRectMake(35 + 40, imageHeight + 10 - 78 + firstImageHeight, 100, 30);
+        fromLabel.frame = CGRectMake(100, imageHeight + 8 - 78 + firstImageHeight, ScreenWidth - 100 - 15, 20);
+        self.frame = CGRectMake(0, 0, ScreenWidth,avatarImageView.height + imageHeight - 10 - 78 + firstImageHeight);
+    }else{
+        _likeBtn.frame = CGRectMake(0, imageHeight + 10, 90, 26);
+        commentBtn.frame = CGRectMake(35 + 40, imageHeight + 10, 100, 30);
+        fromLabel.frame = CGRectMake(100, imageHeight + 8, ScreenWidth - 100 - 15, 20);
+        self.frame = CGRectMake(0, 0, ScreenWidth,avatarImageView.height + imageHeight - 10);
+    }
 }
 
 #pragma mark - photobrowser代理方法
 - (void)showPhotoBrowseOne:(TouchImageButton *)button
 {
-
+    
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     SDPhotoBrowser *browser = [[SDPhotoBrowser alloc] init];
     browser.imageCount = self.photoUrlArray.count; //图片总数
@@ -285,6 +315,11 @@
         browser.delegate = self;
         [browser show];
     }
+}
+
+- (void)showPhotoImage:(NSMutableArray *)photoArray withTag:(NSInteger)row
+{
+    //NSLog(@"photo array:%@",photoArray);
 }
 
 // 返回高质量图片的url

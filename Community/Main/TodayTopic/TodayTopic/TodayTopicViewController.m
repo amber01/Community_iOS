@@ -20,6 +20,7 @@
 {
     PopMenu *_popMenu;
     int     page;
+    UIImageView *headLogImageView;
 }
 
 @property (nonatomic,retain) UITableView    *tableView;
@@ -34,7 +35,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"今日有料";
+    //self.title = @"今日有料";
     self.view.backgroundColor = VIEW_COLOR;
     [self setupTableView];
     [self setupRefreshHeader];
@@ -45,7 +46,9 @@
     CustomButtonItem *buttonItem = [[CustomButtonItem alloc]initButtonItem:[UIImage imageNamed:@"today_send_topic.png"]];
     [buttonItem.itemBtn addTarget:self action:@selector(selectSendCat) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = buttonItem;
-    
+    headLogImageView = [[UIImageView alloc]initWithFrame:CGRectMake(ScreenWidth/2-49, 27, 98, 30)];
+    [headLogImageView setImage:[UIImage imageNamed:@"today_topic_log"]];
+    [self.navigationController.view addSubview:headLogImageView];
     [self getTodayTopicDataInfo:1];
     self.cateArray = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12",@"13"];
 }
@@ -53,6 +56,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
+    headLogImageView.hidden = NO;
     [self.adView startTimerPlay];
 }
 
@@ -301,6 +305,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self.adView.myTimer invalidate];
+    headLogImageView.hidden = YES;
     [super viewWillDisappear:YES];
 }
 
