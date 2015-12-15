@@ -55,7 +55,7 @@
         [self.contentView addSubview:likeLabel];
         [self.contentView addSubview:avatarImageView];
         [self.contentView addSubview:dateLabel];
-        [self.contentView addSubview:contentLabel];
+        [self.contentView addSubview:contentLabel]; 
         [self.contentView addSubview:nicknameLabel];
         [self.contentView addSubview:commentLabel];
     }
