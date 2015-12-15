@@ -43,4 +43,6 @@
 #import "PubliButton.h"
 #import "LoginViewController.h"
 
+#import "UIImage+Extras.h"
+
 #endif /* Commen_h */

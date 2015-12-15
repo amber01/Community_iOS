@@ -1,14 +1,15 @@
 //
-//  CommentLikeTableViewCell.m
+//  TopicSendTableViewCell.m
 //  Community
 //
-//  Created by amber on 15/12/12.
+//  Created by shlity on 15/12/15.
 //  Copyright © 2015年 shlity. All rights reserved.
 //
 
-#import "CommentLikeTableViewCell.h"
+#import "TopicSendTableViewCell.h"
 
-@implementation CommentLikeTableViewCell
+@implementation TopicSendTableViewCell
+
 {
     PubliButton         *avatarImageView;
     UILabel             *nicknameLabel;
@@ -49,7 +50,7 @@
         //commentLabel.text = @"师傅的说法第三方";
         
         likeLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, contentLabel.bottom + 5,100,20)];
-        likeLabel.text = @"顶了你";
+        likeLabel.text = @"我顶的";
         likeLabel.font = [UIFont systemFontOfSize:15];
         
         [self.contentView addSubview:likeLabel];
@@ -62,7 +63,7 @@
     return self;
 }
 
-- (void)configureWithCellInfo:(CommentLikeModel *)model
+- (void)configureWithCellInfo:(TopicLikeModel *)model
 {
     [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
     nicknameLabel.text = model.nickname;
@@ -70,7 +71,7 @@
     /**
      *  动态计算内容高度
      */
-    contentLabel.text = [NSString stringWithFormat:@"@我:%@",model.detail];
+    contentLabel.text = [NSString stringWithFormat:@"@%@:%@",model.tonickname,model.detail];
     
     NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
     CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
@@ -88,5 +89,6 @@
     
     // Configure the view for the selected state
 }
+
 
 @end

@@ -9,7 +9,7 @@
 #import "TopicLikeViewController.h"
 #import "MsgCommentTopView.h"
 #import "TopicLikeTableViewCell.h"
-#import "MySendCommentTableViewCell.h"
+#import "TopicSendTableViewCell.h"
 
 @interface TopicLikeViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -214,9 +214,9 @@
         return cell;
     }else{
         static NSString *identityCell = @"sendCommentCell";
-        TopicLikeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
+        TopicSendTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
         if (!cell) {
-            cell = [[TopicLikeTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
+            cell = [[TopicSendTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
         }
         TopicLikeModel *model = self.sendCommentArray[indexPath.row];
         [cell configureWithCellInfo:model];

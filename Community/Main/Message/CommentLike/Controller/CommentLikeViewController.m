@@ -8,7 +8,7 @@
 
 #import "CommentLikeViewController.h"
 #import "MsgCommentTopView.h"
-#import "TopicLikeTableViewCell.h"
+#import "CommentSendTableViewCell.h"
 #import "CommentLikeTableViewCell.h"
 
 
@@ -31,7 +31,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"帖子点赞";
+    self.title = @"评论点赞";
     [self createCommentTopView];
     [self createTableView];
     
@@ -215,9 +215,9 @@
         return cell;
     }else{
         static NSString *identityCell = @"sendCommentCell";
-        CommentLikeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
+        CommentSendTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
         if (!cell) {
-            cell = [[CommentLikeTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
+            cell = [[CommentSendTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
         }
         CommentLikeModel *model = self.sendCommentArray[indexPath.row];
         [cell configureWithCellInfo:model];

@@ -149,7 +149,6 @@
             NSArray *items = [MyCommentModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
             if (page == 1) {
                 [self.dataArray removeAllObjects];
-                [self.sendCommentArray removeAllObjects];
             }
             
             for (int i = 0; i < items.count; i ++) {

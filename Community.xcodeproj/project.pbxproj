@@ -395,6 +395,9 @@
 		DB62F95C1C0C4321004AB454 /* delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DB62F95B1C0C4321004AB454 /* delete@2x.png */; };
 		DB84257C1BF1988D00D1C273 /* OptionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DB84257B1BF1988D00D1C273 /* OptionButton.m */; };
 		DB8425831BF19B7A00D1C273 /* SendTopicBtnView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8425821BF19B7A00D1C273 /* SendTopicBtnView.m */; };
+		DB9A81201C1FE1E600601780 /* UIImage+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A811F1C1FE1E600601780 /* UIImage+Extras.m */; };
+		DB9A81231C2013AA00601780 /* CommentSendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A81221C2013AA00601780 /* CommentSendTableViewCell.m */; };
+		DB9A81261C20167100601780 /* TopicSendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A81251C20167100601780 /* TopicSendTableViewCell.m */; };
 		DBB586601BF031FA001DBD4C /* NSString+TextSize.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB5865F1BF031FA001DBD4C /* NSString+TextSize.m */; };
 		DBE54E121C0D6DBD0057D68F /* user_info_addfollow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E101C0D6DBD0057D68F /* user_info_addfollow@2x.png */; };
 		DBE54E131C0D6DBD0057D68F /* user_info_follow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E111C0D6DBD0057D68F /* user_info_follow@2x.png */; };
@@ -1069,6 +1072,12 @@
 		DB84257B1BF1988D00D1C273 /* OptionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionButton.m; sourceTree = "<group>"; };
 		DB8425811BF19B7A00D1C273 /* SendTopicBtnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendTopicBtnView.h; sourceTree = "<group>"; };
 		DB8425821BF19B7A00D1C273 /* SendTopicBtnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendTopicBtnView.m; sourceTree = "<group>"; };
+		DB9A811E1C1FE1E600601780 /* UIImage+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Extras.h"; sourceTree = "<group>"; };
+		DB9A811F1C1FE1E600601780 /* UIImage+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Extras.m"; sourceTree = "<group>"; };
+		DB9A81211C2013AA00601780 /* CommentSendTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentSendTableViewCell.h; sourceTree = "<group>"; };
+		DB9A81221C2013AA00601780 /* CommentSendTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentSendTableViewCell.m; sourceTree = "<group>"; };
+		DB9A81241C20167100601780 /* TopicSendTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicSendTableViewCell.h; sourceTree = "<group>"; };
+		DB9A81251C20167100601780 /* TopicSendTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicSendTableViewCell.m; sourceTree = "<group>"; };
 		DBB5865E1BF031FA001DBD4C /* NSString+TextSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TextSize.h"; sourceTree = "<group>"; };
 		DBB5865F1BF031FA001DBD4C /* NSString+TextSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TextSize.m"; sourceTree = "<group>"; };
 		DBE54E101C0D6DBD0057D68F /* user_info_addfollow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_addfollow@2x.png"; sourceTree = "<group>"; };
@@ -2175,6 +2184,8 @@
 				DB84257B1BF1988D00D1C273 /* OptionButton.m */,
 				969345E21C1BE9A50056072F /* WSJSObject.h */,
 				969345E31C1BE9A50056072F /* WSJSObject.m */,
+				DB9A811E1C1FE1E600601780 /* UIImage+Extras.h */,
+				DB9A811F1C1FE1E600601780 /* UIImage+Extras.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -2259,6 +2270,8 @@
 			children = (
 				969345D91C1B2CD90056072F /* CommentLikeTableViewCell.h */,
 				969345DA1C1B2CD90056072F /* CommentLikeTableViewCell.m */,
+				DB9A81211C2013AA00601780 /* CommentSendTableViewCell.h */,
+				DB9A81221C2013AA00601780 /* CommentSendTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2296,6 +2309,8 @@
 			children = (
 				969345D61C1B28260056072F /* TopicLikeTableViewCell.h */,
 				969345D71C1B28260056072F /* TopicLikeTableViewCell.m */,
+				DB9A81241C20167100601780 /* TopicSendTableViewCell.h */,
+				DB9A81251C20167100601780 /* TopicSendTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -3304,6 +3319,7 @@
 				96ED34471C144B930021C9C4 /* ModifyNicknameViewController.m in Sources */,
 				969345D81C1B28260056072F /* TopicLikeTableViewCell.m in Sources */,
 				963DC46B1C0ACFD9005D1955 /* EMCDDeviceManager+ProximitySensor.m in Sources */,
+				DB9A81261C20167100601780 /* TopicSendTableViewCell.m in Sources */,
 				963DC4AF1C0ACFD9005D1955 /* UIViewController+DismissKeyboard.m in Sources */,
 				96ED34601C1878D90021C9C4 /* TopicSearchViewController.m in Sources */,
 				963DC4961C0ACFD9005D1955 /* UIImageView+EMHighlightedWebCache.m in Sources */,
@@ -3314,6 +3330,7 @@
 				96BCE23C1BF24536006D2CF6 /* JXBAdPageView.m in Sources */,
 				969345E11C1BE8830056072F /* WebDetailViewController.m in Sources */,
 				96BCE2341BF244E0006D2CF6 /* CustomButtonItem.m in Sources */,
+				DB9A81231C2013AA00601780 /* CommentSendTableViewCell.m in Sources */,
 				963DC4A91C0ACFD9005D1955 /* EaseMessageModel.m in Sources */,
 				963DC49E1C0ACFD9005D1955 /* PSTCollectionViewFlowLayout.m in Sources */,
 				964AA11A1BEF7B5E007CE0E9 /* UILabel+VerticalUpAlignment.m in Sources */,
@@ -3411,6 +3428,7 @@
 				963DC4C21C0ACFD9005D1955 /* EaseBubbleView+File.m in Sources */,
 				96D508411C0DE635001DFA49 /* FindPasswordView.m in Sources */,
 				964A9FEE1BEF74C5007CE0E9 /* BaseNavigationController.m in Sources */,
+				DB9A81201C1FE1E600601780 /* UIImage+Extras.m in Sources */,
 				96C5A3361C1D1B500029FC74 /* ScorellButtonView.m in Sources */,
 				966EE53E1C0028440039325F /* ELCAlbumPickerController.m in Sources */,
 				964AA1191BEF7B5E007CE0E9 /* UIImage+Scale.m in Sources */,

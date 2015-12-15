@@ -19,9 +19,9 @@
     UILabel             *dateLabel;
     
     UILabel             *contentLabel;
-    UIButton            *photoImageBtn1;
-    UIButton            *photoImageBtn2;
-    UIButton            *photoImageBtn3;
+    UIImageView         *photoImageBtn1;
+    UIImageView         *photoImageBtn2;
+    UIImageView         *photoImageBtn3;
     
     UILabel             *commentLabel;
     UILabel             *fromLabel;
@@ -57,15 +57,32 @@
         contentLabel.numberOfLines = 0;
         [contentLabel setFont:[UIFont systemFontOfSize:15]];
         
-        photoImageBtn1 = [[UIButton alloc]initWithFrame:CGRectMake(15, contentLabel.bottom + 15, 175/2, 130/2)];
-        [photoImageBtn1 addTarget:self action:@selector(showPhotoBrowseOne:) forControlEvents:UIControlEventTouchUpInside];
+        photoImageBtn1 = [[UIImageView alloc]initWithFrame:CGRectMake(15, contentLabel.bottom + 15, 80, 80)];
+        UITapGestureRecognizer *fristPhotoTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showPhotoBrowseOne:)];
+        fristPhotoTapGesture.cancelsTouchesInView = YES;
+        fristPhotoTapGesture.delegate = self;
+        photoImageBtn1.userInteractionEnabled = YES;
+        [photoImageBtn1 setContentMode:UIViewContentModeScaleAspectFill]; //居中截取，长宽等比
+        photoImageBtn1.clipsToBounds  = YES; //需要设置为YES
+        [photoImageBtn1 addGestureRecognizer:fristPhotoTapGesture];
         
-        photoImageBtn2 = [[UIButton alloc]initWithFrame:CGRectMake(photoImageBtn1.right + 7, contentLabel.bottom + 15, 175/2, 130/2)];
-        [photoImageBtn2 addTarget:self action:@selector(showPhotoBrowseTwo:) forControlEvents:UIControlEventTouchUpInside];
+        photoImageBtn2 = [[UIImageView alloc]initWithFrame:CGRectMake(photoImageBtn1.right + 7, contentLabel.bottom + 15, 80, 80)];
+        [photoImageBtn2 setContentMode:UIViewContentModeScaleAspectFill]; //居中截取，长宽等比
+        photoImageBtn2.clipsToBounds  = YES; //需要设置为YES
+        photoImageBtn2.userInteractionEnabled = YES;
+        UITapGestureRecognizer *secondPhotoTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showPhotoBrowseTwo:)];
+        secondPhotoTapGesture.cancelsTouchesInView = YES;
+        secondPhotoTapGesture.delegate = self;
+        [photoImageBtn2 addGestureRecognizer:secondPhotoTapGesture];
         
-        photoImageBtn3 = [[UIButton alloc]initWithFrame:CGRectMake(photoImageBtn2.right + 7, contentLabel.bottom + 15, 175/2, 130/2)];
-        [photoImageBtn3 addTarget:self action:@selector(showPhotoBrowseThree:) forControlEvents:UIControlEventTouchUpInside];
-        
+        photoImageBtn3 = [[UIImageView alloc]initWithFrame:CGRectMake(photoImageBtn2.right + 7, contentLabel.bottom + 15, 80, 80)];
+        [photoImageBtn3 setContentMode:UIViewContentModeScaleAspectFill]; //居中截取，长宽等比
+        photoImageBtn3.clipsToBounds  = YES; //需要设置为YES
+        photoImageBtn3.userInteractionEnabled = YES;
+        UITapGestureRecognizer *lastPhotoTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showPhotoBrowseThree:)];
+        lastPhotoTapGesture.cancelsTouchesInView = YES;
+        lastPhotoTapGesture.delegate = self;
+        [photoImageBtn3 addGestureRecognizer:lastPhotoTapGesture];
         
         
         self.likeBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
@@ -202,27 +219,29 @@
                 if (k==0) {
                     if (!isStrEmpty(imagesModel.picture)) {
                         
-                        [photoImageBtn1 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_background"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                        [photoImageBtn1 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] placeholderImage:[UIImage imageNamed:@"default_background"]  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                             if (image) {
                                 firstImageWidth = image.size.width;
                                 firstImageHeight = image.size.height;
+                            }else{
+                                firstImageHeight = 80;
                             }
                         }];
-                        
-                        [photoImageBtn1 sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_background"]];
-                        
                         [self.photoUrlArray addObject:imageURL];
                     }
                     k=1;
                 }else if (k==1){
                     if (!isStrEmpty(imagesModel.picture)) {
-                        [photoImageBtn2 sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_background"]];
+                        
+                        [photoImageBtn2 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]]placeholderImage:[UIImage imageNamed:@"default_background"]];
+                        
+                        //[photoImageBtn2 sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_background"]];
                         [self.photoUrlArray addObject:imageURL];
                     }
                     k=2;
                 }else if (k == 2){
                     if (!isStrEmpty(imagesModel.picture)) {
-                        [photoImageBtn3 sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_background"]];
+                        [photoImageBtn3 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]]placeholderImage:[UIImage imageNamed:@"default_background"]];
                         [self.photoUrlArray addObject:imageURL];
                     }
                     k = 3;
@@ -246,15 +265,15 @@
                 }
                 [self showPhotoImage:self.photoUrlArray withTag:row];
             }else{
-                if (self.photoUrlArray.count == 2) {
-                    photoImageBtn3.hidden = YES;
-                }else if (self.photoUrlArray.count == 1){
-                    photoImageBtn1.frame = CGRectMake(15, contentLabel.bottom + 12, firstImageWidth, firstImageHeight);
-                    
-                    photoImageBtn2.hidden = YES;
-                    photoImageBtn3.hidden = YES;
-                }
             }
+        }
+        if (self.photoUrlArray.count == 2) {
+            photoImageBtn3.hidden = YES;
+        }else if (self.photoUrlArray.count == 1){
+            photoImageBtn1.frame = CGRectMake(15, contentLabel.bottom + 12, firstImageWidth, firstImageHeight);
+            
+            photoImageBtn2.hidden = YES;
+            photoImageBtn3.hidden = YES;
         }
     }else{
         photoImageBtn1.hidden = YES;
@@ -282,7 +301,7 @@
 }
 
 #pragma mark - photobrowser代理方法
-- (void)showPhotoBrowseOne:(TouchImageButton *)button
+- (void)showPhotoBrowseOne:(UITapGestureRecognizer *)tapGesture
 {
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
@@ -293,7 +312,7 @@
     [browser show];
 }
 
-- (void)showPhotoBrowseTwo:(TouchImageButton *)button
+- (void)showPhotoBrowseTwo:(UITapGestureRecognizer *)tapGesture
 {
     if (self.photoUrlArray.count > 1) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
@@ -305,7 +324,7 @@
     }
 }
 
-- (void)showPhotoBrowseThree:(TouchImageButton *)button
+- (void)showPhotoBrowseThree:(UITapGestureRecognizer *)tapGesture
 {
     if (self.photoUrlArray.count > 2) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
@@ -349,6 +368,19 @@
     [userInfoVC setHidesBottomBarWhenPushed:YES];
     [self.viewController.navigationController pushViewController:userInfoVC animated:YES];
     NSLog(@"user_id:%@",button.user_id);
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    // 输出点击的view的类名
+    NSLog(@"%@", NSStringFromClass([touch.view class]));
+    
+    // 若为UITableViewCellContentView（即点击了tableViewCell），则不截获Touch事件
+    if ([NSStringFromClass([touch.view class]) isEqualToString:@"UITableViewCellContentView"]) {
+        return NO;
+    }
+    return  YES;
 }
 
 - (void)awakeFromNib {

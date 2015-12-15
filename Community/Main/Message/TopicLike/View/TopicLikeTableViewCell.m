@@ -64,13 +64,13 @@
 
 - (void)configureWithCellInfo:(TopicLikeModel *)model
 {
-    [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.tologopicturedomain],BASE_IMAGE_URL,face,model.tologopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
-    nicknameLabel.text = model.tonickname;
+    [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
+    nicknameLabel.text = model.nickname;
     dateLabel.text = model.createtime;
     /**
      *  动态计算内容高度
      */
-    contentLabel.text = [NSString stringWithFormat:@"@%@",model.detail];
+    contentLabel.text = [NSString stringWithFormat:@"@我:%@",model.detail];
     
     NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
     CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
