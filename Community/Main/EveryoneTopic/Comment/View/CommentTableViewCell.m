@@ -52,7 +52,7 @@
         self.likeBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
         _likeBtn.frame = CGRectMake(ScreenWidth - 13 - 15,15, 13 + 15, 26);
         _likeBtn.backgroundColor = [UIColor whiteColor];
-        self.likeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 26/2 - 13, 34/2, 26/2)];
+        self.likeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 26/2 - 11, 36/2, 28/2)];
         _likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
         _likeImageView.userInteractionEnabled = YES;
         [_likeBtn addSubview:_likeImageView];
