@@ -14,6 +14,8 @@
     UIImageView   *imageView;
     UILabel       *commentLabel;
     UILabel       *contentLabel;
+    UIImageView   *likeImageView;
+    UILabel       *likeNumLabel;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -29,7 +31,15 @@
         contentLabel.font = [UIFont systemFontOfSize:16.0];
         [self.contentView addSubview:contentLabel];
         
-        commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(100, imageView.bottom - 15, ScreenWidth - 115, 20)];
+        likeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(imageView.right + 10, imageView.bottom - 14, 17, 13)];
+        likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+        [self.contentView addSubview:likeImageView];
+        likeNumLabel = [[UILabel alloc]initWithFrame:CGRectMake(likeImageView.right+3, imageView.bottom - 17, ScreenWidth - likeImageView.width - imageView.width - 40, 20)];
+        likeNumLabel.textColor = TEXT_COLOR;
+        likeNumLabel.font = [UIFont systemFontOfSize:12];
+        [self.contentView addSubview:likeNumLabel];
+        
+        commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(100, imageView.bottom - 17, ScreenWidth - 115, 20)];
         commentLabel.textColor = TEXT_COLOR;
         commentLabel.font = [UIFont systemFontOfSize:12];
         commentLabel.text = @"232评论";
@@ -43,6 +53,7 @@
 {
     contentLabel.text = model.name;
     [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.picturedomain],BASE_IMAGE_URL,postinfo,model.picture]]placeholderImage:[UIImage imageNamed:@"default_background"]];
+    likeNumLabel.text = model.praisenum;
     commentLabel.text = [NSString stringWithFormat:@"%@评论",model.commentnum];
 }
 

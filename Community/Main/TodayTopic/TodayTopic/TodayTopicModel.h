@@ -18,5 +18,6 @@
 @property (nonatomic,copy)NSString *imagecount;
 @property (nonatomic,copy)NSString *picturedomain;
 @property (nonatomic,copy)NSString *name;
+@property (nonatomic,copy)NSString *praisenum;
 
 @end

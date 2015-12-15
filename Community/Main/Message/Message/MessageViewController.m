@@ -11,10 +11,15 @@
 #import "EaseMessageViewController.h"
 #import "TopicLikeViewController.h"
 #import "CommentLikeViewController.h"
+#import "MessageTableViewCell.h"
 
 @interface MessageViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
-    BOOL isLogin;
+    BOOL      isLogin;
+    NSString  *commentNumber;
+    NSString  *commentpraisenum;
+    NSString  *postpraisenum;
+    NSString  *sysmsgnum;
 }
 
 @property (nonatomic,retain) UITableView   *tableView;
@@ -58,14 +63,31 @@
 {
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     if (isStrEmpty(sharedInfo.user_id)) {
+        [_tableView reloadData];
         return;
     }
     NSDictionary *parameters = @{@"Method":@"ReCommentInfoRead",@"Detail":@[@{@"UserID":sharedInfo.user_id}]};
     [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
+        if (result) {
+            NSArray *item = [result objectForKey:@"Detail"];
+            for (int i = 0; i < item.count; i ++ ) {
+                NSDictionary *dic = [item objectAtIndex:i];
+                commentNumber = [dic objectForKey:@"commentnum"];
+                commentpraisenum = [dic objectForKey:@"commentpraisenum"];
+                postpraisenum = [dic objectForKey:@"postpraisenum"];
+                sysmsgnum = [dic objectForKey:@"sysmsgnum"];
+            }
+            if (([commentNumber intValue] + [commentpraisenum intValue] + [postpraisenum intValue] + [sysmsgnum intValue] > 0)) {
+                [_tableView reloadData];
+            }else{
+                [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationHideAlertDot object:nil];
+            }
+        }
         NSLog(@"result:%@",result);
     } failure:^(NSError *erro) {
         
     }];
+
 }
 
 #pragma mark -- UITableViewDelegate
@@ -83,15 +105,57 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identityCell = @"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
+    MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
     const static char *cTitle[2][3] = {{"评论","帖子点赞","评论点赞"},{"系统通知","user name"}};
     const static char *cImage[2][3] = {{"msg_comment","msg_like","msg_about_me"},{"msg_notification","msg_about_me"}};
-    
+
     if (!cell) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
+        cell = [[MessageTableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     cell.textLabel.text = [NSString stringWithCString:cTitle[indexPath.section][indexPath.row] encoding:NSUTF8StringEncoding];
     cell.imageView.image = [UIImage imageNamed:[NSString stringWithCString:cImage[indexPath.section][indexPath.row] encoding:NSUTF8StringEncoding]];
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    if (!isStrEmpty(sharedInfo.user_id)) {
+        if (indexPath.section == 0) {
+            if (indexPath.row == 0) {
+                if ([commentNumber intValue] > 0) {
+                    cell.tipsView.hidden = NO;
+                    cell.tipsLabel.text = commentNumber;
+                }else{
+                    cell.tipsView.hidden = YES;
+                }
+            }else if (indexPath.row == 1){
+                if ([postpraisenum intValue] > 0) {
+                    cell.tipsView.hidden = NO;
+                    cell.tipsLabel.text = postpraisenum;
+                }else{
+                    cell.tipsView.hidden = YES;
+                }
+            }else if (indexPath.row == 2){
+                if ([commentpraisenum intValue] > 0) {
+                    cell.tipsView.hidden = NO;
+                    cell.tipsLabel.text = commentpraisenum;
+                }else{
+                    cell.tipsView.hidden = YES;
+                }
+            }
+        }else{
+            if (indexPath.row == 0) {
+                if ([sysmsgnum intValue] > 0) {
+                    cell.tipsView.hidden = NO;
+                    cell.tipsLabel.text = sysmsgnum;
+                }else{
+                    cell.tipsView.hidden = YES;
+                }
+            }else{
+                cell.tipsView.hidden = YES;
+            }
+        }
+    }else{
+        cell.tipsView.hidden = YES;
+    }
+    
     return cell;
 }
 

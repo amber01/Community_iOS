@@ -390,6 +390,8 @@
 		96F301A71BF0E2840089AE14 /* TodayTopicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F301A61BF0E2840089AE14 /* TodayTopicTableViewCell.m */; };
 		96F301B61BF225E40089AE14 /* SendTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F301B51BF225E40089AE14 /* SendTopicViewController.m */; };
 		96F301B91BF226710089AE14 /* SendTopicTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F301B81BF226710089AE14 /* SendTopicTextView.m */; };
+		96F5DA431C204BF600873F31 /* topic_detail_like_high@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 96F5DA421C204BF600873F31 /* topic_detail_like_high@2x.png */; };
+		96F5DA461C20570100873F31 /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F5DA451C20570100873F31 /* MessageTableViewCell.m */; };
 		B5BF3EE606232C1A4F2F8411 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1181DD7D94E49915A43A9DDC /* libPods.a */; };
 		DB4F25991C104B21005FBEA2 /* TodayTopicPraiseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4F25981C104B21005FBEA2 /* TodayTopicPraiseModel.m */; };
 		DB62F95C1C0C4321004AB454 /* delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DB62F95B1C0C4321004AB454 /* delete@2x.png */; };
@@ -1065,6 +1067,9 @@
 		96F301B51BF225E40089AE14 /* SendTopicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendTopicViewController.m; sourceTree = "<group>"; };
 		96F301B71BF226710089AE14 /* SendTopicTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendTopicTextView.h; sourceTree = "<group>"; };
 		96F301B81BF226710089AE14 /* SendTopicTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendTopicTextView.m; sourceTree = "<group>"; };
+		96F5DA421C204BF600873F31 /* topic_detail_like_high@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topic_detail_like_high@2x.png"; sourceTree = "<group>"; };
+		96F5DA441C20570100873F31 /* MessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTableViewCell.h; sourceTree = "<group>"; };
+		96F5DA451C20570100873F31 /* MessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewCell.m; sourceTree = "<group>"; };
 		DB4F25971C104B21005FBEA2 /* TodayTopicPraiseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicPraiseModel.h; sourceTree = "<group>"; };
 		DB4F25981C104B21005FBEA2 /* TodayTopicPraiseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicPraiseModel.m; sourceTree = "<group>"; };
 		DB62F95B1C0C4321004AB454 /* delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete@2x.png"; sourceTree = "<group>"; };
@@ -1938,6 +1943,7 @@
 				96ED343E1C133BCE0021C9C4 /* user_mutual_follow@2x.png */,
 				96ED34581C1877FF0021C9C4 /* topic_search_icon@2x.png */,
 				9671FE551C1EF59100AE6401 /* today_topic_log@2x.png */,
+				96F5DA421C204BF600873F31 /* topic_detail_like_high@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -2071,6 +2077,8 @@
 		964A9FD71BEF6125007CE0E9 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				96F5DA441C20570100873F31 /* MessageTableViewCell.h */,
+				96F5DA451C20570100873F31 /* MessageTableViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -3023,6 +3031,7 @@
 				96C8D2DF1C0A0F4E004642FC /* message_tabbar_normal@2x.png in Resources */,
 				96C8D2E31C0A0F4E004642FC /* mine_tabbar_normal@2x.png in Resources */,
 				9643D7171BF781DD003A394D /* car_s.png in Resources */,
+				96F5DA431C204BF600873F31 /* topic_detail_like_high@2x.png in Resources */,
 				96C8D2F81C0A0F4E004642FC /* mine_login@2x.png in Resources */,
 				96C8D2EC1C0A0F4E004642FC /* mine_check_in@3x.png in Resources */,
 				9643D72C1BF781DD003A394D /* icons_bg_separator@2x.png in Resources */,
@@ -3355,6 +3364,7 @@
 				963DC4BF1C0ACFD9005D1955 /* EaseBaseMessageCell.m in Sources */,
 				966EE5411C0028440039325F /* ELCAssetTablePicker.m in Sources */,
 				963DC4821C0ACFD9005D1955 /* MWGridViewController.m in Sources */,
+				96F5DA461C20570100873F31 /* MessageTableViewCell.m in Sources */,
 				966EE5401C0028440039325F /* ELCAssetCell.m in Sources */,
 				963DC4C61C0ACFD9005D1955 /* EaseBubbleView+Video.m in Sources */,
 				96EAD3281C0169C6008D760A /* TodayTopicModel.m in Sources */,

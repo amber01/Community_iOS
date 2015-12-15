@@ -200,6 +200,7 @@
         sharedInfo.sex = @"";
         sharedInfo.client = @"";
         [[NSNotificationCenter defaultCenter]postNotificationName:kSendIsLogoutNotification object:nil];
+        [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationHideAlertDot object:nil];
         isLogin = NO;
         [_tableView reloadData];
         [self initMBProgress:@"退出成功" withModeType:MBProgressHUDModeText afterDelay:1.0];

@@ -87,7 +87,10 @@
         UIImage  *badgeImg = [UIImage imageWithColor:[UIColor redColor]];
         if (i == 2) {
             self.imageView = [[UIImageView alloc] initWithImage:badgeImg];
-            self.imageView.frame = CGRectMake(50 + i * 80, 7, 8, 8);
+            float width = ScreenWidth / 4;
+            self.imageView.frame = CGRectMake(width * 3 - 32*scaleToScreenHeight, 7, 8, 8);
+            _imageView.hidden = YES;
+            [self.tabBar addSubview:_imageView];
             [UIUtils setupViewRadius:_imageView cornerRadius:8/2];
         }
     }
@@ -97,7 +100,11 @@
 - (void)getMsgCount
 {
     _imageView.hidden = NO;
-    [self.tabBar addSubview:_imageView];
+}
+
+- (void)hideMsgCount
+{
+    _imageView.hidden = YES;
 }
 
 - (void)didReceiveMemoryWarning {

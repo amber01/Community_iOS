@@ -225,7 +225,9 @@
                 NSString *praiseStatus = [[praiseArray firstObject]objectForKey:@"value"];
                 if ([praiseStatus intValue] == 1) {
                     isLike = YES; //已点赞
+                    [footView.likeBtn setImage:[UIImage imageNamed:@"topic_detail_like_high"] forState:UIControlStateNormal];
                 }else{
+                    [footView.likeBtn setImage:[UIImage imageNamed:@"topic_detail_like"] forState:UIControlStateNormal];
                     isLike = NO;
                 }
             }
@@ -277,6 +279,7 @@
                 footView.likeNumLabel.text = [NSString stringWithFormat:@"%d",praisenum];
                 self.likeNumber = [NSString stringWithFormat:@"%d",praisenum];
                 isLike = YES;
+                [footView.likeBtn setImage:[UIImage imageNamed:@"topic_detail_like_high"] forState:UIControlStateNormal];
             }else{
                 [self initMBProgress:@"你已经赞过了" withModeType:MBProgressHUDModeText afterDelay:1.5];
             }
@@ -295,7 +298,7 @@
                 praisenum = praisenum - 1;
                 footView.likeNumLabel.text = [NSString stringWithFormat:@"%d",praisenum];
                 self.likeNumber = [NSString stringWithFormat:@"%d",praisenum];
-                
+                [footView.likeBtn setImage:[UIImage imageNamed:@"topic_detail_like"] forState:UIControlStateNormal];
                 isLike = NO;
             }else{
                 [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.5];

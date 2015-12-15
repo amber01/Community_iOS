@@ -114,6 +114,27 @@
                 sharedInfo.picturedomain = [dic objectForKey:@"picturedomain"];
             }
             
+            SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+            NSDictionary *parameters = @{@"Method":@"ReCommentInfoRead",@"Detail":@[@{@"UserID":sharedInfo.user_id}]};
+            [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
+                if (result) {
+                    NSArray *item = [result objectForKey:@"Detail"];
+                    for (int i = 0; i < item.count; i ++ ) {
+                        NSDictionary *dic = [item objectAtIndex:i];
+                        NSString  *commentNum = [dic objectForKey:@"commentnum"];
+                        NSString  *commentpraisenum = [dic objectForKey:@"commentpraisenum"];
+                        NSString  *postpraisenum = [dic objectForKey:@"postpraisenum"];
+                        NSString  *sysmsgnum = [dic objectForKey:@"sysmsgnum"];
+                        if (([commentNum intValue] + [commentpraisenum intValue] + [postpraisenum intValue] + [sysmsgnum intValue] > 0)) {
+                            [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationShowAlertDot object:nil];
+                        }
+                    }
+                }
+                NSLog(@"result:%@",result);
+            } failure:^(NSError *erro) {
+                
+            }];
+
             
             [self initMBProgress:@"登录成功" withModeType:MBProgressHUDModeText afterDelay:1];
             [[NSNotificationCenter defaultCenter]postNotificationName:kSendIsLoginNotification object:userInfoArr];
