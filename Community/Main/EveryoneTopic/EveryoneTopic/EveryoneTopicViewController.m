@@ -385,6 +385,7 @@
     [_likeDataArray addObject:model.praisenum];
     
     [cell configureCellWithInfo:model withImages:self.imagesArray andPraiseData:self.praiseDataArray andRow:indexPath.row];
+    
     if (!isArrEmpty(self.praiseDataArray)) {
         NSDictionary *dic = [self.praiseDataArray objectAtIndex:indexPath.row];
         cell.likeBtn.post_id = [dic objectForKey:@"postid"];
