@@ -372,24 +372,43 @@
             NSString *plistPath = [UIUtils getDocumentFile:@"myDraft.plist"];
             NSMutableArray  *tempArray = [[NSMutableArray alloc]initWithContentsOfFile:plistPath];
 
-
+            
+            
             NSLog(@"_sendPhotoArr:%@",_sendPhotoArr);
             NSArray *arr = [NSArray arrayWithArray:_sendPhotoArr];
             NSMutableArray  *dataArray = [[NSMutableArray alloc]init];
-            if (tempArray.count != 0) {
-                dataArray = [tempArray mutableCopy];
-                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:isStrEmpty(sendTopicView.titleTextField.text) ? @"": sendTopicView.titleTextField.text,@"title",isStrEmpty(sendTopicView.contentTextView.text) ? @"" : sendTopicView.contentTextView.text,@"content",[UIUtils getCurrentDate:@"MM-dd HH:mm"],@"date",isArrEmpty(_sendPhotoArr) ? @[] : @[@{
-                    @"UIImagePickerControllerReferenceURL":@"assets-library://asset/asset.JPG?id=22BA5C80-1FC5-4B82-A429-28CB41D3BCE7&ext=JPG"}],@"imaes", nil];
-                [dataArray insertObject:dic atIndex:0];
+//            if (tempArray.count != 0) {
+//                dataArray = [tempArray mutableCopy];
+//                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:isStrEmpty(sendTopicView.titleTextField.text) ? @"": sendTopicView.titleTextField.text,@"title",isStrEmpty(sendTopicView.contentTextView.text) ? @"" : sendTopicView.contentTextView.text,@"content",[UIUtils getCurrentDate:@"MM-dd HH:mm"],@"date",isArrEmpty(_sendPhotoArr) ? @[] : @[@{
+//                    @"UIImagePickerControllerReferenceURL":@"assets-library://asset/asset.JPG?id=22BA5C80-1FC5-4B82-A429-28CB41D3BCE7&ext=JPG"}],@"imaes", nil];
+//                [dataArray insertObject:dic atIndex:0];
+//            }else{
+//                [dataArray insertObject:@{@"title":isStrEmpty(sendTopicView.titleTextField.text) ? @"" : sendTopicView.titleTextField.text,@"content":isStrEmpty(sendTopicView.contentTextView.text) ? @"" : sendTopicView.contentTextView.text,@"date":[UIUtils getCurrentDate:@"MM-dd HH:mm"],@"imaes":isArrEmpty(_sendPhotoArr) ? @[] : arr}atIndex:0];
+//            }
+            
+            NSMutableArray *finshArrayData;
+            //不为空的情况下
+            if (![[NSUserDefaults standardUserDefaults]objectForKey:@"MyDraftData"]) {
+                if (!finshArrayData) {
+                   finshArrayData = [[NSMutableArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"MyDraftData"]];
+                }
+                [dataArray insertObject:@{@"title":isStrEmpty(sendTopicView.titleTextField.text) ? @"" : sendTopicView.titleTextField.text,@"content":isStrEmpty(sendTopicView.contentTextView.text) ? @"" : sendTopicView.contentTextView.text,@"date":[UIUtils getCurrentDate:@"MM-dd HH:mm"],@"imaes":isArrEmpty(_sendPhotoArr) ? @[] : arr}atIndex:0];
+                [finshArrayData insertObject:dataArray atIndex:0];
+                [[NSUserDefaults standardUserDefaults]setObject:dataArray forKey:@"MyDraftData"];
             }else{
                 [dataArray insertObject:@{@"title":isStrEmpty(sendTopicView.titleTextField.text) ? @"" : sendTopicView.titleTextField.text,@"content":isStrEmpty(sendTopicView.contentTextView.text) ? @"" : sendTopicView.contentTextView.text,@"date":[UIUtils getCurrentDate:@"MM-dd HH:mm"],@"imaes":isArrEmpty(_sendPhotoArr) ? @[] : arr}atIndex:0];
+                [[NSUserDefaults standardUserDefaults]setObject:dataArray forKey:@"MyDraftData"];
             }
             
-            if ([dataArray writeToFile:self.filename atomically:YES]) {
-                NSLog(@"1");
-            }else{
-                NSLog(@"2");
-            }
+//            [dataArray insertObject:@{@"title":isStrEmpty(sendTopicView.titleTextField.text) ? @"" : sendTopicView.titleTextField.text,@"content":isStrEmpty(sendTopicView.contentTextView.text) ? @"" : sendTopicView.contentTextView.text,@"date":[UIUtils getCurrentDate:@"MM-dd HH:mm"],@"imaes":isArrEmpty(_sendPhotoArr) ? @[] : arr}atIndex:0];
+//            
+//            [[NSUserDefaults standardUserDefaults]setObject:dataArray forKey:@"MyDraftData"];
+//            
+//            if ([dataArray writeToFile:self.filename atomically:YES]) {
+//                NSLog(@"1");
+//            }else{
+//                NSLog(@"2");
+//            }
             
             [self dismissViewControllerAnimated:YES completion:^{
                 [self initMBProgress:@"保存成功" withModeType:MBProgressHUDModeText afterDelay:1];

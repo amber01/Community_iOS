@@ -23,8 +23,9 @@
     self.title = @"草稿箱";
     [self setupTableView];
     
-    NSString *plistPath = [UIUtils getDocumentFile:@"myDraft.plist"];
-    self.dataArray = [[NSMutableArray alloc]initWithContentsOfFile:plistPath];
+   // NSString *plistPath = [UIUtils getDocumentFile:@"myDraft.plist"];
+   // self.dataArray = [[NSMutableArray alloc]initWithContentsOfFile:plistPath];
+    self.dataArray = [[NSUserDefaults standardUserDefaults]objectForKey:@"MyDraftData"];
     
     NSLog(@"dataArray:%@",_dataArray);
 }
