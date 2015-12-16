@@ -31,8 +31,10 @@
     int                   deleteCount;
 }
 
-@property (nonatomic,retain)NSMutableArray *locaPhotoArr;
-@property (nonatomic,retain)NSMutableArray *imagesArray;
+@property (nonatomic,retain) NSMutableArray *locaPhotoArr;
+@property (nonatomic,retain) NSMutableArray *imagesArray;
+@property (nonatomic,copy  ) NSString       *filename;
+@property (nonatomic,retain) NSMutableArray *sendPhotoArr;
 
 @end
 
@@ -58,6 +60,8 @@
     tapGesture.delegate = self;
     tapGesture.cancelsTouchesInView =NO;
     [self.view addGestureRecognizer:tapGesture];
+    
+    self.sendPhotoArr = [[NSMutableArray alloc]init];
     
     deleteCount = -1;
 }
@@ -147,10 +151,17 @@
 #pragma mark -- action
 - (void)closeCurrentView
 {
-    [self.view endEditing:YES];
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
+    if (sendTopicView.titleTextField.text.length>0 || sendTopicView.contentTextView.text.length >0) {
+        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"存为草稿", @"不保存", nil];
+        sheet.actionSheetStyle =UIActionSheetStyleAutomatic;
+        [sheet showInView:self.view];
+        sheet.tag = 3000;
+        [self.view endEditing:YES];
+    }else{
+        [self dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+    }
 }
 
 - (void)sendTopicAction{
@@ -343,6 +354,53 @@
                 }
             }
         }
+    }else if (actionSheet.tag == 3000){
+        if (buttonIndex == 0) {
+            //创建一个plist文件，将数据存储在本地
+            NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+            NSString *path=[paths    objectAtIndex:0];
+            
+            _filename=[path stringByAppendingPathComponent:@"myDraft.plist"];
+            NSFileManager* fm = [NSFileManager defaultManager];
+            
+            //判断是否存在，如果不存在就创建
+            if (![fm fileExistsAtPath:_filename]) {
+                [fm createFileAtPath:_filename contents:nil attributes:nil];
+            }
+            
+            //向plist文件中写入NSArray数据
+            NSString *plistPath = [UIUtils getDocumentFile:@"myDraft.plist"];
+            NSMutableArray  *tempArray = [[NSMutableArray alloc]initWithContentsOfFile:plistPath];
+
+
+            NSLog(@"_sendPhotoArr:%@",_sendPhotoArr);
+            NSArray *arr = [NSArray arrayWithArray:_sendPhotoArr];
+            NSMutableArray  *dataArray = [[NSMutableArray alloc]init];
+            if (tempArray.count != 0) {
+                dataArray = [tempArray mutableCopy];
+                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:isStrEmpty(sendTopicView.titleTextField.text) ? @"": sendTopicView.titleTextField.text,@"title",isStrEmpty(sendTopicView.contentTextView.text) ? @"" : sendTopicView.contentTextView.text,@"content",[UIUtils getCurrentDate:@"MM-dd HH:mm"],@"date",isArrEmpty(_sendPhotoArr) ? @[] : @[@{
+                    @"UIImagePickerControllerReferenceURL":@"assets-library://asset/asset.JPG?id=22BA5C80-1FC5-4B82-A429-28CB41D3BCE7&ext=JPG"}],@"imaes", nil];
+                [dataArray insertObject:dic atIndex:0];
+            }else{
+                [dataArray insertObject:@{@"title":isStrEmpty(sendTopicView.titleTextField.text) ? @"" : sendTopicView.titleTextField.text,@"content":isStrEmpty(sendTopicView.contentTextView.text) ? @"" : sendTopicView.contentTextView.text,@"date":[UIUtils getCurrentDate:@"MM-dd HH:mm"],@"imaes":isArrEmpty(_sendPhotoArr) ? @[] : arr}atIndex:0];
+            }
+            
+            if ([dataArray writeToFile:self.filename atomically:YES]) {
+                NSLog(@"1");
+            }else{
+                NSLog(@"2");
+            }
+            
+            [self dismissViewControllerAnimated:YES completion:^{
+                [self initMBProgress:@"保存成功" withModeType:MBProgressHUDModeText afterDelay:1];
+            }];
+            
+        }else if (buttonIndex == 1){
+            [self dismissViewControllerAnimated:YES completion:^{
+                
+            }];
+        }
+        
     }else{
         if (buttonIndex == 0) {
             UIImageView *imageView = (UIImageView *)[self.view viewWithTag:actionSheet.tag];
@@ -363,6 +421,7 @@
 #pragma mark ELCImagePickerControllerDelegate Methods
 - (void)elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info
 {
+    NSLog(@"infos:%@",info);
     for (int i = 0; i < info.count; i ++) {
         if (!self.locaPhotoArr) {
             _locaPhotoArr = [[NSMutableArray alloc]init];
@@ -373,6 +432,7 @@
     for (int i = 0; i < _locaPhotoArr.count; i ++) {
         ALAssetsLibrary *assetLibrary=[[ALAssetsLibrary alloc] init];
         [assetLibrary assetForURL:[[_locaPhotoArr objectAtIndex:i] valueForKey:UIImagePickerControllerReferenceURL] resultBlock:^(ALAsset *asset) {
+            [self.sendPhotoArr addObject:@{@"UIImagePickerControllerReferenceURL":[[_locaPhotoArr objectAtIndex:i] valueForKey:UIImagePickerControllerReferenceURL]}];
         } failureBlock:^(NSError *err) {
             NSLog(@"Error: %@",[err localizedDescription]);
         }];

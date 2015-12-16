@@ -397,6 +397,9 @@
 		DB62F95C1C0C4321004AB454 /* delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DB62F95B1C0C4321004AB454 /* delete@2x.png */; };
 		DB84257C1BF1988D00D1C273 /* OptionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DB84257B1BF1988D00D1C273 /* OptionButton.m */; };
 		DB8425831BF19B7A00D1C273 /* SendTopicBtnView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8425821BF19B7A00D1C273 /* SendTopicBtnView.m */; };
+		DB9A58801C20F32D00AF2340 /* MyDraftListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A587F1C20F32D00AF2340 /* MyDraftListViewController.m */; };
+		DB9A58831C20F83100AF2340 /* MyDraftDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A58821C20F83100AF2340 /* MyDraftDetailViewController.m */; };
+		DB9A58861C20F91500AF2340 /* MyDraftListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A58851C20F91500AF2340 /* MyDraftListTableViewCell.m */; };
 		DB9A81201C1FE1E600601780 /* UIImage+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A811F1C1FE1E600601780 /* UIImage+Extras.m */; };
 		DB9A81231C2013AA00601780 /* CommentSendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A81221C2013AA00601780 /* CommentSendTableViewCell.m */; };
 		DB9A81261C20167100601780 /* TopicSendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A81251C20167100601780 /* TopicSendTableViewCell.m */; };
@@ -1077,6 +1080,12 @@
 		DB84257B1BF1988D00D1C273 /* OptionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionButton.m; sourceTree = "<group>"; };
 		DB8425811BF19B7A00D1C273 /* SendTopicBtnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendTopicBtnView.h; sourceTree = "<group>"; };
 		DB8425821BF19B7A00D1C273 /* SendTopicBtnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendTopicBtnView.m; sourceTree = "<group>"; };
+		DB9A587E1C20F32D00AF2340 /* MyDraftListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDraftListViewController.h; sourceTree = "<group>"; };
+		DB9A587F1C20F32D00AF2340 /* MyDraftListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDraftListViewController.m; sourceTree = "<group>"; };
+		DB9A58811C20F83100AF2340 /* MyDraftDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDraftDetailViewController.h; sourceTree = "<group>"; };
+		DB9A58821C20F83100AF2340 /* MyDraftDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDraftDetailViewController.m; sourceTree = "<group>"; };
+		DB9A58841C20F91500AF2340 /* MyDraftListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDraftListTableViewCell.h; sourceTree = "<group>"; };
+		DB9A58851C20F91500AF2340 /* MyDraftListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDraftListTableViewCell.m; sourceTree = "<group>"; };
 		DB9A811E1C1FE1E600601780 /* UIImage+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Extras.h"; sourceTree = "<group>"; };
 		DB9A811F1C1FE1E600601780 /* UIImage+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Extras.m"; sourceTree = "<group>"; };
 		DB9A81211C2013AA00601780 /* CommentSendTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentSendTableViewCell.h; sourceTree = "<group>"; };
@@ -2014,6 +2023,7 @@
 				964A9FD21BEF60CF007CE0E9 /* Mine */,
 				96D508421C0DEFAA001DFA49 /* Settings */,
 				96ED34321C1337930021C9C4 /* MyFansAndFollow */,
+				DB9A587A1C20F2A300AF2340 /* MyDraft */,
 			);
 			path = Mine;
 			sourceTree = "<group>";
@@ -2825,6 +2835,43 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		DB9A587A1C20F2A300AF2340 /* MyDraft */ = {
+			isa = PBXGroup;
+			children = (
+				DB9A587B1C20F2A300AF2340 /* Controller */,
+				DB9A587D1C20F2A300AF2340 /* View */,
+				DB9A587C1C20F2A300AF2340 /* Model */,
+			);
+			path = MyDraft;
+			sourceTree = "<group>";
+		};
+		DB9A587B1C20F2A300AF2340 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DB9A587E1C20F32D00AF2340 /* MyDraftListViewController.h */,
+				DB9A587F1C20F32D00AF2340 /* MyDraftListViewController.m */,
+				DB9A58811C20F83100AF2340 /* MyDraftDetailViewController.h */,
+				DB9A58821C20F83100AF2340 /* MyDraftDetailViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DB9A587C1C20F2A300AF2340 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DB9A587D1C20F2A300AF2340 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DB9A58841C20F91500AF2340 /* MyDraftListTableViewCell.h */,
+				DB9A58851C20F91500AF2340 /* MyDraftListTableViewCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		DBF503E11C1AA6A100AA02BE /* CommentStatus */ = {
 			isa = PBXGroup;
 			children = (
@@ -2952,7 +2999,7 @@
 				TargetAttributes = {
 					964A9F381BEF4198007CE0E9 = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = 3JU58E4EC9;
+						DevelopmentTeam = 46J7996VL8;
 					};
 					964A9F511BEF4198007CE0E9 = {
 						CreatedOnToolsVersion = 7.1;
@@ -3296,6 +3343,7 @@
 				96C8D22D1C0A0C4C004642FC /* PubliButton.m in Sources */,
 				96C8D21B1C0A0AA2004642FC /* TopicBlockTopView.m in Sources */,
 				96EAD3251C015F78008D760A /* TodayTopicMoreTableViewCell.m in Sources */,
+				DB9A58861C20F91500AF2340 /* MyDraftListTableViewCell.m in Sources */,
 				963DC4B81C0ACFD9005D1955 /* EaseConversationListViewController.m in Sources */,
 				964A9FEF1BEF74C5007CE0E9 /* BaseViewController.m in Sources */,
 				96B2D1161BFCD77100FE6185 /* PublicInputTextFieldView.m in Sources */,
@@ -3304,6 +3352,7 @@
 				96C8D24A1C0A0D20004642FC /* CommentTableViewCell.m in Sources */,
 				964AA10E1BEF7B5E007CE0E9 /* NSData+Category.m in Sources */,
 				964AA1081BEF7B5E007CE0E9 /* CommonClass.m in Sources */,
+				DB9A58831C20F83100AF2340 /* MyDraftDetailViewController.m in Sources */,
 				964A9FF81BEF784E007CE0E9 /* SharedInfo.m in Sources */,
 				964AA1141BEF7B5E007CE0E9 /* NSString+MD5.m in Sources */,
 				96F301B91BF226710089AE14 /* SendTopicTextView.m in Sources */,
@@ -3313,6 +3362,7 @@
 				963DC4A81C0ACFD9005D1955 /* EaseConversationModel.m in Sources */,
 				96B2D1131BFCD70500FE6185 /* RegisterView.m in Sources */,
 				969345E41C1BE9A50056072F /* WSJSObject.m in Sources */,
+				DB9A58801C20F32D00AF2340 /* MyDraftListViewController.m in Sources */,
 				963DC4671C0ACFD9005D1955 /* EMAudioPlayerUtil.m in Sources */,
 				963DC4A11C0ACFD9005D1955 /* PSTCollectionViewUpdateItem.m in Sources */,
 				96D5081E1C0C283B001DFA49 /* FixFopen.c in Sources */,
@@ -3529,7 +3579,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: tankvi@sina.com (4KA3EP9J59)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -3551,7 +3601,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "a736d577-1a75-499c-8918-8d5d12cc4ace";
+				PROVISIONING_PROFILE = "8df1c264-97ad-4253-b8d2-66497427f72c";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3575,7 +3625,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: tankvi@sina.com (4KA3EP9J59)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -3590,7 +3640,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "a736d577-1a75-499c-8918-8d5d12cc4ace";
+				PROVISIONING_PROFILE = "8df1c264-97ad-4253-b8d2-66497427f72c";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

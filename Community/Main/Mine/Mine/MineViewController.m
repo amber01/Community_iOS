@@ -12,6 +12,7 @@
 #import "LoginViewController.h"
 #import "MineInfoViewController.h"
 #import "SettingsViewController.h"
+#import "MyDraftListViewController.h"
 
 @interface MineViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -269,6 +270,12 @@
                 SettingsViewController *settingsVC = [[SettingsViewController alloc]init];
                 [settingsVC setHidesBottomBarWhenPushed:YES];
                 [self.navigationController pushViewController:settingsVC animated:YES];
+            }
+        }else if (indexPath.section == 2){
+            if (indexPath.row == 2) {
+                MyDraftListViewController *myDraftListVC = [[MyDraftListViewController alloc]init];
+                [myDraftListVC setHidesBottomBarWhenPushed:YES];
+                [self.navigationController pushViewController:myDraftListVC animated:YES];
             }
         }
     }else{ //未登录
