@@ -34,7 +34,6 @@
 @property (nonatomic,retain) NSMutableArray *locaPhotoArr;
 @property (nonatomic,retain) NSMutableArray *imagesArray;
 @property (nonatomic,copy  ) NSString       *filename;
-@property (nonatomic,retain) NSMutableArray *sendPhotoArr;
 
 @end
 
@@ -61,9 +60,11 @@
     tapGesture.cancelsTouchesInView =NO;
     [self.view addGestureRecognizer:tapGesture];
     
-    self.sendPhotoArr = [[NSMutableArray alloc]init];
-    
     deleteCount = -1;
+    
+    if (!isArrEmpty(self.myDraftDataArray)) {
+        [self createPhotoList];
+    }
 }
 
 #pragma mark -- UI
@@ -74,6 +75,13 @@
     sendTopicView.contentTextView.delegate = self;
     sendTopicView.contentTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [sendTopicView.titleTextField becomeFirstResponder];
+    
+    if (!isStrEmpty(self.topicContent)) {
+        sendTopicView.defaultLabel.hidden = YES;
+    }
+    
+    sendTopicView.titleTextField.text = self.topicTitle;
+    sendTopicView.contentTextView.text = self.topicContent;
     
     photoBackgroundView = [[UIView alloc]initWithFrame:CGRectMake(0, sendTopicView.contentTextView.bottom, ScreenWidth, 50)];
     [sendTopicView addSubview:photoBackgroundView];
@@ -152,11 +160,17 @@
 - (void)closeCurrentView
 {
     if (sendTopicView.titleTextField.text.length>0 || sendTopicView.contentTextView.text.length >0) {
-        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"存为草稿", @"不保存", nil];
-        sheet.actionSheetStyle =UIActionSheetStyleAutomatic;
-        [sheet showInView:self.view];
-        sheet.tag = 3000;
-        [self.view endEditing:YES];
+        if (![sendTopicView.titleTextField.text isEqualToString:self.topicTitle] || ![sendTopicView.contentTextView.text isEqualToString:self.topicContent]) {
+            UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"存为草稿", @"不保存", nil];
+            sheet.actionSheetStyle =UIActionSheetStyleAutomatic;
+            [sheet showInView:self.view];
+            sheet.tag = 3000;
+            [self.view endEditing:YES];
+        }else{
+            [self dismissViewControllerAnimated:YES completion:^{
+                
+            }];
+        }
     }else{
         [self dismissViewControllerAnimated:YES completion:^{
             
@@ -368,50 +382,37 @@
                 [fm createFileAtPath:_filename contents:nil attributes:nil];
             }
             
-            //向plist文件中写入NSArray数据
             NSString *plistPath = [UIUtils getDocumentFile:@"myDraft.plist"];
-            NSMutableArray  *tempArray = [[NSMutableArray alloc]initWithContentsOfFile:plistPath];
+            NSData *data = [[NSData alloc] initWithContentsOfFile:plistPath];
+            NSMutableArray  *tempArray =  [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
-            
-            
-            NSLog(@"_sendPhotoArr:%@",_sendPhotoArr);
-            NSArray *arr = [NSArray arrayWithArray:_sendPhotoArr];
+            //向plist文件中写入NSArray数据
+            //NSLog(@"tempArray:%@",tempArray);
+
             NSMutableArray  *dataArray = [[NSMutableArray alloc]init];
-//            if (tempArray.count != 0) {
-//                dataArray = [tempArray mutableCopy];
-//                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:isStrEmpty(sendTopicView.titleTextField.text) ? @"": sendTopicView.titleTextField.text,@"title",isStrEmpty(sendTopicView.contentTextView.text) ? @"" : sendTopicView.contentTextView.text,@"content",[UIUtils getCurrentDate:@"MM-dd HH:mm"],@"date",isArrEmpty(_sendPhotoArr) ? @[] : @[@{
-//                    @"UIImagePickerControllerReferenceURL":@"assets-library://asset/asset.JPG?id=22BA5C80-1FC5-4B82-A429-28CB41D3BCE7&ext=JPG"}],@"imaes", nil];
-//                [dataArray insertObject:dic atIndex:0];
-//            }else{
-//                [dataArray insertObject:@{@"title":isStrEmpty(sendTopicView.titleTextField.text) ? @"" : sendTopicView.titleTextField.text,@"content":isStrEmpty(sendTopicView.contentTextView.text) ? @"" : sendTopicView.contentTextView.text,@"date":[UIUtils getCurrentDate:@"MM-dd HH:mm"],@"imaes":isArrEmpty(_sendPhotoArr) ? @[] : arr}atIndex:0];
-//            }
-            
-            NSMutableArray *finshArrayData;
-            //不为空的情况下
-            if (![[NSUserDefaults standardUserDefaults]objectForKey:@"MyDraftData"]) {
-                if (!finshArrayData) {
-                   finshArrayData = [[NSMutableArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]objectForKey:@"MyDraftData"]];
+            if (tempArray.count != 0) {
+                dataArray = [tempArray mutableCopy];
+                if (!isStrEmpty(self.listTag)) {
+                    //修改的情况下需要将以前的删除掉，再重新添加
+                    [dataArray removeObjectAtIndex:[self.listTag intValue]];
                 }
-                [dataArray insertObject:@{@"title":isStrEmpty(sendTopicView.titleTextField.text) ? @"" : sendTopicView.titleTextField.text,@"content":isStrEmpty(sendTopicView.contentTextView.text) ? @"" : sendTopicView.contentTextView.text,@"date":[UIUtils getCurrentDate:@"MM-dd HH:mm"],@"imaes":isArrEmpty(_sendPhotoArr) ? @[] : arr}atIndex:0];
-                [finshArrayData insertObject:dataArray atIndex:0];
-                [[NSUserDefaults standardUserDefaults]setObject:dataArray forKey:@"MyDraftData"];
+                [dataArray insertObject:@{@"cate_id":self.cate_id,@"title":isStrEmpty(sendTopicView.titleTextField.text) ? @"" : sendTopicView.titleTextField.text,@"content":isStrEmpty(sendTopicView.contentTextView.text) ? @"" : sendTopicView.contentTextView.text,@"date":[UIUtils getCurrentDate:@"MM-dd HH:mm"],@"imaes":isArrEmpty(_locaPhotoArr) ? @[] : _locaPhotoArr}atIndex:0];
             }else{
-                [dataArray insertObject:@{@"title":isStrEmpty(sendTopicView.titleTextField.text) ? @"" : sendTopicView.titleTextField.text,@"content":isStrEmpty(sendTopicView.contentTextView.text) ? @"" : sendTopicView.contentTextView.text,@"date":[UIUtils getCurrentDate:@"MM-dd HH:mm"],@"imaes":isArrEmpty(_sendPhotoArr) ? @[] : arr}atIndex:0];
-                [[NSUserDefaults standardUserDefaults]setObject:dataArray forKey:@"MyDraftData"];
+                [dataArray insertObject:@{@"cate_id":self.cate_id,@"title":isStrEmpty(sendTopicView.titleTextField.text) ? @"" : sendTopicView.titleTextField.text,@"content":isStrEmpty(sendTopicView.contentTextView.text) ? @"" : sendTopicView.contentTextView.text,@"date":[UIUtils getCurrentDate:@"MM-dd HH:mm"],@"imaes":isArrEmpty(_locaPhotoArr) ? @[] : _locaPhotoArr}atIndex:0];
+            }
+
+            NSError  *error;
+            NSData* archiveData = [NSKeyedArchiver archivedDataWithRootObject:dataArray];
+            if ([archiveData writeToFile:self.filename options:NSDataWritingAtomic error:&error]) {
+                NSLog(@"1");
+            }else{
+                NSLog(@"2");
             }
             
-//            [dataArray insertObject:@{@"title":isStrEmpty(sendTopicView.titleTextField.text) ? @"" : sendTopicView.titleTextField.text,@"content":isStrEmpty(sendTopicView.contentTextView.text) ? @"" : sendTopicView.contentTextView.text,@"date":[UIUtils getCurrentDate:@"MM-dd HH:mm"],@"imaes":isArrEmpty(_sendPhotoArr) ? @[] : arr}atIndex:0];
-//            
-//            [[NSUserDefaults standardUserDefaults]setObject:dataArray forKey:@"MyDraftData"];
-//            
-//            if ([dataArray writeToFile:self.filename atomically:YES]) {
-//                NSLog(@"1");
-//            }else{
-//                NSLog(@"2");
-//            }
-            
             [self dismissViewControllerAnimated:YES completion:^{
-                [self initMBProgress:@"保存成功" withModeType:MBProgressHUDModeText afterDelay:1];
+                if (!isStrEmpty(self.listTag)) {
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"updateContentNotification" object:nil];
+                }
             }];
             
         }else if (buttonIndex == 1){
@@ -451,7 +452,6 @@
     for (int i = 0; i < _locaPhotoArr.count; i ++) {
         ALAssetsLibrary *assetLibrary=[[ALAssetsLibrary alloc] init];
         [assetLibrary assetForURL:[[_locaPhotoArr objectAtIndex:i] valueForKey:UIImagePickerControllerReferenceURL] resultBlock:^(ALAsset *asset) {
-            [self.sendPhotoArr addObject:@{@"UIImagePickerControllerReferenceURL":[[_locaPhotoArr objectAtIndex:i] valueForKey:UIImagePickerControllerReferenceURL]}];
         } failureBlock:^(NSError *err) {
             NSLog(@"Error: %@",[err localizedDescription]);
         }];
@@ -527,6 +527,45 @@
     }];
 }
 
+- (void)createPhotoList
+{
+    if (!self.locaPhotoArr) {
+        _locaPhotoArr = [[NSMutableArray alloc]initWithArray:self.myDraftDataArray];
+    }
+    if (!self.locaPhotoArr) {
+        _locaPhotoArr = [[NSMutableArray alloc]init];
+    }
+    
+    float start_x = 5.0f;
+    float width_space = 5.0f;
+    float height = 50.0f;
+    float width = 50.0f;
+    
+    photoScrollView.contentSize = CGSizeMake(((50 + 10)*_locaPhotoArr.count) + 20, 0);
+    for (int i = 0; i < _locaPhotoArr.count; i ++) {
+        NSDictionary *dict = [_locaPhotoArr objectAtIndex:i];
+        UIImage *image = [dict objectForKey:UIImagePickerControllerOriginalImage];
+        
+        photoImageview= [[UIImageView alloc] initWithImage:image];
+        [photoImageview setContentScaleFactor:[[UIScreen mainScreen] scale]];
+        photoImageview.contentMode =  UIViewContentModeScaleAspectFill;
+        photoImageview.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        photoImageview.clipsToBounds  = YES;
+        photoImageview.userInteractionEnabled = YES;
+        
+        photoImageview.frame = CGRectMake(i * (width + width_space) + start_x, 0, width, height);
+        
+        [photoScrollView addSubview:photoImageview];
+        
+        UITapGestureRecognizer *deleteImageTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(deleteImageAction:)];
+        photoImageview.userInteractionEnabled = YES;
+        photoImageview.tag = 500 + i;
+        [photoImageview addGestureRecognizer:deleteImageTapGesture];
+    }
+    
+    addImageBtn.frame = CGRectMake(photoImageview.right + 10, 2.5, 45, 45);
+
+}
 
 #pragma mark--UIGestureRecognizerDelegate
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch

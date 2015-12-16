@@ -10,4 +10,8 @@
 
 @interface MyDraftListTableViewCell : UITableViewCell
 
+@property (nonatomic,retain)UILabel  *topicNameLabel;
+@property (nonatomic,retain)UILabel  *topicDetailLabel;
+@property (nonatomic,retain)UILabel  *topicDateLabel;
+
 @end

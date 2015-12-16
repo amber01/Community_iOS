@@ -27,4 +27,9 @@ typedef enum : NSUInteger {
 @interface SendTopicViewController : BaseViewController
 @property (nonatomic,copy)NSString *cate_id;
 
+@property (nonatomic,copy)NSString          *topicTitle;
+@property (nonatomic,copy)NSString          *topicContent;
+@property (nonatomic,copy)NSMutableArray    *myDraftDataArray;
+@property (nonatomic,copy)NSString          *listTag;
+
 @end
