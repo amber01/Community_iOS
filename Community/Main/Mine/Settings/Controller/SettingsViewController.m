@@ -12,6 +12,7 @@
 #import "ModifyUserInfoViewController.h"
 #import "SelectCityViewController.h"
 #import "MsgNotificationViewController.h"
+#import "MiniNetworkSetViewController.h"
 
 @interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -147,6 +148,9 @@
             }else if (indexPath.row == 2){
                 MsgNotificationViewController *msgNotificationVC = [[MsgNotificationViewController alloc]init];
                 [self.navigationController pushViewController:msgNotificationVC animated:YES];
+            }else if (indexPath.row == 3){
+                MiniNetworkSetViewController *miniNetworkSetVC = [[MiniNetworkSetViewController alloc]init];
+                [self.navigationController pushViewController:miniNetworkSetVC animated:YES];
             }
         }else{
             if (indexPath.row == 0) {
@@ -155,6 +159,9 @@
             }else if (indexPath.row == 1){
                 MsgNotificationViewController *msgNotificationVC = [[MsgNotificationViewController alloc]init];
                 [self.navigationController pushViewController:msgNotificationVC animated:YES];
+            }else if (indexPath.row == 2){
+                MiniNetworkSetViewController *miniNetworkSetVC = [[MiniNetworkSetViewController alloc]init];
+                [self.navigationController pushViewController:miniNetworkSetVC animated:YES];
             }
         }
     }else if (indexPath.section == 1){

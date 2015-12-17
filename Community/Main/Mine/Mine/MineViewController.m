@@ -13,6 +13,7 @@
 #import "MineInfoViewController.h"
 #import "SettingsViewController.h"
 #import "MyDraftListViewController.h"
+#import "MyCollectionViewController.h"
 
 @interface MineViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -276,6 +277,10 @@
                 MyDraftListViewController *myDraftListVC = [[MyDraftListViewController alloc]init];
                 [myDraftListVC setHidesBottomBarWhenPushed:YES];
                 [self.navigationController pushViewController:myDraftListVC animated:YES];
+            }else if (indexPath.row == 1){
+                MyCollectionViewController *myCollectionVC = [[MyCollectionViewController alloc]init];
+                [myCollectionVC setHidesBottomBarWhenPushed:YES];
+                [self.navigationController pushViewController:myCollectionVC animated:YES];
             }
         }
     }else{ //未登录

@@ -16,7 +16,7 @@
 #import "CommentViewController.h"
 #import "GoodsLoadMoreFootView.h"
 
-@interface TopicDetailViewController ()<UIScrollViewDelegate,UIWebViewDelegate,TWebScrollViewDelegate,CheckMoreDelegate>
+@interface TopicDetailViewController ()<UIScrollViewDelegate,UIWebViewDelegate,TWebScrollViewDelegate,CheckMoreDelegate,UIActionSheetDelegate>
 {
     ScorellButtonView    *scorllBtnView;
     TopicDetailHeadView  *headView;
@@ -25,7 +25,8 @@
     BOOL                 isLike;
     BOOL                 isLoadMore;
     BOOL                 isLoadTopMore;
-    TWebView             *webView;
+    BOOL                 isTextZoom;
+    TWebView             *detailWebView;
     
     UIView               *loadingView;
 }
@@ -57,6 +58,10 @@
     [footView.checkCommentBtn addTarget:self action:@selector(checkCommentAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:footView];
     [self getTopicDetail:self.post_id];
+    
+    CustomButtonItem *buttonItem = [[CustomButtonItem alloc]initButtonItem:[UIImage imageNamed:@"topic_detail_more"]];
+    [buttonItem.itemBtn addTarget:self action:@selector(checkMoreAction) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = buttonItem;
 }
 
 #pragma makr -- UI
@@ -74,26 +79,26 @@
 
 - (void)createWebView
 {
-    webView = [[TWebView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 42 - 64) withPost:self.post_id];
-    webView.delegate = self;
-    webView.scorollDelegate = self;
+    detailWebView = [[TWebView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 42 - 64) withPost:self.post_id];
+    detailWebView.delegate = self;
+    detailWebView.scorollDelegate = self;
     headView = [[TopicDetailHeadView alloc]initWithFrame:CGRectMake(0, 0, ScreenHeight, 65)];
-    [self.myScrollView addSubview:webView];
+    [self.myScrollView addSubview:detailWebView];
     
     GoodsLoadMoreFootView *goodsLoadMoreView = [[GoodsLoadMoreFootView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 49)];
     
     /**
      *  再UIWebView的头视图上添加一个自定义View
      */
-    webView.headerView = headView;
-    webView.footerView = goodsLoadMoreView;
+    detailWebView.headerView = headView;
+    detailWebView.footerView = goodsLoadMoreView;
     
     [self createdFootMoreView];
 }
 
 - (void)createdFootMoreView
 {
-    scorllBtnView = [[ScorellButtonView alloc]initWithFrame:CGRectMake(0, webView.bottom, ScreenWidth, ScreenHeight) withPostID:self.post_id];
+    scorllBtnView = [[ScorellButtonView alloc]initWithFrame:CGRectMake(0, detailWebView.bottom, ScreenWidth, ScreenHeight) withPostID:self.post_id];
     [scorllBtnView.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
     
     loadMoreTopView = [[GoodsLoadMoreTopView alloc]initWithFrame:CGRectMake(0, -64, ScreenWidth, 64)];
@@ -108,6 +113,11 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     loadingView.hidden = YES;
+    int isZoom = [[[NSUserDefaults standardUserDefaults]objectForKey:@"isZoom"]intValue];
+    if (isZoom == 1) {
+        NSString *str1 = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust = '%f%%'",120.0];
+        [webView stringByEvaluatingJavaScriptFromString:str1];
+    }
     [NSTimer scheduledTimerWithTimeInterval:0.1f target:self selector:@selector(delayMethod) userInfo:nil repeats:NO];
 }
 
@@ -172,7 +182,7 @@
 {
     [UIView animateWithDuration:0.2f animations:^{
         if (isLoadMore == NO) {
-            [self.myScrollView setContentOffset:CGPointMake(0,webView.bottom)];
+            [self.myScrollView setContentOffset:CGPointMake(0,detailWebView.bottom)];
         }else{
             [self.myScrollView setContentOffset:CGPointMake(0,0)];
         }
@@ -254,7 +264,7 @@
     isLoadMore = YES;
     isLoadTopMore = NO;
     [UIView animateWithDuration:0.3 animations:^{
-        [self.myScrollView setContentOffset:CGPointMake(0,webView.bottom)];
+        [self.myScrollView setContentOffset:CGPointMake(0,detailWebView.bottom)];
     }];
 }
 
@@ -308,6 +318,58 @@
         } failure:^(NSError *erro) {
             
         }];
+    }
+}
+
+- (void)checkMoreAction
+{
+    NSString *textStr;
+    int isZoom = [[[NSUserDefaults standardUserDefaults]objectForKey:@"isZoom"]intValue];
+    if (isZoom == 0) {
+        textStr = @"正文大字号";
+        isTextZoom = YES;
+    }else{
+        isTextZoom = NO;
+        textStr = @"正常字号";
+    }
+    
+    UIActionSheet *sheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"分享",@"收藏",textStr, nil];
+    sheet.actionSheetStyle =UIActionSheetStyleAutomatic;
+    [sheet showInView:self.view];
+}
+
+#pragma mark -- UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        
+    }else if (buttonIndex == 1){
+        SharedInfo *shared = [SharedInfo sharedDataInfo];
+        if (isStrEmpty(shared.user_id)) {
+            LoginViewController *loginVC = [[LoginViewController alloc]init];
+            [self.navigationController pushViewController:loginVC animated:YES];
+            return;
+        }
+        
+        NSDictionary *parameters = @{@"Method":@"AddMyCollectionInfo",@"RunnerUserID":shared.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"UserID":shared.user_id,@"PostID":self.post_id,@"IsShow":@"888"}]};
+        [CKHttpRequest createRequest:HTTP_METHOD_MY_COLLECTION WithParam:parameters withMethod:@"POST" success:^(id result) {
+            if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                [self initMBProgress:@"收藏成功" withModeType:MBProgressHUDModeText afterDelay:1.0];
+            }
+        } failure:^(NSError *erro) {
+            
+        }];
+        
+    }else if (buttonIndex == 2){
+        if (isTextZoom) {
+            NSString *str1 = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust = '%f%%'",120.0];
+            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"isZoom"];
+            [detailWebView stringByEvaluatingJavaScriptFromString:str1];
+        }else{
+            NSString *str1 = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust = '%f%%'",100.0];
+            [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"isZoom"];
+            [detailWebView stringByEvaluatingJavaScriptFromString:str1];
+        }
     }
 }
 

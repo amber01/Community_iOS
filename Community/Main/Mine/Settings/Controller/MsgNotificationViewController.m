@@ -99,7 +99,7 @@
 - (void)isCommentChange:(UISwitch *)msgSwitch
 {
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-    NSDictionary *parameters = @{@"Method":@"ModItemUserInfo",@"RunnerIP":@"1",@"RunnerIsClient":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"RunnerUserID":@"",@"Detail":@[@{@"ID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"IsBBS":@(msgSwitch.isOn),@"IsShow":@"6"}]};
+    NSDictionary *parameters = @{@"Method":@"ModItemUserInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":@"",@"Detail":@[@{@"ID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"IsMessagePush":@(msgSwitch.isOn),@"IsShow":@"7"}]};
     [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:parameters withMethod:@"POST" success:^(id result) {
         if (result) {
             NSLog(@"result:%@",result);
@@ -118,7 +118,7 @@
 - (void)isMsgChange:(UISwitch *)msgSwitch
 {
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-    NSDictionary *parameters = @{@"Method":@"ModItemUserInfo",@"RunnerIP":@"1",@"RunnerIsClient":@"",@"RunnerUserID":@"",@"Detail":@[@{@"ID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"IsMessagePush":@(msgSwitch.isOn),@"IsShow":@"6"}]};
+    NSDictionary *parameters = @{@"Method":@"ModItemUserInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":@"",@"Detail":@[@{@"ID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"IsBBS":@(msgSwitch.isOn),@"IsShow":@"6"}]};
     [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:parameters withMethod:@"POST" success:^(id result) {
         if (result) {
             NSLog(@"result:%@",result);
@@ -133,7 +133,7 @@
 - (void)isHotContentChange:(UISwitch *)msgSwitch
 {
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-    NSDictionary *parameters = @{@"Method":@"ModItemUserInfo",@"RunnerIP":@"1",@"RunnerIsClient":@"",@"RunnerUserID":@"",@"Detail":@[@{@"ID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"IsHotNews":@(msgSwitch.isOn),@"IsShow":@"6"}]};
+    NSDictionary *parameters = @{@"Method":@"ModItemUserInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":@"",@"Detail":@[@{@"ID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"IsHotNews":@(msgSwitch.isOn),@"IsShow":@"8"}]};
     [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:parameters withMethod:@"POST" success:^(id result) {
         if (result) {
             NSLog(@"result:%@",result);
