@@ -99,6 +99,7 @@
     loadMoreTopView = [[GoodsLoadMoreTopView alloc]initWithFrame:CGRectMake(0, -64, ScreenWidth, 64)];
     [scorllBtnView.tableView addSubview:loadMoreTopView];
     scorllBtnView.delegate = self;
+    scorllBtnView.userID = self.user_id;
     [self.myScrollView addSubview:scorllBtnView];
     
 }

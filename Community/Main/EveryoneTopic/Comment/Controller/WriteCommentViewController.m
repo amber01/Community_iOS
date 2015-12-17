@@ -126,21 +126,43 @@
         return;
     }
     
-    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-    NSDictionary *parameters = @{@"Method":@"AddCommentInfo",@"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"PostID":self.post_id,@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":sendTopicView.contentTextView.text,@"IP":@"",@"IsReplay":@"0",@"ReplayContent":@"",@"CommentID":@""}]};
-    
-    [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
-        if (result && [[result objectForKey:@"Success"]intValue] > 0) {
-            [self.navigationController dismissViewControllerAnimated:YES completion:^{
-                [[NSNotificationCenter defaultCenter]postNotificationName:kReloadDataNotification object:nil];
-                [[NSNotificationCenter defaultCenter]postNotificationName:kReloadCommentNotification object:nil];
-                [self initMBProgress:@"发布成功" withModeType:MBProgressHUDModeText afterDelay:1.5];
-            }];
-        }
-        NSLog(@"result:%@",result);
-    } failure:^(NSError *erro) {
+    //回复评论
+    if (!isStrEmpty(self.commentID)) {
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        NSDictionary *parameters = @{@"Method":@"AddCommentInfo",@"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"PostID":self.post_id,@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"ReplayContent":sendTopicView.contentTextView.text,@"IP":@"",@"IsReplay":@"1",@"CommentID":self.commentID}]};
         
-    }];
+        [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
+            NSLog(@"result:%@",result);
+            NSLog(@"msg:%@",[result objectForKey:@"Msg"]);
+            if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:^{
+                    [[NSNotificationCenter defaultCenter]postNotificationName:kReloadDataNotification object:nil];
+                    [[NSNotificationCenter defaultCenter]postNotificationName:kReloadCommentNotification object:nil];
+                    [self initMBProgress:@"发布成功" withModeType:MBProgressHUDModeText afterDelay:1.5];
+                }];
+            }
+            NSLog(@"result:%@",result);
+        } failure:^(NSError *erro) {
+            
+        }];
+
+    }else{ //评论帖子
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        NSDictionary *parameters = @{@"Method":@"AddCommentInfo",@"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"PostID":self.post_id,@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":sendTopicView.contentTextView.text,@"IP":@"",@"IsReplay":@"0",@"ReplayContent":@"",@"CommentID":@"0"}]};
+        
+        [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
+            if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:^{
+                    [[NSNotificationCenter defaultCenter]postNotificationName:kReloadDataNotification object:nil];
+                    [[NSNotificationCenter defaultCenter]postNotificationName:kReloadCommentNotification object:nil];
+                    [self initMBProgress:@"发布成功" withModeType:MBProgressHUDModeText afterDelay:1.5];
+                }];
+            }
+            NSLog(@"result:%@",result);
+        } failure:^(NSError *erro) {
+            
+        }];
+    }
 }
 
 

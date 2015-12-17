@@ -217,6 +217,7 @@
     TodayTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
     TopicDetailViewController *detailVC = [[TopicDetailViewController alloc]init];
     detailVC.post_id = model.id;
+    detailVC.user_id = model.userid;
     [detailVC setHidesBottomBarWhenPushed:YES];
     [self.navigationController pushViewController:detailVC animated:YES];
 }

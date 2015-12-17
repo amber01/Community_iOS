@@ -404,6 +404,8 @@
 		DB9A81231C2013AA00601780 /* CommentSendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A81221C2013AA00601780 /* CommentSendTableViewCell.m */; };
 		DB9A81261C20167100601780 /* TopicSendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A81251C20167100601780 /* TopicSendTableViewCell.m */; };
 		DBB586601BF031FA001DBD4C /* NSString+TextSize.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB5865F1BF031FA001DBD4C /* NSString+TextSize.m */; };
+		DBBCAA641C22AE0A0044D18C /* MsgNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBCAA631C22AE0A0044D18C /* MsgNotificationViewController.m */; };
+		DBBCAA671C22AF6C0044D18C /* MsgNotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBCAA661C22AF6C0044D18C /* MsgNotificationTableViewCell.m */; };
 		DBE54E121C0D6DBD0057D68F /* user_info_addfollow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E101C0D6DBD0057D68F /* user_info_addfollow@2x.png */; };
 		DBE54E131C0D6DBD0057D68F /* user_info_follow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E111C0D6DBD0057D68F /* user_info_follow@2x.png */; };
 		DBE54E151C0D70180057D68F /* user_info_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E141C0D70180057D68F /* user_info_chat@2x.png */; };
@@ -1094,6 +1096,10 @@
 		DB9A81251C20167100601780 /* TopicSendTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicSendTableViewCell.m; sourceTree = "<group>"; };
 		DBB5865E1BF031FA001DBD4C /* NSString+TextSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TextSize.h"; sourceTree = "<group>"; };
 		DBB5865F1BF031FA001DBD4C /* NSString+TextSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TextSize.m"; sourceTree = "<group>"; };
+		DBBCAA621C22AE0A0044D18C /* MsgNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgNotificationViewController.h; sourceTree = "<group>"; };
+		DBBCAA631C22AE0A0044D18C /* MsgNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MsgNotificationViewController.m; sourceTree = "<group>"; };
+		DBBCAA651C22AF6C0044D18C /* MsgNotificationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgNotificationTableViewCell.h; sourceTree = "<group>"; };
+		DBBCAA661C22AF6C0044D18C /* MsgNotificationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MsgNotificationTableViewCell.m; sourceTree = "<group>"; };
 		DBE54E101C0D6DBD0057D68F /* user_info_addfollow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_addfollow@2x.png"; sourceTree = "<group>"; };
 		DBE54E111C0D6DBD0057D68F /* user_info_follow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_follow@2x.png"; sourceTree = "<group>"; };
 		DBE54E141C0D70180057D68F /* user_info_chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_chat@2x.png"; sourceTree = "<group>"; };
@@ -2655,6 +2661,8 @@
 				96D508471C0DEFD4001DFA49 /* SettingsViewController.m */,
 				96ED344E1C15B40A0021C9C4 /* SelectCityViewController.h */,
 				96ED344F1C15B40A0021C9C4 /* SelectCityViewController.m */,
+				DBBCAA621C22AE0A0044D18C /* MsgNotificationViewController.h */,
+				DBBCAA631C22AE0A0044D18C /* MsgNotificationViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2925,6 +2933,8 @@
 			children = (
 				DBF5358B1C0EE062004E8C04 /* SettingTableViewCell.h */,
 				DBF5358C1C0EE062004E8C04 /* SettingTableViewCell.m */,
+				DBBCAA651C22AF6C0044D18C /* MsgNotificationTableViewCell.h */,
+				DBBCAA661C22AF6C0044D18C /* MsgNotificationTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -3306,6 +3316,7 @@
 				966EE5431C0028440039325F /* ELCImagePickerController.m in Sources */,
 				969345D21C1B20120056072F /* CommentLikeViewController.m in Sources */,
 				963DC4CD1C0ACFD9005D1955 /* EaseFaceView.m in Sources */,
+				DBBCAA641C22AE0A0044D18C /* MsgNotificationViewController.m in Sources */,
 				96C8D2481C0A0D20004642FC /* WriteCommentViewController.m in Sources */,
 				96ED34381C1337BC0021C9C4 /* FansListViewController.m in Sources */,
 				963DC4971C0ACFD9005D1955 /* UIImageView+EMWebCache.m in Sources */,
@@ -3357,6 +3368,7 @@
 				964AA1141BEF7B5E007CE0E9 /* NSString+MD5.m in Sources */,
 				96F301B91BF226710089AE14 /* SendTopicTextView.m in Sources */,
 				9643D70D1BF781DD003A394D /* AGEmojiPageView.m in Sources */,
+				DBBCAA671C22AF6C0044D18C /* MsgNotificationTableViewCell.m in Sources */,
 				DBF503EA1C1AAF1700AA02BE /* MyReceiveCommentTableViewCell.m in Sources */,
 				963DC49D1C0ACFD9005D1955 /* PSTCollectionViewData.m in Sources */,
 				963DC4A81C0ACFD9005D1955 /* EaseConversationModel.m in Sources */,

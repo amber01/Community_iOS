@@ -33,6 +33,13 @@
     [self setupTableView];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    BaseNavigationController *baseNav = (BaseNavigationController *)self.navigationController;
+    baseNav.canDragBack = NO;
+}
+
 - (void)updateContent
 {
     NSString *plistPath = [UIUtils getDocumentFile:@"myDraft.plist"];
@@ -79,7 +86,7 @@
     MyDraftListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
     
     if (!cell) {
-        cell = [[MyDraftListTableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
+        cell = [[MyDraftListTableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identityCell];
     }
     NSDictionary *dic = self.dataArray[indexPath.row];
     NSString *detail  = [dic objectForKey:@"content"];
@@ -113,7 +120,49 @@
     [self.navigationController presentViewController:baseNav animated:YES completion:^{
         
     }];
+}
 
+//滑动删除相关
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self.dataArray removeObjectAtIndex:indexPath.row];
+        
+        NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+        NSString *path=[paths    objectAtIndex:0];
+        
+        NSString *filename=[path stringByAppendingPathComponent:@"myDraft.plist"];
+        NSError  *error;
+        NSData* archiveData = [NSKeyedArchiver archivedDataWithRootObject:_dataArray];
+        if ([archiveData writeToFile:filename options:NSDataWritingAtomic error:&error]) {
+            NSLog(@"1");
+        }else{
+            NSLog(@"2");
+        }
+        
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+    else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }
+}
+
+-(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return  @"删除";
+}
+
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
 }
 
 #pragma mark -- other
@@ -121,6 +170,13 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    BaseNavigationController *baseNav = (BaseNavigationController *)self.navigationController;
+    baseNav.canDragBack = YES;
 }
 
 - (void)didReceiveMemoryWarning {

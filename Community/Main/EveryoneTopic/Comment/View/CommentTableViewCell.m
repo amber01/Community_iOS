@@ -22,6 +22,7 @@
     
     UILabel             *commentLabel;
     UILabel             *fromLabel;
+    UILabel             *replayNicknameLabel;
     
     PubliButton         *commentBtn;
 }
@@ -43,8 +44,11 @@
         dateLabel.font = [UIFont systemFontOfSize:12];
         dateLabel.text = @"今天 12:23 iPhone6";
         
+        replayNicknameLabel = [[UILabel   alloc]initWithFrame:CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, 20)];
+        replayNicknameLabel.textColor = TEXT_COLOR;
+        replayNicknameLabel.font = [UIFont systemFontOfSize:14];
         
-        contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, 20)];
+        contentLabel = [[UILabel alloc]init];
         [contentLabel verticalUpAlignmentWithText: @"说的方法第三方水电费水电费水电费说的方法第三方第三方第三方的说法是法师打发" maxHeight:10];
         contentLabel.lineBreakMode = NSLineBreakByWordWrapping;
         contentLabel.numberOfLines = 0;
@@ -69,6 +73,7 @@
         [self addSubview:contentLabel];
         [self addSubview:_likeBtn];
         [self addSubview:_likeLabel];
+        [self addSubview:replayNicknameLabel];
     }
     return self;
 }
@@ -79,8 +84,22 @@
     [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
     NSLog(@"%@",[NSString stringWithFormat:@"%@%@%@%@",model.logopicturedomain,BASE_IMAGE_URL,face,model.logopicture]);
     NSLog(@"images:%@",[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]);
-    nicknameLabel.text = model.nickname;
+    
     dateLabel.text = model.createtime;
+    if ([model.isreplay intValue] == 0) { //未回复的
+        contentLabel.text = model.detail;
+        nicknameLabel.text = model.nickname;
+        replayNicknameLabel.hidden = YES;
+        nicknameLabel.textColor = [UIColor blackColor];
+    }else{ //已回复的
+        replayNicknameLabel.hidden = NO;
+        //replaycontent
+        replayNicknameLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, 20);
+        replayNicknameLabel.text = [NSString stringWithFormat:@"@%@:",model.tonickname];;
+        nicknameLabel.text = [NSString stringWithFormat:@"%@(楼主)",model.nickname];
+        contentLabel.text = model.replaycontent;
+        nicknameLabel.textColor = [UIColor orangeColor];
+    }
     
     avatarImageView.user_id = model.userid;
     avatarImageView.nickname = model.nickname;
@@ -109,7 +128,7 @@
      *  动态计算内容高度
      */
     
-    contentLabel.text = model.detail;
+    
     NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
     CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
     
@@ -118,8 +137,14 @@
     }
     
     [avatarImageView addTarget:self action:@selector(checkUserInfo:) forControlEvents:UIControlEventTouchUpInside];
-    contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, contentHeight.height);
-    self.frame = CGRectMake(0, 0, ScreenWidth,avatarImageView.height + 10 + contentHeight.height + 10 + 10);
+    
+    if ([model.isreplay intValue] == 0) {
+        contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, contentHeight.height);
+        self.frame = CGRectMake(0, 0, ScreenWidth,avatarImageView.height + 10 + contentHeight.height + 10 + 10);
+    }else{
+        contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10 + 20, ScreenWidth - 30, contentHeight.height);
+        self.frame = CGRectMake(0, 0, ScreenWidth,avatarImageView.height + 10 + contentHeight.height + 10 + 10 + 20);
+    }
 }
 
 - (void)checkUserInfo:(PubliButton *)button

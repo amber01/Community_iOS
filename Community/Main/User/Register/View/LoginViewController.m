@@ -94,6 +94,10 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"provincearea"] forKey:@"provincearea"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"picturedomain"] forKey:@"picturedomain"];
                 
+                [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"isbbs"] forKey:@"isbbs"];
+                [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"ishotnews"] forKey:@"ishotnews"];
+                [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"ismessagepush"] forKey:@"ismessagepush"];
+                
                 SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
                 sharedInfo.user_id  = [dic objectForKey:@"id"];
                 sharedInfo.nickname  = [dic objectForKey:@"nickname"];

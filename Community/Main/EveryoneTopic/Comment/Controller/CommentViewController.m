@@ -23,6 +23,7 @@
 @property (nonatomic,retain)NSMutableArray *dataArray;
 @property (nonatomic,retain) NSMutableArray *likeDataArray;  //记录本地点赞的状态
 @property (nonatomic,retain) NSMutableArray *praiseDataArray; //自己是否点赞的数据
+@property (nonatomic,copy)   NSString       *postUserID;
 
 @end
 
@@ -94,7 +95,7 @@
     [self initMBProgress:@""];
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
-    NSDictionary *parameters = @{@"Method":@"ReCommentInfobyPostID",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"Sort":self.sortStr,@"FldSortType":@"1",@"PostID":self.post_id}]};
+    NSDictionary *parameters = @{@"Method":@"ReCommentInfobyPostID",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"UserID":isStrEmpty(self.postUserID) ? @"" : self.postUserID,@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"Sort":self.sortStr,@"FldSortType":@"1",@"PostID":self.post_id}]};
     
     [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
@@ -273,9 +274,12 @@
     NSInteger index = segmented.selectedSegmentIndex;
     if (index == 0) {
         self.sortStr = @"0";
+        self.postUserID = @"";
     }else if (index == 1){
+        self.postUserID = @"";
         self.sortStr = @"1";
     }else{
+        self.postUserID = self.user_id;
         self.sortStr = @"0";
     }
     

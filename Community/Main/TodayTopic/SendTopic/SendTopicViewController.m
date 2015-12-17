@@ -441,7 +441,6 @@
 #pragma mark ELCImagePickerControllerDelegate Methods
 - (void)elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info
 {
-    NSLog(@"infos:%@",info);
     for (int i = 0; i < info.count; i ++) {
         if (!self.locaPhotoArr) {
             _locaPhotoArr = [[NSMutableArray alloc]init];

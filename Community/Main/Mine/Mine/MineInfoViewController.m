@@ -213,6 +213,7 @@
     EveryoneTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
     TopicDetailViewController *topicDetaiVC = [[TopicDetailViewController alloc]init];
     topicDetaiVC.post_id = model.id;
+    topicDetaiVC.user_id = model.userid;
     [topicDetaiVC setHidesBottomBarWhenPushed:YES];
     [self.navigationController pushViewController:topicDetaiVC animated:YES];
 

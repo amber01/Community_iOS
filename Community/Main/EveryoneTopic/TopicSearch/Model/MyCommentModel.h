@@ -26,5 +26,6 @@
 @property (nonatomic,copy)NSString *replaycontent;
 @property (nonatomic,copy)NSString *logopicture;
 @property (nonatomic,copy)NSString *logopicturedomain;
+@property (nonatomic,copy)NSString *postid;
 
 @end

@@ -10,8 +10,10 @@
 #import "MsgCommentTopView.h"
 #import "MyReceiveCommentTableViewCell.h"
 #import "MySendCommentTableViewCell.h"
+#import "TopicDetailViewController.h"
+#import "WriteCommentViewController.h"
 
-@interface CommentStatusViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface CommentStatusViewController ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>
 {
     UITableView *_tableView;
     UITableView *_sendTabelView;
@@ -19,6 +21,7 @@
     
     int         page;
     int         sendPage;
+    BOOL        isMyReceive;
 }
 
 @property (nonatomic,retain)NSMutableArray  *dataArray;
@@ -55,6 +58,7 @@
     _tableView.delegate = self;
     _tableView.tag = 1000;
     _tableView.hidden = NO;
+    _tableView.backgroundColor = [UIColor whiteColor];
     [UIUtils setExtraCellLineHidden:_tableView];
     _tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_tableView];
@@ -63,6 +67,7 @@
     _sendTabelView.dataSource = self;
     _sendTabelView.delegate = self;
     _sendTabelView.hidden = YES;
+    _sendTabelView.backgroundColor = [UIColor whiteColor];
     [UIUtils setExtraCellLineHidden:_sendTabelView];
     _sendTabelView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_sendTabelView];
@@ -232,6 +237,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    if (tableView.tag == 1000) {
+        UIActionSheet *sheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"回复",@"查看信息", nil];
+        sheet.actionSheetStyle =UIActionSheetStyleAutomatic;
+        sheet.tag = indexPath.row;
+        isMyReceive = YES;
+        [sheet showInView:self.view];
+    }else{
+        UIActionSheet *sheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"查看信息", nil];
+        sheet.actionSheetStyle =UIActionSheetStyleAutomatic;
+        sheet.tag = indexPath.row;
+        isMyReceive = NO;
+        [sheet showInView:self.view];
+    }
 }
 
 #pragma mark -- action
@@ -252,6 +270,39 @@
     }
     NSLog(@"%ld",index);
 }
+
+#pragma mark -- UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (isMyReceive) {
+        if (buttonIndex == 1) {
+            TopicDetailViewController *topicDetailVC = [[TopicDetailViewController alloc]init];
+            MyCommentModel *model = self.dataArray[actionSheet.tag];
+            topicDetailVC.post_id = model.postid;
+            topicDetailVC.user_id = model.touserid;
+            [self.navigationController pushViewController:topicDetailVC animated:YES];
+        }else if (buttonIndex == 0){
+            MyCommentModel *model = self.dataArray[actionSheet.tag];
+            WriteCommentViewController *writeCommentVC = [[WriteCommentViewController alloc]init];
+            writeCommentVC.post_id = model.postid;
+            writeCommentVC.toUserID = model.touserid;
+            writeCommentVC.commentID = model.id;
+            BaseNavigationController *baseNav = [[BaseNavigationController alloc]initWithRootViewController:writeCommentVC];
+            [self.navigationController presentViewController:baseNav animated:YES completion:^{
+                
+            }];
+        }
+    }else{
+        if (buttonIndex == 0) {
+            TopicDetailViewController *topicDetailVC = [[TopicDetailViewController alloc]init];
+            MyCommentModel *model = self.sendCommentArray[actionSheet.tag];
+            topicDetailVC.post_id = model.postid;
+            topicDetailVC.user_id = model.touserid;
+            [self.navigationController pushViewController:topicDetailVC animated:YES];
+        }
+    }
+}
+
 #pragma mark -- other
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

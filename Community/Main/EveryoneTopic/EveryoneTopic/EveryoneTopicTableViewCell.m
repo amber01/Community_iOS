@@ -176,6 +176,7 @@
     }
     
     commentBtn.post_id = model.id;
+    commentBtn.user_id = model.userid;
     avatarImageView.user_id = model.userid;
     avatarImageView.nickname = model.nickname;
     avatarImageView.userName = model.username;
@@ -354,6 +355,7 @@
     NSLog(@"button:%@",button.post_id);
     CommentViewController *commentVC = [[CommentViewController alloc]init];
     commentVC.post_id = button.post_id;
+    commentVC.user_id = button.user_id;
     [commentVC setHidesBottomBarWhenPushed:YES];
     [self.viewController.navigationController pushViewController:commentVC animated:YES];
 }

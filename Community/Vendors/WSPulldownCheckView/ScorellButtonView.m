@@ -69,7 +69,7 @@
 
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
-    NSDictionary *parameters = @{@"Method":@"ReCommentInfobyPostID",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"Sort":self.sortStr,@"FldSortType":@"1",@"PostID":self.post_id}]};
+    NSDictionary *parameters = @{@"Method":@"ReCommentInfobyPostID",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"UserID":isStrEmpty(self.tempUserID) ? @"" : self.tempUserID,@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"Sort":self.sortStr,@"FldSortType":@"1",@"PostID":self.post_id}]};
     
     [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
@@ -245,10 +245,13 @@
     NSInteger index = segmented.selectedSegmentIndex;
     if (index == 0) {
         self.sortStr = @"0";
+        self.tempUserID = @"";
     }else if (index == 1){
         self.sortStr = @"1";
+        self.tempUserID = @"";
     }else{
         self.sortStr = @"0";
+        self.tempUserID = self.userID;
     }
     
     page = 1;

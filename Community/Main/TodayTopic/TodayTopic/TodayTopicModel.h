@@ -19,5 +19,6 @@
 @property (nonatomic,copy)NSString *picturedomain;
 @property (nonatomic,copy)NSString *name;
 @property (nonatomic,copy)NSString *praisenum;
+@property (nonatomic,copy)NSString *userid;
 
 @end

@@ -27,6 +27,8 @@
 @property (nonatomic,copy    ) NSString       *post_id;
 
 @property (nonatomic,copy    ) NSString       *sortStr;
+@property (nonatomic,copy    ) NSString       *userID;
+@property (nonatomic,copy    ) NSString       *tempUserID;
 
 @property (nonatomic,retain  ) NSMutableArray *dataArray;
 @property (nonatomic,retain  ) NSMutableArray *likeDataArray;//记录本地点赞的状态

@@ -10,7 +10,8 @@
 
 @interface CommentViewController : BaseViewController
 
-@property (nonatomic,copy)UITableView    *tableView;
-@property (nonatomic,copy)NSString *post_id;
+@property (nonatomic,copy) UITableView *tableView;
+@property (nonatomic,copy) NSString    *post_id;
+@property (nonatomic,copy) NSString    *user_id;
 
 @end

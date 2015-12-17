@@ -11,6 +11,7 @@
 #import "SettingTableViewCell.h"
 #import "ModifyUserInfoViewController.h"
 #import "SelectCityViewController.h"
+#import "MsgNotificationViewController.h"
 
 @interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -143,11 +144,17 @@
                 //切换城市
                 SelectCityViewController *selectCityVC = [[SelectCityViewController alloc]init];
                 [self.navigationController pushViewController:selectCityVC animated:YES];
+            }else if (indexPath.row == 2){
+                MsgNotificationViewController *msgNotificationVC = [[MsgNotificationViewController alloc]init];
+                [self.navigationController pushViewController:msgNotificationVC animated:YES];
             }
         }else{
             if (indexPath.row == 0) {
                 SelectCityViewController *selectCityVC = [[SelectCityViewController alloc]init];
                 [self.navigationController pushViewController:selectCityVC animated:YES];
+            }else if (indexPath.row == 1){
+                MsgNotificationViewController *msgNotificationVC = [[MsgNotificationViewController alloc]init];
+                [self.navigationController pushViewController:msgNotificationVC animated:YES];
             }
         }
     }else if (indexPath.section == 1){
