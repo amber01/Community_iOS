@@ -396,6 +396,8 @@
 		96F5DA461C20570100873F31 /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F5DA451C20570100873F31 /* MessageTableViewCell.m */; };
 		96F5DA481C22EC6F00873F31 /* topic_detail_more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 96F5DA471C22EC6F00873F31 /* topic_detail_more@2x.png */; };
 		B5BF3EE606232C1A4F2F8411 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1181DD7D94E49915A43A9DDC /* libPods.a */; };
+		DB0AEF271C2398FE00101EC9 /* MyCollectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0AEF261C2398FE00101EC9 /* MyCollectionTableViewCell.m */; };
+		DB0AEF2A1C239AED00101EC9 /* MyCollectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0AEF291C239AED00101EC9 /* MyCollectionModel.m */; };
 		DB4F25991C104B21005FBEA2 /* TodayTopicPraiseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4F25981C104B21005FBEA2 /* TodayTopicPraiseModel.m */; };
 		DB62F95C1C0C4321004AB454 /* delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DB62F95B1C0C4321004AB454 /* delete@2x.png */; };
 		DB84257C1BF1988D00D1C273 /* OptionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DB84257B1BF1988D00D1C273 /* OptionButton.m */; };
@@ -1083,6 +1085,10 @@
 		96F5DA441C20570100873F31 /* MessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTableViewCell.h; sourceTree = "<group>"; };
 		96F5DA451C20570100873F31 /* MessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewCell.m; sourceTree = "<group>"; };
 		96F5DA471C22EC6F00873F31 /* topic_detail_more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topic_detail_more@2x.png"; sourceTree = "<group>"; };
+		DB0AEF251C2398FE00101EC9 /* MyCollectionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyCollectionTableViewCell.h; path = Community/Main/Mine/Settings/View/MyCollectionTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		DB0AEF261C2398FE00101EC9 /* MyCollectionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyCollectionTableViewCell.m; path = Community/Main/Mine/Settings/View/MyCollectionTableViewCell.m; sourceTree = SOURCE_ROOT; };
+		DB0AEF281C239AED00101EC9 /* MyCollectionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyCollectionModel.h; path = Community/Main/Mine/MyCollection/Controller/MyCollectionModel.h; sourceTree = SOURCE_ROOT; };
+		DB0AEF291C239AED00101EC9 /* MyCollectionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyCollectionModel.m; path = Community/Main/Mine/MyCollection/Controller/MyCollectionModel.m; sourceTree = SOURCE_ROOT; };
 		DB4F25971C104B21005FBEA2 /* TodayTopicPraiseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicPraiseModel.h; sourceTree = "<group>"; };
 		DB4F25981C104B21005FBEA2 /* TodayTopicPraiseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicPraiseModel.m; sourceTree = "<group>"; };
 		DB62F95B1C0C4321004AB454 /* delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete@2x.png"; sourceTree = "<group>"; };
@@ -2701,6 +2707,8 @@
 		96E832CA1C23013C0036B311 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				DB0AEF281C239AED00101EC9 /* MyCollectionModel.h */,
+				DB0AEF291C239AED00101EC9 /* MyCollectionModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2708,6 +2716,8 @@
 		96E832CB1C23013C0036B311 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DB0AEF251C2398FE00101EC9 /* MyCollectionTableViewCell.h */,
+				DB0AEF261C2398FE00101EC9 /* MyCollectionTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -3526,6 +3536,7 @@
 				963DC4C81C0ACFD9005D1955 /* EaseBubbleView.m in Sources */,
 				968426231C01734E00774538 /* TodayTopicImagesModel.m in Sources */,
 				969345CF1C1B1FFE0056072F /* TopicLikeViewController.m in Sources */,
+				DB0AEF271C2398FE00101EC9 /* MyCollectionTableViewCell.m in Sources */,
 				964A9F3E1BEF4198007CE0E9 /* main.m in Sources */,
 				963DC4AA1C0ACFD9005D1955 /* EaseUserModel.m in Sources */,
 				963DC4CA1C0ACFD9005D1955 /* EaseChatToolbarItem.m in Sources */,
@@ -3556,6 +3567,7 @@
 				DB84257C1BF1988D00D1C273 /* OptionButton.m in Sources */,
 				96D508371C0C9BC5001DFA49 /* ModifyUserInfoTableViewCell.m in Sources */,
 				96D508501C11E615001DFA49 /* CommentSortView.m in Sources */,
+				DB0AEF2A1C239AED00101EC9 /* MyCollectionModel.m in Sources */,
 				963DC4A21C0ACFD9005D1955 /* PSTGridLayoutInfo.m in Sources */,
 				963DC4B41C0ACFD9005D1955 /* EaseEmoji.m in Sources */,
 				963DC4811C0ACFD9005D1955 /* MWGridCell.m in Sources */,
@@ -3638,8 +3650,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -3661,7 +3673,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "48f433d0-90c9-4ae0-af24-aec52e4f3e3a";
+				PROVISIONING_PROFILE = "d9ba436f-01fd-4db4-8834-1d2758954e5e";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3684,8 +3696,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -3700,7 +3712,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "48f433d0-90c9-4ae0-af24-aec52e4f3e3a";
+				PROVISIONING_PROFILE = "d9ba436f-01fd-4db4-8834-1d2758954e5e";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

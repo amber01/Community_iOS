@@ -23,7 +23,9 @@
         start_x -= width;
         for (int i = 0; i < titleArr.count; i ++) {
             UIButton *mineBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            [mineBtn addTarget:self action:@selector(clickOn:) forControlEvents:UIControlEventTouchUpInside];
             start_x += width;
+            mineBtn.tag = i;
             [mineBtn setImage:[UIImage imageNamed:btnImage[i]] forState:UIControlStateNormal];
             mineBtn.frame = CGRectMake(start_x + (width - 45) / 2, 10, 45, 45);
             [self.contentView addSubview:mineBtn];
@@ -35,9 +37,30 @@
             btnTitle.text = titleArr[i];
             [self.contentView addSubview:btnTitle];
         }
+        
     }
     return self;
 }
+
+- (void)clickOn:(UIButton *)button
+{
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
+    if (button.tag == 0) {
+        webDetailVC.url = [NSString stringWithFormat:@"%@Default.aspx?mobile/mall&UserID=%@",ROOT_URL,sharedInfo.user_id];
+        [webDetailVC setHidesBottomBarWhenPushed:YES];
+        [self.viewController.navigationController pushViewController:webDetailVC animated:YES];
+    }else if (button.tag == 1){
+        webDetailVC.url = [NSString stringWithFormat:@"%@Default.aspx?mobile/sign&UserID=%@",ROOT_URL,sharedInfo.user_id];
+        [webDetailVC setHidesBottomBarWhenPushed:YES];
+        [self.viewController.navigationController pushViewController:webDetailVC animated:YES];
+    }else{
+        webDetailVC.url = [NSString stringWithFormat:@"%@Default.aspx?mobile/prize&UserID=%@",ROOT_URL,sharedInfo.user_id];
+        [webDetailVC setHidesBottomBarWhenPushed:YES];
+        [self.viewController.navigationController pushViewController:webDetailVC animated:YES];
+    }
+}
+
 
 - (void)awakeFromNib {
     // Initialization code

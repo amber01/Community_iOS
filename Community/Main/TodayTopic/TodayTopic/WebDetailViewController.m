@@ -47,7 +47,7 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     NSString *titleStr = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-    self.title  = isStrEmpty(titleStr) ? @"活动详情" : titleStr;
+    self.title  = isStrEmpty(titleStr) ? @"详情" : titleStr;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error

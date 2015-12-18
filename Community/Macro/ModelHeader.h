@@ -20,5 +20,6 @@
 #import "MyCommentModel.h"
 #import "TopicLikeModel.h"
 #import "CommentLikeModel.h"
+#import "MyCollectionModel.h"
 
 #endif /* ModelHeader_h */

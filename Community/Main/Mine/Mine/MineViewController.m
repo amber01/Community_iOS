@@ -281,6 +281,12 @@
                 MyCollectionViewController *myCollectionVC = [[MyCollectionViewController alloc]init];
                 [myCollectionVC setHidesBottomBarWhenPushed:YES];
                 [self.navigationController pushViewController:myCollectionVC animated:YES];
+            }else if (indexPath.row == 0){
+                SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+                WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
+                webDetailVC.url = [NSString stringWithFormat:@"%@Default.aspx?mobile/my&UserID=%@",ROOT_URL,sharedInfo.user_id];
+                [webDetailVC setHidesBottomBarWhenPushed:YES];
+                [self.navigationController pushViewController:webDetailVC animated:YES];
             }
         }
     }else{ //未登录

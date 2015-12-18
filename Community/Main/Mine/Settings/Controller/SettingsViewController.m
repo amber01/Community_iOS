@@ -13,6 +13,7 @@
 #import "SelectCityViewController.h"
 #import "MsgNotificationViewController.h"
 #import "MiniNetworkSetViewController.h"
+#import "EaseMessageViewController.h"
 
 @interface SettingsViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -173,6 +174,16 @@
             NSString *version = [NSString stringWithFormat:@"您的当前版本为v%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
             UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"温馨提示" message:version delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [alertView show];
+        }else if (indexPath.row == 2){
+            EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:@"8115" conversationType:eConversationTypeChat];
+            //easeMessageVC.avatarUrl = button.avatarUrl;
+            easeMessageVC.title = @"意见反馈";
+            [self.navigationController pushViewController:easeMessageVC animated:YES];
+            
+        }else if (indexPath.row == 3){
+            WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
+            webDetailVC.url = [NSString stringWithFormat:@"%@Default.aspx?mobile/aboutus",ROOT_URL];
+            [self.navigationController pushViewController:webDetailVC animated:YES];
         }
     }
 }

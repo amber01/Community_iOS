@@ -355,6 +355,8 @@
         [CKHttpRequest createRequest:HTTP_METHOD_MY_COLLECTION WithParam:parameters withMethod:@"POST" success:^(id result) {
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {
                 [self initMBProgress:@"收藏成功" withModeType:MBProgressHUDModeText afterDelay:1.0];
+            }else{
+                [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.0];
             }
         } failure:^(NSError *erro) {
             

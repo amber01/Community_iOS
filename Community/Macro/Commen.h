@@ -42,6 +42,7 @@
 #import "SharedInfo.h"
 #import "PubliButton.h"
 #import "LoginViewController.h"
+#import "WebDetailViewController.h"
 
 #import "UIImage+Extras.h"
 
