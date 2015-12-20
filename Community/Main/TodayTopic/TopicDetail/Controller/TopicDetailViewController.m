@@ -15,6 +15,7 @@
 #import "TWebView.h"
 #import "CommentViewController.h"
 #import "GoodsLoadMoreFootView.h"
+#import "TopicCommentDetailView.h"
 
 @interface TopicDetailViewController ()<UIScrollViewDelegate,UIWebViewDelegate,TWebScrollViewDelegate,CheckMoreDelegate,UIActionSheetDelegate>
 {
@@ -29,6 +30,7 @@
     TWebView             *detailWebView;
     
     UIView               *loadingView;
+    UIView               *footBackgroundView;
 }
 
 @property (nonatomic,retain) UIScrollView      *myScrollView;
@@ -62,6 +64,8 @@
     CustomButtonItem *buttonItem = [[CustomButtonItem alloc]initButtonItem:[UIImage imageNamed:@"topic_detail_more"]];
     [buttonItem.itemBtn addTarget:self action:@selector(checkMoreAction) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = buttonItem;
+    
+    footBackgroundView = [[UIView alloc]init];
 }
 
 #pragma makr -- UI
@@ -85,13 +89,11 @@
     headView = [[TopicDetailHeadView alloc]initWithFrame:CGRectMake(0, 0, ScreenHeight, 65)];
     [self.myScrollView addSubview:detailWebView];
     
-    GoodsLoadMoreFootView *goodsLoadMoreView = [[GoodsLoadMoreFootView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 49)];
     
     /**
      *  再UIWebView的头视图上添加一个自定义View
      */
     detailWebView.headerView = headView;
-    detailWebView.footerView = goodsLoadMoreView;
     
     [self createdFootMoreView];
 }
@@ -134,7 +136,7 @@
     float sub = contentHeight-offset;
     
     if (isLoadTopMore == YES) {
-        if (scrollView.height - sub > 30) {
+        if (scrollView.height - sub > 40) {
             isLoadTopMore = NO;
             isLoadMore = NO;
             [self scrollViewByPageControlPage:1];
@@ -230,6 +232,22 @@
                 NSString *avataURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",picturedomain],BASE_IMAGE_URL,face,logopicture];
                 NSDictionary *dataDic = @{@"date":[NSString stringWithFormat:@"%@ %@",date,source],@"avataURL":avataURL,@"nickname":nickname};
                 [headView getUserInfoData:dataDic];
+                
+                //是否可以打赏
+                NSString *isShow = [dic objectForKey:@"isshow"];
+                if ([isShow intValue] == 2) {
+                    TopicCommentDetailView *topicCommentDetailView = [[TopicCommentDetailView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 90) withPostID:self.post_id isReawrd:@"2"];
+                    [footBackgroundView addSubview:topicCommentDetailView];
+                    GoodsLoadMoreFootView *goodsLoadMoreView = [[GoodsLoadMoreFootView alloc]initWithFrame:CGRectMake(0, topicCommentDetailView.bottom, ScreenWidth, 49)];
+                    [footBackgroundView addSubview:goodsLoadMoreView];
+                    footBackgroundView.frame = CGRectMake(0, 0, ScreenWidth, topicCommentDetailView.height + goodsLoadMoreView.height);
+                    detailWebView.footerView = footBackgroundView;
+                }else{
+                    GoodsLoadMoreFootView *goodsLoadMoreView = [[GoodsLoadMoreFootView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 49)];
+                    footBackgroundView.frame = CGRectMake(0, 0, ScreenWidth , goodsLoadMoreView.height);
+                    [footBackgroundView addSubview:goodsLoadMoreView];
+                    detailWebView.footerView = footBackgroundView;
+                }
                 
                 //是否点赞
                 NSArray  *praiseArray = [result objectForKey:@"IsPraise"];
@@ -384,6 +402,12 @@
 - (void)dealloc
 {
     [scorllBtnView.tableView removeObserver:self forKeyPath:@"contentOffset"];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    isLoadTopMore = YES;
 }
 
 /*

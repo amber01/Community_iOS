@@ -90,8 +90,10 @@
             float width = ScreenWidth / 4;
             self.imageView.frame = CGRectMake(width * 3 - 32*scaleToScreenHeight, 7, 8, 8);
             _imageView.hidden = YES;
+            _imageView.layer.cornerRadius = _imageView.height/2;
+            _imageView.clipsToBounds = YES;
+
             [self.tabBar addSubview:_imageView];
-            [UIUtils setupViewRadius:_imageView cornerRadius:8/2];
         }
     }
 }

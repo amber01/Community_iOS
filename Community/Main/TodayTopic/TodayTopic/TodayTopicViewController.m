@@ -118,10 +118,19 @@
             [_adView startAdsWithBlock:imageArray block:^(NSInteger clickIndex) {
                 NSDictionary *dic = detailArray[clickIndex];
                 NSString     *url = [dic objectForKey:@"linkaddress"];
-                WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
-                webDetailVC.url = url;
-                [webDetailVC setHidesBottomBarWhenPushed:YES];
-                [self.navigationController pushViewController:webDetailVC animated:YES];
+                NSString     *status = [dic objectForKey:@"width"]; //width = 0表示链接URL地址,=1表示链接app帖子
+                NSString     *post_id = [dic objectForKey:@"height"];
+                if ([status intValue] == 0) {
+                    WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
+                    webDetailVC.url = url;
+                    [webDetailVC setHidesBottomBarWhenPushed:YES];
+                    [self.navigationController pushViewController:webDetailVC animated:YES];
+                }else{
+                    TopicDetailViewController *topicDetailVC = [[TopicDetailViewController alloc]init];
+                    [topicDetailVC setHidesBottomBarWhenPushed:YES];
+                    topicDetailVC.post_id = post_id;
+                    [self.navigationController pushViewController:topicDetailVC animated:YES];
+                }
             }];
         }
         [self.tableView reloadData];
