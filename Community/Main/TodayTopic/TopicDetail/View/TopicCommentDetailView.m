@@ -10,7 +10,13 @@
 #import "CommentTableViewCell.h"
 
 @implementation TopicCommentDetailView
-
+{
+    UILabel             *nicknameLabel;
+    UILabel             *dateLabel;
+    UILabel             *replayNicknameLabel;
+    UILabel             *contentLabel;
+    float               viewHeight;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame withPostID:(NSString *)post_id isReawrd:(NSString *)isReawrd
 {
@@ -31,7 +37,7 @@
             [_rewardView addSubview:_rewardBtn];
             [self addSubview:_rewardView];
         }
-        
+        viewHeight = 0;
         [self getCommentListData];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadDataList) name:kReloadCommentNotification object:nil];
     }
@@ -60,20 +66,102 @@
         for (int i = 0; i < items.count; i ++) {
             CommentModel *model = [items objectAtIndex:i];
             
-            self.checkUserInfoBtn = [[PubliButton alloc]initWithFrame:CGRectMake(10, 10, 40, 40)];
+            self.checkUserInfoBtn = [[PubliButton alloc]initWithFrame:CGRectMake(10, 10, 45, 45)];
             [_checkUserInfoBtn sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
-            
-            NSLog(@"image url:%@",[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]);
+
             [UIUtils setupViewRadius:_checkUserInfoBtn cornerRadius:_checkUserInfoBtn.height/2];
             
-            self.commentView = [[UIView alloc]initWithFrame:CGRectMake(0, (self.rewardView.bottom + 10) + (i*100), ScreenWidth, 100)];
+            self.commentView = [[UIView alloc]initWithFrame:CGRectMake(0, self.rewardView.bottom + 10, ScreenWidth, 10)];
+            
             self.commentView.backgroundColor = [UIColor whiteColor];
             [CommonClass setBorderWithView:_commentView top:YES left:NO bottom:NO right:NO borderColor:LINE_COLOR borderWidth:0.5];
+            
+            nicknameLabel = [[UILabel alloc]initWithFrame:CGRectMake(_checkUserInfoBtn.right+10, 18, ScreenWidth - _checkUserInfoBtn.width - 40, 20)];
+            nicknameLabel.font = [UIFont systemFontOfSize:14];
+            nicknameLabel.text = @"盛夏光年";
+            
+            replayNicknameLabel = [[UILabel   alloc]initWithFrame:CGRectMake(15, _checkUserInfoBtn.bottom + 10, ScreenWidth - 30, 20)];
+            replayNicknameLabel.textColor = TEXT_COLOR;
+            replayNicknameLabel.font = [UIFont systemFontOfSize:14];
+            
+            
+            dateLabel = [[UILabel alloc]initWithFrame:CGRectMake(_checkUserInfoBtn.right+10, nicknameLabel.bottom+2, ScreenWidth - _checkUserInfoBtn.width - 40, 20)];
+            dateLabel.textColor = [UIColor grayColor];
+            dateLabel.font = [UIFont systemFontOfSize:12];
+            dateLabel.text = @"今天 12:23 iPhone6";
+            
+            
+            contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, _checkUserInfoBtn.bottom + 10, ScreenWidth - 30, 20)];
+            [contentLabel verticalUpAlignmentWithText: @"说的方法第三方水电费水电费水电费说的方法第三方第三方第三方的说法是法师打发" maxHeight:10];
+            contentLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            contentLabel.numberOfLines = 0;
+            [contentLabel setFont:[UIFont systemFontOfSize:15]];
+            
+            if ([model.isreplay intValue] == 0) { //未回复的
+                contentLabel.text = model.detail;
+                nicknameLabel.text = model.nickname;
+                replayNicknameLabel.hidden = YES;
+                nicknameLabel.textColor = [UIColor blackColor];
+            }else{ //已回复的
+                replayNicknameLabel.hidden = NO;
+                //replaycontent
+                replayNicknameLabel.frame = CGRectMake(10, _checkUserInfoBtn.bottom + 10, ScreenWidth - 30, 20);
+                replayNicknameLabel.text = [NSString stringWithFormat:@"@%@:",model.tonickname];;
+                nicknameLabel.text = [NSString stringWithFormat:@"%@(楼主)",model.nickname];
+                contentLabel.text = model.replaycontent;
+                nicknameLabel.textColor = [UIColor orangeColor];
+            }
+            
+            NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
+            CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+            
+            NSLog(@"contentHeight:%f",contentHeight.height);
+            
+            float height = 45 + 10 + contentHeight.height + 20;
+            if (i == 0) {
+                viewHeight = 0;
+            }else{
+                viewHeight = height + viewHeight ;
+            }
+            
+            
+            
+            self.commentView.frame = CGRectMake(0, (self.rewardView.bottom + 10)+viewHeight, ScreenWidth, 45 + 10 + contentHeight.height + 20);
+            
+            if (contentLabel.text.length == 0) {
+                contentHeight.height = 0;
+            }
+            
+            
+            
+            if ([model.isreplay intValue] == 0) {
+                //NSLog(@"contentHeight1:%f",contentHeight.height);
+                contentLabel.frame = CGRectMake(15, _checkUserInfoBtn.bottom + 10, ScreenWidth - 30, contentHeight.height);
+//                
+//                self.commentView.frame = CGRectMake(0, (self.rewardView.bottom + 10) + i * (45 + 10 + contentHeight.height + 20), ScreenWidth, (45 + 10 + contentHeight.height + 20));
+//                if (i == items.count - 1) {
+//                    self.commentView.frame = CGRectMake(0, (self.rewardView.bottom + 10) + i * (45 + 10 + contentHeight.height + 20), ScreenWidth, (45 + 10 + contentHeight.height + 20));
+//                }
+//                
+                NSLog(@"commetv y %f",self.commentView.origin.y);
+                NSLog(@"comment height:%f",self.commentView.height);
+                
+            }else{
+                contentLabel.frame = CGRectMake(15, _checkUserInfoBtn.bottom + 10 + 20, ScreenWidth - 30, contentLabel.height);
+                
+                self.commentView.frame = CGRectMake(0, (self.rewardView.bottom + 10) + (i*(_checkUserInfoBtn.height + 10 + contentLabel.height + 10 + 10 + 20 + 10)), ScreenWidth, _checkUserInfoBtn.height + 10 + contentLabel.height + 10 + 10 + 20 + 10 + 10 );
+            }
+            
+            
+            
+            [_commentView addSubview:replayNicknameLabel];
+            [_commentView addSubview:nicknameLabel];
+            [_commentView addSubview:dateLabel];
+            [_commentView addSubview:contentLabel];
             [_commentView addSubview:_checkUserInfoBtn];
             [self addSubview:_commentView];
         }
         
-        self.frame = CGRectMake(0, 0, ScreenWidth, self.rewardView.height + _commentView.height);
         
         for (int i = 0; i < praiseItems.count; i ++) {
             if (!self.praiseDataArray) {

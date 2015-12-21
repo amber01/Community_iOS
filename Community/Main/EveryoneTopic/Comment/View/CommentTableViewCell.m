@@ -48,11 +48,12 @@
         replayNicknameLabel.textColor = TEXT_COLOR;
         replayNicknameLabel.font = [UIFont systemFontOfSize:14];
         
-        contentLabel = [[UILabel alloc]init];
+        contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, 20)];
         [contentLabel verticalUpAlignmentWithText: @"说的方法第三方水电费水电费水电费说的方法第三方第三方第三方的说法是法师打发" maxHeight:10];
         contentLabel.lineBreakMode = NSLineBreakByWordWrapping;
         contentLabel.numberOfLines = 0;
         [contentLabel setFont:[UIFont systemFontOfSize:15]];
+
         self.likeBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
         _likeBtn.frame = CGRectMake(ScreenWidth - 13 - 15,15, 13 + 15, 26);
         _likeBtn.backgroundColor = [UIColor whiteColor];
@@ -127,14 +128,15 @@
     /**
      *  动态计算内容高度
      */
-    
+
     
     NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
     CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-    
-    if (contentLabel.text.length == 0) {
+     if (contentLabel.text.length == 0) {
         contentHeight.height = 0;
     }
+    
+    
     
     [avatarImageView addTarget:self action:@selector(checkUserInfo:) forControlEvents:UIControlEventTouchUpInside];
     

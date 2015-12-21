@@ -249,7 +249,7 @@
                             
                         }
                         
-                        TopicCommentDetailView *topicCommentDetailView = [[TopicCommentDetailView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 90 + items.count * 100) withPostID:self.post_id isReawrd:@"2"];
+                        TopicCommentDetailView *topicCommentDetailView = [[TopicCommentDetailView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 90 + items.count * 170) withPostID:self.post_id isReawrd:@"2"];
                         
                         [footBackgroundView addSubview:topicCommentDetailView];
                         GoodsLoadMoreFootView *goodsLoadMoreView = [[GoodsLoadMoreFootView alloc]initWithFrame:CGRectMake(0, topicCommentDetailView.bottom, ScreenWidth, 49)];
@@ -273,7 +273,7 @@
                             
                         }
                         
-                        TopicCommentDetailView *topicCommentDetailView = [[TopicCommentDetailView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 90 + items.count * 100) withPostID:self.post_id isReawrd:@"2"];
+                        TopicCommentDetailView *topicCommentDetailView = [[TopicCommentDetailView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 90 + items.count * 170) withPostID:self.post_id isReawrd:@"2"];
                         [footBackgroundView addSubview:topicCommentDetailView];
                         GoodsLoadMoreFootView *goodsLoadMoreView = [[GoodsLoadMoreFootView alloc]initWithFrame:CGRectMake(0, topicCommentDetailView.bottom, ScreenWidth, 49)];
                         [footBackgroundView addSubview:goodsLoadMoreView];
