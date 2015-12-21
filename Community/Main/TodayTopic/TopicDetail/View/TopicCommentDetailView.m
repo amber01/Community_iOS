@@ -58,11 +58,22 @@
         NSArray *praiseItems = [result objectForKey:@"IsPraise"];
         
         for (int i = 0; i < items.count; i ++) {
-            if (!self.dataArray) {
-                self.dataArray = [[NSMutableArray alloc]init];
-            }
-            [self.dataArray addObject:[items objectAtIndex:i]];
+            CommentModel *model = [items objectAtIndex:i];
+            
+            self.checkUserInfoBtn = [[PubliButton alloc]initWithFrame:CGRectMake(10, 10, 40, 40)];
+            [_checkUserInfoBtn sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
+            
+            NSLog(@"image url:%@",[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]);
+            [UIUtils setupViewRadius:_checkUserInfoBtn cornerRadius:_checkUserInfoBtn.height/2];
+            
+            self.commentView = [[UIView alloc]initWithFrame:CGRectMake(0, (self.rewardView.bottom + 10) + (i*100), ScreenWidth, 100)];
+            self.commentView.backgroundColor = [UIColor whiteColor];
+            [CommonClass setBorderWithView:_commentView top:YES left:NO bottom:NO right:NO borderColor:LINE_COLOR borderWidth:0.5];
+            [_commentView addSubview:_checkUserInfoBtn];
+            [self addSubview:_commentView];
         }
+        
+        self.frame = CGRectMake(0, 0, ScreenWidth, self.rewardView.height + _commentView.height);
         
         for (int i = 0; i < praiseItems.count; i ++) {
             if (!self.praiseDataArray) {

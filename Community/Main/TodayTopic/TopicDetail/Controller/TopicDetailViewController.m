@@ -136,7 +136,7 @@
     float sub = contentHeight-offset;
     
     if (isLoadTopMore == YES) {
-        if (scrollView.height - sub > 40) {
+        if (scrollView.height - sub > footBackgroundView.height + 30) {
             isLoadTopMore = NO;
             isLoadMore = NO;
             [self scrollViewByPageControlPage:1];
@@ -236,17 +236,53 @@
                 //是否可以打赏
                 NSString *isShow = [dic objectForKey:@"isshow"];
                 if ([isShow intValue] == 2) {
-                    TopicCommentDetailView *topicCommentDetailView = [[TopicCommentDetailView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 90) withPostID:self.post_id isReawrd:@"2"];
-                    [footBackgroundView addSubview:topicCommentDetailView];
-                    GoodsLoadMoreFootView *goodsLoadMoreView = [[GoodsLoadMoreFootView alloc]initWithFrame:CGRectMake(0, topicCommentDetailView.bottom, ScreenWidth, 49)];
-                    [footBackgroundView addSubview:goodsLoadMoreView];
-                    footBackgroundView.frame = CGRectMake(0, 0, ScreenWidth, topicCommentDetailView.height + goodsLoadMoreView.height);
-                    detailWebView.footerView = footBackgroundView;
+                    
+
+                    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+                    NSDictionary *parameters = @{@"Method":@"ReCommentInfobyPostID",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"UserID":@"",@"PageSize":@"5",@"IsShow":@"888",@"PageIndex":@"1",@"Sort":@"1",@"FldSortType":@"1",@"PostID":self.post_id}]};
+                    
+                    [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
+                        NSLog(@"result:%@",result);
+                        NSArray *items = [CommentModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+                        
+                        for (int i = 0; i < items.count; i ++) {
+                            
+                        }
+                        
+                        TopicCommentDetailView *topicCommentDetailView = [[TopicCommentDetailView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 90 + items.count * 100) withPostID:self.post_id isReawrd:@"2"];
+                        
+                        [footBackgroundView addSubview:topicCommentDetailView];
+                        GoodsLoadMoreFootView *goodsLoadMoreView = [[GoodsLoadMoreFootView alloc]initWithFrame:CGRectMake(0, topicCommentDetailView.bottom, ScreenWidth, 49)];
+                        [footBackgroundView addSubview:goodsLoadMoreView];
+                        footBackgroundView.frame = CGRectMake(0, 0, ScreenWidth, topicCommentDetailView.height + goodsLoadMoreView.height);
+                        detailWebView.footerView = footBackgroundView;
+                        
+                    } failure:^(NSError *erro) {
+                        
+                    }];
+
                 }else{
-                    GoodsLoadMoreFootView *goodsLoadMoreView = [[GoodsLoadMoreFootView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 49)];
-                    footBackgroundView.frame = CGRectMake(0, 0, ScreenWidth , goodsLoadMoreView.height);
-                    [footBackgroundView addSubview:goodsLoadMoreView];
-                    detailWebView.footerView = footBackgroundView;
+                    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+                    NSDictionary *parameters = @{@"Method":@"ReCommentInfobyPostID",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"UserID":@"",@"PageSize":@"5",@"IsShow":@"888",@"PageIndex":@"1",@"Sort":@"1",@"FldSortType":@"1",@"PostID":self.post_id}]};
+                    
+                    [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
+                        NSLog(@"result:%@",result);
+                        NSArray *items = [CommentModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+                        
+                        for (int i = 0; i < items.count; i ++) {
+                            
+                        }
+                        
+                        TopicCommentDetailView *topicCommentDetailView = [[TopicCommentDetailView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 90 + items.count * 100) withPostID:self.post_id isReawrd:@"2"];
+                        [footBackgroundView addSubview:topicCommentDetailView];
+                        GoodsLoadMoreFootView *goodsLoadMoreView = [[GoodsLoadMoreFootView alloc]initWithFrame:CGRectMake(0, topicCommentDetailView.bottom, ScreenWidth, 49)];
+                        [footBackgroundView addSubview:goodsLoadMoreView];
+                        footBackgroundView.frame = CGRectMake(0, 0, ScreenWidth, topicCommentDetailView.height + goodsLoadMoreView.height);
+                        detailWebView.footerView = footBackgroundView;
+                        
+                    } failure:^(NSError *erro) {
+                        
+                    }];
                 }
                 
                 //是否点赞
