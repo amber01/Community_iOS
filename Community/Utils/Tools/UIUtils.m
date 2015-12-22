@@ -425,5 +425,24 @@ void RunBlockAfterDelay(NSTimeInterval delay, void (^block)(void))
             ];
 }
 
++(void)setRichNumberWithLabel:(UILabel*)label Color:(UIColor *) color FontSize:(CGFloat)size
+{
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:label.text];
+    NSString *temp = nil;
+    for(int i =0; i < [attributedString length]; i++)
+    {
+        temp = [label.text substringWithRange:NSMakeRange(i, 1)];
+        if( [self isPureInt:temp]  ){
+            [attributedString setAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                             color, NSForegroundColorAttributeName,
+                                             [UIFont systemFontOfSize:size],NSFontAttributeName, nil]
+                                      range:NSMakeRange(i, 1)];
+        }
+    }
+    
+    label.attributedText = attributedString;
+}
+
+
 @end
 

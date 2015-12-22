@@ -12,5 +12,6 @@
 
 @property (nonatomic,copy)NSString *post_id;
 @property (nonatomic,copy)NSString *user_id;
+@property (nonatomic,copy)NSString *to_user_id;
 
 @end

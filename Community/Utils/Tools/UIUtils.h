@@ -121,4 +121,6 @@ void RunBlockAfterDelay(NSTimeInterval delay, void (^block)(void));
 //md5 32位 加密 （小写）
 + (NSString *)md5:(NSString *)str;
 
+//设置字符串中的数字的颜色和字体
++ (void)setRichNumberWithLabel:(UILabel*)label Color:(UIColor *) color FontSize:(CGFloat)size;
 @end

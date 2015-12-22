@@ -31,6 +31,7 @@
     
     UIView               *loadingView;
     UIView               *footBackgroundView;
+    float                height;
 }
 
 @property (nonatomic,retain) UIScrollView      *myScrollView;
@@ -46,7 +47,7 @@
     self.title = @"信息";
     self.view.backgroundColor = [UIColor whiteColor];
     [self createScrollView];
-    
+    height = 0;
     loadingView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     loadingView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:loadingView];
@@ -246,10 +247,19 @@
                         NSArray *items = [CommentModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
                         
                         for (int i = 0; i < items.count; i ++) {
-                            
+                            CommentModel *model = [items objectAtIndex:i];
+                            float tempHeight;
+                            NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
+                            CGSize contentHeight = [model.detail boundingRectWithSize:CGSizeMake(ScreenWidth - 30, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                            if ([model.isreplay intValue] == 0) { //未回复的
+                                tempHeight = 10 + 45 + 20 + contentHeight.height;
+                            }else{
+                                tempHeight = 10 + 45 + 20 + 20 + contentHeight.height;
+                            }
+                            height = height + tempHeight;
                         }
                         
-                        TopicCommentDetailView *topicCommentDetailView = [[TopicCommentDetailView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 90 + items.count * 170) withPostID:self.post_id isReawrd:@"2"];
+                        TopicCommentDetailView *topicCommentDetailView = [[TopicCommentDetailView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 90 + (height+10)) withPostID:self.post_id isReawrd:@"2" withUserID:self.user_id];
                         
                         [footBackgroundView addSubview:topicCommentDetailView];
                         GoodsLoadMoreFootView *goodsLoadMoreView = [[GoodsLoadMoreFootView alloc]initWithFrame:CGRectMake(0, topicCommentDetailView.bottom, ScreenWidth, 49)];
@@ -270,10 +280,19 @@
                         NSArray *items = [CommentModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
                         
                         for (int i = 0; i < items.count; i ++) {
-                            
+                            CommentModel *model = [items objectAtIndex:i];
+                            float tempHeight;
+                            NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
+                            CGSize contentHeight = [model.detail boundingRectWithSize:CGSizeMake(ScreenWidth - 30, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+                            if ([model.isreplay intValue] == 0) { //未回复的
+                                tempHeight = 10 + 45 + 20 + contentHeight.height;
+                            }else{
+                                tempHeight = 10 + 45 + 20 + 20 + contentHeight.height;
+                            }
+                            height = height + tempHeight;
                         }
                         
-                        TopicCommentDetailView *topicCommentDetailView = [[TopicCommentDetailView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 90 + items.count * 170) withPostID:self.post_id isReawrd:@"2"];
+                        TopicCommentDetailView *topicCommentDetailView = [[TopicCommentDetailView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth,height + 10) withPostID:self.post_id isReawrd:@"1" withUserID:self.user_id];
                         [footBackgroundView addSubview:topicCommentDetailView];
                         GoodsLoadMoreFootView *goodsLoadMoreView = [[GoodsLoadMoreFootView alloc]initWithFrame:CGRectMake(0, topicCommentDetailView.bottom, ScreenWidth, 49)];
                         [footBackgroundView addSubview:goodsLoadMoreView];

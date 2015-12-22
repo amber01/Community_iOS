@@ -56,6 +56,8 @@ typedef NS_ENUM(NSInteger,HTTP_COMMAND_LIST){
     HTTP_METHOD_CITY_LIST,
     //收藏帖子 11
     HTTP_METHOD_MY_COLLECTION,
+    //帖子打赏 12
+    HTTP_METHOD_SCORE_INFO,
     
     /*******************/
     HTTP_METHOD_RESERVE,
@@ -76,6 +78,7 @@ static char cHttpMethod[HTTP_METHOD_COUNT][64] = {
     "MyFansInfo", //9
     "Area", //10
     "MyCollectionInfo", //11
+    "UserScoreLogInfo", //12
 };
 
 /*****************************************************************************/

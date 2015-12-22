@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TopicCommentDetailView : UIView
+@interface TopicCommentDetailView : UIView<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate>
 {
     MBProgressHUD  *progress;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame withPostID:(NSString *)post_id isReawrd:(NSString *)isReawrd;
+@property (nonatomic,retain) UITableView   *tableView;
+
+- (instancetype)initWithFrame:(CGRect)frame withPostID:(NSString *)post_id isReawrd:(NSString *)isReawrd withUserID:(NSString *)to_user_id;
 
 @property (nonatomic,retain  ) UIView         *rewardView;
 @property (nonatomic,retain  ) UIView         *commentView;
@@ -31,5 +33,6 @@
 @property (nonatomic,retain  ) NSMutableArray *dataArray;
 @property (nonatomic,retain  ) NSMutableArray *likeDataArray;//记录本地点赞的状态
 @property (nonatomic,retain  ) NSMutableArray *praiseDataArray;//自己是否点赞的数据
+
 
 @end

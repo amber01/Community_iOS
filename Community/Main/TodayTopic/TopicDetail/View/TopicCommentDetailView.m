@@ -8,6 +8,9 @@
 
 #import "TopicCommentDetailView.h"
 #import "CommentTableViewCell.h"
+#import "MineInfoViewController.h"
+#import "TopicDetailRewardViewController.h"
+#import "InputBuyNumberView.h"
 
 @implementation TopicCommentDetailView
 {
@@ -16,13 +19,19 @@
     UILabel             *replayNicknameLabel;
     UILabel             *contentLabel;
     float               viewHeight;
+    PubliButton         *avatarBtn;
+    UIButton            *checkMoreBtn;
+    UILabel             *tipsLabel;
+    UILabel             *label;
+    InputBuyNumberView  *inputBuyNumberView;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame withPostID:(NSString *)post_id isReawrd:(NSString *)isReawrd
+- (instancetype)initWithFrame:(CGRect)frame withPostID:(NSString *)post_id isReawrd:(NSString *)isReawrd withUserID:(NSString *)to_user_id
 {
     self = [super initWithFrame:frame];
     if (self) {
         self.post_id = post_id;
+        self.userID = to_user_id;
         self.backgroundColor = [UIColor whiteColor];
         self.sortStr = @"1"; //默认按照最新时间排序
         self.backgroundColor = CELL_COLOR;
@@ -32,13 +41,27 @@
             _rewardView.backgroundColor = [UIColor whiteColor];
             [CommonClass setBorderWithView:_rewardView top:YES left:NO bottom:YES right:NO borderColor:LINE_COLOR borderWidth:0.5];
             self.rewardBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
+            
             _rewardBtn.frame = CGRectMake(_rewardView.width - 60, 15, 50, 50);
+            [_rewardBtn addTarget:self action:@selector(rewardAction) forControlEvents:UIControlEventTouchUpInside];
             [_rewardBtn setImage:[UIImage imageNamed:@"topic_detail_reward"] forState:UIControlStateNormal];
+            UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(_rewardBtn.left - 10, 20, 0.5, _rewardView.height - 40)];
+            lineView.backgroundColor = LINE_COLOR;
+            [_rewardView addSubview:lineView];
             [_rewardView addSubview:_rewardBtn];
             [self addSubview:_rewardView];
         }
-        viewHeight = 0;
+        
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, self.rewardView.bottom + 10, ScreenWidth, frame.size.height - self.rewardView.height - 10) style:UITableViewStylePlain];
+        _tableView.dataSource = self;
+        _tableView.delegate = self;
+        self.tableView.scrollEnabled = NO;
+        [UIUtils setExtraCellLineHidden:_tableView];
+        _tableView.backgroundColor = [UIColor whiteColor];
+        [self addSubview:_tableView];
+        
         [self getCommentListData];
+        [self getRewardData];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadDataList) name:kReloadCommentNotification object:nil];
     }
     return self;
@@ -53,8 +76,6 @@
 #pragma mark -- HTTP
 - (void)getCommentListData
 {
-    NSLog(@"self.post_id:%@",self.post_id);
-    
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     NSDictionary *parameters = @{@"Method":@"ReCommentInfobyPostID",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"UserID":isStrEmpty(self.tempUserID) ? @"" : self.tempUserID,@"PageSize":@"5",@"IsShow":@"888",@"PageIndex":@"1",@"Sort":self.sortStr,@"FldSortType":@"1",@"PostID":self.post_id}]};
     
@@ -64,104 +85,11 @@
         NSArray *praiseItems = [result objectForKey:@"IsPraise"];
         
         for (int i = 0; i < items.count; i ++) {
-            CommentModel *model = [items objectAtIndex:i];
-            
-            self.checkUserInfoBtn = [[PubliButton alloc]initWithFrame:CGRectMake(10, 10, 45, 45)];
-            [_checkUserInfoBtn sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
-
-            [UIUtils setupViewRadius:_checkUserInfoBtn cornerRadius:_checkUserInfoBtn.height/2];
-            
-            self.commentView = [[UIView alloc]initWithFrame:CGRectMake(0, self.rewardView.bottom + 10, ScreenWidth, 10)];
-            
-            self.commentView.backgroundColor = [UIColor whiteColor];
-            [CommonClass setBorderWithView:_commentView top:YES left:NO bottom:NO right:NO borderColor:LINE_COLOR borderWidth:0.5];
-            
-            nicknameLabel = [[UILabel alloc]initWithFrame:CGRectMake(_checkUserInfoBtn.right+10, 18, ScreenWidth - _checkUserInfoBtn.width - 40, 20)];
-            nicknameLabel.font = [UIFont systemFontOfSize:14];
-            nicknameLabel.text = @"盛夏光年";
-            
-            replayNicknameLabel = [[UILabel   alloc]initWithFrame:CGRectMake(15, _checkUserInfoBtn.bottom + 10, ScreenWidth - 30, 20)];
-            replayNicknameLabel.textColor = TEXT_COLOR;
-            replayNicknameLabel.font = [UIFont systemFontOfSize:14];
-            
-            
-            dateLabel = [[UILabel alloc]initWithFrame:CGRectMake(_checkUserInfoBtn.right+10, nicknameLabel.bottom+2, ScreenWidth - _checkUserInfoBtn.width - 40, 20)];
-            dateLabel.textColor = [UIColor grayColor];
-            dateLabel.font = [UIFont systemFontOfSize:12];
-            dateLabel.text = @"今天 12:23 iPhone6";
-            
-            
-            contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, _checkUserInfoBtn.bottom + 10, ScreenWidth - 30, 20)];
-            [contentLabel verticalUpAlignmentWithText: @"说的方法第三方水电费水电费水电费说的方法第三方第三方第三方的说法是法师打发" maxHeight:10];
-            contentLabel.lineBreakMode = NSLineBreakByWordWrapping;
-            contentLabel.numberOfLines = 0;
-            [contentLabel setFont:[UIFont systemFontOfSize:15]];
-            
-            if ([model.isreplay intValue] == 0) { //未回复的
-                contentLabel.text = model.detail;
-                nicknameLabel.text = model.nickname;
-                replayNicknameLabel.hidden = YES;
-                nicknameLabel.textColor = [UIColor blackColor];
-            }else{ //已回复的
-                replayNicknameLabel.hidden = NO;
-                //replaycontent
-                replayNicknameLabel.frame = CGRectMake(10, _checkUserInfoBtn.bottom + 10, ScreenWidth - 30, 20);
-                replayNicknameLabel.text = [NSString stringWithFormat:@"@%@:",model.tonickname];;
-                nicknameLabel.text = [NSString stringWithFormat:@"%@(楼主)",model.nickname];
-                contentLabel.text = model.replaycontent;
-                nicknameLabel.textColor = [UIColor orangeColor];
+            if (!self.dataArray) {
+                self.dataArray = [[NSMutableArray alloc]init];
             }
-            
-            NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
-            CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-            
-            NSLog(@"contentHeight:%f",contentHeight.height);
-            
-            float height = 45 + 10 + contentHeight.height + 20;
-            if (i == 0) {
-                viewHeight = 0;
-            }else{
-                viewHeight = height + viewHeight ;
-            }
-            
-            
-            
-            self.commentView.frame = CGRectMake(0, (self.rewardView.bottom + 10)+viewHeight, ScreenWidth, 45 + 10 + contentHeight.height + 20);
-            
-            if (contentLabel.text.length == 0) {
-                contentHeight.height = 0;
-            }
-            
-            
-            
-            if ([model.isreplay intValue] == 0) {
-                //NSLog(@"contentHeight1:%f",contentHeight.height);
-                contentLabel.frame = CGRectMake(15, _checkUserInfoBtn.bottom + 10, ScreenWidth - 30, contentHeight.height);
-//                
-//                self.commentView.frame = CGRectMake(0, (self.rewardView.bottom + 10) + i * (45 + 10 + contentHeight.height + 20), ScreenWidth, (45 + 10 + contentHeight.height + 20));
-//                if (i == items.count - 1) {
-//                    self.commentView.frame = CGRectMake(0, (self.rewardView.bottom + 10) + i * (45 + 10 + contentHeight.height + 20), ScreenWidth, (45 + 10 + contentHeight.height + 20));
-//                }
-//                
-                NSLog(@"commetv y %f",self.commentView.origin.y);
-                NSLog(@"comment height:%f",self.commentView.height);
-                
-            }else{
-                contentLabel.frame = CGRectMake(15, _checkUserInfoBtn.bottom + 10 + 20, ScreenWidth - 30, contentLabel.height);
-                
-                self.commentView.frame = CGRectMake(0, (self.rewardView.bottom + 10) + (i*(_checkUserInfoBtn.height + 10 + contentLabel.height + 10 + 10 + 20 + 10)), ScreenWidth, _checkUserInfoBtn.height + 10 + contentLabel.height + 10 + 10 + 20 + 10 + 10 );
-            }
-            
-            
-            
-            [_commentView addSubview:replayNicknameLabel];
-            [_commentView addSubview:nicknameLabel];
-            [_commentView addSubview:dateLabel];
-            [_commentView addSubview:contentLabel];
-            [_commentView addSubview:_checkUserInfoBtn];
-            [self addSubview:_commentView];
+            [self.dataArray addObject:[items objectAtIndex:i]];
         }
-        
         
         for (int i = 0; i < praiseItems.count; i ++) {
             if (!self.praiseDataArray) {
@@ -170,10 +98,117 @@
             [self.praiseDataArray addObject:[praiseItems objectAtIndex:i]];
         }
         
+        [self.tableView reloadData];
     } failure:^(NSError *erro) {
         
     }];
 }
+
+- (void)getRewardData
+{
+    if (avatarBtn) {
+        [avatarBtn removeFromSuperview];
+        [label removeFromSuperview];
+        [checkMoreBtn removeFromSuperview];
+    }
+    
+    NSDictionary *parameters = @{@"Method":@"ReUserScoreLogInfo",@"Detail":@[@{@"Descrip":@"打赏",@"PostID":self.post_id,@"IsShow":@"888"}]};
+    [CKHttpRequest  createRequest:HTTP_METHOD_SCORE_INFO WithParam:parameters withMethod:@"POST" success:^(id result) {
+        NSLog(@"result:%@",result);
+        if (result) {
+            if ([[result objectForKey:@"Number"]intValue] == 0) {
+                tipsLabel = [[UILabel alloc]initWithFrame:CGRectMake(40, _rewardView.height/2-10, _rewardView.width - 40 - 40, 20)];
+                tipsLabel.textColor = [UIColor grayColor];
+                tipsLabel.font = [UIFont systemFontOfSize:19];
+                tipsLabel.text = @"好贴就是要任性打赏~";
+                [_rewardView addSubview:tipsLabel];
+            }else{
+                label = [[UILabel  alloc]initWithFrame:CGRectMake(10, 10, _rewardView.width - 10 - 16, 20)];
+                label.font = [UIFont systemFontOfSize:14];
+                label.textColor = [UIColor grayColor];
+                NSString *content = [NSString stringWithFormat:@"%@ 人共打赏 %@ 积分",[result objectForKey:@"Number"],[result objectForKey:@"ScoreCount"]];
+                label.text = content;
+                [UIUtils setRichNumberWithLabel:label Color:[UIColor orangeColor] FontSize:14];
+                [_rewardView addSubview:label];
+                
+                NSArray  *rewardData = [result objectForKey:@"Detail"];
+                int btnCount = ((ScreenWidth - 10 - 50 - 10 - 10 - 10)/(34 + 5) - 1);
+                NSLog(@"btnCount:%d",btnCount);
+                
+                for (int i = 0; i < rewardData.count; i ++) {
+                    if (i <= btnCount) {
+                        NSDictionary *dic = [rewardData objectAtIndex:i];
+                        NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",[dic objectForKey:@"logopicturedomain"]],BASE_IMAGE_URL,face,[dic objectForKey:@"logopicture"]];
+                        avatarBtn = [[PubliButton alloc]initWithFrame:CGRectMake(10+(((34 + 5) * i)), 30, 34, 34)];
+                        
+                        [avatarBtn setUser_id:[dic objectForKey:@"userid"]];
+                        [avatarBtn addTarget:self action:@selector(checkUserInfoBtn:) forControlEvents:UIControlEventTouchUpInside];
+                        [UIUtils setupViewRadius:avatarBtn cornerRadius:avatarBtn.height/2];
+                        [avatarBtn sd_setImageWithURL:[NSURL URLWithString:imageURL] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
+                        [_rewardView addSubview:avatarBtn];
+                    }
+                }
+                checkMoreBtn = [[UIButton alloc]initWithFrame:CGRectMake(avatarBtn.right + 5, 30, 34, 34)];
+                [checkMoreBtn addTarget:self action:@selector(checkMoreAction) forControlEvents:UIControlEventTouchUpInside];
+                [checkMoreBtn setImage:[UIImage imageNamed:@"topic_reward_more.png"] forState:UIControlStateNormal];
+                [_rewardView addSubview:checkMoreBtn];
+            }
+        }
+    } failure:^(NSError *erro) {
+        
+    }];
+}
+
+#pragma mark -- UITableViewDelegate
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.dataArray.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identityCell = @"cell";
+    CommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
+    if (!cell) {
+        cell = [[CommentTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
+        [cell.likeBtn addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    CommentModel *model = self.dataArray[indexPath.row];
+    
+    if (!_likeDataArray) {
+        self.likeDataArray = [[NSMutableArray alloc]init];
+    }
+    
+    [_likeDataArray addObject:model.praisenum];
+    
+    if (!isArrEmpty(self.dataArray)) {
+        [cell configureCellWithInfo:model withRow:indexPath.row andPraiseData:self.praiseDataArray];
+    }
+    
+    if (!isArrEmpty(self.praiseDataArray)) {
+        NSDictionary *dic = [self.praiseDataArray objectAtIndex:indexPath.row];
+        cell.likeBtn.post_id = [dic objectForKey:@"commentid"];
+        cell.likeBtn.isPraise = [dic objectForKey:@"value"];
+    }
+    
+    cell.likeBtn.row = indexPath.row;
+    cell.likeLabel.text = _likeDataArray[indexPath.row];
+    cell.likeBtn.praisenum = _likeDataArray[indexPath.row];
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewCell * cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    return cell.frame.size.height;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
 #pragma mark -- action
 - (void)likeAction:(PubliButton *)button
 {
@@ -185,20 +220,35 @@
         return;
     }
     
-    
     //点赞
     if ([button.isPraise intValue] == 0) {
         NSDictionary *parameters = @{@"Method":@"AddCommentToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"CommentID":button.post_id,@"UserID":sharedInfo.user_id}]};
         
         [CKHttpRequest createRequest:HTTP_METHOD_COMMENT_LIKE WithParam:parameters withMethod:@"POST" success:^(id result) {
-            
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {
                 [self initMBProgress:@"点赞+1" withModeType:MBProgressHUDModeText afterDelay:1.5];
                 int praisenum = [button.praisenum intValue];
                 praisenum = praisenum + 1;
                 
-                //cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_cancel_like"];
+                /**
+                 *  先删除原来的点赞数，然后再重新加上
+                 */
+                [self.likeDataArray removeObjectAtIndex:button.row];
+                [self.likeDataArray insertObject:[NSString stringWithFormat:@"%d",praisenum] atIndex:button.row];
                 
+                /**
+                 *  记录点赞状态
+                 */
+                [self.praiseDataArray removeObjectAtIndex:button.row];
+                [self.praiseDataArray insertObject:@{@"commentid":button.post_id,@"value":@"1"} atIndex:button.row];
+                
+                //点赞之后改变点赞的状态
+                NSIndexPath *index =  [NSIndexPath indexPathForItem:button.row inSection:0];
+                CommentTableViewCell *cell =  [_tableView cellForRowAtIndexPath:index];
+                cell.likeLabel.text = _likeDataArray[button.row];
+                
+                cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_cancel_like"];
+                [_tableView reloadData];
             }else{
                 [self initMBProgress:@"你已经赞过了" withModeType:MBProgressHUDModeText afterDelay:1.5];
             }
@@ -228,9 +278,13 @@
                 [self.praiseDataArray insertObject:@{@"commentid":button.post_id,@"value":@"0"} atIndex:button.row];
                 
                 //点赞之后改变点赞的状态
+                NSIndexPath *index =  [NSIndexPath indexPathForItem:button.row inSection:0];
+                CommentTableViewCell *cell =  [_tableView cellForRowAtIndexPath:index];
+                cell.likeLabel.text = _likeDataArray[button.row];
                 
-                //cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+                cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
                 
+                [_tableView reloadData];
             }else{
                 [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.5];
             }
@@ -241,12 +295,121 @@
     }
 }
 
+/**
+ *  打赏
+ */
+- (void)rewardAction
+{
+    UIActionSheet  *actionSheet = [[UIActionSheet alloc]initWithTitle:@"选择打赏金额" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"5积分",@"20积分",@"任意赏", nil];
+    actionSheet.actionSheetStyle =UIActionSheetStyleAutomatic;
+    [actionSheet showInView:self];
+}
 
+- (void)checkMoreAction
+{
+    TopicDetailRewardViewController *topicDetailReawrdVC = [[TopicDetailRewardViewController alloc]init];
+    topicDetailReawrdVC.post_id = self.post_id;
+    [self.viewController.navigationController pushViewController:topicDetailReawrdVC animated:YES];
+}
+
+- (void)checkUserInfoBtn:(PubliButton *)button
+{
+    MineInfoViewController *mineInfoVC = [[MineInfoViewController alloc]init];
+    mineInfoVC.user_id = button.user_id;
+    [self.viewController.navigationController pushViewController:mineInfoVC animated:YES];
+}
+
+- (void)cancelAction
+{
+    inputBuyNumberView.hidden = YES;
+}
+
+- (void)returnAction
+{
+    SharedInfo   *share = [SharedInfo sharedDataInfo];
+    NSDictionary *parameters = @{@"Method":@"AddUserScoreLogInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":share.user_id,@"Detail":@[@{@"Descrip":@"打赏",@"UserID":share.user_id,@"ToUserID":isStrEmpty(self.userID) ? @"" : self.userID,@"Score":inputBuyNumberView.scoreNumLabel.text,@"PostID":self.post_id,@"IsShow":@"1"}]};
+    [CKHttpRequest  createRequest:HTTP_METHOD_SCORE_INFO WithParam:parameters withMethod:@"POST" success:^(id result) {
+        NSLog(@"result:%@",result);
+        if ([[result objectForKey:@"Success"]intValue] > 0) {
+            [self initMBProgress:@"打赏成功" withModeType:MBProgressHUDModeText afterDelay:1.0];
+            inputBuyNumberView.hidden = YES;
+            tipsLabel.hidden = YES;
+            int currentScore = [share.totalscore intValue] - [inputBuyNumberView.scoreNumLabel.text intValue];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%d",currentScore] forKey:@"totalscore"];
+            share.totalscore = [NSString stringWithFormat:@"%d",currentScore];
+            [self getRewardData];
+        }else{
+            [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.0];
+        }
+    } failure:^(NSError *erro) {
+        
+    }];
+
+}
+
+- (void)updateValue:(UISlider *)slider
+{
+    inputBuyNumberView.scoreNumLabel.text = [NSString stringWithFormat:@"%d",(int)slider.value];
+}
+
+#pragma mark -- UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    SharedInfo *share = [SharedInfo sharedDataInfo];
+    NSString  *scoreStr;
+    if (buttonIndex != 3) {
+        if (isStrEmpty(share.user_id)) {
+            LoginViewController *loginVC = [[LoginViewController alloc]init];
+            [self.viewController.navigationController pushViewController:loginVC animated:YES];
+            return;
+        }else{
+            if (buttonIndex == 0) {
+                scoreStr = @"5";
+            }else if (buttonIndex == 1){
+                scoreStr = @"20";
+            } if (buttonIndex == 2){
+                if (!inputBuyNumberView) {
+                    inputBuyNumberView = [[InputBuyNumberView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+                    [inputBuyNumberView.returnBtn addTarget:self action:@selector(returnAction) forControlEvents:UIControlEventTouchUpInside];
+                    [inputBuyNumberView.cancelBtn addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];
+                    [inputBuyNumberView.mySlider addTarget:self action:@selector(updateValue:) forControlEvents:UIControlEventValueChanged];
+                    inputBuyNumberView.userInteractionEnabled = YES;
+                    inputBuyNumberView.rightLabel.text = share.totalscore;
+                    inputBuyNumberView.myScoreNumLabel.text = [NSString stringWithFormat:@"我的积分：%@",share.totalscore];
+                    inputBuyNumberView.mySlider.maximumValue = [share.totalscore intValue];
+                    inputBuyNumberView.mySlider.value = [share.totalscore intValue]/2;
+                    inputBuyNumberView.scoreNumLabel.text = [NSString stringWithFormat:@"%d",[share.totalscore intValue]/2];
+                    [self.window addSubview:inputBuyNumberView];
+                }
+                inputBuyNumberView.hidden = NO;
+            }
+            
+            if (!isStrEmpty(scoreStr)) {
+                NSDictionary *parameters = @{@"Method":@"AddUserScoreLogInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":share.user_id,@"Detail":@[@{@"Descrip":@"打赏",@"UserID":share.user_id,@"ToUserID":isStrEmpty(self.userID) ? @"" : self.userID,@"Score":scoreStr,@"PostID":self.post_id,@"IsShow":@"1"}]};
+                [CKHttpRequest  createRequest:HTTP_METHOD_SCORE_INFO WithParam:parameters withMethod:@"POST" success:^(id result) {
+                    NSLog(@"result:%@",result);
+                    if ([[result objectForKey:@"Success"]intValue] > 0) {
+                        [self initMBProgress:@"打赏成功" withModeType:MBProgressHUDModeText afterDelay:1.0];
+                        tipsLabel.hidden = YES;
+                        [self getRewardData];
+                    }else{
+                        [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.0];
+                    }
+                } failure:^(NSError *erro) {
+                    
+                }];
+            }
+        }
+    }
+}
+
+
+#pragma mark -- other
 - (void)initMBProgress:(NSString *)title withModeType:(MBProgressHUDMode)type afterDelay:(NSTimeInterval)delay
 {
     progress = [[MBProgressHUD alloc]initWithView:self];
     progress.labelText = title;
-    [self addSubview:progress];
+    [self.window addSubview:progress];
     [progress setMode:type];   //MBProgressHUDModeIndeterminate
     progress.taskInProgress = YES;
     [progress show:YES];
@@ -258,6 +421,7 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+    [inputBuyNumberView removeFromSuperview];
 }
 
 @end
