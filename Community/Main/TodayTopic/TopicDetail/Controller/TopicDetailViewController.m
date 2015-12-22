@@ -358,7 +358,7 @@
         [self.photoArray addObject:[dic objectForKey:@"picture"]];
     }
     
-    SDPhotoBrowser *browser;
+    SDPhotoBrowser *browser; 
     //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     if (!browser) {
         browser = [[SDPhotoBrowser alloc] init];
