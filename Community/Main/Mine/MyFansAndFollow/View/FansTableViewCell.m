@@ -38,7 +38,6 @@
     }else if (status == FollwListCategory) {
         NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.tologopicture];
         [avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
-        [_followBtn setImage:[UIImage imageNamed:@"user_finish_follow"] forState:UIControlStateNormal];
         self.textLabel.text = model.tousername;
 
     }

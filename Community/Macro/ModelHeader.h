@@ -21,5 +21,6 @@
 #import "TopicLikeModel.h"
 #import "CommentLikeModel.h"
 #import "MyCollectionModel.h"
+#import "SystemNoticeModel.h"
 
 #endif /* ModelHeader_h */

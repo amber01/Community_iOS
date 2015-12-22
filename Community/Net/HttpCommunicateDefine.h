@@ -19,13 +19,13 @@ typedef NS_ENUM (NSInteger , HttpResponseCode)
 };
 
 
-#define URL_BASE            @"http://wwww.jgysh.com/sendjson/myapi.ashx"
-#define SEND_TOPIC_IMAGE    @"http://wwww.jgysh.com/sendjson/uploadfile.ashx?type=1"
-#define SEND_AVATAR_IMAGE   @"http://wwww.jgysh.com/sendjson/uploadfile.ashx?type=2"
+#define URL_BASE            @"http://www.v0577.cn/sendjson/myapi.ashx"
+#define SEND_TOPIC_IMAGE    @"http://www.v0577.cn/sendjson/uploadfile.ashx?type=1"
+#define SEND_AVATAR_IMAGE   @"http://www.v0577.cn/sendjson/uploadfile.ashx?type=2"
 
-#define ROOT_URL            @"http://wwww.jgysh.com/"
+#define ROOT_URL            @"http://www.v0577.cn/"
 
-#define BASE_IMAGE_URL      @"jgysh.com"
+#define BASE_IMAGE_URL      @"v0577.cn"
 
 #define postinfo @"/postinfo/small/" //帖子图片文件夹
 #define face @"/face/"  //头像图片文件夹
@@ -58,6 +58,8 @@ typedef NS_ENUM(NSInteger,HTTP_COMMAND_LIST){
     HTTP_METHOD_MY_COLLECTION,
     //帖子打赏 12
     HTTP_METHOD_SCORE_INFO,
+    //系统通知 13
+    HTTP_SYSTEM_NOTICE,
     
     /*******************/
     HTTP_METHOD_RESERVE,
@@ -79,6 +81,7 @@ static char cHttpMethod[HTTP_METHOD_COUNT][64] = {
     "Area", //10
     "MyCollectionInfo", //11
     "UserScoreLogInfo", //12
+    "Notice",           //13
 };
 
 /*****************************************************************************/

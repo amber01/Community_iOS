@@ -141,6 +141,7 @@
     [avatarImageView addTarget:self action:@selector(checkUserInfo:) forControlEvents:UIControlEventTouchUpInside];
     
     if ([model.isreplay intValue] == 0) {
+        
         contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, contentHeight.height);
         self.frame = CGRectMake(0, 0, ScreenWidth,avatarImageView.height + 10 + contentHeight.height + 10 + 10);
     }else{

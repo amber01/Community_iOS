@@ -16,8 +16,10 @@
 #import "CommentViewController.h"
 #import "GoodsLoadMoreFootView.h"
 #import "TopicCommentDetailView.h"
+#import "WSJSObject.h"
+#import "SDPhotoBrowser.h"
 
-@interface TopicDetailViewController ()<UIScrollViewDelegate,UIWebViewDelegate,TWebScrollViewDelegate,CheckMoreDelegate,UIActionSheetDelegate>
+@interface TopicDetailViewController ()<UIScrollViewDelegate,UIWebViewDelegate,TWebScrollViewDelegate,CheckMoreDelegate,UIActionSheetDelegate,JSObjectProtocolDelegate,SDPhotoBrowserDelegate>
 {
     ScorellButtonView    *scorllBtnView;
     TopicDetailHeadView  *headView;
@@ -32,11 +34,13 @@
     UIView               *loadingView;
     UIView               *footBackgroundView;
     float                height;
+    int                  photoIndext;
 }
 
 @property (nonatomic,retain) UIScrollView      *myScrollView;
 @property (nonatomic,retain) ScorellButtonView *scorllBtnView;
 @property (nonatomic,copy  ) NSString          *likeNumber;
+@property (nonatomic,retain) NSMutableArray    *photoArray;
 
 @end
 
@@ -121,6 +125,14 @@
         NSString *str1 = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust = '%f%%'",120.0];
         [webView stringByEvaluatingJavaScriptFromString:str1];
     }
+    /**
+     *  创建对象，让js来调用
+     */
+    JSContext *context = [webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+    WSJSObject *jsObject =[ WSJSObject new];
+    context[@"community"]=jsObject;
+    jsObject.delegate = self;
+
     [NSTimer scheduledTimerWithTimeInterval:0.1f target:self selector:@selector(delayMethod) userInfo:nil repeats:NO];
 }
 
@@ -231,7 +243,7 @@
                 footView.commentNumLabel.frame = commentRect;
                 
                 NSString *avataURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",picturedomain],BASE_IMAGE_URL,face,logopicture];
-                NSDictionary *dataDic = @{@"date":[NSString stringWithFormat:@"%@ %@",date,source],@"avataURL":avataURL,@"nickname":nickname};
+                NSDictionary *dataDic = @{@"date":[NSString stringWithFormat:@"%@ %@",date,source],@"avataURL":avataURL,@"nickname":nickname,@"user_id":self.user_id};
                 [headView getUserInfoData:dataDic];
                 
                 //是否可以打赏
@@ -319,6 +331,56 @@
     } failure:^(NSError *erro) {
         
     }];
+}
+
+#pragma mark -- JSObjectProtocolDelegate
+/**
+ *  点击图片
+ *
+ *  @param iamgeData 返回一个字符串
+ */
+- (void)toShowImg:(NSString *)iamgeData
+{
+    /**
+     *  NSString转NSDictionary
+     */
+    NSData *jsonData = [iamgeData dataUsingEncoding:NSUTF8StringEncoding];
+    id object = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
+    
+    photoIndext = [[object objectForKey:@"Index"]intValue];
+    NSArray *tempArray = [object objectForKey:@"Images"];
+    [self.photoArray removeAllObjects];
+    for (int i = 0; i < tempArray.count; i ++) {
+        if (!self.photoArray) {
+            self.photoArray = [[NSMutableArray alloc]init];
+        }
+        NSDictionary *dic = [tempArray objectAtIndex:i];
+        [self.photoArray addObject:[dic objectForKey:@"picture"]];
+    }
+    
+    SDPhotoBrowser *browser;
+    //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    if (!browser) {
+        browser = [[SDPhotoBrowser alloc] init];
+        browser.delegate = self;
+    }
+    
+    browser.imageCount = self.photoArray.count; //图片总数
+    browser.currentImageIndex = photoIndext - 1;
+    [browser show];
+    NSLog(@"iamgeData:%@",object);
+}
+
+- (void)showPhotoImage:(NSMutableArray *)photoArray withTag:(NSInteger)row
+{
+    //NSLog(@"photo array:%@",photoArray);
+}
+
+// 返回高质量图片的url
+- (NSURL *)photoBrowser:(SDPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index
+{
+    NSString *urlStr = self.photoArray[index];
+    return [NSURL URLWithString:urlStr];
 }
 
 #pragma mark -- action

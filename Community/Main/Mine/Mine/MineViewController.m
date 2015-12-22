@@ -29,6 +29,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self getUserInfoData];
     [super viewWillAppear:YES];
 }
 

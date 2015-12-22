@@ -12,6 +12,7 @@
 #import "TopicLikeViewController.h"
 #import "CommentLikeViewController.h"
 #import "MessageTableViewCell.h"
+#import "SystemNoticeViewController.h"
 
 @interface MessageViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -217,6 +218,12 @@
             CommentLikeViewController *commentLikeVC = [[CommentLikeViewController alloc]init];
             [commentLikeVC setHidesBottomBarWhenPushed:YES];
             [self.navigationController pushViewController:commentLikeVC animated:YES];
+        }
+    }else{
+        if (indexPath.row == 0) {
+            SystemNoticeViewController *systemNoticeView = [[SystemNoticeViewController alloc]init];
+            [systemNoticeView setHidesBottomBarWhenPushed:YES];
+            [self.navigationController pushViewController:systemNoticeView animated:YES];
         }
     }
 }

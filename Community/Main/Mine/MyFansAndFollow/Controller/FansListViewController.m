@@ -10,16 +10,18 @@
 #import "FansTableViewCell.h"
 #import "MineInfoViewController.h"
 
-@interface FansListViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface FansListViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
     FansListType    currentFansType;
     int             page;
+    
+    BOOL            isPraise;
 }
 
 @property (nonatomic,retain) UITableView    *tableView;
 @property (nonatomic,retain) NSMutableArray *dataArray;
 @property (nonatomic,retain) NSMutableArray *fansDtaArray;
-
+@property (nonatomic,copy)   NSString       *toUserID;
 
 @end
 
@@ -30,6 +32,9 @@
     [self setupTableView];
     page = 1;
     currentFansType = [self.status intValue];
+    if (currentFansType == FollwListCategory) {
+        isPraise = YES;
+    }
     [self getFansListData:currentFansType withPage:1];
     [self setupUploadMore];
 }
@@ -84,6 +89,7 @@
             NSLog(@"is resutl:%@",result);
             if (result) {
                 NSArray *items = [FansListModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+
                 for (int i = 0; i < items.count; i ++) {
                     if (!self.dataArray) {
                         self.dataArray = [[NSMutableArray alloc]init];
@@ -129,12 +135,12 @@
     FansTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
     if (!cell) {
         cell = [[FansTableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
-        [cell.followBtn addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     FansListModel *model = self.dataArray[indexPath.row];
     [cell configureCellWithInfo:model withStatus:currentFansType];
 
     if (currentFansType == FansListCategory) {
+        [cell.followBtn addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
         NSDictionary *dic = self.fansDtaArray[indexPath.row];
         if ([[dic objectForKey:@"value"]isEqualToString:@"1"]) {
             [cell.followBtn setImage:[UIImage imageNamed:@"user_finish_follow"] forState:UIControlStateNormal];
@@ -144,6 +150,19 @@
         
         cell.followBtn.status = [dic objectForKey:@"value"];
         cell.followBtn.user_id = model.userid;
+        cell.followBtn.row = indexPath.row;
+    }else{
+        
+        
+        [cell.followBtn addTarget:self action:@selector(cancelFollowAction:) forControlEvents:UIControlEventTouchUpInside];
+        if (isPraise == YES) {
+            [cell.followBtn setImage:[UIImage imageNamed:@"user_finish_follow"] forState:UIControlStateNormal];
+        }else{
+            [cell.followBtn setImage:[UIImage imageNamed:@"user_add_follow"] forState:UIControlStateNormal];
+        }
+
+        
+        cell.followBtn.user_id = model.touserid;
         cell.followBtn.row = indexPath.row;
     }
     
@@ -172,9 +191,6 @@
 #pragma mark -- action
 - (void)followAction:(PubliButton *)button
 {
-    if (currentFansType != FansListCategory) {
-        return;
-    }
     
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     if (isStrEmpty(sharedInfo.user_id)) {
@@ -214,6 +230,7 @@
                 /**
                  *  先删除原来的点赞数，然后再重新加上
                  */
+                
                 [self.fansDtaArray removeObjectAtIndex:button.row];
                 [self.fansDtaArray insertObject:@{@"value":@"0",@"touserid":button.user_id} atIndex:button.row];
                 [_tableView reloadData];
@@ -224,6 +241,36 @@
     }
 }
 
+- (void)cancelFollowAction:(PubliButton *)button
+{
+    self.toUserID = button.user_id;
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"确定取消关注?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    alertView.delegate = self;
+    alertView.tag = button.row;
+    [alertView show];
+}
+
+#pragma mark -- UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        [self initMBProgress:@""];
+        NSDictionary *params = @{@"Method":@"CancelMyFansInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"ToUserID":self.toUserID}]};
+        [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:params withMethod:@"POST" success:^(id result) {
+            if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                isPraise = YES;
+                [self.dataArray removeObjectAtIndex:alertView.tag];
+            }
+            [self setMBProgreeHiden:YES];
+            [_tableView reloadData];
+            
+        } failure:^(NSError *erro) {
+            
+        }];
+
+    }
+}
 
 #pragma mark -- other
 - (void)didReceiveMemoryWarning {

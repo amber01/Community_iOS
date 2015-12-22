@@ -57,7 +57,7 @@
 {
     static NSString *identityCell = @"cell";
     ModifyUserInfoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
-    const static char *cTitle[2][3] = {{"头像","性别","用户名"},{"修改密码","手机号"}};
+    const static char *cTitle[2][3] = {{"头像","性别","昵称"},{"修改密码","手机号"}};
     
     if (!cell) {
         cell = [[ModifyUserInfoTableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];

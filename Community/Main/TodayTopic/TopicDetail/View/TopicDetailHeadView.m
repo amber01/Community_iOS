@@ -7,6 +7,7 @@
 //
 
 #import "TopicDetailHeadView.h"
+#import "MineInfoViewController.h"
 
 @implementation TopicDetailHeadView
 {
@@ -22,6 +23,7 @@
         self.backgroundColor = [UIColor whiteColor];
         avatarImageView = [[PubliButton alloc]initWithFrame:CGRectMake(10, 10, 45, 45)];
         [UIUtils setupViewRadius:avatarImageView cornerRadius:45/2];
+        [avatarImageView addTarget:self action:@selector(checkUserInfo:) forControlEvents:UIControlEventTouchUpInside];
         
         nicknameLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right+10, 18, ScreenWidth - avatarImageView.width - 40, 20)];
         nicknameLabel.font = [UIFont systemFontOfSize:14];
@@ -45,8 +47,16 @@
     NSString *avataURL = [data objectForKey:@"avataURL"];
     NSString *nickname = [data objectForKey:@"nickname"];
     [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:avataURL] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login"]];
+    avatarImageView.user_id = [data objectForKey:@"user_id"];
     nicknameLabel.text = nickname;
     dateLabel.text = date;
+}
+
+- (void)checkUserInfo:(PubliButton *)button
+{
+    MineInfoViewController *userInfoVC = [[MineInfoViewController alloc]init];
+    userInfoVC.user_id = button.user_id;
+    [self.viewController.navigationController pushViewController:userInfoVC animated:YES];
 }
 
 @end

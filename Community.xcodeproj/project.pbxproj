@@ -111,6 +111,12 @@
 		963DC8BA1C0AE069005D1955 /* EaseUIResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 963DC8B91C0AE069005D1955 /* EaseUIResource.bundle */; };
 		963DC8BF1C0AE410005D1955 /* chat_receiver_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 963DC8BD1C0AE410005D1955 /* chat_receiver_bg@2x.png */; };
 		963DC8C01C0AE410005D1955 /* chat_sender_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 963DC8BE1C0AE410005D1955 /* chat_sender_bg@2x.png */; };
+		964111A51C2975D600561223 /* SystemNoticeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 964111A41C2975D600561223 /* SystemNoticeViewController.m */; };
+		964111A81C2976F300561223 /* SystemNoticeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 964111A71C2976F300561223 /* SystemNoticeTableViewCell.m */; };
+		964111AB1C29797C00561223 /* SystemNoticeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 964111AA1C29797C00561223 /* SystemNoticeModel.m */; };
+		964111AE1C297CB900561223 /* msg_notifi_left_view@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 964111AC1C297CB900561223 /* msg_notifi_left_view@2x.png */; };
+		964111AF1C297CB900561223 /* msg_notifi_left_view@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 964111AD1C297CB900561223 /* msg_notifi_left_view@3x.png */; };
+		964111B11C297FD800561223 /* system_notice_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 964111B01C297FD800561223 /* system_notice_icon@2x.png */; };
 		9643D70C1BF781DD003A394D /* AGEmojiKeyBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9643D6E01BF781DD003A394D /* AGEmojiKeyBoardView.m */; };
 		9643D70D1BF781DD003A394D /* AGEmojiPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9643D6E21BF781DD003A394D /* AGEmojiPageView.m */; };
 		9643D70E1BF781DD003A394D /* CustomImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9643D6E41BF781DD003A394D /* CustomImageView.m */; };
@@ -670,6 +676,15 @@
 		963DC8B91C0AE069005D1955 /* EaseUIResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = EaseUIResource.bundle; sourceTree = "<group>"; };
 		963DC8BD1C0AE410005D1955 /* chat_receiver_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_receiver_bg@2x.png"; sourceTree = "<group>"; };
 		963DC8BE1C0AE410005D1955 /* chat_sender_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_sender_bg@2x.png"; sourceTree = "<group>"; };
+		964111A31C2975D600561223 /* SystemNoticeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNoticeViewController.h; sourceTree = "<group>"; };
+		964111A41C2975D600561223 /* SystemNoticeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNoticeViewController.m; sourceTree = "<group>"; };
+		964111A61C2976F300561223 /* SystemNoticeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNoticeTableViewCell.h; sourceTree = "<group>"; };
+		964111A71C2976F300561223 /* SystemNoticeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNoticeTableViewCell.m; sourceTree = "<group>"; };
+		964111A91C29797C00561223 /* SystemNoticeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNoticeModel.h; sourceTree = "<group>"; };
+		964111AA1C29797C00561223 /* SystemNoticeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNoticeModel.m; sourceTree = "<group>"; };
+		964111AC1C297CB900561223 /* msg_notifi_left_view@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "msg_notifi_left_view@2x.png"; sourceTree = "<group>"; };
+		964111AD1C297CB900561223 /* msg_notifi_left_view@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "msg_notifi_left_view@3x.png"; sourceTree = "<group>"; };
+		964111B01C297FD800561223 /* system_notice_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "system_notice_icon@2x.png"; sourceTree = "<group>"; };
 		9643D6DF1BF781DD003A394D /* AGEmojiKeyBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGEmojiKeyBoardView.h; sourceTree = "<group>"; };
 		9643D6E01BF781DD003A394D /* AGEmojiKeyBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGEmojiKeyBoardView.m; sourceTree = "<group>"; };
 		9643D6E11BF781DD003A394D /* AGEmojiPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGEmojiPageView.h; sourceTree = "<group>"; };
@@ -1992,6 +2007,9 @@
 				96F5DA471C22EC6F00873F31 /* topic_detail_more@2x.png */,
 				96F6A1D41C26EF3000006EA4 /* topic_detail_reward@2x.png */,
 				DBC59C131C28F00D00612A55 /* topic_reward_more@2x.png */,
+				964111AC1C297CB900561223 /* msg_notifi_left_view@2x.png */,
+				964111AD1C297CB900561223 /* msg_notifi_left_view@3x.png */,
+				964111B01C297FD800561223 /* system_notice_icon@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -2120,6 +2138,8 @@
 		964A9FD61BEF6113007CE0E9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				964111A91C29797C00561223 /* SystemNoticeModel.h */,
+				964111AA1C29797C00561223 /* SystemNoticeModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2129,6 +2149,8 @@
 			children = (
 				96F5DA441C20570100873F31 /* MessageTableViewCell.h */,
 				96F5DA451C20570100873F31 /* MessageTableViewCell.m */,
+				964111A61C2976F300561223 /* SystemNoticeTableViewCell.h */,
+				964111A71C2976F300561223 /* SystemNoticeTableViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2138,6 +2160,8 @@
 			children = (
 				960173631BEF8D7900F2E272 /* MessageViewController.h */,
 				960173641BEF8D7900F2E272 /* MessageViewController.m */,
+				964111A31C2975D600561223 /* SystemNoticeViewController.h */,
+				964111A41C2975D600561223 /* SystemNoticeViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -3090,7 +3114,7 @@
 				TargetAttributes = {
 					964A9F381BEF4198007CE0E9 = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = UXFL2567A5;
+						DevelopmentTeam = 46J7996VL8;
 					};
 					964A9F511BEF4198007CE0E9 = {
 						CreatedOnToolsVersion = 7.1;
@@ -3150,6 +3174,7 @@
 				96C8D2F01C0A0F4E004642FC /* mine_my_gift@2x.png in Resources */,
 				96C8D2F31C0A0F4E004642FC /* mine_my_gift@3x.png in Resources */,
 				96B288291BF04C1E00F79252 /* LaunchScreen.storyboard in Resources */,
+				964111AE1C297CB900561223 /* msg_notifi_left_view@2x.png in Resources */,
 				96C8D2B51C0A0F4E004642FC /* msg_notification@2x.png in Resources */,
 				96C8D2D01C0A0F4E004642FC /* topic_send_information@3x.png in Resources */,
 				966EE5461C0028440039325F /* ELCAssetPicker.xib in Resources */,
@@ -3163,6 +3188,7 @@
 				96C8D2E41C0A0F4E004642FC /* mine_tabbar_normal@3x.png in Resources */,
 				969345EC1C1BF1960056072F /* launchimage_iphone6@2x.png in Resources */,
 				969345ED1C1BF1960056072F /* launchimage_iphone6p@3x.png in Resources */,
+				964111AF1C297CB900561223 /* msg_notifi_left_view@3x.png in Resources */,
 				9643D71B1BF781DD003A394D /* characters_s.png in Resources */,
 				964A9F711BEF45EC007CE0E9 /* Default-568h@2x.png in Resources */,
 				96C8D2A61C0A0F4E004642FC /* back_btn_image@2x.png in Resources */,
@@ -3211,6 +3237,7 @@
 				96C8D2A31C0A0F4E004642FC /* topic_topView@2x.png in Resources */,
 				964A9F491BEF4198007CE0E9 /* Assets.xcassets in Resources */,
 				96C8D2D31C0A0F4E004642FC /* topic_send_play@3x.png in Resources */,
+				964111B11C297FD800561223 /* system_notice_icon@2x.png in Resources */,
 				96C8D2D81C0A0F4E004642FC /* topic_send_show@2x.png in Resources */,
 				96C8D2A81C0A0F4E004642FC /* send_close_btn@3x.png in Resources */,
 				963DC4A61C0ACFD9005D1955 /* MWPhotoBrowser.bundle in Resources */,
@@ -3400,6 +3427,7 @@
 				966EE5431C0028440039325F /* ELCImagePickerController.m in Sources */,
 				969345D21C1B20120056072F /* CommentLikeViewController.m in Sources */,
 				963DC4CD1C0ACFD9005D1955 /* EaseFaceView.m in Sources */,
+				964111A51C2975D600561223 /* SystemNoticeViewController.m in Sources */,
 				DBBCAA641C22AE0A0044D18C /* MsgNotificationViewController.m in Sources */,
 				96C8D2481C0A0D20004642FC /* WriteCommentViewController.m in Sources */,
 				96ED34381C1337BC0021C9C4 /* FansListViewController.m in Sources */,
@@ -3542,6 +3570,7 @@
 				963DC4BA1C0ACFD9005D1955 /* EaseMessageViewController.m in Sources */,
 				96ED343B1C1338460021C9C4 /* FansTableViewCell.m in Sources */,
 				963DC46F1C0ACFD9005D1955 /* wav.mm in Sources */,
+				964111AB1C29797C00561223 /* SystemNoticeModel.m in Sources */,
 				962D73BF1BFE0C4200412A50 /* LoginView.m in Sources */,
 				964AA1151BEF7B5E007CE0E9 /* NSString+MyCategory.m in Sources */,
 				963DC46D1C0ACFD9005D1955 /* EMCDDeviceManagerBase.m in Sources */,
@@ -3551,6 +3580,7 @@
 				9643D7471BF86746003A394D /* MineBtnTableViewCell.m in Sources */,
 				96ED34441C1349630021C9C4 /* FansListModel.m in Sources */,
 				96C8D24B1C0A0D20004642FC /* CommentTopView.m in Sources */,
+				964111A81C2976F300561223 /* SystemNoticeTableViewCell.m in Sources */,
 				963DC4851C0ACFD9005D1955 /* MWTapDetectingImageView.m in Sources */,
 				96D508531C11E8CA001DFA49 /* CommentModel.m in Sources */,
 				963DC4A51C0ACFD9005D1955 /* PSTGridLayoutSection.m in Sources */,
@@ -3705,7 +3735,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "48f433d0-90c9-4ae0-af24-aec52e4f3e3a";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3744,7 +3774,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "48f433d0-90c9-4ae0-af24-aec52e4f3e3a";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

@@ -336,6 +336,7 @@
             tipsLabel.hidden = YES;
             int currentScore = [share.totalscore intValue] - [inputBuyNumberView.scoreNumLabel.text intValue];
             [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%d",currentScore] forKey:@"totalscore"];
+            
             share.totalscore = [NSString stringWithFormat:@"%d",currentScore];
             [self getRewardData];
         }else{
@@ -374,13 +375,14 @@
                     [inputBuyNumberView.cancelBtn addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];
                     [inputBuyNumberView.mySlider addTarget:self action:@selector(updateValue:) forControlEvents:UIControlEventValueChanged];
                     inputBuyNumberView.userInteractionEnabled = YES;
-                    inputBuyNumberView.rightLabel.text = share.totalscore;
-                    inputBuyNumberView.myScoreNumLabel.text = [NSString stringWithFormat:@"我的积分：%@",share.totalscore];
-                    inputBuyNumberView.mySlider.maximumValue = [share.totalscore intValue];
-                    inputBuyNumberView.mySlider.value = [share.totalscore intValue]/2;
-                    inputBuyNumberView.scoreNumLabel.text = [NSString stringWithFormat:@"%d",[share.totalscore intValue]/2];
                     [self.window addSubview:inputBuyNumberView];
                 }
+                
+                inputBuyNumberView.rightLabel.text = share.totalscore;
+                inputBuyNumberView.myScoreNumLabel.text = [NSString stringWithFormat:@"我的积分：%@",share.totalscore];
+                inputBuyNumberView.mySlider.maximumValue = [share.totalscore intValue];
+                inputBuyNumberView.mySlider.value = [share.totalscore intValue]/2;
+                inputBuyNumberView.scoreNumLabel.text = [NSString stringWithFormat:@"%d",[share.totalscore intValue]/2];
                 inputBuyNumberView.hidden = NO;
             }
             
@@ -391,6 +393,11 @@
                     if ([[result objectForKey:@"Success"]intValue] > 0) {
                         [self initMBProgress:@"打赏成功" withModeType:MBProgressHUDModeText afterDelay:1.0];
                         tipsLabel.hidden = YES;
+                        
+                        int currentScore = [share.totalscore intValue] - [scoreStr intValue];
+                        [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%d",currentScore] forKey:@"totalscore"];
+                        share.totalscore = [NSString stringWithFormat:@"%d",currentScore];
+                        
                         [self getRewardData];
                     }else{
                         [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.0];

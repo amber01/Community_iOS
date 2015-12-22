@@ -19,73 +19,86 @@
 @protocol JSObjectProtocolDelegate <JSExport>
 
 /**
- *  点击签到有礼js返回对应数据
+ *  跳转话题
  *
- *  @param btnIndex js返回的按钮index
- *  @param title    js返回的按钮title
+ *  @param theme 话题
  */
-- (void)showRight:(int)btnIndex TextBtn:(NSString *)title;
+- (void)toTheme:(NSString *)theme;
 
 /**
- *  关闭当前打开的web页面
+ *  跳转网页
+ *
+ *  @param url
  */
-- (void)exitNowPage;
+- (void)toWebUrl:(NSString *)url;
 
 /**
- *  到商品页面
+ *  跳转app
  *
- *  @param goodsId 传goods_id
+ *  @param url
  */
-- (void)toGoodsPage:(NSString *)goodsId;
+- (void)toStartApp:(NSString *)url;
 
 /**
- *  到店铺页面
+ *  返回 分享 标题。内容 。Url链接
  *
- *  @param storeId 传store_id
+ *  @param JsonObject
  */
-- (void)toStorePage:(NSString *)storeId;
+- (void)toShareWeiXin:(NSString *)jsonObject;
 
 /**
- *  显示/关闭 一个dialog, 在做异步交互时, 可以挡住主界面, 阻止用户的所有操作
+ *  返回 分享 标题。内容 。Url链接
  *
- *  @param isShow   int类型; 是否显示, 显示1, 关闭0
+ *  @param JsonObject
  */
-- (void)makeLoading:(int)isShow;
+- (void)toShareSMS:(NSString *)jsonObject;
 
 /**
- *   告诉客户端用户点击了［同意/不同意］按钮
+ *  去登录
  *
- *  @param isAgree int类型; 是否同意, 同意1, 不同意0
+ *  @param login 如果没有 可以 传 空字符串
  */
-- (void)sendAgree:(int)isAgree;
+- (void)toLogin:(NSString *)login;
 
 /**
- *  妈妈精选/妈妈海淘, 跳转子分类
- *
- *  @param cateId 子分类id
+ *  关闭这个页面
  */
-- (void)toCatePage:(NSString *)cateId;
+- (void)toFinsh;
 
 /**
- *   新页面打开普通的url
+ *  点击图片
  *
- *  @param url url地址, url错误时不会响应
+ *  @param iamgeData 返回一个字符串
  */
-- (void)toCommonUrl:(NSString *)url;
+- (void)toShowImg:(NSString *)imageData;
+
+/**
+ *  调js 显示标题
+ *
+ *  @param title
+ */
+- (void)toShowTitle:(NSString *)title;
+
+/**
+ *  返回上一个页面
+ */
+- (void)toGoback;
 
 @end
 
 //为创建的类实现上边的协议
 @interface WSJSObject : NSObject<JSObjectProtocolDelegate>
 
-- (void)exitNowPage;
-- (void)toGoodsPage:(NSString *)goodsId;
-- (void)toStorePage:(NSString *)storeId;
-- (void)showRight:(int)btnIndex TextBtn:(NSString *)title;
-- (void)makeLoading:(int)isShow;
-- (void)sendAgree:(int)isAgree;
-- (void)toCatePage:(NSString *)cateId;
-- (void)toCommonUrl:(NSString *)url;
+- (void)toTheme:(NSString *)theme;
+- (void)toWebUrl:(NSString *)url;
+- (void)toStartApp:(NSString *)url;
+- (void)toShareWeiXin:(NSString *)jsonObject;
+- (void)toShareSMS:(NSString *)jsonObject;
+- (void)toLogin:(NSString *)login;
+- (void)toFinsh;
+- (void)toShowImg:(NSString *)imageData;
+- (void)toShowTitle:(NSString *)title;
+- (void)toGoback;
 
 @property (nonatomic,assign)id <JSObjectProtocolDelegate,NSObject>delegate;
 

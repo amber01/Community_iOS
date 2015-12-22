@@ -10,60 +10,75 @@
 
 @implementation WSJSObject
 
-- (void)exitNowPage
+- (void)toTheme:(NSString *)theme
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(exitNowPage)]) {
-        [self.delegate exitNowPage];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(toTheme:)]) {
+        [self.delegate toTheme:theme];
     }
 }
 
-- (void)toGoodsPage:(NSString *)goodsId
+- (void)toWebUrl:(NSString *)url
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(toGoodsPage:)]) {
-        [self.delegate toGoodsPage:goodsId];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(toWebUrl:)]) {
+        [self.delegate toWebUrl:url];
     }
 }
 
-- (void)toStorePage:(NSString *)storeId
+- (void)toStartApp:(NSString *)url;
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(toStorePage:)]) {
-        [self.delegate toStorePage:storeId];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(toStartApp:)]) {
+        [self.delegate toStartApp:url];
     }
 }
 
--(void)showRight:(int)btnIndex TextBtn:(NSString *)title
+- (void)toShareWeiXin:(NSString *)jsonObject;
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(showRight:TextBtn:)]) {
-        [self.delegate showRight:btnIndex TextBtn:title];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(toShareWeiXin:)]) {
+        [self.delegate toShareWeiXin:jsonObject];
     }
 }
 
-- (void)makeLoading:(int)isShow
+- (void)toShareSMS:(NSString *)jsonObject;
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(makeLoading:)]) {
-        [self.delegate makeLoading:isShow];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(toShareSMS:)]) {
+        [self.delegate toShareSMS:jsonObject];
     }
 }
 
-- (void)sendAgree:(int)isAgree
+- (void)toLogin:(NSString *)login
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(sendAgree:)]) {
-        [self.delegate sendAgree:isAgree];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(toLogin:)]) {
+        [self.delegate toLogin:login];
     }
 }
 
-- (void)toCatePage:(NSString *)cateId
+- (void)toFinsh
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(toCatePage:)]) {
-        [self.delegate toCatePage:cateId];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(toFinsh)]) {
+        [self.delegate toFinsh];
     }
 }
 
-- (void)toCommonUrl:(NSString *)url
+- (void)toShowImg:(NSString *)imageData
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(toCommonUrl:)]) {
-        [self.delegate toCommonUrl:url];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(toShowImg:)]) {
+        [self.delegate toShowImg:imageData];
     }
 }
+
+- (void)toShowTitle:(NSString *)title
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(toShowTitle:)]) {
+        [self.delegate toShowTitle:title];
+    }
+}
+
+- (void)toGoback
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(toGoback)]) {
+        [self.delegate toGoback];
+    }
+}
+
 
 @end

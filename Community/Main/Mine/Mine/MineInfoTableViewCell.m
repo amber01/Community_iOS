@@ -59,6 +59,7 @@
         followBtn.frame = CGRectMake(fansBtn.right, bgView.height - 53, ScreenWidth/4, 40);
         
         scoreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [scoreBtn addTarget:self action:@selector(checkScoreList) forControlEvents:UIControlEventTouchUpInside];
         scoreBtn.frame = CGRectMake(followBtn.right, bgView.height - 53, ScreenWidth/4, 40);
         
         [CommonClass setBorderWithView:postsBtn top:NO left:NO bottom:NO right:YES borderColor:LINE_COLOR borderWidth:0.5];
@@ -181,6 +182,15 @@
     [fansVC setHidesBottomBarWhenPushed:YES];
     fansVC.status = @"1";
     [self.viewController.navigationController pushViewController:fansVC animated:YES];
+}
+
+- (void)checkScoreList
+{
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    WebDetailViewController  *webDetailVC =[[WebDetailViewController alloc]init];
+    webDetailVC.url = [NSString stringWithFormat:@"%@Default.aspx?mobile/Detailed&UserID=%@",ROOT_URL,sharedInfo.user_id];
+    [webDetailVC setHidesBottomBarWhenPushed:YES];
+    [self.viewController.navigationController pushViewController:webDetailVC animated:YES];
 }
 
 - (void)reloadListData
