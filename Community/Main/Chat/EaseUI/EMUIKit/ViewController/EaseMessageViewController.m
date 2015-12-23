@@ -1708,7 +1708,7 @@
 
 - (void)sendTextMessage:(NSString *)text
 {
-    [self sendTextMessage:text withExt:nil];
+    [self sendTextMessage:text withExt:@{@"nickName":self.nickname,@"avatarURL":self.avatarUrl}];
 }
 
 - (void)sendTextMessage:(NSString *)text withExt:(NSDictionary*)ext

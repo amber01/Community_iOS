@@ -246,6 +246,7 @@
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     if (!isStrEmpty(sharedInfo.user_id)) {
         EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:button.userName conversationType:eConversationTypeChat];
+        easeMessageVC.nickname = button.nickname;
         easeMessageVC.avatarUrl = button.avatarUrl;
         easeMessageVC.title = button.nickname;
         [self.viewController.navigationController pushViewController:easeMessageVC animated:YES];

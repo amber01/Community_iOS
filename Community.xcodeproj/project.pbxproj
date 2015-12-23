@@ -416,6 +416,7 @@
 		DB9A81201C1FE1E600601780 /* UIImage+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A811F1C1FE1E600601780 /* UIImage+Extras.m */; };
 		DB9A81231C2013AA00601780 /* CommentSendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A81221C2013AA00601780 /* CommentSendTableViewCell.m */; };
 		DB9A81261C20167100601780 /* TopicSendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A81251C20167100601780 /* TopicSendTableViewCell.m */; };
+		DB9F8E7E1C2A357E001E5659 /* TopicChatConversationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9F8E7D1C2A357E001E5659 /* TopicChatConversationCell.m */; };
 		DBB586601BF031FA001DBD4C /* NSString+TextSize.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB5865F1BF031FA001DBD4C /* NSString+TextSize.m */; };
 		DBBCAA641C22AE0A0044D18C /* MsgNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBCAA631C22AE0A0044D18C /* MsgNotificationViewController.m */; };
 		DBBCAA671C22AF6C0044D18C /* MsgNotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBCAA661C22AF6C0044D18C /* MsgNotificationTableViewCell.m */; };
@@ -1132,6 +1133,8 @@
 		DB9A81221C2013AA00601780 /* CommentSendTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentSendTableViewCell.m; sourceTree = "<group>"; };
 		DB9A81241C20167100601780 /* TopicSendTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicSendTableViewCell.h; sourceTree = "<group>"; };
 		DB9A81251C20167100601780 /* TopicSendTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicSendTableViewCell.m; sourceTree = "<group>"; };
+		DB9F8E7C1C2A357E001E5659 /* TopicChatConversationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicChatConversationCell.h; sourceTree = "<group>"; };
+		DB9F8E7D1C2A357E001E5659 /* TopicChatConversationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicChatConversationCell.m; sourceTree = "<group>"; };
 		DBB5865E1BF031FA001DBD4C /* NSString+TextSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TextSize.h"; sourceTree = "<group>"; };
 		DBB5865F1BF031FA001DBD4C /* NSString+TextSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TextSize.m"; sourceTree = "<group>"; };
 		DBBCAA621C22AE0A0044D18C /* MsgNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgNotificationViewController.h; sourceTree = "<group>"; };
@@ -2060,6 +2063,7 @@
 				DBF503E11C1AA6A100AA02BE /* CommentStatus */,
 				969345C91C1B1F780056072F /* TopicLike */,
 				969345C51C1B1F780056072F /* CommentLike */,
+				DB9F8E781C2A3545001E5659 /* TopicChatList */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -2985,6 +2989,39 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		DB9F8E781C2A3545001E5659 /* TopicChatList */ = {
+			isa = PBXGroup;
+			children = (
+				DB9F8E791C2A3545001E5659 /* Controller */,
+				DB9F8E7B1C2A3545001E5659 /* View */,
+				DB9F8E7A1C2A3545001E5659 /* Model */,
+			);
+			path = TopicChatList;
+			sourceTree = "<group>";
+		};
+		DB9F8E791C2A3545001E5659 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DB9F8E7A1C2A3545001E5659 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DB9F8E7B1C2A3545001E5659 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DB9F8E7C1C2A357E001E5659 /* TopicChatConversationCell.h */,
+				DB9F8E7D1C2A357E001E5659 /* TopicChatConversationCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		DBF503E11C1AA6A100AA02BE /* CommentStatus */ = {
 			isa = PBXGroup;
 			children = (
@@ -3521,6 +3558,7 @@
 				963DC49E1C0ACFD9005D1955 /* PSTCollectionViewFlowLayout.m in Sources */,
 				964AA11A1BEF7B5E007CE0E9 /* UILabel+VerticalUpAlignment.m in Sources */,
 				963DC4861C0ACFD9005D1955 /* MWTapDetectingView.m in Sources */,
+				DB9F8E7E1C2A357E001E5659 /* TopicChatConversationCell.m in Sources */,
 				963DC4B91C0ACFD9005D1955 /* EaseLocationViewController.m in Sources */,
 				963DC4B21C0ACFD9005D1955 /* EaseConvertToCommonEmoticonsHelper.m in Sources */,
 				96E4A4121C1879BC001562DF /* TopicSearchBarView.m in Sources */,
@@ -3712,8 +3750,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Wenzhou ed network media Co. Ltd. (46J7996VL8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Wenzhou ed network media Co. Ltd. (46J7996VL8)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -3735,7 +3773,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "48f433d0-90c9-4ae0-af24-aec52e4f3e3a";
+				PROVISIONING_PROFILE = "d03a7399-7023-409e-8fb8-ee85af45c7b7";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3758,8 +3796,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Wenzhou ed network media Co. Ltd. (46J7996VL8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Wenzhou ed network media Co. Ltd. (46J7996VL8)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -3774,7 +3812,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "48f433d0-90c9-4ae0-af24-aec52e4f3e3a";
+				PROVISIONING_PROFILE = "d03a7399-7023-409e-8fb8-ee85af45c7b7";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

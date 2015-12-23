@@ -123,4 +123,6 @@ void RunBlockAfterDelay(NSTimeInterval delay, void (^block)(void));
 
 //设置字符串中的数字的颜色和字体
 + (void)setRichNumberWithLabel:(UILabel*)label Color:(UIColor *) color FontSize:(CGFloat)size;
+
++ (NSString *)convertDateToString:(NSString *)time;
 @end

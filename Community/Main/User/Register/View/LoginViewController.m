@@ -30,6 +30,10 @@
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyBoard)];
     tapGesture.cancelsTouchesInView =NO;
     [self.view addGestureRecognizer:tapGesture];
+    
+    if ([self.status intValue] == 1) {
+        self.navigationItem.leftBarButtonItem =  [[CustomButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(backAction) andTtintColor:[UIColor whiteColor]];
+    }
 }
 
 #pragma mark -- UI
@@ -151,7 +155,9 @@
                 [userDefaults setObject:sharedInfo.username forKey:@"username"];
                 [userDefaults setObject:@"123456" forKey:@"password"];
                 [easemob.chatManager asyncLoginWithUsername:sharedInfo.username password:@"123456"];
-                
+                if ([self.status intValue] == 1) {
+                    [self backAction];
+                }
                 [self.navigationController popViewControllerAnimated:YES];
             } afterDelay:1];
         }else{
@@ -166,6 +172,17 @@
 {
     FindPasswordViewController *findPasswordVC = [[FindPasswordViewController alloc]init];
     [self.navigationController pushViewController:findPasswordVC animated:YES];
+}
+
+- (void)backAction
+{
+    if ([self.status intValue] == 1) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark -- other

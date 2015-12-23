@@ -98,6 +98,23 @@
     }
 }
 
+#pragma mark -- UITabBarControllerDelegate
+-(void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
+{
+    NSLog(@"selectedIndex:%ld",item.tag);
+    if (item.tag == 3) {
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        if (isStrEmpty(sharedInfo.user_id)) {
+            LoginViewController *loginVC = [[LoginViewController alloc]init];
+            loginVC.status = @"1";
+            BaseNavigationController *baseNav = [[BaseNavigationController alloc]initWithRootViewController:loginVC];
+            [self.navigationController presentViewController:baseNav animated:YES completion:^{
+                
+            }];
+        }
+    }
+}
+
 #pragma Notification
 - (void)getMsgCount
 {

@@ -199,6 +199,8 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
 
 @property (copy, nonatomic) NSString  *avatarUrl;
 
+@property (copy, nonatomic) NSString  *nickname;
+
 - (instancetype)initWithConversationChatter:(NSString *)conversationChatter
                            conversationType:(EMConversationType)conversationType;
 

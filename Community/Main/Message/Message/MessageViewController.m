@@ -13,6 +13,8 @@
 #import "CommentLikeViewController.h"
 #import "MessageTableViewCell.h"
 #import "SystemNoticeViewController.h"
+#import "TopicChatConversationCell.h"
+#import "EaseConvertToCommonEmoticonsHelper.h"
 
 @interface MessageViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -23,7 +25,8 @@
     NSString  *sysmsgnum;
 }
 
-@property (nonatomic,retain) UITableView   *tableView;
+@property (nonatomic,retain) UITableView          *tableView;
+@property (nonatomic,retain) NSArray              *arrConversations;
 
 @end
 
@@ -46,6 +49,10 @@
 {
     [super viewWillAppear:YES];
     [self getMsgCount];
+    
+    //聊天管理器, 获取该对象后, 可以做登录、聊天、加好友等操作
+    [[EaseMob sharedInstance].chatManager loadDataFromDatabase];
+    [self getChatDataList];
 }
 
 - (UITableView *)setupTableView
@@ -57,6 +64,13 @@
         [self.view addSubview:_tableView];
     }
     return _tableView;
+}
+
+#pragma mark -- ChatData
+- (void)getChatDataList
+{
+    self.arrConversations = [[EaseMob sharedInstance].chatManager conversations];
+    NSLog(@"data list:%@",self.arrConversations);
 }
 
 #pragma mark -- HTTP
@@ -99,26 +113,36 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger sections[2] = {3,2};
-    return sections[section];
+    if (section == 0) {
+        return 3;
+    }else{
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        if (isStrEmpty(sharedInfo.user_id)) {
+            return 1;
+        }else{
+            return self.arrConversations.count + 1;
+        }
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identityCell = @"cell";
-    MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
-    const static char *cTitle[2][3] = {{"评论","帖子点赞","评论点赞"},{"系统通知","user name"}};
-    const static char *cImage[2][3] = {{"msg_comment","msg_like","msg_about_me"},{"msg_notification","msg_about_me"}};
-
-    if (!cell) {
-        cell = [[MessageTableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
-    cell.textLabel.text = [NSString stringWithCString:cTitle[indexPath.section][indexPath.row] encoding:NSUTF8StringEncoding];
-    cell.imageView.image = [UIImage imageNamed:[NSString stringWithCString:cImage[indexPath.section][indexPath.row] encoding:NSUTF8StringEncoding]];
-    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-    if (!isStrEmpty(sharedInfo.user_id)) {
-        if (indexPath.section == 0) {
+    if (indexPath.section == 0) {
+        static NSString *identityCell = @"cell";
+        MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
+        NSArray * cTitle = @[@"评论",@"帖子点赞",@"评论点赞"];
+        NSArray * cImage = @[@"msg_comment",@"msg_like",@"msg_about_me"];
+        
+        if (!cell) {
+            cell = [[MessageTableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        cell.textLabel.text = cTitle[indexPath.row];
+        cell.imageView.image  = [UIImage imageNamed:cImage[indexPath.row]];
+        
+        if (!isStrEmpty(sharedInfo.user_id)) {
+            
             if (indexPath.row == 0) {
                 if ([commentNumber intValue] > 0) {
                     cell.tipsView.hidden = NO;
@@ -142,6 +166,21 @@
                 }
             }
         }else{
+            cell.tipsView.hidden = YES;
+        }
+        return cell;
+    }else if (indexPath.section == 1){
+        if (indexPath.row == 0) {
+            static NSString *identityCell = @"noticeCell";
+            MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
+            if (!cell) {
+                cell = [[MessageTableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
+            
+            cell.textLabel.text = @"系统通知";
+            cell.imageView.image  = [UIImage imageNamed:@"msg_notification"];
+            
             if (indexPath.row == 0) {
                 if ([sysmsgnum intValue] > 0) {
                     cell.tipsView.hidden = NO;
@@ -152,12 +191,30 @@
             }else{
                 cell.tipsView.hidden = YES;
             }
+            return cell;
+        }else{
+            static NSString *identityCell = @"chatCell";
+            TopicChatConversationCell *cell  = [tableView dequeueReusableCellWithIdentifier:identityCell];
+            if (!cell) {
+                cell = [[TopicChatConversationCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
+            }
+            SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+            if (!isStrEmpty(sharedInfo.user_id)) {
+                EMConversation *conversation = [self.arrConversations objectAtIndex:indexPath.row-1];
+                //单聊会话
+                if (conversation.conversationType == eConversationTypeChat) {
+                    cell.labName.text = conversation.chatter;
+                    cell.labMsg.text = [self subTitleMessageByConversation:conversation];
+                    //cell.imgHeader.image = [UIImage imageNamed:@"chatListCellHead"];
+                    NSLog(@"ext:%@",conversation.ext);
+                    EMMessage *lastMessage = [conversation latestMessage];
+                    cell.labTime.text = [UIUtils convertDateToString:[NSString stringWithFormat:@"%zd",lastMessage.timestamp]];
+                }
+            }
+            return cell;
         }
-    }else{
-        cell.tipsView.hidden = YES;
     }
-    
-    return cell;
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -224,9 +281,60 @@
             SystemNoticeViewController *systemNoticeView = [[SystemNoticeViewController alloc]init];
             [systemNoticeView setHidesBottomBarWhenPushed:YES];
             [self.navigationController pushViewController:systemNoticeView animated:YES];
+        }else{
+            EMConversation *conversation = [self.arrConversations objectAtIndex:indexPath.row-1];
+            EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:conversation.chatter conversationType:eConversationTypeChat];
+            easeMessageVC.title = conversation.chatter;
+            [self.navigationController pushViewController:easeMessageVC animated:YES];
         }
     }
 }
+
+//得到最后消息文字或者类型
+-(NSString *)subTitleMessageByConversation:(EMConversation *)conversation
+{
+    NSString *ret = @"";
+    EMMessage *lastMessage = [conversation latestMessage];
+    if (lastMessage) {
+        id<IEMMessageBody> messageBody = lastMessage.messageBodies.lastObject;
+        switch (messageBody.messageBodyType) {
+                //图像类型
+            case eMessageBodyType_Image:
+            {
+                ret = NSLocalizedString(@"message.image1", @"[image]");
+            } break;
+                //文本类型
+            case eMessageBodyType_Text:
+            {
+                NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
+                                            convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];  //表情映射
+                ret = didReceiveText;
+            } break;
+                //语音类型
+            case eMessageBodyType_Voice:
+            {
+                ret = NSLocalizedString(@"message.voice1", @"[voice]");
+            } break;
+                //位置类型
+            case eMessageBodyType_Location:
+            {
+                ret = NSLocalizedString(@"message.location1", @"[location]");
+            } break;
+                //视频类型
+            case eMessageBodyType_Video:
+            {
+                ret = NSLocalizedString(@"message.video1", @"[video]");
+            } break;
+                
+            default:
+                break;
+        }
+    }
+    
+    return ret;
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -219,7 +219,7 @@
 {
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:[time doubleValue]];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd"];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
     NSString *dateStr = [formatter stringFromDate:date];
     return dateStr;
 }
@@ -443,6 +443,15 @@ void RunBlockAfterDelay(NSTimeInterval delay, void (^block)(void))
     label.attributedText = attributedString;
 }
 
++ (NSString *)convertDateToString:(NSString *)time
+{
+    NSTimeInterval _interval=[time doubleValue] / 1000.0;
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
+    NSDateFormatter *objDateformat = [[NSDateFormatter alloc] init];
+    [objDateformat setDateFormat:@"yyyy-MM-dd HH:mm"];
+    NSString *str = [objDateformat stringFromDate: date];
+    return str;
+}
 
 @end
 
