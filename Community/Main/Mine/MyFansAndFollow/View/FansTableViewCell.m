@@ -34,12 +34,11 @@
     if (status == FansListCategory) {
         NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture];
         [avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
-        self.textLabel.text = model.username;
+        self.textLabel.text = model.nickname;
     }else if (status == FollwListCategory) {
         NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.tologopicture];
         [avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
-        self.textLabel.text = model.tousername;
-
+        self.textLabel.text = model.tonickname;
     }
 }
 

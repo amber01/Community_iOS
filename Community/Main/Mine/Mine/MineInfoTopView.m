@@ -249,6 +249,9 @@
         easeMessageVC.nickname = button.nickname;
         easeMessageVC.avatarUrl = button.avatarUrl;
         easeMessageVC.title = button.nickname;
+        
+        NSLog(@"%@,%@,%@",button.userName,button.nickname,button.avatarUrl);
+        
         [self.viewController.navigationController pushViewController:easeMessageVC animated:YES];
     }else{
         LoginViewController *loginVC = [[LoginViewController  alloc]init];

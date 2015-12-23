@@ -1708,11 +1708,20 @@
 
 - (void)sendTextMessage:(NSString *)text
 {
+    /**
+     *  自己发送消息的时候讲头像URL和用户的昵称保存到本地扩展中，用户在会话列表中看到头像和昵称
+     */
+    _conversation.ext = @{@"nickName":self.nickname,@"avatarURL":self.avatarUrl};
+    
+    /**
+     *  别人发送消息时，将头像URL和用户昵称保存到本地扩展中，自己在会话列表中可以看到别人的头像和昵称
+     */
     [self sendTextMessage:text withExt:@{@"nickName":self.nickname,@"avatarURL":self.avatarUrl}];
 }
 
 - (void)sendTextMessage:(NSString *)text withExt:(NSDictionary*)ext
 {
+    NSLog(@"self.conversation.chatter:%@",self.conversation.chatter);
     EMMessage *message = [EaseSDKHelper sendTextMessage:text
                                                    to:self.conversation.chatter
                                           messageType:[self _messageTypeFromConversationType]

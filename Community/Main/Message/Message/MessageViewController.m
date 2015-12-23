@@ -203,11 +203,27 @@
                 EMConversation *conversation = [self.arrConversations objectAtIndex:indexPath.row-1];
                 //单聊会话
                 if (conversation.conversationType == eConversationTypeChat) {
-                    cell.labName.text = conversation.chatter;
+                    
                     cell.labMsg.text = [self subTitleMessageByConversation:conversation];
                     //cell.imgHeader.image = [UIImage imageNamed:@"chatListCellHead"];
-                    NSLog(@"ext:%@",conversation.ext);
+                    NSString *nickName = [conversation.ext objectForKey:@"nickName"];
+                    NSString *avatarURL = [conversation.ext objectForKey:@"avatarURL"];
+                    cell.labName.text = nickName;
+                    NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",sharedInfo.picturedomain],BASE_IMAGE_URL,face,avatarURL];
+                    NSLog(@"extaaa:%@",conversation.ext);
+                    [cell.imgHeader sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
                     EMMessage *lastMessage = [conversation latestMessage];
+                    
+                    //会话列表中收到别人的消息的时候
+                    if (isStrEmpty(nickName)) {
+                        NSString *lastMegNickName = [lastMessage.ext objectForKey:@"nickName"];
+                        NSString *lastMegAvatarURL = [lastMessage.ext objectForKey:@"avatarURL"];
+                        cell.labName.text = lastMegNickName;
+                        NSString *lastMsgImageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",sharedInfo.picturedomain],BASE_IMAGE_URL,face,lastMegAvatarURL];
+                        [cell.imgHeader sd_setImageWithURL:[NSURL URLWithString:lastMsgImageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
+                    }
+                    
+                    NSLog(@"lastMessage:%@",lastMessage.ext);
                     cell.labTime.text = [UIUtils convertDateToString:[NSString stringWithFormat:@"%zd",lastMessage.timestamp]];
                 }
             }
@@ -284,7 +300,23 @@
         }else{
             EMConversation *conversation = [self.arrConversations objectAtIndex:indexPath.row-1];
             EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:conversation.chatter conversationType:eConversationTypeChat];
-            easeMessageVC.title = conversation.chatter;
+            NSString *nickName = [conversation.ext objectForKey:@"nickName"];
+            NSString *avatarURL = [conversation.ext objectForKey:@"avatarURL"];
+            
+            EMMessage *lastMessage = [conversation latestMessage];
+            NSString *lastMegNickName = [lastMessage.ext objectForKey:@"nickName"];
+            NSString *lastMegAvatarURL = [lastMessage.ext objectForKey:@"avatarURL"];
+            
+            if (isStrEmpty(nickName)) {
+                easeMessageVC.nickname = lastMegNickName;
+                easeMessageVC.avatarUrl = lastMegAvatarURL;
+            }else{
+                easeMessageVC.nickname = nickName;
+                easeMessageVC.avatarUrl = avatarURL;
+            }
+
+            easeMessageVC.title = nickName;
+            [easeMessageVC setHidesBottomBarWhenPushed:YES];
             [self.navigationController pushViewController:easeMessageVC animated:YES];
         }
     }

@@ -16,6 +16,8 @@
 @property (nonatomic,copy)NSString *tousername;
 @property (nonatomic,copy)NSString *touserid;
 @property (nonatomic,copy)NSString *userid;
+@property (nonatomic,copy)NSString *tonickname;
 @property (nonatomic,copy)NSString *logopicturedomain;
+@property (nonatomic,copy)NSString *nickname;
 
 @end

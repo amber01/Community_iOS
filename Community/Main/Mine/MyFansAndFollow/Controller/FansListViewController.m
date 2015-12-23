@@ -178,12 +178,18 @@
     FansListType fansListType = [self.status intValue];
     MineInfoViewController *mineInfoVC = [[MineInfoViewController alloc]init];
     FansListModel *model = self.dataArray[indexPath.row];
- 
+    
     if (fansListType == FansListCategory) {
         mineInfoVC.user_id = model.userid;
+        mineInfoVC.nickname = model.nickname;
+        mineInfoVC.userName = model.username;
+        mineInfoVC.avatarUrl = model.logopicture;
         [self.navigationController pushViewController:mineInfoVC animated:YES];
     }else if (fansListType == FollwListCategory){
         mineInfoVC.user_id = model.touserid;
+        mineInfoVC.nickname = model.tonickname;
+        mineInfoVC.userName = model.tousername;
+        mineInfoVC.avatarUrl = model.tologopicture;
         [self.navigationController pushViewController:mineInfoVC animated:YES];
     }
 }
