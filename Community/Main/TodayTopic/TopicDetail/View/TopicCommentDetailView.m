@@ -132,7 +132,7 @@
                 [_rewardView addSubview:label];
                 
                 NSArray  *rewardData = [result objectForKey:@"Detail"];
-                int btnCount = ((ScreenWidth - 10 - 50 - 10 - 10 - 10)/(34 + 5) - 1);
+                int btnCount = ((ScreenWidth - 10 - 50 - 10 - 10 - 10)/(34 + 5) - 2);
                 NSLog(@"btnCount:%d",btnCount);
                 
                 for (int i = 0; i < rewardData.count; i ++) {

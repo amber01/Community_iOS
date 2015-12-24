@@ -50,6 +50,11 @@
     [super viewDidLoad];
     self.title = @"信息";
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    if (isStrEmpty(self.user_id)) {
+        self.user_id = @"";
+    }
+    
     [self createScrollView];
     height = 0;
     loadingView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];

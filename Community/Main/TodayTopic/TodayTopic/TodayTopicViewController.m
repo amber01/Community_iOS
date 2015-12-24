@@ -70,7 +70,7 @@
         NSArray *items = [TodayTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
         NSArray *imageItems = [TodayTopicImagesModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
         
-        NSLog(@"detail:%@",result);
+        NSLog(@"detail2:%@",result);
         
         if (page == 1) {
             [self.dataArray removeAllObjects];
