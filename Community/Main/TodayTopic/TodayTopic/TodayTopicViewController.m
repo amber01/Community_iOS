@@ -145,6 +145,7 @@
         self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64) style:UITableViewStylePlain];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        [UIUtils setExtraCellLineHidden:_tableView];
         _adView = [[JXBAdPageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, scaleToScreenHeight * 180)];
         _tableView.tableHeaderView = _adView;
         _adView.iDisplayTime = 3;

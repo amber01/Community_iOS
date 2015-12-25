@@ -11,6 +11,7 @@
 #import "MainViewController.h"
 #import "EaseMob.h"
 #import "UMSocial.h"
+#import "MobClick.h"
 
 @interface AppDelegate ()
 
@@ -42,6 +43,9 @@
     [UMSocialData setAppKey:Umeng_key];
     //加上这段代码，避免审核被拒掉
     [UMSocialConfig hiddenNotInstallPlatforms:[NSArray arrayWithObjects:UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQQ,UMShareToQzone,nil]];
+    
+    //YouMeng统计平台
+    [MobClick startWithAppkey:Umeng_key reportPolicy:BATCH channelId:@"appStore"];
     
     /**
      *  环信

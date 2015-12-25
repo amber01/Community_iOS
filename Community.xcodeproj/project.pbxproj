@@ -466,6 +466,8 @@
 		DBC59C171C29182B00612A55 /* TopicDetailRewardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC59C161C29182B00612A55 /* TopicDetailRewardViewController.m */; };
 		DBC59C1A1C2918FA00612A55 /* TopicDetailRewardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC59C191C2918FA00612A55 /* TopicDetailRewardTableViewCell.m */; };
 		DBC59C1D1C29303700612A55 /* InputBuyNumberView.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC59C1C1C29303700612A55 /* InputBuyNumberView.m */; };
+		DBE3BBFF1C2D045F005DBE23 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE3BBFC1C2D045F005DBE23 /* libMobClickLibrary.a */; };
+		DBE3BC011C2D04D6005DBE23 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE3BC001C2D04D6005DBE23 /* libz.tbd */; };
 		DBE54E121C0D6DBD0057D68F /* user_info_addfollow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E101C0D6DBD0057D68F /* user_info_addfollow@2x.png */; };
 		DBE54E131C0D6DBD0057D68F /* user_info_follow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E111C0D6DBD0057D68F /* user_info_follow@2x.png */; };
 		DBE54E151C0D70180057D68F /* user_info_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E141C0D70180057D68F /* user_info_chat@2x.png */; };
@@ -1260,6 +1262,10 @@
 		DBC59C191C2918FA00612A55 /* TopicDetailRewardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicDetailRewardTableViewCell.m; sourceTree = "<group>"; };
 		DBC59C1B1C29303700612A55 /* InputBuyNumberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputBuyNumberView.h; sourceTree = "<group>"; };
 		DBC59C1C1C29303700612A55 /* InputBuyNumberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputBuyNumberView.m; sourceTree = "<group>"; };
+		DBE3BBFC1C2D045F005DBE23 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
+		DBE3BBFD1C2D045F005DBE23 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
+		DBE3BBFE1C2D045F005DBE23 /* MobClickSocialAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClickSocialAnalytics.h; sourceTree = "<group>"; };
+		DBE3BC001C2D04D6005DBE23 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		DBE54E101C0D6DBD0057D68F /* user_info_addfollow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_addfollow@2x.png"; sourceTree = "<group>"; };
 		DBE54E111C0D6DBD0057D68F /* user_info_follow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_follow@2x.png"; sourceTree = "<group>"; };
 		DBE54E141C0D70180057D68F /* user_info_chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_chat@2x.png"; sourceTree = "<group>"; };
@@ -1278,6 +1284,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBE3BC011C2D04D6005DBE23 /* libz.tbd in Frameworks */,
 				96D255741C2C46330002E650 /* libz.1.2.5.tbd in Frameworks */,
 				96D255721C2C46270002E650 /* libstdc++.tbd in Frameworks */,
 				96D255701C2C46190002E650 /* CoreTelephony.framework in Frameworks */,
@@ -1290,6 +1297,7 @@
 				96D255461C2C393D0002E650 /* libUMSocial_Sdk_4.4.a in Frameworks */,
 				964AA1261BEF844E007CE0E9 /* CoreLocation.framework in Frameworks */,
 				96D255581C2C393D0002E650 /* libWeChatSDK.a in Frameworks */,
+				DBE3BBFF1C2D045F005DBE23 /* libMobClickLibrary.a in Frameworks */,
 				96D255511C2C393D0002E650 /* libSocialSinaSSO.a in Frameworks */,
 				96D255521C2C393D0002E650 /* libWeiboSDK.a in Frameworks */,
 				96D255501C2C393D0002E650 /* libSocialSina.a in Frameworks */,
@@ -2158,6 +2166,7 @@
 		964A9FB11BEF46B0007CE0E9 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				DBE3BBFB1C2D045F005DBE23 /* UMAnalytics_Sdk_3.6.6 */,
 				96D254FE1C2C393D0002E650 /* umeng_ios_social_sdk_4.4_arm64_custom */,
 				96C5A3241C1D1B500029FC74 /* WSPulldownCheckView */,
 				96D508231C0C823D001DFA49 /* WSHeaderView */,
@@ -3213,6 +3222,7 @@
 		D76D97D413AC8B6187766CE9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DBE3BC001C2D04D6005DBE23 /* libz.tbd */,
 				96D255731C2C46330002E650 /* libz.1.2.5.tbd */,
 				96D255711C2C46270002E650 /* libstdc++.tbd */,
 				96D2556F1C2C46190002E650 /* CoreTelephony.framework */,
@@ -3296,6 +3306,16 @@
 				DB9F8E7D1C2A357E001E5659 /* TopicChatConversationCell.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		DBE3BBFB1C2D045F005DBE23 /* UMAnalytics_Sdk_3.6.6 */ = {
+			isa = PBXGroup;
+			children = (
+				DBE3BBFC1C2D045F005DBE23 /* libMobClickLibrary.a */,
+				DBE3BBFD1C2D045F005DBE23 /* MobClick.h */,
+				DBE3BBFE1C2D045F005DBE23 /* MobClickSocialAnalytics.h */,
+			);
+			path = UMAnalytics_Sdk_3.6.6;
 			sourceTree = "<group>";
 		};
 		DBF503E11C1AA6A100AA02BE /* CommentStatus */ = {
@@ -4085,7 +4105,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "e3dace92-8fb7-4d55-868f-fbbbc32c672c";
+				PROVISIONING_PROFILE = "994a8a7b-f1dc-4f7d-92fb-36142eadfda7";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4124,7 +4144,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "e3dace92-8fb7-4d55-868f-fbbbc32c672c";
+				PROVISIONING_PROFILE = "994a8a7b-f1dc-4f7d-92fb-36142eadfda7";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -4163,6 +4183,8 @@
 					"$(PROJECT_DIR)/Community/Vendors/umeng_ios_social_sdk_4.4_arm64_custom/UMSocial_Sdk_Extra_Frameworks/Wechat",
 					"$(PROJECT_DIR)/Community/Vendors/umeng_ios_social_sdk_4.4_arm64_custom/UMSocial_Sdk_Extra_Frameworks/Sina",
 					"$(PROJECT_DIR)/Community/Vendors/umeng_ios_social_sdk_4.4_arm64_custom/UMSocial_Sdk_Extra_Frameworks/SinaSSO",
+					"$(PROJECT_DIR)/Community/Vendors/umsdk_IOS_analytics_idfa_v3.6.6/umsdk_IOS_analytics_idfa_v3.6.6/UMAnalytics_Sdk_3.6.6",
+					"$(PROJECT_DIR)/Community/Vendors/UMAnalytics_Sdk_3.6.6",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.wansons.Community;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4204,6 +4226,8 @@
 					"$(PROJECT_DIR)/Community/Vendors/umeng_ios_social_sdk_4.4_arm64_custom/UMSocial_Sdk_Extra_Frameworks/Wechat",
 					"$(PROJECT_DIR)/Community/Vendors/umeng_ios_social_sdk_4.4_arm64_custom/UMSocial_Sdk_Extra_Frameworks/Sina",
 					"$(PROJECT_DIR)/Community/Vendors/umeng_ios_social_sdk_4.4_arm64_custom/UMSocial_Sdk_Extra_Frameworks/SinaSSO",
+					"$(PROJECT_DIR)/Community/Vendors/umsdk_IOS_analytics_idfa_v3.6.6/umsdk_IOS_analytics_idfa_v3.6.6/UMAnalytics_Sdk_3.6.6",
+					"$(PROJECT_DIR)/Community/Vendors/UMAnalytics_Sdk_3.6.6",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.wansons.Community;
 				PRODUCT_NAME = "$(TARGET_NAME)";

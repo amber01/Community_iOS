@@ -12,7 +12,6 @@
 
 @property (nonatomic,copy)NSString *picture;
 @property (nonatomic,copy)NSString *postid;
-
-
+@property (nonatomic,copy)NSString *picturedomain;
 
 @end

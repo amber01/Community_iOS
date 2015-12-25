@@ -243,7 +243,7 @@
                 NSDictionary *dic = [items objectAtIndex:i];
                 NSString *nickname = [dic objectForKey:@"nickname"];
                 self.topicTitle  = [dic objectForKey:@"name"];
-                NSString *date = [dic objectForKey:@"lastcommentdate"];
+                NSString *date = [dic objectForKey:@"createtime"];
                 NSString *logopicture = [dic objectForKey:@"logopicture"];
                 NSString *picturedomain = [dic objectForKey:@"logopicturedomain"];
                 NSString *source = [dic objectForKey:@"source"];
