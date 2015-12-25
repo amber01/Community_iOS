@@ -40,7 +40,8 @@
      *  友盟分享
      */
     [UMSocialData setAppKey:Umeng_key];
-    //[UMSocialConfig hiddenNotInstallPlatforms:[NSArray arrayWithObjects:UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQQ,UMShareToQzone,nil]];
+    //加上这段代码，避免审核被拒掉
+    [UMSocialConfig hiddenNotInstallPlatforms:[NSArray arrayWithObjects:UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQQ,UMShareToQzone,nil]];
     
     /**
      *  环信
