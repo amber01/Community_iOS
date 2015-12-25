@@ -1647,13 +1647,19 @@
             model = [[EaseMessageModel alloc] initWithMessage:message];
             [[EaseBaseMessageCell appearance] setAvatarCornerRadius:15]; //将头像设置成圆形
             SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
+            //自己的
+            /**
+             *  聊天时修改头像和昵称
+             */
             if (model.isSender) {
-                
                 NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",shareInfo.picturedomain],BASE_IMAGE_URL,face,shareInfo.picture];
                 model.avatarURLPath = imageURL;
+                model.nickname = shareInfo.nickname;
             }else{
+                //对方的
                 NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",shareInfo.picturedomain],BASE_IMAGE_URL,face,self.avatarUrl];
                 model.avatarURLPath = imageURL;
+                model.nickname = self.nickname;
             }
             
             model.failImageName = @"imageDownloadFail";
@@ -1716,7 +1722,8 @@
     /**
      *  别人发送消息时，将头像URL和用户昵称保存到本地扩展中，自己在会话列表中可以看到别人的头像和昵称
      */
-    [self sendTextMessage:text withExt:@{@"nickName":self.nickname,@"avatarURL":self.avatarUrl}];
+    SharedInfo *shared = [SharedInfo sharedDataInfo];
+    [self sendTextMessage:text withExt:@{@"nickName":shared.nickname,@"avatarURL":shared.picture,@"userName":shared.username}];
 }
 
 - (void)sendTextMessage:(NSString *)text withExt:(NSDictionary*)ext

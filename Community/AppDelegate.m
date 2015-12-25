@@ -10,6 +10,7 @@
 #import "BaseNavigationController.h"
 #import "MainViewController.h"
 #import "EaseMob.h"
+#import "UMSocial.h"
 
 @interface AppDelegate ()
 
@@ -33,6 +34,13 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     [self loadADimageView];
+    
+    
+    /**
+     *  友盟分享
+     */
+    [UMSocialData setAppKey:Umeng_key];
+    //[UMSocialConfig hiddenNotInstallPlatforms:[NSArray arrayWithObjects:UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQQ,UMShareToQzone,nil]];
     
     /**
      *  环信
@@ -202,6 +210,20 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     [[EaseMob sharedInstance] applicationWillTerminate:application];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    BOOL result = [UMSocialSnsService handleOpenURL:url];
+    if (result == FALSE) {
+        //调用其他SDK，例如支付宝SDK等
+    }
+    return result;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return  [UMSocialSnsService handleOpenURL:url];
 }
 
 @end

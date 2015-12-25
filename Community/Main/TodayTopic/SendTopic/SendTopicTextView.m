@@ -26,7 +26,7 @@
         [CommonClass setBorderWithView:_titleTextField top:NO left:NO bottom:YES right:NO borderColor:LINE_COLOR borderWidth:0.5];
         [self addSubview:_titleTextField];
         
-        self.contentTextView = [[UITextView alloc]initWithFrame:CGRectMake(5, _titleTextField.bottom, frame.size.width - 10, 34)];
+        self.contentTextView = [[UITextView alloc]initWithFrame:CGRectMake(5, _titleTextField.bottom, frame.size.width - 10, 90)];//34
         
         _contentTextView.returnKeyType = UIReturnKeyDefault;
         _contentTextView.keyboardType = UIKeyboardTypeDefault;

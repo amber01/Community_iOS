@@ -44,11 +44,10 @@
 - (void)getNoticeData
 {
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-    NSDictionary *parameters = @{@"Method":@"ReNotice",@"RunnerUserID":sharedInfo.user_id,@"Detail":@[@{@"ID":@"消息ID",@"IsShow":@"888"}]};
+    NSDictionary *parameters = @{@"Method":@"ReNotice",@"RunnerUserID":sharedInfo.user_id,@"Detail":@[@{@"ID":@"消息ID",@"IsShow":@"888",@"ToUserIDs":sharedInfo.user_id}]};
     [CKHttpRequest createRequest:HTTP_SYSTEM_NOTICE WithParam:parameters withMethod:@"POST" success:^(id result) {
         if (result) {
             self.dataArray = [SystemNoticeModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
-            NSLog(@"result1:%@",result);
         }
         [_tableView reloadData];
     } failure:^(NSError *erro) {

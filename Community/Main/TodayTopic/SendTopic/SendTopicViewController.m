@@ -34,6 +34,7 @@
 @property (nonatomic,retain) NSMutableArray *locaPhotoArr;
 @property (nonatomic,retain) NSMutableArray *imagesArray;
 @property (nonatomic,copy  ) NSString       *filename;
+@property (nonatomic,retain) NSMutableArray *sendPhotoCountTitle;
 
 @end
 
@@ -423,6 +424,12 @@
         
     }else{
         if (buttonIndex == 0) {
+            NSLog(@"delete tag:%ld",actionSheet.tag);
+            int deleteTag = (int)actionSheet.tag - 500;
+            [self.sendPhotoCountTitle removeObjectAtIndex:deleteTag];
+            
+            //sendTopicView.contentTextView.text = [self.sendPhotoCountTitle componentsJoinedByString:@""];
+            
             UIImageView *imageView = (UIImageView *)[self.view viewWithTag:actionSheet.tag];
             [imageView removeFromSuperview];
             if (_locaPhotoArr.count > 0) {
@@ -479,8 +486,14 @@
         photoImageview.userInteractionEnabled = YES;
         photoImageview.tag = 500 + i;
         [photoImageview addGestureRecognizer:deleteImageTapGesture];
+        if (!self.sendPhotoCountTitle) {
+            self.sendPhotoCountTitle = [[NSMutableArray alloc]init];
+        }
+        sendTopicView.defaultLabel.hidden = YES;
+        [self.sendPhotoCountTitle addObject:[NSString stringWithFormat:@"[图片%d]",i+1]];
     }
     
+    sendTopicView.contentTextView.text = [NSString stringWithFormat:@"%@%@",sendTopicView.contentTextView.text,[self.sendPhotoCountTitle componentsJoinedByString:@""]];
     addImageBtn.frame = CGRectMake(photoImageview.right + 10, 2.5, 45, 45);
 }
 

@@ -11,8 +11,11 @@
 #import "MineInfoTopView.h"
 #import "EveryoneTopicTableViewCell.h"
 #import "TopicDetailViewController.h"
+#import "UMSocial.h"
+#import "UMSocialWechatHandler.h"
+#import "UMSocialQQHandler.h"
 
-@interface MineInfoViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface MineInfoViewController ()<UITableViewDataSource,UITableViewDelegate,UMSocialUIDelegate>
 {
     WSHeaderView *_header;
     int          page;
@@ -31,6 +34,8 @@
 @property (nonatomic,retain) NSMutableArray *likeDataArray;  //记录本地点赞的状态
 @property (nonatomic,retain) NSMutableArray *isLikeDataArray;  //是否已经点赞
 
+@property (nonatomic,copy)   NSString       *sharePicturedomain;
+@property (nonatomic,copy)   NSString       *shareImageURL;
 @end
 
 @implementation MineInfoViewController
@@ -77,6 +82,7 @@
     mineInfoTopView = [[MineInfoTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 155) withUserID:isStrEmpty(self.user_id) ? shareInfo.user_id : self.user_id andNickname:isStrEmpty(self.nickname) ? @"" : self.nickname andUserName:isStrEmpty(self.userName)? @"" : self.userName andAvararUrl:isStrEmpty(self.avatarUrl) ? @"" : self.avatarUrl];
     [mineInfoTopView.topicBtn addTarget:self action:@selector(checkTopicListAction) forControlEvents:UIControlEventTouchUpInside];
     _tableView.tableHeaderView = mineInfoTopView;
+    [self getUserInfoData:isStrEmpty(self.user_id) ? @"" : self.user_id];
 }
 
 - (void)setupUploadMore{
@@ -107,6 +113,26 @@
 }
 
 #pragma mark -- HTTP
+- (void)getUserInfoData:(NSString *)user_id;
+{
+    NSDictionary *params = @{@"Method":@"ReUserInfo",@"Detail":@[@{@"ID":user_id}]};
+    
+    [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:params withMethod:@"POST" success:^(id result) {
+        if (result) {
+            NSLog(@"result:%@",result);
+            NSArray *dataArray = [result objectForKey:@"Detail"];
+            for (int i = 0; i < dataArray.count; i ++) {
+                NSDictionary *dic = [dataArray objectAtIndex:i];
+                self.shareImageURL = [dic objectForKey:@"picture"];
+                self.sharePicturedomain = [dic objectForKey:@"picturedomain"];
+            }
+        }
+    } failure:^(NSError *erro) {
+        
+    }];
+}
+
+
 - (void)getEveryoneTopicData:(int)pageIndex withFldSort:(NSString *)fldSort andIsEssence:(NSString *)isEssence
 {
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
@@ -309,7 +335,31 @@
 #pragma mark -- action
 - (void)shareAction
 {
+    [UMSocialWechatHandler setWXAppId:@"wxc1830ea42532921e" appSecret:@"73ce199faec839454273de0ac5606858" url:[NSString stringWithFormat:@"%@user/t%@",ROOT_URL,self.user_id]];
+    [UMSocialQQHandler setQQWithAppId:@"1105030412" appKey:@"iGDileMaPq45D3Mf" url:[NSString stringWithFormat:@"%@user%@",ROOT_URL,self.user_id]];
     
+    UIImageView *shareImageView = [[UIImageView alloc]init];
+    [shareImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",self.sharePicturedomain],BASE_IMAGE_URL,face,self.shareImageURL]]placeholderImage:[UIImage imageNamed:@"app_default_icon"]];
+    
+    [UMSocialData defaultData].extConfig.wechatSessionData.shareImage = shareImageView.image;
+    [UMSocialData defaultData].extConfig.wechatTimelineData.shareImage = shareImageView.image;        [UMSocialData defaultData].extConfig.sinaData.shareImage = shareImageView.image;
+    [UMSocialData defaultData].extConfig.qqData.shareImage = shareImageView.image;
+    [UMSocialData defaultData].extConfig.qzoneData.shareImage = shareImageView.image;
+    
+    
+    [UMSocialData defaultData].extConfig.smsData.shareText =  [NSString stringWithFormat:@"%@的微温州社区主页快来看看",self.nickname];
+    [UMSocialData defaultData].extConfig.sinaData.shareText =  [NSString stringWithFormat:@"%@的微温州社区主页快来看看",self.nickname];
+    
+    [UMSocialData defaultData].extConfig.wechatSessionData.title = [NSString stringWithFormat:@"%@的微温州社区主页快来看看",self.nickname];
+    [UMSocialData defaultData].extConfig.qqData.title = @"来自微温州的分享";
+    [UMSocialData defaultData].extConfig.qzoneData.title = @"来自微温州的分享";
+    
+    [UMSocialSnsService presentSnsIconSheetView:self
+                                         appKey:Umeng_key
+                                      shareText:@"看了微温州,才知道温州每天发生这么多事情！"
+                                     shareImage:nil
+                                shareToSnsNames:[NSArray arrayWithObjects:UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQQ,UMShareToQzone,UMShareToSms,nil]
+                                       delegate:self];
 }
 
 - (void)checkTopicListAction

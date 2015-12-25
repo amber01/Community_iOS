@@ -45,3 +45,4 @@
 #define kAppKey @"35172747#communtiy"
 #define kCustomerName @"zhimore_kefu1"
 
+#define Umeng_key         @"56500ca9e0f55a4819002e85"

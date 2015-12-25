@@ -18,8 +18,12 @@
 #import "TopicCommentDetailView.h"
 #import "WSJSObject.h"
 #import "SDPhotoBrowser.h"
+#import "UMSocial.h"
+#import "UMSocialWechatHandler.h"
+#import "UMSocialQQHandler.h"
+//#import "UMSocialSinaHandler.h"  //新浪微博不要
 
-@interface TopicDetailViewController ()<UIScrollViewDelegate,UIWebViewDelegate,TWebScrollViewDelegate,CheckMoreDelegate,UIActionSheetDelegate,JSObjectProtocolDelegate,SDPhotoBrowserDelegate>
+@interface TopicDetailViewController ()<UIScrollViewDelegate,UIWebViewDelegate,TWebScrollViewDelegate,CheckMoreDelegate,UIActionSheetDelegate,JSObjectProtocolDelegate,SDPhotoBrowserDelegate,UMSocialUIDelegate>
 {
     ScorellButtonView    *scorllBtnView;
     TopicDetailHeadView  *headView;
@@ -41,6 +45,9 @@
 @property (nonatomic,retain) ScorellButtonView *scorllBtnView;
 @property (nonatomic,copy  ) NSString          *likeNumber;
 @property (nonatomic,retain) NSMutableArray    *photoArray;
+@property (nonatomic,copy)   NSString *shareImageURL;
+@property (nonatomic,copy)   NSString *sharePicturedomain;
+@property (nonatomic,copy)   NSString *topicTitle;
 
 @end
 
@@ -68,6 +75,7 @@
     [footView.writeCommentBtn addTarget:self action:@selector(writeCommentAction) forControlEvents:UIControlEventTouchUpInside];
     [footView.likeBtn addTarget:self action:@selector(likeAction) forControlEvents:UIControlEventTouchUpInside];
     [footView.checkCommentBtn addTarget:self action:@selector(checkCommentAction) forControlEvents:UIControlEventTouchUpInside];
+    [footView.shareBtn addTarget:self action:@selector(goToShareAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:footView];
     [self getTopicDetail:self.post_id];
     
@@ -219,18 +227,26 @@
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     NSDictionary *parameters = @{@"Method":@"RePostInfo",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"ID":post_id,@"IsShow":@"888"}]};
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
-        NSLog(@"result:%@",result);
+        NSLog(@"resultss:%@",result);
         if (result) {
             NSArray *items = [result objectForKey:@"Detail"];
+            NSArray *images = [result objectForKey:@"Images"];
+            for (int j = 0; j < images.count; j ++) {
+                NSDictionary *dic = [images objectAtIndex:j];
+                if (j == 0) {
+                    self.shareImageURL = [dic objectForKey:@"picture"];
+                    self.sharePicturedomain =  [dic objectForKey:@"picturedomain"];
+                }
+            }
+            
             for (int i = 0; i < items.count; i++) {
                 NSDictionary *dic = [items objectAtIndex:i];
                 NSString *nickname = [dic objectForKey:@"nickname"];
-                NSString *titleName = [dic objectForKey:@"name"];
+                self.topicTitle  = [dic objectForKey:@"name"];
                 NSString *date = [dic objectForKey:@"lastcommentdate"];
                 NSString *logopicture = [dic objectForKey:@"logopicture"];
                 NSString *picturedomain = [dic objectForKey:@"logopicturedomain"];
                 NSString *source = [dic objectForKey:@"source"];
-                
                 NSString *commentnum = [dic objectForKey:@"commentnum"];
                 NSString *praisenum  = [dic objectForKey:@"praisenum"];
                 self.likeNumber = praisenum;
@@ -399,6 +415,11 @@
     }];
 }
 
+- (void)goToShareAction
+{
+    [self checkShare];
+}
+
 - (void)checkCommentAction
 {
     isLoadMore = YES;
@@ -478,11 +499,42 @@
     [sheet showInView:self.view];
 }
 
+- (void)checkShare
+{
+    [UMSocialWechatHandler setWXAppId:@"wxc1830ea42532921e" appSecret:@"73ce199faec839454273de0ac5606858" url:[NSString stringWithFormat:@"%@Default.aspx?mobile/detail&ID=%@",ROOT_URL,self.post_id]];
+    //[UMSocialSinaHandler openSSOWithRedirectURL:@"http://sns.whalecloud.com/sina2/callback"];
+    [UMSocialQQHandler setQQWithAppId:@"1105030412" appKey:@"iGDileMaPq45D3Mf" url:[NSString stringWithFormat:@"%@Default.aspx?mobile/detail&ID=%@",ROOT_URL,self.post_id]];
+    
+    UIImageView *shareImageView = [[UIImageView alloc]init];
+    [shareImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",self.sharePicturedomain],BASE_IMAGE_URL,postinfo,self.shareImageURL]]placeholderImage:[UIImage imageNamed:@"app_default_icon"]];
+    
+    [UMSocialData defaultData].extConfig.wechatSessionData.shareImage = shareImageView.image;
+    [UMSocialData defaultData].extConfig.wechatTimelineData.shareImage = shareImageView.image;        [UMSocialData defaultData].extConfig.sinaData.shareImage = shareImageView.image;
+    [UMSocialData defaultData].extConfig.qqData.shareImage = shareImageView.image;
+    [UMSocialData defaultData].extConfig.qzoneData.shareImage = shareImageView.image;
+    
+    
+    [UMSocialData defaultData].extConfig.smsData.shareText = self.topicTitle;
+    [UMSocialData defaultData].extConfig.sinaData.shareText = self.topicTitle;
+    
+    [UMSocialData defaultData].extConfig.wechatSessionData.title = @"来自微温州的分享";
+    [UMSocialData defaultData].extConfig.qqData.title = @"来自微温州的分享";
+    [UMSocialData defaultData].extConfig.qzoneData.title = @"来自微温州的分享";
+    
+    [UMSocialSnsService presentSnsIconSheetView:self
+                                         appKey:Umeng_key
+                                      shareText:self.topicTitle
+                                     shareImage:nil
+                                shareToSnsNames:[NSArray arrayWithObjects:UMShareToWechatSession,UMShareToWechatTimeline,UMShareToQQ,UMShareToQzone,UMShareToSms,nil]
+                                       delegate:self];
+}
+
 #pragma mark -- UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    //分享
     if (buttonIndex == 0) {
-        
+        [self checkShare];
     }else if (buttonIndex == 1){
         SharedInfo *shared = [SharedInfo sharedDataInfo];
         if (isStrEmpty(shared.user_id)) {

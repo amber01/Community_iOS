@@ -45,6 +45,13 @@
 - (void)clickOn:(UIButton *)button
 {
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    if (isStrEmpty(sharedInfo.user_id)) {
+        LoginViewController *loginVC = [[LoginViewController alloc]init];
+        [loginVC setHidesBottomBarWhenPushed:YES];
+        [self.viewController.navigationController pushViewController:loginVC animated:YES];
+        return;
+    }
+    
     WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
     if (button.tag == 0) {
         webDetailVC.url = [NSString stringWithFormat:@"%@Default.aspx?mobile/mall&UserID=%@",ROOT_URL,sharedInfo.user_id];

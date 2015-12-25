@@ -26,7 +26,7 @@
 }
 
 @property (nonatomic,retain) UITableView          *tableView;
-@property (nonatomic,retain) NSArray              *arrConversations;
+@property (nonatomic,retain) NSMutableArray       *arrConversations;
 
 @end
 
@@ -52,7 +52,7 @@
     
     //聊天管理器, 获取该对象后, 可以做登录、聊天、加好友等操作
     [[EaseMob sharedInstance].chatManager loadDataFromDatabase];
-    [self getChatDataList];
+    [self removeEmptyConversationsFromDB]; //清空空会话
 }
 
 - (UITableView *)setupTableView
@@ -66,11 +66,34 @@
     return _tableView;
 }
 
+- (void)removeEmptyConversationsFromDB
+{
+    NSArray *conversations = [[EaseMob sharedInstance].chatManager conversations];
+    NSMutableArray *needRemoveConversations;
+    for (EMConversation *conversation in conversations) {
+        if (!conversation.latestMessage || (conversation.conversationType == eConversationTypeChatRoom)) {
+            if (!needRemoveConversations) {
+                needRemoveConversations = [[NSMutableArray alloc] initWithCapacity:0];
+            }
+            
+            [needRemoveConversations addObject:conversation.chatter];
+        }
+    }
+    
+    if (needRemoveConversations && needRemoveConversations.count > 0) {
+        [[EaseMob sharedInstance].chatManager removeConversationsByChatters:needRemoveConversations
+                                                             deleteMessages:YES
+                                                                append2Chat:NO];
+    }
+    
+    
+    [self getChatDataList];
+}
+
 #pragma mark -- ChatData
 - (void)getChatDataList
 {
-    self.arrConversations = [[EaseMob sharedInstance].chatManager conversations];
-    NSLog(@"data list:%@",self.arrConversations);
+    self.arrConversations = (NSMutableArray *)[[EaseMob sharedInstance].chatManager conversations];
 }
 
 #pragma mark -- HTTP
@@ -93,12 +116,13 @@
                 sysmsgnum = [dic objectForKey:@"sysmsgnum"];
             }
             if (([commentNumber intValue] + [commentpraisenum intValue] + [postpraisenum intValue] + [sysmsgnum intValue] > 0)) {
-                [_tableView reloadData];
+                
             }else{
                 [[NSNotificationCenter defaultCenter]postNotificationName:kNotificationHideAlertDot object:nil];
             }
         }
-        NSLog(@"result:%@",result);
+        [_tableView reloadData];
+       // NSLog(@"result:%@",result);
     } failure:^(NSError *erro) {
         
     }];
@@ -201,6 +225,9 @@
             SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
             if (!isStrEmpty(sharedInfo.user_id)) {
                 EMConversation *conversation = [self.arrConversations objectAtIndex:indexPath.row-1];
+                
+                NSLog(@"conversation:%@",conversation);
+                
                 //单聊会话
                 if (conversation.conversationType == eConversationTypeChat) {
                     
@@ -210,9 +237,11 @@
                     NSString *avatarURL = [conversation.ext objectForKey:@"avatarURL"];
                     cell.labName.text = nickName;
                     NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",sharedInfo.picturedomain],BASE_IMAGE_URL,face,avatarURL];
-                    NSLog(@"extaaa:%@",conversation.ext);
+                    //NSLog(@"extaaa:%@",conversation.ext);
                     [cell.imgHeader sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
                     EMMessage *lastMessage = [conversation latestMessage];
+                    
+                    NSLog(@"nick name:%@",nickName);
                     
                     //会话列表中收到别人的消息的时候
                     if (isStrEmpty(nickName)) {
@@ -223,7 +252,7 @@
                         [cell.imgHeader sd_setImageWithURL:[NSURL URLWithString:lastMsgImageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
                     }
                     
-                    NSLog(@"lastMessage:%@",lastMessage.ext);
+                    //NSLog(@"lastMessage:%@",lastMessage.ext);
                     cell.labTime.text = [UIUtils convertDateToString:[NSString stringWithFormat:@"%zd",lastMessage.timestamp]];
                 }
             }
@@ -298,26 +327,33 @@
             [systemNoticeView setHidesBottomBarWhenPushed:YES];
             [self.navigationController pushViewController:systemNoticeView animated:YES];
         }else{
+            
             EMConversation *conversation = [self.arrConversations objectAtIndex:indexPath.row-1];
-            EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:conversation.chatter conversationType:eConversationTypeChat];
             NSString *nickName = [conversation.ext objectForKey:@"nickName"];
             NSString *avatarURL = [conversation.ext objectForKey:@"avatarURL"];
             
             EMMessage *lastMessage = [conversation latestMessage];
             NSString *lastMegNickName = [lastMessage.ext objectForKey:@"nickName"];
             NSString *lastMegAvatarURL = [lastMessage.ext objectForKey:@"avatarURL"];
+            //NSString *lastMegUserName = [lastMessage.ext objectForKey:@"userName"];
             
+            //查看用户发送给我的消息的情况下
             if (isStrEmpty(nickName)) {
+                EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:conversation.chatter conversationType:eConversationTypeChat];
                 easeMessageVC.nickname = lastMegNickName;
                 easeMessageVC.avatarUrl = lastMegAvatarURL;
+                easeMessageVC.title = lastMegNickName;
+                [easeMessageVC setHidesBottomBarWhenPushed:YES];
+                [self.navigationController pushViewController:easeMessageVC animated:YES];
             }else{
+                
+                EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:conversation.chatter conversationType:eConversationTypeChat];
                 easeMessageVC.nickname = nickName;
                 easeMessageVC.avatarUrl = avatarURL;
+                easeMessageVC.title = nickName;
+                [easeMessageVC setHidesBottomBarWhenPushed:YES];
+                [self.navigationController pushViewController:easeMessageVC animated:YES];
             }
-
-            easeMessageVC.title = nickName;
-            [easeMessageVC setHidesBottomBarWhenPushed:YES];
-            [self.navigationController pushViewController:easeMessageVC animated:YES];
         }
     }
 }
