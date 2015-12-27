@@ -12,5 +12,6 @@
 
 @property (nonatomic,retain)UIButton *sendPhotoBtn;
 @property (nonatomic,retain)UIButton *sendEmojiBtn;
+@property (nonatomic,retain)UIButton *sendTopicBtn;
 
 @end

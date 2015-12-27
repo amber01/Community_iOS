@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "SDPhotoBrowser.h"
+#import "MLEmojiLabel.h"
 
-@interface EveryoneTopicTableViewCell : UITableViewCell<SDPhotoBrowserDelegate,UIGestureRecognizerDelegate>
+@interface EveryoneTopicTableViewCell : UITableViewCell<SDPhotoBrowserDelegate,UIGestureRecognizerDelegate,MLEmojiLabelDelegate>
 
 - (void)configureCellWithInfo:(EveryoneTopicModel *)model withImages:(NSArray *)imageArray andPraiseData:(NSArray *)praiseArray andRow:(NSInteger )row;
 
@@ -20,5 +21,6 @@
 @property (nonatomic,retain) UILabel             *likeLabel;
 
 @property (nonatomic,retain) UIImageView         *likeImageView;
+
 
 @end

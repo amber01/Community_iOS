@@ -18,4 +18,6 @@
 @property (nonatomic,retain) UILabel               *todayNumberLabel;
 @property (nonatomic,retain) EveryoneTopicHeadView *topicHeadView;
 
+- (void)setTopImageIcon:(NSString *)imageName;
+
 @end

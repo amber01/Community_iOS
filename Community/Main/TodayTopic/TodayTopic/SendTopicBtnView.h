@@ -10,5 +10,6 @@
 
 @interface SendTopicBtnView : UIView
 
+@property (nonatomic,retain)UIButton *mineBtn;
 
 @end

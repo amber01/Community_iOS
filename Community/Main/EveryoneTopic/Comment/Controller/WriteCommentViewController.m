@@ -40,6 +40,7 @@
     
     sendKeyboardView = [[SendTopicKeyboardView alloc]initWithFrame:CGRectMake(0, ScreenHeight - 64 - 45, ScreenWidth, 45)];
     sendKeyboardView.sendPhotoBtn.hidden = YES;
+    sendKeyboardView.sendTopicBtn.hidden = YES;
     sendKeyboardView.sendEmojiBtn.frame = CGRectMake(15, sendKeyboardView.height/2 - 12.5, 25, 25);
     
     [sendKeyboardView.sendEmojiBtn addTarget:self action:@selector(selectEmojiAction) forControlEvents:UIControlEventTouchUpInside];

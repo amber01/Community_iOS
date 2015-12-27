@@ -6,10 +6,6 @@
 //  Copyright © 2015年 shlity. All rights reserved.
 //
 
-#define Start_X 15.0f* scaleToScreenHeight           // 第一个按钮的X坐标
-#define Start_Y 130.0f* scaleToScreenHeight           // 第一个按钮的Y坐标
-#define Width_Space 30.0f* scaleToScreenHeight        // 2个按钮之间的横间距
-#define Height_Space 35.0f* scaleToScreenHeight       // 竖间距
 
 #import "SendTopicBtnView.h"
 #import "SendTopicViewController.h"
@@ -20,44 +16,40 @@
     UIDynamicAnimator *_animator;
 }
 
+
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
-        UILabel *tiplsLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, Start_Y/2 + 20, ScreenWidth, 20)];
-        tiplsLabel.textAlignment = NSTextAlignmentCenter;
-        tiplsLabel.text = @"请选择板块";
-        [self addSubview:tiplsLabel];
-        
-        self.backgroundColor = [UIColor colorWithHexString:@"#f1ecec" alpha:0.95];
-        float Button_Height =  50 * scaleToScreenHeight;  // 高
-        float Button_Width  =  50 * scaleToScreenHeight;   // 宽
-        
-        NSArray *buttonTitles = @[@"同城互动", @"秀自拍", @"百姓话题", @"看资讯", @"聊美食", @"去哪玩",@"谈感情", @"搞笑吧", @"育儿经", @"爱健康", @"灌小区", @"供求信息",@"提建议"];
-        NSArray *buttonImages = @[@"send_btn", @"send_btn", @"send_btn", @"send_btn", @"send_btn", @"send_btn",@"send_btn", @"send_btn", @"send_btn", @"send_btn", @"send_btn", @"send_btn",@"send_btn"];
-        for (int i = 0; i < buttonImages.count; i ++) {
-            NSInteger index = i % 4;
-            NSInteger page = i / 4;
+        self.backgroundColor = [UIColor whiteColor];
+        NSArray *titleArr = @[@"同城互动", @"秀自拍", @"百姓话题", @"看资讯", @"聊美食", @"去哪玩",@"谈感情", @"搞笑吧", @"育儿经", @"爱健康", @"灌小区", @"供求信息",@"提建议"];
+        NSArray *btnImage = @[@"topic_send_city",@"topic_send_show",@"topic_send_people",@"topic_send_information",@"topic_send_food",@"topic_send_play",@"topic_send_feeling",@"topic_send_funny",@"topic_send_education",@"topic_send_health",@"topic_send_community",@"topic_send_shareinfo",@"topic_send_suggestion"];
+        CGFloat width = ScreenWidth / 4;
+        CGFloat height = 80;
+        CGFloat start_x = 0;
+        CGFloat start_y = 15;
+        start_x -= width;
+        for (int i = 0; i < titleArr.count; i ++) {
+            if(i == 4 | i == 8 | i == 12) {
+                start_x = 0;
+                start_y += height;
+            } else {
+                start_x += width;
+            }
             
-            UIButton *sendTopicBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-            [sendTopicBtn setBackgroundImage:[UIImage imageNamed:buttonImages[i]] forState:UIControlStateNormal];
-            sendTopicBtn.frame = CGRectMake(index * (Button_Width + Width_Space) + Start_X, page  * (Button_Height + Height_Space)+Start_Y, Button_Width, Button_Height);
-            sendTopicBtn.tag = i;
-            [sendTopicBtn addTarget:self action:@selector(clickSendTopicAction:) forControlEvents:UIControlEventTouchUpInside];
-            UILabel *btnTitleLabel = [[UILabel  alloc]initWithFrame:CGRectMake(index * (Button_Width + Width_Space) + Start_X-5* scaleToScreenHeight,sendTopicBtn.bottom, Button_Width+10* scaleToScreenHeight, 20)];
-            btnTitleLabel.textColor = [UIColor grayColor];
-            btnTitleLabel.text = buttonTitles [i];
-            btnTitleLabel.textAlignment = NSTextAlignmentCenter;
-            btnTitleLabel.font = [UIFont systemFontOfSize:13];
-            
-            [self addSubview:sendTopicBtn];
-            [self addSubview:btnTitleLabel];
+            self.mineBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            [_mineBtn setImage:[UIImage imageNamed:btnImage[i]] forState:UIControlStateNormal];
+            _mineBtn.frame = CGRectMake(start_x + (width - 40) / 2, start_y, 40, 40);
+            [self addSubview:_mineBtn];
+            _mineBtn.tag = i + 100;
+            UILabel *btnTitle = [[UILabel alloc]initWithFrame:CGRectMake(start_x, start_y + height - 33, width, 20)];
+            btnTitle.textColor = [UIColor grayColor];
+            btnTitle.font = [UIFont systemFontOfSize:14];
+            btnTitle.textAlignment = NSTextAlignmentCenter;
+            btnTitle.text = titleArr[i];
+            [self addSubview:btnTitle];
         }
-        
-        UIImageView *btnImageView = [[UIImageView alloc]initWithFrame:CGRectMake(ScreenWidth/2-20, ScreenHeight - 45, 40, 40)];
-        btnImageView.image = [UIImage imageNamed:@"send_close_btn.png"];
-        [self addSubview:btnImageView];
     }
     return self;
 }

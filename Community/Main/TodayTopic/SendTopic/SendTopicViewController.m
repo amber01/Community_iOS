@@ -14,7 +14,8 @@
 #import "ELCAlbumPickerController.h"
 #import "ELCAssetTablePicker.h"
 #import "ELCImagePickerController.h"
-
+#import "TopicSendNavigationView.h"
+#import "SendTopicBtnView.h"
 
 @interface SendTopicViewController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate,AGEmojiKeyboardViewDelegate, AGEmojiKeyboardViewDataSource,ELCImagePickerControllerDelegate,UIGestureRecognizerDelegate>
 {
@@ -29,6 +30,9 @@
     UIView                *photoBackgroundView;
     NSMutableDictionary   *Exparams;
     int                   deleteCount;
+    SendTopicBtnView      *sendTopicBtnView;
+    TopicSendNavigationView *sendNavigationView;
+    BOOL                  isHidenSendView;
 }
 
 @property (nonatomic,retain) NSMutableArray *locaPhotoArr;
@@ -66,6 +70,15 @@
     if (!isArrEmpty(self.myDraftDataArray)) {
         [self createPhotoList];
     }
+    
+    sendNavigationView = [[TopicSendNavigationView alloc]initWithFrame:CGRectMake(100, 0, ScreenWidth - 200, 64)];
+    [sendNavigationView setNavigationTitle:self.title];
+    UITapGestureRecognizer *tapGestureSinge = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeCatTap)];
+    [sendNavigationView addGestureRecognizer:tapGestureSinge];
+    [self.navigationController.view addSubview:sendNavigationView];
+    self.title = @"";
+    
+    NSLog(@"cate_id:%@",_cate_id);
 }
 
 #pragma mark -- UI
@@ -158,6 +171,37 @@
 }
 
 #pragma mark -- action
+
+- (void)changeCatTap
+{
+    if (!sendTopicBtnView) {
+        sendTopicBtnView = [[SendTopicBtnView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+        for (int i = 100; i < sendTopicBtnView.mineBtn.tag + 1; i ++) {
+            UIButton *button = (UIButton *)[sendTopicBtnView viewWithTag:i];
+            [button addTarget:self action:@selector(onClickPageOne:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        [self.view addSubview:sendTopicBtnView];
+    }
+    if (!isHidenSendView) {
+        sendTopicBtnView.hidden = NO;
+        isHidenSendView = YES;
+    }else{
+        sendTopicBtnView.hidden = YES;
+        isHidenSendView = NO;
+    }
+    [self.view endEditing:YES];
+}
+
+- (void)onClickPageOne:(UIButton *)button
+{
+    self.cate_id = [NSString stringWithFormat:@"%ld",button.tag - 99];
+    NSLog(@"current cati :%@",_cate_id);
+    NSArray *titleArr = @[@"同城互动", @"秀自拍", @"百姓话题", @"看资讯", @"聊美食", @"去哪玩",@"谈感情", @"搞笑吧", @"育儿经", @"爱健康", @"灌小区", @"供求信息",@"提建议"];
+    [sendNavigationView setNavigationTitle:titleArr[button.tag - 100]];
+    sendTopicBtnView.hidden = YES;
+    isHidenSendView = NO;
+}
+
 - (void)closeCurrentView
 {
     if (sendTopicView.titleTextField.text.length>0 || sendTopicView.contentTextView.text.length >0) {

@@ -15,4 +15,8 @@
 @property (retain, nonatomic) UILabel *labTime;
 @property (retain, nonatomic) UIImageView *imgHeader;
 
+@property (nonatomic,retain)UILabel     *tipsLabel;
+@property (nonatomic,retain)UIView      *tipsView;
+
+
 @end

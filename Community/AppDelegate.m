@@ -18,7 +18,8 @@
 @property (nonatomic,retain)  UIImageView   *adImageView;
 @property (nonatomic,retain)  UIImageView   *launchImage;
 @property (nonatomic,retain)  BaseNavigationController *baseNavi;
-
+@property (nonatomic,assign)  BOOL isLaunchedByNotification;
+@property (nonatomic,retain)  MainViewController *mainVC;
 @end
 
 @implementation AppDelegate
@@ -30,8 +31,8 @@
     self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];
     
-    MainViewController *mainVC = [[MainViewController alloc]init];
-    self.baseNavi = [[BaseNavigationController alloc]initWithRootViewController:mainVC];
+    self.mainVC = [[MainViewController alloc]init];
+    self.baseNavi = [[BaseNavigationController alloc]initWithRootViewController:_mainVC];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     [self loadADimageView];
@@ -53,8 +54,21 @@
     
     //registerSDKWithAppKey:注册的appKey，详细见下面注释。
     //apnsCertName:推送证书名(不需要加后缀)，详细见下面注释。
-    [[EaseMob sharedInstance] registerSDKWithAppKey:@"35172747#communtiy" apnsCertName:nil];
+    [[EaseMob sharedInstance] registerSDKWithAppKey:@"35172747#communtiy" apnsCertName:@"microwenzhou"];
     [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+    //环信聊天通知
+    //注册通知
+    [self registerRemoteNotification];
+    //EMPushNotificationOptions *options = [[EaseMob sharedInstance].chatManager pushNotificationOptions];
+    
+    //判断是否有收到推送
+    NSDictionary* remoteNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (remoteNotification) {
+        self.isLaunchedByNotification = YES;
+    }else{
+        self.isLaunchedByNotification = NO;
+    }
+    NSLog(@"remoteNotification:%@",remoteNotification);
     
     // 保存 Device 的现语言 (英语 法语)
     [[NSUserDefaults standardUserDefaults]objectForKey:@"AppleLanguages"];
@@ -64,6 +78,37 @@
     [self getUserInfo];
     
     return YES;
+}
+
+// 注册推送
+- (void)registerRemoteNotification{
+    UIApplication *application = [UIApplication sharedApplication];
+    application.applicationIconBadgeNumber = 0;
+    
+    if([application respondsToSelector:@selector(registerUserNotificationSettings:)])
+    {
+        UIUserNotificationType notificationTypes = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:notificationTypes categories:nil];
+        [application registerUserNotificationSettings:settings];
+    }
+    
+#if !TARGET_IPHONE_SIMULATOR
+    //iOS8 注册APNS
+    //ios8  注册本地通知
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
+        UIUserNotificationSettings *noteSetting =[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:noteSetting];
+    }
+    
+    if ([application respondsToSelector:@selector(registerForRemoteNotifications)]) {
+        [application registerForRemoteNotifications];
+    }else{
+        UIRemoteNotificationType notificationTypes = UIRemoteNotificationTypeBadge |
+        UIRemoteNotificationTypeSound |
+        UIRemoteNotificationTypeAlert;
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
+    }
+#endif
 }
 
 - (void)getUserInfo
@@ -179,7 +224,17 @@
 {
     [self.adImageView removeFromSuperview];
     [self.launchImage removeFromSuperview];
-    self.window.rootViewController = self.baseNavi;
+    /**
+     *  收到通知的情况下就跳转到消息页面
+     */
+    if (self.isLaunchedByNotification) {
+        [self.mainVC setSelectedIndex:2];
+        self.window.rootViewController = self.baseNavi;
+    }else{
+        self.window.rootViewController = self.baseNavi;
+        
+    }
+    
     self.window.backgroundColor = [UIColor clearColor];
 }
 
@@ -229,6 +284,17 @@
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
     return  [UMSocialSnsService handleOpenURL:url];
+}
+
+// 将得到的deviceToken传给SDK
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+    [[EaseMob sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+
+// 注册deviceToken失败
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
+    [[EaseMob sharedInstance] application:application didFailToRegisterForRemoteNotificationsWithError:error];
+    NSLog(@"error -- %@",error);
 }
 
 @end

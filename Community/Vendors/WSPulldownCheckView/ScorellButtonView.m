@@ -10,6 +10,7 @@
 #import "ScorellButtonView.h"
 #import "CommentTopView.h"
 #import "CommentTableViewCell.h"
+#import "WriteCommentViewController.h"
 
 @implementation ScorellButtonView
 
@@ -66,7 +67,7 @@
 - (void)getCommentListData:(int)pageIndex
 {
     NSLog(@"self.post_id:%@",self.post_id);
-
+    
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
     NSDictionary *parameters = @{@"Method":@"ReCommentInfobyPostID",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"UserID":isStrEmpty(self.tempUserID) ? @"" : self.tempUserID,@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"Sort":self.sortStr,@"FldSortType":@"1",@"PostID":self.post_id}]};
@@ -95,7 +96,7 @@
             }
             [self.praiseDataArray addObject:[praiseItems objectAtIndex:i]];
         }
-
+        
         [_tableView reloadData];
         
     } failure:^(NSError *erro) {
@@ -127,7 +128,7 @@
     [_likeDataArray addObject:model.praisenum];
     
     if (!isArrEmpty(self.dataArray)) {
-        [cell configureCellWithInfo:model withRow:indexPath.row andPraiseData:self.praiseDataArray];
+        [cell configureCellWithInfo:model withRow:indexPath.row andPraiseData:self.praiseDataArray withMasterID:self.userID];
     }
     
     if (!isArrEmpty(self.praiseDataArray)) {
@@ -151,6 +152,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    UIActionSheet  *actionSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"帖子点赞",@"回复评论", nil];
+    actionSheet.tag = indexPath.row;
+    actionSheet.actionSheetStyle =UIActionSheetStyleAutomatic;
+    [actionSheet showInView:self];
+    
 }
 
 #pragma mark -- action
@@ -278,6 +284,115 @@
         [self.delegate checkMoreScorollDidEndDragging:scrollView];
     }
 }
+
+#pragma mark -- UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    SharedInfo *share = [SharedInfo sharedDataInfo];
+    if (isStrEmpty(share.user_id)) {
+        LoginViewController *loginVC = [[LoginViewController alloc]init];
+        [self.viewController.navigationController pushViewController:loginVC animated:YES];
+        return;
+    }
+    if (buttonIndex == 0) {
+        NSDictionary *dic = [self.praiseDataArray objectAtIndex:actionSheet.tag];
+        NSString *commentid = [dic objectForKey:@"commentid"];
+        NSString *isPraise = [dic objectForKey:@"value"];
+        NSString *praisenumStr = _likeDataArray[actionSheet.tag];
+        
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        if (isStrEmpty(sharedInfo.user_id)) {
+            LoginViewController *loginVC = [[LoginViewController  alloc]init];
+            [loginVC setHidesBottomBarWhenPushed:YES];
+            [self.viewController.navigationController pushViewController:loginVC animated:YES];
+            return;
+        }
+        
+        //点赞
+        if ([isPraise intValue] == 0) {
+            NSDictionary *parameters = @{@"Method":@"AddCommentToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"CommentID":commentid,@"UserID":sharedInfo.user_id}]};
+            
+            [CKHttpRequest createRequest:HTTP_METHOD_COMMENT_LIKE WithParam:parameters withMethod:@"POST" success:^(id result) {
+                if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                    [self initMBProgress:@"点赞+1" withModeType:MBProgressHUDModeText afterDelay:1.5];
+                    int praisenum = [praisenumStr intValue];
+                    praisenum = praisenum + 1;
+                    
+                    /**
+                     *  先删除原来的点赞数，然后再重新加上
+                     */
+                    [self.likeDataArray removeObjectAtIndex:actionSheet.tag];
+                    [self.likeDataArray insertObject:[NSString stringWithFormat:@"%d",praisenum] atIndex:actionSheet.tag];
+                    
+                    /**
+                     *  记录点赞状态
+                     */
+                    [self.praiseDataArray removeObjectAtIndex:actionSheet.tag];
+                    [self.praiseDataArray insertObject:@{@"commentid":commentid,@"value":@"1"} atIndex:actionSheet.tag];
+                    
+                    //点赞之后改变点赞的状态
+                    NSIndexPath *index =  [NSIndexPath indexPathForItem:actionSheet.tag inSection:0];
+                    CommentTableViewCell *cell =  [_tableView cellForRowAtIndexPath:index];
+                    cell.likeLabel.text = _likeDataArray[actionSheet.tag];
+                    
+                    cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_cancel_like"];
+                    [_tableView reloadData];
+                }else{
+                    [self initMBProgress:@"你已经赞过了" withModeType:MBProgressHUDModeText afterDelay:1.5];
+                }
+                
+            } failure:^(NSError *erro) {
+                
+            }];
+        }else{  //取消点赞
+            NSDictionary *parameters = @{@"Method":@"DelCommentToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"CommentID":commentid,@"UserID":sharedInfo.user_id}]};
+            
+            [CKHttpRequest createRequest:HTTP_METHOD_COMMENT_LIKE WithParam:parameters withMethod:@"POST" success:^(id result) {
+                if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                    [self initMBProgress:@"取消点赞" withModeType:MBProgressHUDModeText afterDelay:1.5];
+                    int praisenum = [praisenumStr intValue];
+                    praisenum = praisenum - 1;
+                    /**
+                     *  先删除原来的点赞数，然后再重新加上
+                     */
+                    [self.likeDataArray removeObjectAtIndex:actionSheet.tag];
+                    [self.likeDataArray insertObject:[NSString stringWithFormat:@"%d",praisenum] atIndex:actionSheet.tag];
+                    
+                    /**
+                     *  记录点赞状态
+                     */
+                    [self.praiseDataArray removeObjectAtIndex:actionSheet.tag];
+                    [self.praiseDataArray insertObject:@{@"commentid":commentid,@"value":@"0"} atIndex:actionSheet.tag];
+                    
+                    //点赞之后改变点赞的状态
+                    NSIndexPath *index =  [NSIndexPath indexPathForItem:actionSheet.tag inSection:0];
+                    CommentTableViewCell *cell =  [_tableView cellForRowAtIndexPath:index];
+                    cell.likeLabel.text = _likeDataArray[actionSheet.tag];
+                    
+                    cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+                    
+                    [_tableView reloadData];
+                }else{
+                    [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.5];
+                }
+                
+            } failure:^(NSError *erro) {
+                
+            }];
+        }
+    }else if (buttonIndex == 1){
+        CommentModel *model = self.dataArray[actionSheet.tag];
+        WriteCommentViewController *writeCommentVC = [[WriteCommentViewController alloc]init];
+        writeCommentVC.post_id = model.postid;
+        writeCommentVC.toUserID = model.touserid;
+        writeCommentVC.commentID = model.id;
+        BaseNavigationController *baseNav = [[BaseNavigationController alloc]initWithRootViewController:writeCommentVC];
+        [self.viewController.navigationController presentViewController:baseNav animated:YES completion:^{
+            
+        }];
+    }
+}
+
 
 - (void)dealloc
 {

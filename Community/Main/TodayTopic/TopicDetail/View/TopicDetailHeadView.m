@@ -48,6 +48,10 @@
     NSString *nickname = [data objectForKey:@"nickname"];
     [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:avataURL] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login"]];
     avatarImageView.user_id = [data objectForKey:@"user_id"];
+    avatarImageView.avatarUrl = [data objectForKey:@"avatarImage"];
+    avatarImageView.userName = [data objectForKey:@"username"];
+    avatarImageView.nickname = nickname;
+    
     nicknameLabel.text = nickname;
     dateLabel.text = date;
 }
@@ -56,6 +60,9 @@
 {
     MineInfoViewController *userInfoVC = [[MineInfoViewController alloc]init];
     userInfoVC.user_id = button.user_id;
+    userInfoVC.avatarUrl = button.avatarUrl;
+    userInfoVC.nickname = button.nickname;
+    userInfoVC.userName = button.userName;
     [self.viewController.navigationController pushViewController:userInfoVC animated:YES];
 }
 

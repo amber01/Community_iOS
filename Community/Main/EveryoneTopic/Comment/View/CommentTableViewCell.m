@@ -79,7 +79,7 @@
     return self;
 }
 
-- (void)configureCellWithInfo:(CommentModel *)model  withRow:(NSInteger )row andPraiseData:(NSArray *)praiseArray
+- (void)configureCellWithInfo:(CommentModel *)model  withRow:(NSInteger )row andPraiseData:(NSArray *)praiseArray withMasterID:(NSString *)masterID
 {
     
     [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
@@ -96,10 +96,16 @@
         replayNicknameLabel.hidden = NO;
         //replaycontent
         replayNicknameLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, 20);
-        replayNicknameLabel.text = [NSString stringWithFormat:@"@%@:",model.tonickname];;
-        nicknameLabel.text = [NSString stringWithFormat:@"%@(楼主)",model.nickname];
-        contentLabel.text = model.replaycontent;
-        nicknameLabel.textColor = [UIColor orangeColor];
+        replayNicknameLabel.text = [NSString stringWithFormat:@"@%@:",model.tonickname];
+        if ([model.userid isEqualToString:masterID]) {
+            nicknameLabel.text = [NSString stringWithFormat:@"%@(楼主)",model.nickname];
+            contentLabel.text = model.replaycontent;
+            nicknameLabel.textColor = [UIColor orangeColor];
+        }else{
+            nicknameLabel.text = [NSString stringWithFormat:@"%@",model.nickname];
+            contentLabel.text = model.replaycontent;
+            nicknameLabel.textColor = [UIColor blackColor];
+        }
     }
     
     avatarImageView.user_id = model.userid;

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		960173651BEF8D7900F2E272 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 960173641BEF8D7900F2E272 /* MessageViewController.m */; };
 		960BE3101BF4DD5600082E78 /* SendTopicKeyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 960BE30F1BF4DD5600082E78 /* SendTopicKeyboardView.m */; };
+		961162CF1C2FC68300D45E5D /* TopicSendNavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 961162CE1C2FC68300D45E5D /* TopicSendNavigationView.m */; };
+		961162D11C2FC8F900D45E5D /* send_topic_down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 961162D01C2FC8F900D45E5D /* send_topic_down@2x.png */; };
 		962A5DFB1BF8AC8400171C72 /* CKHttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 962A5DFA1BF8AC8400171C72 /* CKHttpRequest.m */; };
 		962D73BC1BFE0BC100412A50 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 962D73BB1BFE0BC100412A50 /* LoginViewController.m */; };
 		962D73BF1BFE0C4200412A50 /* LoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 962D73BE1BFE0C4200412A50 /* LoginView.m */; };
@@ -111,6 +113,10 @@
 		963DC8BA1C0AE069005D1955 /* EaseUIResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 963DC8B91C0AE069005D1955 /* EaseUIResource.bundle */; };
 		963DC8BF1C0AE410005D1955 /* chat_receiver_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 963DC8BD1C0AE410005D1955 /* chat_receiver_bg@2x.png */; };
 		963DC8C01C0AE410005D1955 /* chat_sender_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 963DC8BE1C0AE410005D1955 /* chat_sender_bg@2x.png */; };
+		963F8AA41C301DE60014B41B /* MLEmojiLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 963F8AA31C301DE60014B41B /* MLEmojiLabel.m */; };
+		963F8AA61C3020A60014B41B /* MLEmojiLabelTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 963F8AA51C3020A60014B41B /* MLEmojiLabelTests-Info.plist */; };
+		963F8AA91C3029D20014B41B /* CheckTopicDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 963F8AA81C3029D20014B41B /* CheckTopicDetailViewController.m */; };
+		963F8AAC1C302B560014B41B /* CheckTopicTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 963F8AAB1C302B560014B41B /* CheckTopicTopView.m */; };
 		964111A51C2975D600561223 /* SystemNoticeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 964111A41C2975D600561223 /* SystemNoticeViewController.m */; };
 		964111A81C2976F300561223 /* SystemNoticeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 964111A71C2976F300561223 /* SystemNoticeTableViewCell.m */; };
 		964111AB1C29797C00561223 /* SystemNoticeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 964111AA1C29797C00561223 /* SystemNoticeModel.m */; };
@@ -503,6 +509,9 @@
 		960173641BEF8D7900F2E272 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		960BE30E1BF4DD5600082E78 /* SendTopicKeyboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SendTopicKeyboardView.h; path = ../TodayTopic/SendTopicKeyboardView.h; sourceTree = "<group>"; };
 		960BE30F1BF4DD5600082E78 /* SendTopicKeyboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SendTopicKeyboardView.m; path = ../TodayTopic/SendTopicKeyboardView.m; sourceTree = "<group>"; };
+		961162CD1C2FC68300D45E5D /* TopicSendNavigationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicSendNavigationView.h; sourceTree = "<group>"; };
+		961162CE1C2FC68300D45E5D /* TopicSendNavigationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicSendNavigationView.m; sourceTree = "<group>"; };
+		961162D01C2FC8F900D45E5D /* send_topic_down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send_topic_down@2x.png"; sourceTree = "<group>"; };
 		962A5DF91BF8AC8400171C72 /* CKHttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKHttpRequest.h; sourceTree = "<group>"; };
 		962A5DFA1BF8AC8400171C72 /* CKHttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CKHttpRequest.m; sourceTree = "<group>"; };
 		962D73BA1BFE0BC100412A50 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Community/Main/User/Register/View/LoginViewController.h; sourceTree = SOURCE_ROOT; };
@@ -721,6 +730,13 @@
 		963DC8B91C0AE069005D1955 /* EaseUIResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = EaseUIResource.bundle; sourceTree = "<group>"; };
 		963DC8BD1C0AE410005D1955 /* chat_receiver_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_receiver_bg@2x.png"; sourceTree = "<group>"; };
 		963DC8BE1C0AE410005D1955 /* chat_sender_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_sender_bg@2x.png"; sourceTree = "<group>"; };
+		963F8AA21C301DE60014B41B /* MLEmojiLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLEmojiLabel.h; sourceTree = "<group>"; };
+		963F8AA31C301DE60014B41B /* MLEmojiLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLEmojiLabel.m; sourceTree = "<group>"; };
+		963F8AA51C3020A60014B41B /* MLEmojiLabelTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MLEmojiLabelTests-Info.plist"; sourceTree = "<group>"; };
+		963F8AA71C3029D20014B41B /* CheckTopicDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckTopicDetailViewController.h; sourceTree = "<group>"; };
+		963F8AA81C3029D20014B41B /* CheckTopicDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckTopicDetailViewController.m; sourceTree = "<group>"; };
+		963F8AAA1C302B560014B41B /* CheckTopicTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckTopicTopView.h; sourceTree = "<group>"; };
+		963F8AAB1C302B560014B41B /* CheckTopicTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckTopicTopView.m; sourceTree = "<group>"; };
 		964111A31C2975D600561223 /* SystemNoticeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNoticeViewController.h; sourceTree = "<group>"; };
 		964111A41C2975D600561223 /* SystemNoticeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNoticeViewController.m; sourceTree = "<group>"; };
 		964111A61C2976F300561223 /* SystemNoticeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNoticeTableViewCell.h; sourceTree = "<group>"; };
@@ -1881,6 +1897,7 @@
 			isa = PBXGroup;
 			children = (
 				9643D73A1BF78681003A394D /* EmojisList.plist */,
+				963F8AA51C3020A60014B41B /* MLEmojiLabelTests-Info.plist */,
 			);
 			path = Plist;
 			sourceTree = "<group>";
@@ -2151,6 +2168,7 @@
 				96D255651C2C3C390002E650 /* app_default_icon@2x.png */,
 				9657DD521C2C5C4E000A243B /* mine_score_ex@2x.png */,
 				9657DD531C2C5C4E000A243B /* mine_score_ex@3x.png */,
+				961162D01C2FC8F900D45E5D /* send_topic_down@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -2247,6 +2265,8 @@
 				964AA12B1BEF8631007CE0E9 /* EveryoneTopicViewController.m */,
 				96C8D21C1C0A0ACB004642FC /* TopicBlockViewController.h */,
 				96C8D21D1C0A0ACB004642FC /* TopicBlockViewController.m */,
+				963F8AA71C3029D20014B41B /* CheckTopicDetailViewController.h */,
+				963F8AA81C3029D20014B41B /* CheckTopicDetailViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -2266,6 +2286,10 @@
 				96C8D2171C0A0A8D004642FC /* CheckMoreView.m */,
 				96C8D2191C0A0AA2004642FC /* TopicBlockTopView.h */,
 				96C8D21A1C0A0AA2004642FC /* TopicBlockTopView.m */,
+				963F8AA21C301DE60014B41B /* MLEmojiLabel.h */,
+				963F8AA31C301DE60014B41B /* MLEmojiLabel.m */,
+				963F8AAA1C302B560014B41B /* CheckTopicTopView.h */,
+				963F8AAB1C302B560014B41B /* CheckTopicTopView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -3148,10 +3172,12 @@
 			children = (
 				96F301A51BF0E2840089AE14 /* TodayTopicTableViewCell.h */,
 				96F301A61BF0E2840089AE14 /* TodayTopicTableViewCell.m */,
-				DB8425811BF19B7A00D1C273 /* SendTopicBtnView.h */,
-				DB8425821BF19B7A00D1C273 /* SendTopicBtnView.m */,
 				96EAD3231C015F78008D760A /* TodayTopicMoreTableViewCell.h */,
 				96EAD3241C015F78008D760A /* TodayTopicMoreTableViewCell.m */,
+				DB8425811BF19B7A00D1C273 /* SendTopicBtnView.h */,
+				DB8425821BF19B7A00D1C273 /* SendTopicBtnView.m */,
+				961162CD1C2FC68300D45E5D /* TopicSendNavigationView.h */,
+				961162CE1C2FC68300D45E5D /* TopicSendNavigationView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -3526,6 +3552,7 @@
 				9643D71B1BF781DD003A394D /* characters_s.png in Resources */,
 				964A9F711BEF45EC007CE0E9 /* Default-568h@2x.png in Resources */,
 				96C8D2A61C0A0F4E004642FC /* back_btn_image@2x.png in Resources */,
+				961162D11C2FC8F900D45E5D /* send_topic_down@2x.png in Resources */,
 				96C8D2D21C0A0F4E004642FC /* topic_send_photo@3x.png in Resources */,
 				96C8D2DF1C0A0F4E004642FC /* message_tabbar_normal@2x.png in Resources */,
 				96D255631C2C393D0002E650 /* ios-social-sdk-socialbar.html in Resources */,
@@ -3649,6 +3676,7 @@
 				96D255641C2C393D0002E650 /* markdown.css in Resources */,
 				96D255531C2C393D0002E650 /* WeiboSDK.bundle in Resources */,
 				963DC8BA1C0AE069005D1955 /* EaseUIResource.bundle in Resources */,
+				963F8AA61C3020A60014B41B /* MLEmojiLabelTests-Info.plist in Resources */,
 				96C8D2E81C0A0F4E004642FC /* todayTopic_tabbar_normal@3x.png in Resources */,
 				96C8D2CB1C0A0F4E004642FC /* topic_send_emoji@3x.png in Resources */,
 				96C8D2DC1C0A0F4E004642FC /* everyoneTopic_tabbar_normal@3x.png in Resources */,
@@ -3838,6 +3866,7 @@
 				964AA10E1BEF7B5E007CE0E9 /* NSData+Category.m in Sources */,
 				964AA1081BEF7B5E007CE0E9 /* CommonClass.m in Sources */,
 				DB9A58831C20F83100AF2340 /* MyDraftDetailViewController.m in Sources */,
+				961162CF1C2FC68300D45E5D /* TopicSendNavigationView.m in Sources */,
 				964A9FF81BEF784E007CE0E9 /* SharedInfo.m in Sources */,
 				964AA1141BEF7B5E007CE0E9 /* NSString+MD5.m in Sources */,
 				96E832C71C22FADE0036B311 /* MiniNetworkSetViewController.m in Sources */,
@@ -3852,6 +3881,7 @@
 				DB9A58801C20F32D00AF2340 /* MyDraftListViewController.m in Sources */,
 				963DC4671C0ACFD9005D1955 /* EMAudioPlayerUtil.m in Sources */,
 				963DC4A11C0ACFD9005D1955 /* PSTCollectionViewUpdateItem.m in Sources */,
+				963F8AA41C301DE60014B41B /* MLEmojiLabel.m in Sources */,
 				96D5081E1C0C283B001DFA49 /* FixFopen.c in Sources */,
 				963DC4691C0ACFD9005D1955 /* EMCDDeviceManager+Media.m in Sources */,
 				964AA11C1BEF7B5E007CE0E9 /* UIUtils.m in Sources */,
@@ -3924,6 +3954,7 @@
 				963DC4B71C0ACFD9005D1955 /* EaseEmotionManager.m in Sources */,
 				96E4A4151C1880F0001562DF /* TopicSearchTopView.m in Sources */,
 				966EE5441C0028440039325F /* ELCOverlayImageView.m in Sources */,
+				963F8AAC1C302B560014B41B /* CheckTopicTopView.m in Sources */,
 				963DC4A31C0ACFD9005D1955 /* PSTGridLayoutItem.m in Sources */,
 				963DC4881C0ACFD9005D1955 /* DACircularProgressView.m in Sources */,
 				963DC4D01C0ACFD9005D1955 /* EaseRecordView.m in Sources */,
@@ -3994,6 +4025,7 @@
 				963DC4A21C0ACFD9005D1955 /* PSTGridLayoutInfo.m in Sources */,
 				963DC4B41C0ACFD9005D1955 /* EaseEmoji.m in Sources */,
 				963DC4811C0ACFD9005D1955 /* MWGridCell.m in Sources */,
+				963F8AA91C3029D20014B41B /* CheckTopicDetailViewController.m in Sources */,
 				96C8D2491C0A0D20004642FC /* CommentFootView.m in Sources */,
 				968426261C01A10B00774538 /* EveryoneTopicHeadView.m in Sources */,
 				964AA1121BEF7B5E007CE0E9 /* NSNull+NullCast.m in Sources */,
@@ -4105,7 +4137,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "994a8a7b-f1dc-4f7d-92fb-36142eadfda7";
+				PROVISIONING_PROFILE = "460b3746-be37-4e6a-a017-e9fc8579f1cd";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4144,7 +4176,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "994a8a7b-f1dc-4f7d-92fb-36142eadfda7";
+				PROVISIONING_PROFILE = "460b3746-be37-4e6a-a017-e9fc8579f1cd";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -4186,7 +4218,7 @@
 					"$(PROJECT_DIR)/Community/Vendors/umsdk_IOS_analytics_idfa_v3.6.6/umsdk_IOS_analytics_idfa_v3.6.6/UMAnalytics_Sdk_3.6.6",
 					"$(PROJECT_DIR)/Community/Vendors/UMAnalytics_Sdk_3.6.6",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wansons.Community;
+				PRODUCT_BUNDLE_IDENTIFIER = com.microwenzhou.wansons;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -4229,7 +4261,7 @@
 					"$(PROJECT_DIR)/Community/Vendors/umsdk_IOS_analytics_idfa_v3.6.6/umsdk_IOS_analytics_idfa_v3.6.6/UMAnalytics_Sdk_3.6.6",
 					"$(PROJECT_DIR)/Community/Vendors/UMAnalytics_Sdk_3.6.6",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wansons.Community;
+				PRODUCT_BUNDLE_IDENTIFIER = com.microwenzhou.wansons;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;

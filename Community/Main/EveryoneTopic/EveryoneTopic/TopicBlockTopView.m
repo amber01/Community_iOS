@@ -10,13 +10,16 @@
 #import "EveryoneTopicHeadView.h"
 
 @implementation TopicBlockTopView
+{
+    UIImageView *topicImageView;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame withImageName:(NSString *)imageName
 {
     self = [super initWithFrame:frame];
     if (self) {
         
-        UIImageView *topicImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 15, 45, 45)];
+        topicImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 15, 45, 45)];
         topicImageView.image = [UIImage imageNamed:imageName];
         [self addSubview:topicImageView];
         
@@ -40,6 +43,11 @@
         
     }
     return self;
+}
+
+- (void)setTopImageIcon:(NSString *)imageName
+{
+    topicImageView.image = [UIImage imageNamed:imageName];
 }
 
 @end

@@ -91,6 +91,9 @@
     cell.scoreLabel.text = [[dic objectForKey:@"score"] stringByReplacingOccurrencesOfString:@"-" withString:@""];
     cell.titleLabel.text = [dic objectForKey:@"nickname"];
     cell.avatarBtn.user_id = [dic objectForKey:@"userid"];
+    cell.avatarBtn.userName = [dic objectForKey:@"username"];
+    cell.avatarBtn.nickname = [dic objectForKey:@"nickname"];
+    cell.avatarBtn.avatarUrl = [dic objectForKey:@"logopicture"];
     
     return cell;
 }
@@ -107,9 +110,12 @@
 #pragma mark -- action
 - (void)checkUserInfoBtn:(PubliButton *)button
 {
-    MineInfoViewController *mineInfoVC = [[MineInfoViewController alloc]init];
-    mineInfoVC.user_id = button.user_id;
-    [self.navigationController pushViewController:mineInfoVC animated:YES];
+    MineInfoViewController *userInfoVC = [[MineInfoViewController alloc]init];
+    userInfoVC.user_id = button.user_id;
+    userInfoVC.nickname = button.nickname;
+    userInfoVC.userName = button.userName;
+    userInfoVC.avatarUrl = button.avatarUrl;
+    [self.navigationController pushViewController:userInfoVC animated:YES];
 }
 
 #pragma mark -- other

@@ -18,6 +18,6 @@
 @property (nonatomic,retain) UIImageView         *likeImageView;
 
 
-- (void)configureCellWithInfo:(CommentModel *)model  withRow:(NSInteger )row andPraiseData:(NSArray *)praiseArray;
+- (void)configureCellWithInfo:(CommentModel *)model  withRow:(NSInteger )row andPraiseData:(NSArray *)praiseArray withMasterID:(NSString *)masterID;
 
 @end

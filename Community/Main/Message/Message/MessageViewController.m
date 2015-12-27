@@ -241,6 +241,15 @@
                     [cell.imgHeader sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
                     EMMessage *lastMessage = [conversation latestMessage];
                     
+                    if (conversation.unreadMessagesCount > 0) {
+                        cell.tipsView.hidden = NO;
+                        //获取当前用户的未读条数
+                        cell.tipsLabel.text = [NSString stringWithFormat:@"%ld",conversation.unreadMessagesCount];
+                    }else{
+                        cell.tipsView.hidden = YES;
+                    }
+
+                    
                     NSLog(@"nick name:%@",nickName);
                     
                     //会话列表中收到别人的消息的时候
@@ -248,6 +257,7 @@
                         NSString *lastMegNickName = [lastMessage.ext objectForKey:@"nickName"];
                         NSString *lastMegAvatarURL = [lastMessage.ext objectForKey:@"avatarURL"];
                         cell.labName.text = lastMegNickName;
+                        
                         NSString *lastMsgImageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",sharedInfo.picturedomain],BASE_IMAGE_URL,face,lastMegAvatarURL];
                         [cell.imgHeader sd_setImageWithURL:[NSURL URLWithString:lastMsgImageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
                     }

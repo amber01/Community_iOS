@@ -10,7 +10,7 @@
 #import "MsgCommentTopView.h"
 #import "CommentSendTableViewCell.h"
 #import "CommentLikeTableViewCell.h"
-
+#import "TopicDetailViewController.h"
 
 @interface CommentLikeViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -48,7 +48,6 @@
 }
 
 #pragma mark -- UI
-
 - (void)createTableView
 {
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 42, ScreenWidth, ScreenHeight - 64 - 42) style:UITableViewStylePlain];
@@ -209,6 +208,7 @@
         CommentLikeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
         if (!cell) {
             cell = [[CommentLikeTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         CommentLikeModel *model = self.dataArray[indexPath.row];
         [cell configureWithCellInfo:model];
@@ -218,6 +218,7 @@
         CommentSendTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
         if (!cell) {
             cell = [[CommentSendTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         CommentLikeModel *model = self.sendCommentArray[indexPath.row];
         [cell configureWithCellInfo:model];

@@ -15,7 +15,7 @@
 
 @end
 
-@interface ScorellButtonView : UIView<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface ScorellButtonView : UIView<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate>
 {
     int            page;
     MBProgressHUD  *progress;

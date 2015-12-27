@@ -11,6 +11,7 @@
 #import "MineInfoViewController.h"
 #import "TopicDetailRewardViewController.h"
 #import "InputBuyNumberView.h"
+#import "WriteCommentViewController.h"
 
 @implementation TopicCommentDetailView
 {
@@ -138,10 +139,15 @@
                 for (int i = 0; i < rewardData.count; i ++) {
                     if (i <= btnCount) {
                         NSDictionary *dic = [rewardData objectAtIndex:i];
+                        NSLog(@"dicccc:%@",dic);
+                        
                         NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",[dic objectForKey:@"logopicturedomain"]],BASE_IMAGE_URL,face,[dic objectForKey:@"logopicture"]];
                         avatarBtn = [[PubliButton alloc]initWithFrame:CGRectMake(10+(((34 + 5) * i)), 30, 34, 34)];
                         
                         [avatarBtn setUser_id:[dic objectForKey:@"userid"]];
+                        avatarBtn.nickname = [dic objectForKey:@"nickname"];
+                        avatarBtn.userName = [dic objectForKey:@"username"];
+                        avatarBtn.avatarUrl = [dic objectForKey:@"logopicture"];
                         [avatarBtn addTarget:self action:@selector(checkUserInfoBtn:) forControlEvents:UIControlEventTouchUpInside];
                         [UIUtils setupViewRadius:avatarBtn cornerRadius:avatarBtn.height/2];
                         [avatarBtn sd_setImageWithURL:[NSURL URLWithString:imageURL] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
@@ -183,7 +189,7 @@
     [_likeDataArray addObject:model.praisenum];
     
     if (!isArrEmpty(self.dataArray)) {
-        [cell configureCellWithInfo:model withRow:indexPath.row andPraiseData:self.praiseDataArray];
+        [cell configureCellWithInfo:model withRow:indexPath.row andPraiseData:self.praiseDataArray withMasterID:self.userID];
     }
     
     if (!isArrEmpty(self.praiseDataArray)) {
@@ -207,6 +213,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    UIActionSheet  *actionSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"帖子点赞",@"回复评论", nil];
+    actionSheet.tag = indexPath.row;
+    actionSheet.actionSheetStyle =UIActionSheetStyleAutomatic;
+    [actionSheet showInView:self];
 }
 
 #pragma mark -- action
@@ -301,6 +312,7 @@
 - (void)rewardAction
 {
     UIActionSheet  *actionSheet = [[UIActionSheet alloc]initWithTitle:@"选择打赏金额" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"5积分",@"20积分",@"任意赏", nil];
+    actionSheet.tag = 2000;
     actionSheet.actionSheetStyle =UIActionSheetStyleAutomatic;
     [actionSheet showInView:self];
 }
@@ -316,6 +328,9 @@
 {
     MineInfoViewController *mineInfoVC = [[MineInfoViewController alloc]init];
     mineInfoVC.user_id = button.user_id;
+    mineInfoVC.nickname = button.nickname;
+    mineInfoVC.userName = button.userName;
+    mineInfoVC.avatarUrl = button.avatarUrl;
     [self.viewController.navigationController pushViewController:mineInfoVC animated:YES];
 }
 
@@ -357,55 +372,166 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     SharedInfo *share = [SharedInfo sharedDataInfo];
-    NSString  *scoreStr;
-    if (buttonIndex != 3) {
+    if (actionSheet.tag == 2000) {
+        
+        NSString  *scoreStr;
+        if (buttonIndex != 3) {
+            if (isStrEmpty(share.user_id)) {
+                LoginViewController *loginVC = [[LoginViewController alloc]init];
+                [self.viewController.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }else{
+                if (buttonIndex == 0) {
+                    scoreStr = @"5";
+                }else if (buttonIndex == 1){
+                    scoreStr = @"20";
+                } if (buttonIndex == 2){
+                    if (!inputBuyNumberView) {
+                        inputBuyNumberView = [[InputBuyNumberView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+                        [inputBuyNumberView.returnBtn addTarget:self action:@selector(returnAction) forControlEvents:UIControlEventTouchUpInside];
+                        [inputBuyNumberView.cancelBtn addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];
+                        [inputBuyNumberView.mySlider addTarget:self action:@selector(updateValue:) forControlEvents:UIControlEventValueChanged];
+                        inputBuyNumberView.userInteractionEnabled = YES;
+                        [self.window addSubview:inputBuyNumberView];
+                    }
+                    
+                    inputBuyNumberView.rightLabel.text = share.totalscore;
+                    inputBuyNumberView.myScoreNumLabel.text = [NSString stringWithFormat:@"我的积分：%@",share.totalscore];
+                    inputBuyNumberView.mySlider.maximumValue = [share.totalscore intValue];
+                    inputBuyNumberView.mySlider.value = [share.totalscore intValue]/2;
+                    inputBuyNumberView.scoreNumLabel.text = [NSString stringWithFormat:@"%d",[share.totalscore intValue]/2];
+                    inputBuyNumberView.hidden = NO;
+                }
+                
+                if (!isStrEmpty(scoreStr)) {
+                    NSDictionary *parameters = @{@"Method":@"AddUserScoreLogInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":share.user_id,@"Detail":@[@{@"Descrip":@"打赏",@"UserID":share.user_id,@"ToUserID":isStrEmpty(self.userID) ? @"" : self.userID,@"Score":scoreStr,@"PostID":self.post_id,@"IsShow":@"1"}]};
+                    [CKHttpRequest  createRequest:HTTP_METHOD_SCORE_INFO WithParam:parameters withMethod:@"POST" success:^(id result) {
+                        NSLog(@"result:%@",result);
+                        if ([[result objectForKey:@"Success"]intValue] > 0) {
+                            [self initMBProgress:@"打赏成功" withModeType:MBProgressHUDModeText afterDelay:1.0];
+                            tipsLabel.hidden = YES;
+                            
+                            int currentScore = [share.totalscore intValue] - [scoreStr intValue];
+                            [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%d",currentScore] forKey:@"totalscore"];
+                            share.totalscore = [NSString stringWithFormat:@"%d",currentScore];
+                            
+                            [self getRewardData];
+                        }else{
+                            [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.0];
+                        }
+                    } failure:^(NSError *erro) {
+                        
+                    }];
+                }
+            }
+        }
+    }else{
         if (isStrEmpty(share.user_id)) {
             LoginViewController *loginVC = [[LoginViewController alloc]init];
             [self.viewController.navigationController pushViewController:loginVC animated:YES];
             return;
-        }else{
-            if (buttonIndex == 0) {
-                scoreStr = @"5";
-            }else if (buttonIndex == 1){
-                scoreStr = @"20";
-            } if (buttonIndex == 2){
-                if (!inputBuyNumberView) {
-                    inputBuyNumberView = [[InputBuyNumberView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-                    [inputBuyNumberView.returnBtn addTarget:self action:@selector(returnAction) forControlEvents:UIControlEventTouchUpInside];
-                    [inputBuyNumberView.cancelBtn addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];
-                    [inputBuyNumberView.mySlider addTarget:self action:@selector(updateValue:) forControlEvents:UIControlEventValueChanged];
-                    inputBuyNumberView.userInteractionEnabled = YES;
-                    [self.window addSubview:inputBuyNumberView];
-                }
-                
-                inputBuyNumberView.rightLabel.text = share.totalscore;
-                inputBuyNumberView.myScoreNumLabel.text = [NSString stringWithFormat:@"我的积分：%@",share.totalscore];
-                inputBuyNumberView.mySlider.maximumValue = [share.totalscore intValue];
-                inputBuyNumberView.mySlider.value = [share.totalscore intValue]/2;
-                inputBuyNumberView.scoreNumLabel.text = [NSString stringWithFormat:@"%d",[share.totalscore intValue]/2];
-                inputBuyNumberView.hidden = NO;
+        }
+        if (buttonIndex == 0) {
+            NSDictionary *dic = [self.praiseDataArray objectAtIndex:actionSheet.tag];
+            NSString *commentid = [dic objectForKey:@"commentid"];
+            NSString *isPraise = [dic objectForKey:@"value"];
+            NSString *praisenumStr = _likeDataArray[actionSheet.tag];
+            
+            SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+            if (isStrEmpty(sharedInfo.user_id)) {
+                LoginViewController *loginVC = [[LoginViewController  alloc]init];
+                [loginVC setHidesBottomBarWhenPushed:YES];
+                [self.viewController.navigationController pushViewController:loginVC animated:YES];
+                return;
             }
             
-            if (!isStrEmpty(scoreStr)) {
-                NSDictionary *parameters = @{@"Method":@"AddUserScoreLogInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":share.user_id,@"Detail":@[@{@"Descrip":@"打赏",@"UserID":share.user_id,@"ToUserID":isStrEmpty(self.userID) ? @"" : self.userID,@"Score":scoreStr,@"PostID":self.post_id,@"IsShow":@"1"}]};
-                [CKHttpRequest  createRequest:HTTP_METHOD_SCORE_INFO WithParam:parameters withMethod:@"POST" success:^(id result) {
-                    NSLog(@"result:%@",result);
-                    if ([[result objectForKey:@"Success"]intValue] > 0) {
-                        [self initMBProgress:@"打赏成功" withModeType:MBProgressHUDModeText afterDelay:1.0];
-                        tipsLabel.hidden = YES;
+            //点赞
+            if ([isPraise intValue] == 0) {
+                NSDictionary *parameters = @{@"Method":@"AddCommentToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"CommentID":commentid,@"UserID":sharedInfo.user_id}]};
+                
+                [CKHttpRequest createRequest:HTTP_METHOD_COMMENT_LIKE WithParam:parameters withMethod:@"POST" success:^(id result) {
+                    if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                        [self initMBProgress:@"点赞+1" withModeType:MBProgressHUDModeText afterDelay:1.5];
+                        int praisenum = [praisenumStr intValue];
+                        praisenum = praisenum + 1;
                         
-                        int currentScore = [share.totalscore intValue] - [scoreStr intValue];
-                        [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%d",currentScore] forKey:@"totalscore"];
-                        share.totalscore = [NSString stringWithFormat:@"%d",currentScore];
+                        /**
+                         *  先删除原来的点赞数，然后再重新加上
+                         */
+                        [self.likeDataArray removeObjectAtIndex:actionSheet.tag];
+                        [self.likeDataArray insertObject:[NSString stringWithFormat:@"%d",praisenum] atIndex:actionSheet.tag];
                         
-                        [self getRewardData];
+                        /**
+                         *  记录点赞状态
+                         */
+                        [self.praiseDataArray removeObjectAtIndex:actionSheet.tag];
+                        [self.praiseDataArray insertObject:@{@"commentid":commentid,@"value":@"1"} atIndex:actionSheet.tag];
+                        
+                        //点赞之后改变点赞的状态
+                        NSIndexPath *index =  [NSIndexPath indexPathForItem:actionSheet.tag inSection:0];
+                        CommentTableViewCell *cell =  [_tableView cellForRowAtIndexPath:index];
+                        cell.likeLabel.text = _likeDataArray[actionSheet.tag];
+                        
+                        cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_cancel_like"];
+                        [_tableView reloadData];
                     }else{
-                        [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.0];
+                        [self initMBProgress:@"你已经赞过了" withModeType:MBProgressHUDModeText afterDelay:1.5];
                     }
+                    
+                } failure:^(NSError *erro) {
+                    
+                }];
+            }else{  //取消点赞
+                NSDictionary *parameters = @{@"Method":@"DelCommentToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"CommentID":commentid,@"UserID":sharedInfo.user_id}]};
+                
+                [CKHttpRequest createRequest:HTTP_METHOD_COMMENT_LIKE WithParam:parameters withMethod:@"POST" success:^(id result) {
+                    if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                        [self initMBProgress:@"取消点赞" withModeType:MBProgressHUDModeText afterDelay:1.5];
+                        int praisenum = [praisenumStr intValue];
+                        praisenum = praisenum - 1;
+                        /**
+                         *  先删除原来的点赞数，然后再重新加上
+                         */
+                        [self.likeDataArray removeObjectAtIndex:actionSheet.tag];
+                        [self.likeDataArray insertObject:[NSString stringWithFormat:@"%d",praisenum] atIndex:actionSheet.tag];
+                        
+                        /**
+                         *  记录点赞状态
+                         */
+                        [self.praiseDataArray removeObjectAtIndex:actionSheet.tag];
+                        [self.praiseDataArray insertObject:@{@"commentid":commentid,@"value":@"0"} atIndex:actionSheet.tag];
+                        
+                        //点赞之后改变点赞的状态
+                        NSIndexPath *index =  [NSIndexPath indexPathForItem:actionSheet.tag inSection:0];
+                        CommentTableViewCell *cell =  [_tableView cellForRowAtIndexPath:index];
+                        cell.likeLabel.text = _likeDataArray[actionSheet.tag];
+                        
+                        cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+                        
+                        [_tableView reloadData];
+                    }else{
+                        [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.5];
+                    }
+                    
                 } failure:^(NSError *erro) {
                     
                 }];
             }
+        }else if (buttonIndex == 1){
+            if (isStrEmpty(share.user_id)) {
+                LoginViewController *loginVC = [[LoginViewController alloc]init];
+                [self.viewController.navigationController pushViewController:loginVC animated:YES];
+                return;
+            }
+            CommentModel *model = self.dataArray[actionSheet.tag];
+            WriteCommentViewController *writeCommentVC = [[WriteCommentViewController alloc]init];
+            writeCommentVC.post_id = model.postid;
+            writeCommentVC.toUserID = model.touserid;
+            writeCommentVC.commentID = model.id;
+            BaseNavigationController *baseNav = [[BaseNavigationController alloc]initWithRootViewController:writeCommentVC];
+            [self.viewController.navigationController presentViewController:baseNav animated:YES completion:^{
+                
+            }];
         }
     }
 }

@@ -255,6 +255,9 @@
     MineInfoViewController *mineInfoVC = [[MineInfoViewController alloc]init];
     UserModel *model = self.userDataArray[indexPath.row];
     mineInfoVC.user_id = model.id;
+    mineInfoVC.nickname = model.nickname;
+    mineInfoVC.userName = model.username;
+    mineInfoVC.avatarUrl = model.picture;
     [self.navigationController pushViewController:mineInfoVC animated:YES];
 }
 
@@ -284,12 +287,15 @@
 //帖子
 - (void)getSearchContent:(int )pageIndex keyword:(NSString *)keyword
 {
-    [self initMBProgress:@"数据加载中..."];
     SharedInfo *sharedInfo  = [SharedInfo sharedDataInfo];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
     NSDictionary *parameters = @{@"Method":@"RePostInfo",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"FldSort":@"0",@"FldSortType":@"1",@"SearchKey":keyword}]};
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
+        if ([[result objectForKey:@"Detail"]count] < 1) {
+            [self initMBProgress:@"未找到相关的内容" withModeType:MBProgressHUDModeText afterDelay:1.5];
+            return;
+        }
         if (result) {
             NSArray *items = [EveryoneTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
             NSArray *imageItems = [TodayTopicImagesModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
@@ -323,7 +329,6 @@
             }
         }
         [_tableView reloadData];
-        [self setMBProgreeHiden:YES];
     } failure:^(NSError *erro) {
         
     }];
@@ -337,6 +342,10 @@
     NSDictionary *parameters = @{@"Method":@"ReUserInfo",@"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"ID":@"",@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"SearchKey":keyword}]};
     [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
+        if ([[result objectForKey:@"Detail"]count] < 1) {
+            [self initMBProgress:@"未找到该用户" withModeType:MBProgressHUDModeText afterDelay:1.5];
+            return;
+        }
         if (result) {
             NSArray *items = [UserModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
             NSArray *praiseItems = [result objectForKey:@"IsPraise"];

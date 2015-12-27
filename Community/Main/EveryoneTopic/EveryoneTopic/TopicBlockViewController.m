@@ -13,6 +13,8 @@
 #import "CheckMoreView.h"
 #import "PopMenu.h"
 #import "SendTopicViewController.h"
+#import "TopicSendNavigationView.h"
+#import "SendTopicBtnView.h"
 
 @interface TopicBlockViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
 {
@@ -22,6 +24,9 @@
     BOOL    isShowMore;
     BOOL    isFirst;
     PopMenu *_popMenu;
+    TopicSendNavigationView *sendNavigationView;
+    SendTopicBtnView      *sendTopicBtnView;
+    BOOL  isHidenSendView;
 }
 
 @property (nonatomic,retain) UITableView    *tableView;
@@ -43,7 +48,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"板块";
     self.view.backgroundColor = [UIColor whiteColor];
     
     topicBlockTopView = [[TopicBlockTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 45 + 30 + 10 + 15 + 15 + 10)withImageName:self.imageName];
@@ -66,6 +70,12 @@
     self.cateArray = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12",@"13"];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginFinish) name:kSendIsLoginNotification object:nil];
+    
+    sendNavigationView = [[TopicSendNavigationView alloc]initWithFrame:CGRectMake(100, 0, ScreenWidth - 200, 64)];
+    [sendNavigationView setNavigationTitle:@"板块"];
+    UITapGestureRecognizer *tapGestureSinge = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeCatTap)];
+    [sendNavigationView addGestureRecognizer:tapGestureSinge];
+    [self.navigationController.view addSubview:sendNavigationView];
     
     [self setupRefreshHeader];
     [self setupUploadMore];
@@ -153,6 +163,41 @@
 }
 
 #pragma mark -- action
+- (void)changeCatTap
+{
+    if (!sendTopicBtnView) {
+        sendTopicBtnView = [[SendTopicBtnView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+        for (int i = 100; i < sendTopicBtnView.mineBtn.tag + 1; i ++) {
+            UIButton *button = (UIButton *)[sendTopicBtnView viewWithTag:i];
+            [button addTarget:self action:@selector(onClickPageOne:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        [self.view addSubview:sendTopicBtnView];
+    }
+    if (!isHidenSendView) {
+        sendTopicBtnView.hidden = NO;
+        isHidenSendView = YES;
+    }else{
+        sendTopicBtnView.hidden = YES;
+        isHidenSendView = NO;
+    }
+    [self.view endEditing:YES];
+}
+
+- (void)onClickPageOne:(UIButton *)button
+{
+    self.cate_id = [NSString stringWithFormat:@"%ld",button.tag - 99];
+    NSLog(@"current cati :%@",_cate_id);
+    page = 1;
+    [self getEveryoneTopicData:page withFldSort:self.fldSort andIsEssence:self.isEssence];
+    
+    NSArray *titleArr = @[@"同城互动", @"秀自拍", @"百姓话题", @"看资讯", @"聊美食", @"去哪玩",@"谈感情", @"搞笑吧", @"育儿经", @"爱健康", @"灌小区", @"供求信息",@"提建议"];
+    NSArray *btnImage = @[@"topic_send_city",@"topic_send_show",@"topic_send_people",@"topic_send_information",@"topic_send_food",@"topic_send_play",@"topic_send_feeling",@"topic_send_funny",@"topic_send_education",@"topic_send_health",@"topic_send_community",@"topic_send_shareinfo",@"topic_send_suggestion"];
+    topicBlockTopView.blockNameLabel.text = titleArr[button.tag - 100];
+    [topicBlockTopView setTopImageIcon:btnImage[button.tag - 100]];
+    sendTopicBtnView.hidden = YES;
+    isHidenSendView = NO;
+}
+
 - (void)checkNewSendAction
 {
     self.fldSort = @"0";
@@ -202,68 +247,13 @@
         return;
     }
     
-    NSMutableArray *items = [[NSMutableArray alloc] initWithCapacity:3];
-    
-    MenuItem *menuItem = [MenuItem itemWithTitle:@"同城互动" iconName:@"topic_send_city"];
-    [items addObject:menuItem];
-    
-    menuItem = [MenuItem itemWithTitle:@"秀自拍" iconName:@"topic_send_show" glowColor:[UIColor clearColor]];
-    [items addObject:menuItem];
-    
-    menuItem = [MenuItem itemWithTitle:@"百姓话题" iconName:@"topic_send_people" glowColor:[UIColor clearColor]];
-    [items addObject:menuItem];
-    
-    menuItem = [MenuItem itemWithTitle:@"看资讯" iconName:@"topic_send_information" glowColor:[UIColor clearColor]];
-    [items addObject:menuItem];
-    
-    menuItem = [MenuItem itemWithTitle:@"聊美食" iconName:@"topic_send_food" glowColor:[UIColor clearColor]];
-    [items addObject:menuItem];
-    
-    menuItem = [MenuItem itemWithTitle:@"去哪玩" iconName:@"topic_send_play" glowColor:[UIColor clearColor]];
-    [items addObject:menuItem];
-    
-    menuItem = [MenuItem itemWithTitle:@"谈感情" iconName:@"topic_send_feeling" glowColor:[UIColor clearColor]];
-    [items addObject:menuItem];
-    
-    menuItem = [MenuItem itemWithTitle:@"搞笑吧" iconName:@"topic_send_funny" glowColor:[UIColor clearColor]];
-    [items addObject:menuItem];
-    
-    menuItem = [MenuItem itemWithTitle:@"育儿经" iconName:@"topic_send_education" glowColor:[UIColor clearColor]];
-    [items addObject:menuItem];
-    
-    menuItem = [MenuItem itemWithTitle:@"爱健康" iconName:@"topic_send_health" glowColor:[UIColor clearColor]];
-    [items addObject:menuItem];
-    
-    menuItem = [MenuItem itemWithTitle:@"灌水区" iconName:@"topic_send_community" glowColor:[UIColor clearColor]];
-    [items addObject:menuItem];
-    
-    menuItem = [MenuItem itemWithTitle:@"供求信息" iconName:@"topic_send_shareinfo" glowColor:[UIColor clearColor]];
-    [items addObject:menuItem];
-    
-    menuItem = [MenuItem itemWithTitle:@"提建议" iconName:@"topic_send_suggestion" glowColor:[UIColor clearColor]];
-    [items addObject:menuItem];
-    
-    
-    if (!_popMenu) {
-        _popMenu = [[PopMenu alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) items:items];
-        _popMenu.perRowItemCount = 4;
-        _popMenu.menuAnimationType = kPopMenuAnimationTypeNetEase;
-    }
-    if (_popMenu.isShowed) {
-        return;
-    }
-    @weakify(self)
-    _popMenu.didSelectedItemCompletion = ^(MenuItem *selectedItem) {
-        @strongify(self)
-        SendTopicViewController *sendTopVC = [[SendTopicViewController alloc]init];
-        sendTopVC.title = selectedItem.title;
-        sendTopVC.cate_id = self.cateArray[selectedItem.index];
-        BaseNavigationController *navi =[[BaseNavigationController alloc] initWithRootViewController:sendTopVC];
-        [self.navigationController presentViewController:navi animated:YES completion:^{
-            
-        } ];
-    };
-    [_popMenu showMenuAtView:self.view.window];
+    SendTopicViewController *sendTopVC = [[SendTopicViewController alloc]init];
+    sendTopVC.title = self.blockName;
+    sendTopVC.cate_id = self.cate_id;
+    BaseNavigationController *navi =[[BaseNavigationController alloc] initWithRootViewController:sendTopVC];
+    [self.navigationController presentViewController:navi animated:YES completion:^{
+        
+    } ];
 }
 
 
@@ -277,7 +267,9 @@
     
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSString *allTopicCount = [result objectForKey:@"Counts"];
+        NSString *todayTopicCount = [result objectForKey:@"ClassPostDayNum"];
         topicBlockTopView.topicNumberLabel.text = [NSString stringWithFormat:@"总帖数：%@",allTopicCount];
+        topicBlockTopView.todayNumberLabel.text = [NSString stringWithFormat:@"今日：%@",todayTopicCount];
         
         NSArray *items = [EveryoneTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
         NSArray *imageItems = [TodayTopicImagesModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
@@ -503,6 +495,12 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    [sendNavigationView removeFromSuperview];
 }
 
 - (void)dealloc

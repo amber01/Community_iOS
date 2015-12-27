@@ -1313,6 +1313,7 @@
 
 -(void)didReceiveMessage:(EMMessage *)message
 {
+    NSLog(@"messsssage:%@",message);
     if ([self.conversation.chatter isEqualToString:message.conversationChatter]) {
         [self addMessageToDataSource:message progress:nil];
         

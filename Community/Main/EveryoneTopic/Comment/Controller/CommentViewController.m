@@ -154,7 +154,7 @@
     [_likeDataArray addObject:model.praisenum];
     
     if (!isArrEmpty(self.dataArray)) {
-        [cell configureCellWithInfo:model withRow:indexPath.row andPraiseData:self.praiseDataArray];
+        [cell configureCellWithInfo:model withRow:indexPath.row andPraiseData:self.praiseDataArray withMasterID:self.user_id];
     }
     
     if (!isArrEmpty(self.praiseDataArray)) {

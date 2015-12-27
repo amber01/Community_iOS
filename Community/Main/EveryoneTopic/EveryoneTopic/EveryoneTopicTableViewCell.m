@@ -11,14 +11,15 @@
 #import "LoginViewController.h"
 #import "CommentViewController.h"
 #import "MineInfoViewController.h"
+#import "CheckTopicDetailViewController.h"
 
 @implementation EveryoneTopicTableViewCell
 {
     PubliButton         *avatarImageView;
     UILabel             *nicknameLabel;
     UILabel             *dateLabel;
-    
-    UILabel             *contentLabel;
+
+    MLEmojiLabel        *contentLabel;
     UIImageView         *photoImageBtn1;
     UIImageView         *photoImageBtn2;
     UIImageView         *photoImageBtn3;
@@ -51,10 +52,13 @@
         dateLabel.text = @"今天 12:23 iPhone6";
         
         
-        contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, 20)];
+        contentLabel = [[MLEmojiLabel alloc]initWithFrame:CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, 20)];
         [contentLabel verticalUpAlignmentWithText: @"说的方法第三方水电费水电费水电费说的方法第三方第三方第三方的说法是法师打发" maxHeight:10];
         contentLabel.lineBreakMode = NSLineBreakByWordWrapping;
         contentLabel.numberOfLines = 0;
+        contentLabel.isNeedAtAndPoundSign = YES;
+        contentLabel.delegate = self;
+        contentLabel.backgroundColor = [UIColor clearColor];
         [contentLabel setFont:[UIFont systemFontOfSize:15]];
         
         photoImageBtn1 = [[UIImageView alloc]initWithFrame:CGRectMake(15, contentLabel.bottom + 15, 80, 80)];
@@ -171,9 +175,9 @@
     NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
     CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
     
-    if (contentLabel.text.length == 0) {
-        contentHeight.height = 0;
-    }
+//    if (contentLabel.text.length == 0) {
+//        contentHeight.height = 0;
+//    }
     
     commentBtn.post_id = model.id;
     commentBtn.user_id = model.userid;
@@ -383,6 +387,33 @@
         return NO;
     }
     return  YES;
+}
+
+#pragma mark -- MLEmojiLabelDelegate
+- (void)mlEmojiLabel:(MLEmojiLabel*)emojiLabel didSelectLink:(NSString*)link withType:(MLEmojiLabelLinkType)type
+{
+    switch(type){
+        case MLEmojiLabelLinkTypeURL:
+            NSLog(@"点击了链接%@",link);
+            break;
+        case MLEmojiLabelLinkTypePhoneNumber:
+            NSLog(@"点击了电话%@",link);
+            break;
+        case MLEmojiLabelLinkTypeEmail:
+            NSLog(@"点击了邮箱%@",link);
+            break;
+        case MLEmojiLabelLinkTypeAt:
+            NSLog(@"点击了用户%@",link);
+            break;
+        case MLEmojiLabelLinkTypePoundSign:
+        {
+            CheckTopicDetailViewController *checkTopicDetailVC = [[CheckTopicDetailViewController alloc]init];
+            checkTopicDetailVC.keyword = [link stringByReplacingOccurrencesOfString:@"#" withString:@""];
+            [self.viewController.navigationController pushViewController:checkTopicDetailVC animated:YES];
+        }
+            NSLog(@"点击了话题%@",link);
+            break;
+    }
 }
 
 - (void)awakeFromNib {

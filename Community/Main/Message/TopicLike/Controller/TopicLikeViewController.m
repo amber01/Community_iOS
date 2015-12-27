@@ -10,6 +10,7 @@
 #import "MsgCommentTopView.h"
 #import "TopicLikeTableViewCell.h"
 #import "TopicSendTableViewCell.h"
+#import "TopicDetailViewController.h"
 
 @interface TopicLikeViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -230,7 +231,22 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    if (tableView.tag == 1000) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        TopicLikeModel *model = self.dataArray[indexPath.row];
+        TopicDetailViewController *topicDetailVC = [[TopicDetailViewController alloc]init];
+        topicDetailVC.post_id = model.postid;
+        topicDetailVC.user_id = model.touserid;
+        [self.navigationController pushViewController:topicDetailVC animated:YES];
+    }else{
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        TopicLikeModel *model = self.sendCommentArray[indexPath.row];
+        TopicDetailViewController *topicDetailVC = [[TopicDetailViewController alloc]init];
+        topicDetailVC.post_id = model.postid;
+        topicDetailVC.user_id = model.touserid;
+        [self.navigationController pushViewController:topicDetailVC animated:YES];
+    }
 }
 
 #pragma mark -- action
