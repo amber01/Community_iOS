@@ -18,6 +18,7 @@
 @interface MineViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     BOOL  isLogin;
+    NSString *myfansnum;
 }
 
 @property (nonatomic,retain)UITableView *tableView;
@@ -98,12 +99,37 @@
                     [self.dataArray addObject:[items objectAtIndex:i]];
                 }
             }
-            [_tableView reloadData];
+            [self getMsgCount];
         } failure:^(NSError *erro) {
             
         }];
     }
 }
+
+#pragma mark -- HTTP
+- (void)getMsgCount
+{
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    if (isStrEmpty(sharedInfo.user_id)) {
+        [_tableView reloadData];
+        return;
+    }
+    NSDictionary *parameters = @{@"Method":@"ReCommentInfoRead",@"Detail":@[@{@"UserID":sharedInfo.user_id}]};
+    [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
+        if (result) {
+            NSArray *item = [result objectForKey:@"Detail"];
+            for (int i = 0; i < item.count; i ++ ) {
+                NSDictionary *dic = [item objectAtIndex:i];
+                myfansnum = [dic objectForKey:@"myfansnum"];
+            }
+        }
+        [_tableView reloadData];
+    } failure:^(NSError *erro) {
+        
+    }];
+    
+}
+
 
 #pragma mark -- UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -137,7 +163,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             UserModel *model = self.dataArray[indexPath.row];
-            [cell configureCellWithInfo:model];
+            [cell configureCellWithInfo:model withNewFansCount:myfansnum];
             
             return cell;
             

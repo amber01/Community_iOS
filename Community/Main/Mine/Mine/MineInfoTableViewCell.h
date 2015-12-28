@@ -11,7 +11,10 @@
 @interface MineInfoTableViewCell : UITableViewCell
 
 @property (nonatomic,retain)NSArray *userDataInfo;
+@property (nonatomic,retain)UILabel     *tipsLabel;
+@property (nonatomic,retain)UIView      *tipsView;
 
-- (void)configureCellWithInfo:(UserModel *)model;
+
+- (void)configureCellWithInfo:(UserModel *)model withNewFansCount:(NSString *)fansCount;
 
 @end

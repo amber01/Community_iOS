@@ -78,6 +78,17 @@
         fansLabel.textAlignment = NSTextAlignmentCenter;
         fansLabel.textColor = TEXT_COLOR;
         
+        self.tipsView = [[UIView alloc]initWithFrame:CGRectMake(fansBtn.width/2 + 10,5 , 14, 14)];
+        self.tipsView.backgroundColor = [UIColor redColor];
+        [UIUtils setupViewRadius:_tipsView cornerRadius:_tipsView.height/2];
+        
+        self.tipsLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, _tipsView.height/2-10, _tipsView.width, 20)];
+        _tipsLabel.textColor = [UIColor whiteColor];
+        _tipsLabel.font = [UIFont systemFontOfSize:9];
+        _tipsLabel.textAlignment = NSTextAlignmentCenter;
+        _tipsLabel.text = @"0";
+        [_tipsView addSubview:_tipsLabel];
+        [fansBtn addSubview:_tipsView];
         
         UILabel *followLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 23, ScreenWidth/4, 20)];
         [followLabel setFont:[UIFont systemFontOfSize:14]];
@@ -134,7 +145,7 @@
     return self;
 }
 
-- (void)configureCellWithInfo:(UserModel *)model
+- (void)configureCellWithInfo:(UserModel *)model withNewFansCount:(NSString *)fansCount
 {
     NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.picturedomain],BASE_IMAGE_URL,face,model.picture];
     [avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
@@ -149,6 +160,13 @@
     [[NSUserDefaults standardUserDefaults] setObject:model.myfansnum forKey:@"myfansnum"];
     [[NSUserDefaults standardUserDefaults] setObject:model.mytofansnum forKey:@"mytofansnum"];
     [[NSUserDefaults standardUserDefaults] setObject:model.totalscore forKey:@"totalscore"];
+    
+    if ([fansCount intValue] > 0) {
+        self.tipsView.hidden = NO;
+        self.tipsLabel.text = fansCount;
+    }else{
+        self.tipsView.hidden = YES;
+    }
     
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     sharedInfo.nickname = model.nickname;

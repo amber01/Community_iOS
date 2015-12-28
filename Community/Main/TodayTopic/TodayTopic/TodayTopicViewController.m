@@ -29,6 +29,7 @@
 @property (nonatomic,retain) NSMutableArray *imagesArray;
 @property (nonatomic,retain) NSArray        *cateArray;
 
+
 @end
 
 @implementation TodayTopicViewController
@@ -51,6 +52,7 @@
     [self.navigationController.view addSubview:headLogImageView];
     [self getTodayTopicDataInfo:1];
     self.cateArray = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12",@"13"];
+    [self startLocation];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -232,6 +234,49 @@
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 
+#pragma mark -- LocationManange
+-(void)startLocation{
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    self.locationManager.distanceFilter = 10.0f;
+    [self.locationManager requestWhenInUseAuthorization];
+    [self.locationManager startUpdatingLocation];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    NSLog(@"change");
+}
+
+//定位代理经纬度回调
+-(void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+    
+    //NSLog(@"%@",[NSString stringWithFormat:@"经度:%3.5f\n纬度:%3.5f",newLocation.coordinate.latitude,newLocation.coordinate.longitude]);
+    
+    CLGeocoder * geoCoder = [[CLGeocoder alloc] init];
+    [geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error) {
+        for (CLPlacemark * placemark in placemarks) {
+            
+            NSDictionary *test = [placemark addressDictionary];
+            
+            NSString *country = placemark.name;
+            NSString *city = placemark.locality; //当前城市
+            
+            SharedInfo *shared = [SharedInfo sharedDataInfo];
+            shared.cityarea = city;
+            shared.locationAddress = country;
+            shared.provincearea =  [test objectForKey:@"State"]; //省份
+            if (!isStrEmpty(country)) {
+                [self getAdImageData];
+            }
+        }
+    }];
+    
+    [self.locationManager stopUpdatingLocation];
+}
+
+
 #pragma mark -- action
 -(void)selectSendCat
 {
@@ -318,6 +363,7 @@
     [self.adView.myTimer invalidate];
     headLogImageView.hidden = YES;
     [super viewWillDisappear:YES];
+    [self.locationManager stopUpdatingLocation];
 }
 
 - (void)didReceiveMemoryWarning {

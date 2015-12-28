@@ -30,7 +30,7 @@
         [_sendTopicBtn setImage:[UIImage imageNamed:@"topic_send_topic"] forState:UIControlStateNormal];
         _sendTopicBtn.frame = CGRectMake(_sendEmojiBtn.right + 25, frame.size.height/2 - 12.5, 25, 25);
         
-        [self addSubview:_sendTopicBtn];
+        //[self addSubview:_sendTopicBtn];
     }
     return self;
 }

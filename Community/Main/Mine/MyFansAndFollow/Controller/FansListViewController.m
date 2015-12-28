@@ -61,6 +61,7 @@
         NSDictionary *parameters = @{@"Method":@"ReMyFansInfo",@"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"ToUserID":isStrEmpty(self.user_id) ? sharedInfo.user_id : self.user_id,@"IsShow":@"888",@"PageIndex":pageStr,@"PageSize":@"20",@"FldSortType":@"1"}]};
         [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:parameters withMethod:@"POST" success:^(id result) {
             NSLog(@"is resutl:%@",result);
+            NSLog(@"msg:%@",[result objectForKey:@"Msg"]);
             if (result) {
                 NSArray *items = [FansListModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
                 NSArray *praiseItems = [result objectForKey:@"IsPraise"];

@@ -21,6 +21,7 @@
 #import "UMSocial.h"
 #import "UMSocialWechatHandler.h"
 #import "UMSocialQQHandler.h"
+#import "CheckTopicDetailViewController.h"
 //#import "UMSocialSinaHandler.h"  //新浪微博不要
 
 @interface TopicDetailViewController ()<UIScrollViewDelegate,UIWebViewDelegate,TWebScrollViewDelegate,CheckMoreDelegate,UIActionSheetDelegate,JSObjectProtocolDelegate,SDPhotoBrowserDelegate,UMSocialUIDelegate>
@@ -39,6 +40,7 @@
     UIView               *footBackgroundView;
     float                height;
     int                  photoIndext;
+    NSString             *userid;
 }
 
 @property (nonatomic,retain) UIScrollView      *myScrollView;
@@ -67,6 +69,7 @@
     loadingView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     loadingView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:loadingView];
+    [self initMBProgress:@""];
     
     isLoadMore = NO;
     isLoadTopMore = YES;
@@ -133,6 +136,7 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     loadingView.hidden = YES;
+    [self setMBProgreeHiden:YES];
     int isZoom = [[[NSUserDefaults standardUserDefaults]objectForKey:@"isZoom"]intValue];
     if (isZoom == 1) {
         NSString *str1 = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust = '%f%%'",120.0];
@@ -250,6 +254,7 @@
                 NSString *commentnum = [dic objectForKey:@"commentnum"];
                 NSString *praisenum  = [dic objectForKey:@"praisenum"];
                 NSString *username = [dic objectForKey:@"username"];
+                self.user_id = [dic objectForKey:@"userid"];
                 self.likeNumber = praisenum;
                 CGSize commentSize = [commentnum sizeWithFont:[UIFont systemFontOfSize:10] maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT)];
                 CGSize likeSize = [praisenum sizeWithFont:[UIFont systemFontOfSize:10] maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT)];
@@ -391,6 +396,31 @@
     browser.currentImageIndex = photoIndext - 1;
     [browser show];
     NSLog(@"iamgeData:%@",object);
+}
+
+/**
+ *  跳转话题
+ *
+ *  @param theme 话题
+ */
+- (void)toTheme:(NSString *)theme
+{
+    CheckTopicDetailViewController *checkTopicDetailVC = [[CheckTopicDetailViewController alloc]init];
+    checkTopicDetailVC.keyword = [theme stringByReplacingOccurrencesOfString:@"#" withString:@""];
+    [self.navigationController pushViewController:checkTopicDetailVC animated:YES];
+    NSLog(@"theme:%@",theme);
+}
+
+/**
+ *  跳转网页
+ *
+ *  @param url
+ */
+- (void)toWebUrl:(NSString *)url
+{
+    TopicDetailViewController *topicDetailView = [[TopicDetailViewController alloc]init];
+    topicDetailView.post_id = url;
+    [self.navigationController pushViewController:topicDetailView animated:YES];
 }
 
 - (void)showPhotoImage:(NSMutableArray *)photoArray withTag:(NSInteger)row

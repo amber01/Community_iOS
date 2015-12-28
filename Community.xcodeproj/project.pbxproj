@@ -117,6 +117,9 @@
 		963F8AA61C3020A60014B41B /* MLEmojiLabelTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 963F8AA51C3020A60014B41B /* MLEmojiLabelTests-Info.plist */; };
 		963F8AA91C3029D20014B41B /* CheckTopicDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 963F8AA81C3029D20014B41B /* CheckTopicDetailViewController.m */; };
 		963F8AAC1C302B560014B41B /* CheckTopicTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 963F8AAB1C302B560014B41B /* CheckTopicTopView.m */; };
+		963F8AAF1C303ED60014B41B /* CheckTopicDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 963F8AAE1C303ED60014B41B /* CheckTopicDetailModel.m */; };
+		963F8AB11C304A440014B41B /* tabbar_notication_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 963F8AB01C304A440014B41B /* tabbar_notication_icon@2x.png */; };
+		963F8AB41C305E110014B41B /* MACAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 963F8AB31C305E110014B41B /* MACAddress.m */; };
 		964111A51C2975D600561223 /* SystemNoticeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 964111A41C2975D600561223 /* SystemNoticeViewController.m */; };
 		964111A81C2976F300561223 /* SystemNoticeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 964111A71C2976F300561223 /* SystemNoticeTableViewCell.m */; };
 		964111AB1C29797C00561223 /* SystemNoticeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 964111AA1C29797C00561223 /* SystemNoticeModel.m */; };
@@ -737,6 +740,11 @@
 		963F8AA81C3029D20014B41B /* CheckTopicDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckTopicDetailViewController.m; sourceTree = "<group>"; };
 		963F8AAA1C302B560014B41B /* CheckTopicTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckTopicTopView.h; sourceTree = "<group>"; };
 		963F8AAB1C302B560014B41B /* CheckTopicTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckTopicTopView.m; sourceTree = "<group>"; };
+		963F8AAD1C303ED60014B41B /* CheckTopicDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckTopicDetailModel.h; sourceTree = "<group>"; };
+		963F8AAE1C303ED60014B41B /* CheckTopicDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckTopicDetailModel.m; sourceTree = "<group>"; };
+		963F8AB01C304A440014B41B /* tabbar_notication_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_notication_icon@2x.png"; sourceTree = "<group>"; };
+		963F8AB21C305E110014B41B /* MACAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACAddress.h; sourceTree = "<group>"; };
+		963F8AB31C305E110014B41B /* MACAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACAddress.m; sourceTree = "<group>"; };
 		964111A31C2975D600561223 /* SystemNoticeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNoticeViewController.h; sourceTree = "<group>"; };
 		964111A41C2975D600561223 /* SystemNoticeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemNoticeViewController.m; sourceTree = "<group>"; };
 		964111A61C2976F300561223 /* SystemNoticeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNoticeTableViewCell.h; sourceTree = "<group>"; };
@@ -2169,6 +2177,7 @@
 				9657DD521C2C5C4E000A243B /* mine_score_ex@2x.png */,
 				9657DD531C2C5C4E000A243B /* mine_score_ex@3x.png */,
 				961162D01C2FC8F900D45E5D /* send_topic_down@2x.png */,
+				963F8AB01C304A440014B41B /* tabbar_notication_icon@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -2299,6 +2308,8 @@
 			children = (
 				96C8D21F1C0A0AE9004642FC /* EveryoneTopicModel.h */,
 				96C8D2201C0A0AE9004642FC /* EveryoneTopicModel.m */,
+				963F8AAD1C303ED60014B41B /* CheckTopicDetailModel.h */,
+				963F8AAE1C303ED60014B41B /* CheckTopicDetailModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2436,6 +2447,8 @@
 				969345E31C1BE9A50056072F /* WSJSObject.m */,
 				DB9A811E1C1FE1E600601780 /* UIImage+Extras.h */,
 				DB9A811F1C1FE1E600601780 /* UIImage+Extras.m */,
+				963F8AB21C305E110014B41B /* MACAddress.h */,
+				963F8AB31C305E110014B41B /* MACAddress.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -3596,6 +3609,7 @@
 				96C8D2C11C0A0F4E004642FC /* topic_send_play@2x.png in Resources */,
 				96C8D2BF1C0A0F4E004642FC /* topic_send_people@2x.png in Resources */,
 				9643D72B1BF781DD003A394D /* icons_bg_separator.png in Resources */,
+				963F8AB11C304A440014B41B /* tabbar_notication_icon@2x.png in Resources */,
 				96F5DA481C22EC6F00873F31 /* topic_detail_more@2x.png in Resources */,
 				96C8D2E01C0A0F4E004642FC /* message_tabbar_normal@3x.png in Resources */,
 				9643D72F1BF781DD003A394D /* recent_s.png in Resources */,
@@ -3855,6 +3869,7 @@
 				963DC46E1C0ACFD9005D1955 /* amrFileCodec.mm in Sources */,
 				96C8D22D1C0A0C4C004642FC /* PubliButton.m in Sources */,
 				96C8D21B1C0A0AA2004642FC /* TopicBlockTopView.m in Sources */,
+				963F8AB41C305E110014B41B /* MACAddress.m in Sources */,
 				96EAD3251C015F78008D760A /* TodayTopicMoreTableViewCell.m in Sources */,
 				DB9A58861C20F91500AF2340 /* MyDraftListTableViewCell.m in Sources */,
 				963DC4B81C0ACFD9005D1955 /* EaseConversationListViewController.m in Sources */,
@@ -3959,6 +3974,7 @@
 				963DC4881C0ACFD9005D1955 /* DACircularProgressView.m in Sources */,
 				963DC4D01C0ACFD9005D1955 /* EaseRecordView.m in Sources */,
 				963DC4661C0ACFD9005D1955 /* EaseUI.m in Sources */,
+				963F8AAF1C303ED60014B41B /* CheckTopicDetailModel.m in Sources */,
 				963DC4BA1C0ACFD9005D1955 /* EaseMessageViewController.m in Sources */,
 				96ED343B1C1338460021C9C4 /* FansTableViewCell.m in Sources */,
 				963DC46F1C0ACFD9005D1955 /* wav.mm in Sources */,

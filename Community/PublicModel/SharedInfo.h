@@ -30,6 +30,7 @@
 @property (nonatomic,copy)NSString *cityarea;  //城市名
 @property (nonatomic,copy)NSString *provincearea; //省份
 @property (nonatomic,copy)NSString *picturedomain;
+@property (nonatomic,copy)NSString *locationAddress;  //当前地址
 
 
 +(SharedInfo *)sharedDataInfo;

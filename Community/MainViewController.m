@@ -15,7 +15,7 @@
 
 @interface MainViewController ()
 
-@property (nonatomic,retain)UIImageView  *imageView;
+@property (nonatomic,retain)UIView  *imageView;
 
 @end
 
@@ -84,9 +84,9 @@
 - (void)loadView{
     [super loadView];
     for (int i = 0; i< 4; i++) {
-        UIImage  *badgeImg = [UIImage imageWithColor:[UIColor redColor]];
         if (i == 2) {
-            self.imageView = [[UIImageView alloc] initWithImage:badgeImg];
+            self.imageView = [[UIView alloc] init];
+            _imageView.backgroundColor = [UIColor redColor];
             float width = ScreenWidth / 4;
             self.imageView.frame = CGRectMake(width * 3 - 32*scaleToScreenHeight, 7, 8, 8);
             _imageView.hidden = YES;

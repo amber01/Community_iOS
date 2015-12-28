@@ -8,6 +8,7 @@
 
 #import "CKHttpRequest.h"
 #import "NSString+MyCategory.h"
+#import "MACAddress.h"
 
 #define TIME_NETOUT     2.0f
 #define  kNotificationToLogin               @"loginNotification"
@@ -57,12 +58,25 @@
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    
     /**
      字典参数转换成json
      */
     NSMutableDictionary *tempDic = [[NSMutableDictionary alloc]initWithDictionary:param];
     [tempDic setObject:[NSString stringWithUTF8String:cHttpMethod[taskID]] forKey:@"Class"];
     [tempDic setObject:@"community" forKey:@"WebSite"]; //和服务器约定好的，值不变
+    
+    [tempDic setObject:[MACAddress  macaddress] forKey:@"Udid"];
+    
+    if (!isStrEmpty(sharedInfo.cityarea)) {
+        [tempDic setObject:[UIUtils  getUniqueStrByUUID] forKey:@"Udid"];
+        [tempDic setObject:isStrEmpty(sharedInfo.provincearea) ? @"" : sharedInfo.provincearea forKey:@"Province"];
+        [tempDic setObject:isStrEmpty(sharedInfo.cityarea) ? @"" : sharedInfo.cityarea  forKey:@"City"];
+        [tempDic setObject:isStrEmpty(sharedInfo.locationAddress) ? @"" : sharedInfo.locationAddress  forKey:@"Address"];
+    }
+
+    
     NSDictionary *paramDic       = @{@"ios":tempDic};
     
     NSURL * url = [NSURL URLWithString:URL_BASE relativeToURL:_HTTPManager.baseURL];

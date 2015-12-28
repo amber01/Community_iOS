@@ -125,4 +125,8 @@ void RunBlockAfterDelay(NSTimeInterval delay, void (^block)(void));
 + (void)setRichNumberWithLabel:(UILabel*)label Color:(UIColor *) color FontSize:(CGFloat)size;
 
 + (NSString *)convertDateToString:(NSString *)time;
+
+//获取UUID
++ (NSString *)getUniqueStrByUUID;
+
 @end

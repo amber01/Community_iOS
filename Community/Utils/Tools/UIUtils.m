@@ -453,5 +453,14 @@ void RunBlockAfterDelay(NSTimeInterval delay, void (^block)(void))
     return str;
 }
 
++ (NSString *)getUniqueStrByUUID {
+    CFUUIDRef uuidRef = CFUUIDCreate(NULL);
+    CFStringRef uuidStrRef= CFUUIDCreateString(NULL, uuidRef);
+    CFRelease(uuidRef);
+    NSString *retStr = [NSString stringWithString:(__bridge NSString *)uuidStrRef];
+    CFRelease(uuidStrRef);
+    return retStr;
+}
+
 @end
 

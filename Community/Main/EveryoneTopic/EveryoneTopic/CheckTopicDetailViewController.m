@@ -12,6 +12,7 @@
 #import "MineInfoViewController.h"
 #import "CheckMoreView.h"
 #import "CheckTopicTopView.h"
+#import "TopicDetailViewController.h"
 
 @interface CheckTopicDetailViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -43,7 +44,7 @@
     [self createTableView];
     page = 1;
     self.view.backgroundColor = CELL_COLOR;
-    
+    self.title = @"话题";
     self.fldSort = @"0";
     self.isEssence = @"0";
     
@@ -206,13 +207,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    MineInfoViewController *mineInfoVC = [[MineInfoViewController alloc]init];
+    TopicDetailViewController *topicDetailVC = [[TopicDetailViewController alloc]init];
     EveryoneTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
-    mineInfoVC.user_id = model.id;
-    mineInfoVC.nickname = model.nickname;
-    mineInfoVC.userName = model.username;
-    mineInfoVC.avatarUrl = model.logopicture;
-    [self.navigationController pushViewController:mineInfoVC animated:YES];
+    topicDetailVC.post_id = model.id;
+    topicDetailVC.user_id = model.userid;
+    [self.navigationController pushViewController:topicDetailVC animated:YES];
 }
 
 #pragma mark -- action

@@ -94,11 +94,11 @@
 
         self.autoRegisterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _autoRegisterBtn.frame = CGRectMake(10, _summaryLabel.bottom + 5, ScreenWidth - 20, 20);
-        [_autoRegisterBtn setTitle:@"一键注册" forState:UIControlStateNormal];
+        //[_autoRegisterBtn setTitle:@"一键注册" forState:UIControlStateNormal];
         _autoRegisterBtn.titleLabel.font = [UIFont systemFontOfSize:15.0];
         [_autoRegisterBtn setTitleColor:[UIColor colorWithHexString:@"#64b300"] forState:UIControlStateNormal];
         
-        [self addSubview:_autoRegisterBtn];
+        //[self addSubview:_autoRegisterBtn];
         [self addSubview:_summaryLabel];
         [self addSubview:_registerBtn];
         [self addSubview:tipsLabel];
