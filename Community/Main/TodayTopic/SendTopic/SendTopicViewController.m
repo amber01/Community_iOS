@@ -440,7 +440,7 @@
             }];
             
         }else if (buttonIndex == 1){
-            [self dismissViewControllerAnimated:YES completion:^{
+            [self  dismissViewControllerAnimated:YES completion:^{
                 
             }];
         }
