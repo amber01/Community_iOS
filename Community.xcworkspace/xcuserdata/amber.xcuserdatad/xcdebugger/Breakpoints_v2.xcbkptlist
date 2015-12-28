@@ -51,13 +51,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Community/AppDelegate.m"
-            timestampString = "472888904.280676"
+            filePath = "Community/Main/User/Register/View/LoginViewController.m"
+            timestampString = "473009188.788635"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "297"
-            endingLineNumber = "297"
-            landmarkName = "-application:didFailToRegisterForRemoteNotificationsWithError:"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
+            landmarkName = "-loginAction"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

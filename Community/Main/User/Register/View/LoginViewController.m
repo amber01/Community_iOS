@@ -11,6 +11,7 @@
 #import "RegisterViewController.h"
 #import "EaseMob.h"
 #import "FindPasswordViewController.h"
+#import "SelectCityViewController.h"
 
 @interface LoginViewController ()
 {
@@ -158,7 +159,19 @@
                 if ([self.status intValue] == 1) {
                     [self backAction];
                 }
-                [self.navigationController popViewControllerAnimated:YES];
+                
+                /**
+                 *  第一次注册登录的情况下就弹出城市选择列表
+                 */
+                if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"isFirstRegister"]intValue] == 1) {
+                    [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"isFirstRegister"];
+                    SelectCityViewController *selectCityVC = [[SelectCityViewController alloc]init];
+                    selectCityVC.status = @"1";
+                    [self.navigationController pushViewController:selectCityVC animated:YES];
+                }else{
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                
             } afterDelay:1];
         }else{
             [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.5];

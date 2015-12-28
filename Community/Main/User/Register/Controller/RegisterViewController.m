@@ -81,6 +81,7 @@
             [self initMBProgress:@"注册成功" withModeType:MBProgressHUDModeText afterDelay:1];
             [self performBlock:^{
                 [self.navigationController popViewControllerAnimated:YES];
+                [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"isFirstRegister"];
             } afterDelay:1];
         }else{
             [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.5];

@@ -1715,10 +1715,12 @@
 
 - (void)sendTextMessage:(NSString *)text
 {
+    NSLog(@"");
+    
     /**
      *  自己发送消息的时候讲头像URL和用户的昵称保存到本地扩展中，用户在会话列表中看到头像和昵称
      */
-    _conversation.ext = @{@"nickName":self.nickname,@"avatarURL":self.avatarUrl};
+    _conversation.ext = @{@"nickName":isStrEmpty(self.nickname) ? @"" : self.nickname ,@"avatarURL": isStrEmpty(self.avatarUrl) ? @"" : self.avatarUrl};
     
     /**
      *  别人发送消息时，将头像URL和用户昵称保存到本地扩展中，自己在会话列表中可以看到别人的头像和昵称

@@ -7,6 +7,7 @@
 //
 
 #import "MyReceiveCommentTableViewCell.h"
+#import "EaseConvertToCommonEmoticonsHelper.h"
 
 @implementation MyReceiveCommentTableViewCell
 {
@@ -76,20 +77,33 @@
 
         contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, labelHeight);
         
+        
+        // 表情映射。
+        NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
+                                    convertToSystemEmoticons:model.detail];
+        
         //评论的内容
-        commentLabel.text = model.detail;
+        commentLabel.text = didReceiveText;
         
         NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
         CGSize commentHeight = [commentLabel.text boundingRectWithSize:CGSizeMake(commentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
         commentLabel.frame = CGRectMake(15, contentLabel.bottom + 2, ScreenWidth - 30, commentHeight.height);
     }else{ //回复评论
+        
+        // 表情映射。
+        NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
+                                    convertToSystemEmoticons:model.detail];
         //原内容
-        contentLabel.text = [NSString stringWithFormat:@"@%@:%@",model.tonickname,model.detail];
+        contentLabel.text = [NSString stringWithFormat:@"@%@:%@",model.tonickname,didReceiveText];
+        
         //获取UILabel高度
         CGFloat labelHeight = [contentLabel sizeThatFits:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT)].height;
         contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, labelHeight);
+        
+        NSString *didReceiveCommentText = [EaseConvertToCommonEmoticonsHelper
+                                    convertToSystemEmoticons:model.replaycontent];
         //评论的内容
-        commentLabel.text = model.replaycontent;
+        commentLabel.text = didReceiveCommentText;
         
         NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
         CGSize commentHeight = [commentLabel.text boundingRectWithSize:CGSizeMake(commentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;

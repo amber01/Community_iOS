@@ -60,6 +60,7 @@
     sendKeyboardView = [[SendTopicKeyboardView alloc]initWithFrame:CGRectMake(0, ScreenHeight - 64 - 45, ScreenWidth, 45)];
     [sendKeyboardView.sendPhotoBtn addTarget:self action:@selector(selectPhotoAction) forControlEvents:UIControlEventTouchUpInside];
     [sendKeyboardView.sendEmojiBtn addTarget:self action:@selector(selectEmojiAction) forControlEvents:UIControlEventTouchUpInside];
+    [sendKeyboardView.sendTopicBtn addTarget:self action:@selector(selectTopicAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:sendKeyboardView];
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyBoard)];
@@ -238,6 +239,14 @@
     [self sendTopicImageToServer:Exparams];
 }
 
+- (void)selectTopicAction
+{
+    sendTopicView.defaultLabel.hidden = YES;
+    [sendTopicView.contentTextView becomeFirstResponder];
+    sendTopicView.contentTextView.text = [NSString stringWithFormat:@"%@##",sendTopicView.contentTextView.text];
+    sendTopicView.contentTextView.selectedRange = NSMakeRange(sendTopicView.contentTextView.text.length - 1,0);
+}
+
 - (void)selectPhotoAction
 {
     [UIView animateWithDuration:0.2 animations:^{
@@ -285,6 +294,8 @@
 
 - (void)emojiKeyBoardView:(AGEmojiKeyboardView *)emojiKeyBoardView didUseEmoji:(NSString *)emoji {
     NSLog(@"emoji:%@",emoji);
+    NSString * currentEmoji = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:sendTopicView.contentTextView.text];
+    NSLog(@"currentEmoji:%@",currentEmoji);
 
     sendTopicView.contentTextView.text = [NSMutableString stringWithFormat:@"%@%@",sendTopicView.contentTextView.text,emoji];
     if (sendTopicView.contentTextView.text.length>0) {
@@ -715,10 +726,12 @@
         
         [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:params withMethod:@"POST" success:^(id result) {
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {
-                [self.navigationController dismissViewControllerAnimated:YES completion:^{
-                    [self initMBProgress:@"发布成功" withModeType:MBProgressHUDModeText afterDelay:1];
-                    [[NSNotificationCenter defaultCenter]postNotificationName:kReloadDataNotification object:nil];
-                }];
+                [self initMBProgress:@"发布成功" withModeType:MBProgressHUDModeText afterDelay:1];
+                [self performBlock:^{
+                    [self.navigationController dismissViewControllerAnimated:YES completion:^{
+                        [[NSNotificationCenter defaultCenter]postNotificationName:kReloadDataNotification object:nil];
+                    }];
+                } afterDelay:1];
             }else{
                 [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.5];
             }
@@ -749,10 +762,13 @@
         
         [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:params withMethod:@"POST" success:^(id result) {
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {
-                [self.navigationController dismissViewControllerAnimated:YES completion:^{
-                    [self initMBProgress:@"发布成功" withModeType:MBProgressHUDModeText afterDelay:1];
-                    [[NSNotificationCenter defaultCenter]postNotificationName:kReloadDataNotification object:nil];
-                }];
+                
+                [self initMBProgress:@"发布成功" withModeType:MBProgressHUDModeText afterDelay:1];
+                [self performBlock:^{
+                    [self.navigationController dismissViewControllerAnimated:YES completion:^{
+                        [[NSNotificationCenter defaultCenter]postNotificationName:kReloadDataNotification object:nil];
+                    }];
+                } afterDelay:1];
             }else{
                 [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.5];
             }

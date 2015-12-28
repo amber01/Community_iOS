@@ -7,6 +7,7 @@
 //
 
 #import "CommentLikeTableViewCell.h"
+#import "EaseConvertToCommonEmoticonsHelper.h"
 
 @implementation CommentLikeTableViewCell
 {
@@ -70,7 +71,12 @@
     /**
      *  动态计算内容高度
      */
-    contentLabel.text = [NSString stringWithFormat:@"@我:%@",model.detail];
+    
+    // 表情映射。
+    NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
+                                convertToSystemEmoticons:model.detail];
+
+    contentLabel.text = [NSString stringWithFormat:@"@我:%@",didReceiveText];
     
     NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
     CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;

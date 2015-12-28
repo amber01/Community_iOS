@@ -81,6 +81,12 @@
     [self setupUploadMore];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    sendNavigationView.hidden = NO;
+}
+
 - (UITableView *)setupTableView
 {
     if (!self.tableView) {
@@ -500,13 +506,14 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:YES];
-    [sendNavigationView removeFromSuperview];
+    sendNavigationView.hidden = YES;
 }
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     [checkMoreView removeFromSuperview];
+    [sendNavigationView removeFromSuperview];
 }
 
 

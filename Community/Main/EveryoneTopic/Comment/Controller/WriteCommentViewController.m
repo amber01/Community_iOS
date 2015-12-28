@@ -11,6 +11,7 @@
 #import "SendTopicKeyboardView.h"
 #import "AGEmojiKeyBoardView.h"
 #import "WriteCommentTextView.h"
+#import "EaseConvertToCommonEmoticonsHelper.h"
 
 @interface WriteCommentViewController ()<UITextFieldDelegate,UITextViewDelegate,UIGestureRecognizerDelegate,AGEmojiKeyboardViewDelegate, AGEmojiKeyboardViewDataSource>
 {
@@ -127,10 +128,14 @@
         return;
     }
     
+    NSString * currentEmoji = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:sendTopicView.contentTextView.text];
+    NSLog(@"currentEmoji:%@",currentEmoji);
+
+    
     //回复评论
     if (!isStrEmpty(self.commentID)) {
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-        NSDictionary *parameters = @{@"Method":@"AddCommentInfo",@"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"PostID":self.post_id,@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"ReplayContent":sendTopicView.contentTextView.text,@"IP":@"",@"IsReplay":@"1",@"CommentID":self.commentID}]};
+        NSDictionary *parameters = @{@"Method":@"AddCommentInfo",@"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"PostID":self.post_id,@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"ReplayContent":currentEmoji ,@"IP":@"",@"IsReplay":@"1",@"CommentID":self.commentID}]};
         
         [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
             NSLog(@"result:%@",result);
@@ -149,7 +154,7 @@
 
     }else{ //评论帖子
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-        NSDictionary *parameters = @{@"Method":@"AddCommentInfo",@"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"PostID":self.post_id,@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":sendTopicView.contentTextView.text,@"IP":@"",@"IsReplay":@"0",@"ReplayContent":@"",@"CommentID":@"0"}]};
+        NSDictionary *parameters = @{@"Method":@"AddCommentInfo",@"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"PostID":self.post_id,@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":currentEmoji ,@"IP":@"",@"IsReplay":@"0",@"ReplayContent":@"",@"CommentID":@"0"}]};
         
         [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {

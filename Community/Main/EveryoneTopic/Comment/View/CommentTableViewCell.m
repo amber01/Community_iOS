@@ -8,6 +8,7 @@
 
 #import "CommentTableViewCell.h"
 #import "MineInfoViewController.h"
+#import "EaseConvertToCommonEmoticonsHelper.h"
 
 @implementation CommentTableViewCell
 {
@@ -88,7 +89,10 @@
     
     dateLabel.text = model.createtime;
     if ([model.isreplay intValue] == 0) { //未回复的
-        contentLabel.text = model.detail;
+        // 表情映射。
+        NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
+                                    convertToSystemEmoticons:model.detail];
+        contentLabel.text = didReceiveText;
         nicknameLabel.text = model.nickname;
         replayNicknameLabel.hidden = YES;
         nicknameLabel.textColor = [UIColor blackColor];
@@ -99,11 +103,16 @@
         replayNicknameLabel.text = [NSString stringWithFormat:@"@%@:",model.tonickname];
         if ([model.userid isEqualToString:masterID]) {
             nicknameLabel.text = [NSString stringWithFormat:@"%@(楼主)",model.nickname];
-            contentLabel.text = model.replaycontent;
+            // 表情映射。
+            NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
+                                        convertToSystemEmoticons:model.replaycontent];
+            contentLabel.text = didReceiveText;
             nicknameLabel.textColor = [UIColor orangeColor];
         }else{
             nicknameLabel.text = [NSString stringWithFormat:@"%@",model.nickname];
-            contentLabel.text = model.replaycontent;
+            NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
+                                        convertToSystemEmoticons:model.replaycontent];
+            contentLabel.text = didReceiveText;
             nicknameLabel.textColor = [UIColor blackColor];
         }
     }

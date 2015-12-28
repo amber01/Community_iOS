@@ -7,10 +7,7 @@
 //
 
 #import "BaseViewController.h"
-#import <CoreLocation/CoreLocation.h>
 
 @interface TodayTopicViewController : BaseViewController<CLLocationManagerDelegate>
-
-@property (strong, nonatomic) CLLocationManager  *locationManager;
 
 @end

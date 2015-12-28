@@ -31,11 +31,34 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self.navigationItem setLeftBarButtonItem:nil animated:YES];
+    [self.navigationItem setHidesBackButton:NO animated:YES];
+    
+    UIButton *backDetailButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    backDetailButton.frame = CGRectMake(0, 0, 30, 40);
+    [backDetailButton setImage:[UIImage imageNamed:@"back_btn_image"] forState:UIControlStateNormal];
+    [backDetailButton addTarget:self action:@selector(backWasClicked) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithCustomView:backDetailButton];
+    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    negativeSpacer.width = -12;
+    self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:negativeSpacer, backItem,nil];
+
     self.title = @"选择城市";
     self.cityArray = [[NSMutableArray alloc]init];
     [self initTableView];
     [self startLocation];
     [self getCityList];
+}
+
+- (void)backWasClicked
+{
+    if ([self.status intValue] == 1) {
+        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        [appDelegate.mainVC setSelectedIndex:0];
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark -- UI
@@ -262,7 +285,13 @@
         NSDictionary *params = @{@"Method":@"ModItemUserInfo",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":@"",@"Detail":@[@{@"ID":isStrEmpty(shareInfo.user_id) ? @"" : shareInfo.user_id,@"Province":@"浙江省",@"City":cityName,@"IsShow":@"5"}]};
         [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:params withMethod:@"POST" success:^(id result) {
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {
-                [self.navigationController popViewControllerAnimated:YES];
+                if ([self.status intValue] == 1) {
+                    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                    [appDelegate.mainVC setSelectedIndex:0];
+                }else{
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                
                 for (int i = 0; i < self.resultArray.count; i ++) {
                     NSDictionary *dic = [self.resultArray objectAtIndex:i];
                     if ([cityName isEqualToString:[dic objectForKey:@"area_city"]]) {
@@ -290,7 +319,13 @@
                 if (result && [[result objectForKey:@"Success"]intValue] > 0) {
                     shareInfo.cityarea = [self.currentCity stringByReplacingOccurrencesOfString:@"市" withString:@""];
                     
-                    [self.navigationController popViewControllerAnimated:YES];
+                    if ([self.status intValue] == 1) {
+                        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                        [appDelegate.mainVC setSelectedIndex:0];
+                    }else{
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }
+
                     for (int i = 0; i < self.resultArray.count; i ++) {
                         NSDictionary *dic = [self.resultArray objectAtIndex:i];
                         if ([shareInfo.cityarea isEqualToString:[dic objectForKey:@"area_city"]]) {

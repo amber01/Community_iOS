@@ -70,12 +70,15 @@
 //    if ([KeychainIDFA IDFA].length == 0) {
 //        [tempDic setObject:[KeychainIDFA IDFA] forKey:@"Udid"];
 //    }
-//    [tempDic setObject:[KeychainIDFA IDFA] forKey:@"Udid"];
-//    NSLog(@"[KeychainIDFA IDFA]%@",[KeychainIDFA IDFA]);
-//    [tempDic setObject:isStrEmpty(sharedInfo.provincearea) ? @"" : sharedInfo.provincearea forKey:@"Province"];
-//    [tempDic setObject:isStrEmpty(sharedInfo.cityarea) ? @"" : sharedInfo.cityarea  forKey:@"City"];
-//    [tempDic setObject:isStrEmpty(sharedInfo.locationAddress) ? @"" : sharedInfo.locationAddress  forKey:@"Address"];
-
+    [tempDic setObject:[KeychainIDFA IDFA] forKey:@"Udid"];
+    NSLog(@"[KeychainIDFA IDFA]%@",[KeychainIDFA IDFA]);
+    [tempDic setObject:isStrEmpty(sharedInfo.provincearea) ? @"" : sharedInfo.provincearea forKey:@"Province"];
+    [tempDic setObject:isStrEmpty(sharedInfo.cityarea) ? @"" : sharedInfo.cityarea  forKey:@"City"];
+    [tempDic setObject:isStrEmpty(sharedInfo.locationAddress) ? @"" : sharedInfo.locationAddress  forKey:@"CurrentAddress"];
+    
+    NSLog(@"%@",sharedInfo.provincearea);
+    NSLog(@"%@",sharedInfo.cityarea);
+    NSLog(@"%@",sharedInfo.locationAddress);
     
     NSDictionary *paramDic       = @{@"ios":tempDic};
     

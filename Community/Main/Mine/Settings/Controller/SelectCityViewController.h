@@ -12,5 +12,6 @@
 @interface SelectCityViewController : BaseViewController<CLLocationManagerDelegate>
 
 @property (strong, nonatomic) CLLocationManager  *locationManager;
+@property (strong, nonatomic) NSString           *status;
 
 @end

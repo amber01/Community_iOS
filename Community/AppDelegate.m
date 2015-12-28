@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "BaseNavigationController.h"
-#import "MainViewController.h"
 #import "EaseMob.h"
 #import "UMSocial.h"
 #import "MobClick.h"
@@ -19,7 +18,7 @@
 @property (nonatomic,retain)  UIImageView   *launchImage;
 @property (nonatomic,retain)  BaseNavigationController *baseNavi;
 @property (nonatomic,assign)  BOOL isLaunchedByNotification;
-@property (nonatomic,retain)  MainViewController *mainVC;
+
 @end
 
 @implementation AppDelegate
@@ -34,10 +33,10 @@
     self.mainVC = [[MainViewController alloc]init];
     self.baseNavi = [[BaseNavigationController alloc]initWithRootViewController:_mainVC];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [self startLocation];
     
     [self loadADimageView];
-    
-    
+
     /**
      *  友盟分享
      */
@@ -239,6 +238,45 @@
     self.window.backgroundColor = [UIColor clearColor];
 }
 
+#pragma mark -- LocationManange
+-(void)startLocation{
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    self.locationManager.distanceFilter = 10.0f;
+    [self.locationManager requestWhenInUseAuthorization];
+    [self.locationManager startUpdatingLocation];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    NSLog(@"change");
+}
+
+//定位代理经纬度回调
+-(void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+    
+    //NSLog(@"%@",[NSString stringWithFormat:@"经度:%3.5f\n纬度:%3.5f",newLocation.coordinate.latitude,newLocation.coordinate.longitude]);
+    
+    CLGeocoder * geoCoder = [[CLGeocoder alloc] init];
+    [geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error) {
+        for (CLPlacemark * placemark in placemarks) {
+            
+            NSDictionary *test = [placemark addressDictionary];
+            
+            NSString *country = placemark.name;
+            NSString *city = placemark.locality; //当前城市
+            
+            SharedInfo *shared = [SharedInfo sharedDataInfo];
+            shared.cityarea = city;
+            shared.locationAddress = country;
+            shared.provincearea =  [test objectForKey:@"State"]; //省份
+        }
+    }];
+    
+    [self.locationManager stopUpdatingLocation];
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -296,6 +334,11 @@
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
     [[EaseMob sharedInstance] application:application didFailToRegisterForRemoteNotificationsWithError:error];
     NSLog(@"error -- %@",error);
+}
+
+- (void)dealloc
+{
+    [self.locationManager stopUpdatingLocation];
 }
 
 @end
