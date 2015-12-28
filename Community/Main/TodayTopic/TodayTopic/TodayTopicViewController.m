@@ -103,37 +103,40 @@
     NSDictionary *parameters = @{@"Method":@"ReAdvertis",@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":@"1",@"TypeID":@"3",@"STypeID":@"5"}]};
     
     [CKHttpRequest createRequest:HTTP_COMMAND_ADVERTIS WithParam:parameters withMethod:@"POST" success:^(id result) {
-        if (self.adView) {
-            
-            NSMutableArray *imageArray = [[NSMutableArray alloc]init];
-            NSArray *detailArray = [result objectForKey:@"Detail"];
-            NSLog(@"detailArray:%@",detailArray);
-            for (int i = 0; i < detailArray.count; i ++ ) {
-                NSDictionary *dic = [detailArray objectAtIndex:i];
-                NSString *tempStr = [dic objectForKey:@"filename"];
-                NSString *filedomain = [dic objectForKey:@"filedomain"];
-                NSString *imageStr = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",filedomain],BASE_IMAGE_URL,guanggao,tempStr];
-                [imageArray addObject:imageStr];
-            }
-            
-            [_adView getCurrentAdData:detailArray];
-            [_adView startAdsWithBlock:imageArray block:^(NSInteger clickIndex) {
-                NSDictionary *dic = detailArray[clickIndex];
-                NSString     *url = [dic objectForKey:@"linkaddress"];
-                NSString     *status = [dic objectForKey:@"width"]; //width = 0表示链接URL地址,=1表示链接app帖子
-                NSString     *post_id = [dic objectForKey:@"height"];
-                if ([status intValue] == 0) {
-                    WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
-                    webDetailVC.url = url;
-                    [webDetailVC setHidesBottomBarWhenPushed:YES];
-                    [self.navigationController pushViewController:webDetailVC animated:YES];
-                }else{
-                    TopicDetailViewController *topicDetailVC = [[TopicDetailViewController alloc]init];
-                    [topicDetailVC setHidesBottomBarWhenPushed:YES];
-                    topicDetailVC.post_id = post_id;
-                    [self.navigationController pushViewController:topicDetailVC animated:YES];
+        if (result) {
+            if (self.adView) {
+                NSLog(@"resulaat:%@",result);
+                NSLog(@"resulaat:%@",[result objectForKey:@"Msg"]);
+                NSMutableArray *imageArray = [[NSMutableArray alloc]init];
+                NSArray *detailArray = [result objectForKey:@"Detail"];
+                NSLog(@"detailArray:%@",detailArray);
+                for (int i = 0; i < detailArray.count; i ++ ) {
+                    NSDictionary *dic = [detailArray objectAtIndex:i];
+                    NSString *tempStr = [dic objectForKey:@"filename"];
+                    NSString *filedomain = [dic objectForKey:@"filedomain"];
+                    NSString *imageStr = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",filedomain],BASE_IMAGE_URL,guanggao,tempStr];
+                    [imageArray addObject:imageStr];
                 }
-            }];
+                
+                [_adView getCurrentAdData:detailArray];
+                [_adView startAdsWithBlock:imageArray block:^(NSInteger clickIndex) {
+                    NSDictionary *dic = detailArray[clickIndex];
+                    NSString     *url = [dic objectForKey:@"linkaddress"];
+                    NSString     *status = [dic objectForKey:@"width"]; //width = 0表示链接URL地址,=1表示链接app帖子
+                    NSString     *post_id = [dic objectForKey:@"height"];
+                    if ([status intValue] == 0) {
+                        WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
+                        webDetailVC.url = url;
+                        [webDetailVC setHidesBottomBarWhenPushed:YES];
+                        [self.navigationController pushViewController:webDetailVC animated:YES];
+                    }else{
+                        TopicDetailViewController *topicDetailVC = [[TopicDetailViewController alloc]init];
+                        [topicDetailVC setHidesBottomBarWhenPushed:YES];
+                        topicDetailVC.post_id = post_id;
+                        [self.navigationController pushViewController:topicDetailVC animated:YES];
+                    }
+                }];
+            }
         }
         [self.tableView reloadData];
     } failure:^(NSError *erro) {
@@ -267,9 +270,6 @@
             shared.cityarea = city;
             shared.locationAddress = country;
             shared.provincearea =  [test objectForKey:@"State"]; //省份
-            if (!isStrEmpty(country)) {
-                [self getAdImageData];
-            }
         }
     }];
     

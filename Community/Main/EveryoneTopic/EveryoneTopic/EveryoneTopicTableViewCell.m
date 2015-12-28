@@ -12,6 +12,7 @@
 #import "CommentViewController.h"
 #import "MineInfoViewController.h"
 #import "CheckTopicDetailViewController.h"
+#import "EaseConvertToCommonEmoticonsHelper.h"
 
 @implementation EveryoneTopicTableViewCell
 {
@@ -148,6 +149,11 @@
     
     dateLabel.text = [NSString stringWithFormat:@"%@ %@",model.createtime,model.source];
     
+    // 表情映射。
+    NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
+                                convertToSystemEmoticons:model.detail];
+    
+    
     /**
      *  获取是否点赞过的数据状态
      */
@@ -170,7 +176,7 @@
      *  动态计算内容高度
      */
     NSString *titleStr = isStrEmpty(model.name) ? @"" : [NSString stringWithFormat:@"【%@】",model.name];
-    contentLabel.text = [NSString stringWithFormat:@"%@%@",titleStr,model.detail];
+    contentLabel.text = [NSString stringWithFormat:@"%@%@",titleStr,didReceiveText];
     
     NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
     CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;

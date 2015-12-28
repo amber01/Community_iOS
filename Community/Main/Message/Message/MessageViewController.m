@@ -386,6 +386,7 @@
             {
                 NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
                                             convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];  //表情映射
+                NSLog(@"didReceiveText:%@",didReceiveText);
                 ret = didReceiveText;
             } break;
                 //语音类型

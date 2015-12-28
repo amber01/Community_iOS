@@ -16,6 +16,7 @@
 #import "ELCImagePickerController.h"
 #import "TopicSendNavigationView.h"
 #import "SendTopicBtnView.h"
+#import "EaseConvertToCommonEmoticonsHelper.h"
 
 @interface SendTopicViewController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate,AGEmojiKeyboardViewDelegate, AGEmojiKeyboardViewDataSource,ELCImagePickerControllerDelegate,UIGestureRecognizerDelegate>
 {
@@ -33,6 +34,7 @@
     SendTopicBtnView      *sendTopicBtnView;
     TopicSendNavigationView *sendNavigationView;
     BOOL                  isHidenSendView;
+    int                   imageCount;
 }
 
 @property (nonatomic,retain) NSMutableArray *locaPhotoArr;
@@ -78,6 +80,7 @@
     [self.navigationController.view addSubview:sendNavigationView];
     self.title = @"";
     
+    imageCount = 1;
     NSLog(@"cate_id:%@",_cate_id);
 }
 
@@ -282,6 +285,7 @@
 
 - (void)emojiKeyBoardView:(AGEmojiKeyboardView *)emojiKeyBoardView didUseEmoji:(NSString *)emoji {
     NSLog(@"emoji:%@",emoji);
+
     sendTopicView.contentTextView.text = [NSMutableString stringWithFormat:@"%@%@",sendTopicView.contentTextView.text,emoji];
     if (sendTopicView.contentTextView.text.length>0) {
         sendTopicView.defaultLabel.hidden = YES;
@@ -303,20 +307,7 @@
             break;
         case AGEmojiKeyboardViewCategoryImageFace:
             selectedIamge = [UIImage imageNamed:@"face_s"];
-            break;
-        case AGEmojiKeyboardViewCategoryImageBell:
-            selectedIamge = [UIImage imageNamed:@"bell_s"];
-            break;
-        case AGEmojiKeyboardViewCategoryImageFlower:
-            selectedIamge = [UIImage imageNamed:@"flower_s"];
-            break;
-        case AGEmojiKeyboardViewCategoryImageCar:
-            selectedIamge = [UIImage imageNamed:@"car_s"];
-            break;
-        case AGEmojiKeyboardViewCategoryImageCharacters:
-            selectedIamge = [UIImage imageNamed:@"characters_s"];
-            break;
-        default:
+  
             break;
     }
     return selectedIamge;
@@ -331,19 +322,7 @@
         case AGEmojiKeyboardViewCategoryImageFace:
             noneSelectedIamge = [UIImage imageNamed:@"face_n"];
             break;
-        case AGEmojiKeyboardViewCategoryImageBell:
-            noneSelectedIamge = [UIImage imageNamed:@"bell_n"];
-            break;
-        case AGEmojiKeyboardViewCategoryImageFlower:
-            noneSelectedIamge = [UIImage imageNamed:@"flower_n"];
-            break;
-        case AGEmojiKeyboardViewCategoryImageCar:
-            noneSelectedIamge = [UIImage imageNamed:@"car_n"];
-            break;
-        case AGEmojiKeyboardViewCategoryImageCharacters:
-            noneSelectedIamge = [UIImage imageNamed:@"characters_n"];
-            break;
-        default:
+     
             break;
     }
     return noneSelectedIamge;
@@ -472,6 +451,11 @@
             int deleteTag = (int)actionSheet.tag - 500;
             [self.sendPhotoCountTitle removeObjectAtIndex:deleteTag];
             
+            NSString *tempContent = sendTopicView.contentTextView.text;
+            sendTopicView.contentTextView.text = [tempContent stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"[图片%d]",deleteTag+1] withString:@""];
+            
+            
+            
             //sendTopicView.contentTextView.text = [self.sendPhotoCountTitle componentsJoinedByString:@""];
             
             UIImageView *imageView = (UIImageView *)[self.view viewWithTag:actionSheet.tag];
@@ -492,13 +476,23 @@
 #pragma mark ELCImagePickerControllerDelegate Methods
 - (void)elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info
 {
+    [self.sendPhotoCountTitle removeAllObjects];
     for (int i = 0; i < info.count; i ++) {
         if (!self.locaPhotoArr) {
             _locaPhotoArr = [[NSMutableArray alloc]init];
         }
         [_locaPhotoArr addObject:[info objectAtIndex:i]];
+        
+        /**
+         *  上传照片的个数
+         */
+        if (!self.sendPhotoCountTitle) {
+            self.sendPhotoCountTitle = [[NSMutableArray alloc]init];
+        }
+        sendTopicView.defaultLabel.hidden = YES;
+        [self.sendPhotoCountTitle addObject:[NSString stringWithFormat:@"[图片%d]",i+imageCount]];
     }
-    
+    imageCount = imageCount + (int)info.count;
     for (int i = 0; i < _locaPhotoArr.count; i ++) {
         ALAssetsLibrary *assetLibrary=[[ALAssetsLibrary alloc] init];
         [assetLibrary assetForURL:[[_locaPhotoArr objectAtIndex:i] valueForKey:UIImagePickerControllerReferenceURL] resultBlock:^(ALAsset *asset) {
@@ -530,11 +524,6 @@
         photoImageview.userInteractionEnabled = YES;
         photoImageview.tag = 500 + i;
         [photoImageview addGestureRecognizer:deleteImageTapGesture];
-        if (!self.sendPhotoCountTitle) {
-            self.sendPhotoCountTitle = [[NSMutableArray alloc]init];
-        }
-        sendTopicView.defaultLabel.hidden = YES;
-        [self.sendPhotoCountTitle addObject:[NSString stringWithFormat:@"[图片%d]",i+1]];
     }
     
     sendTopicView.contentTextView.text = [NSString stringWithFormat:@"%@%@",sendTopicView.contentTextView.text,[self.sendPhotoCountTitle componentsJoinedByString:@""]];
@@ -694,10 +683,14 @@
  *  @param imageDic 字典数组
  */
 - (void)sendTopicImageToServer:(NSMutableDictionary *)imageDic{
+    
+    NSString * currentEmoji = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:sendTopicView.contentTextView.text];
+    NSLog(@"currentEmoji:%@",currentEmoji);
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
     [manager POST:SEND_TOPIC_IMAGE parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        
+
         //图片上传
         if (imageDic.count > 0) {
             for (NSString *key in [imageDic allKeys]) {
@@ -718,7 +711,7 @@
         }
         
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":sendTopicView.titleTextField.text,@"IsShow":@"1",@"Detail":sendTopicView.contentTextView.text,@"Sort":@"",@"UserID":sharedInfo.user_id,@"IP":@"",@"ProvinceID":isStrEmpty(sharedInfo.area)?@"1":sharedInfo.area,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city}],@"Images":self.imagesArray};
+        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":sendTopicView.titleTextField.text,@"IsShow":@"1",@"Detail":currentEmoji,@"Sort":@"",@"UserID":sharedInfo.user_id,@"IP":@"",@"ProvinceID":isStrEmpty(sharedInfo.area)?@"1":sharedInfo.area,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city}],@"Images":self.imagesArray};
         
         [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:params withMethod:@"POST" success:^(id result) {
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {
@@ -752,7 +745,7 @@
         }
         
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":sendTopicView.titleTextField.text,@"Detail":sendTopicView.contentTextView.text,@"Sort":@"",@"IP":@"",@"IsShow":@"1",@"UserID":sharedInfo.user_id,@"ProvinceID":isStrEmpty(sharedInfo.area)?@"1":sharedInfo.area,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city}]};
+        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":sendTopicView.titleTextField.text,@"Detail":currentEmoji,@"Sort":@"",@"IP":@"",@"IsShow":@"1",@"UserID":sharedInfo.user_id,@"ProvinceID":isStrEmpty(sharedInfo.area)?@"1":sharedInfo.area,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city}]};
         
         [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:params withMethod:@"POST" success:^(id result) {
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {

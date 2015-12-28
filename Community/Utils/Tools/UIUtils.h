@@ -129,4 +129,7 @@ void RunBlockAfterDelay(NSTimeInterval delay, void (^block)(void));
 //获取UUID
 + (NSString *)getUniqueStrByUUID;
 
+//CFUUIDRef和CFStringRef-生成唯一标识符
++ (NSString *)createCUID:(NSString *)prefix;
+
 @end

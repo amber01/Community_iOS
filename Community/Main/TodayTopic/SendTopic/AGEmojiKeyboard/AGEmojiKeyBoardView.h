@@ -16,10 +16,6 @@ static const CGFloat ButtonHeight = 45;
 typedef NS_ENUM(NSInteger, AGEmojiKeyboardViewCategoryImage) {
   AGEmojiKeyboardViewCategoryImageRecent,
   AGEmojiKeyboardViewCategoryImageFace,
-  AGEmojiKeyboardViewCategoryImageBell,
-  AGEmojiKeyboardViewCategoryImageFlower,
-  AGEmojiKeyboardViewCategoryImageCar,
-  AGEmojiKeyboardViewCategoryImageCharacters
 };
 
 @protocol AGEmojiKeyboardViewDelegate;

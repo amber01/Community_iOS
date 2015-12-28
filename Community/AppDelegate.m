@@ -76,6 +76,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:[NSArray arrayWithObjects:@"zh-hans",nil]
                                               forKey:@"AppleLanguages"];
     [self getUserInfo];
+
     
     return YES;
 }

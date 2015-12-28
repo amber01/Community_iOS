@@ -208,19 +208,7 @@
             break;
         case AGEmojiKeyboardViewCategoryImageFace:
             selectedIamge = [UIImage imageNamed:@"face_s"];
-            break;
-        case AGEmojiKeyboardViewCategoryImageBell:
-            selectedIamge = [UIImage imageNamed:@"bell_s"];
-            break;
-        case AGEmojiKeyboardViewCategoryImageFlower:
-            selectedIamge = [UIImage imageNamed:@"flower_s"];
-            break;
-        case AGEmojiKeyboardViewCategoryImageCar:
-            selectedIamge = [UIImage imageNamed:@"car_s"];
-            break;
-        case AGEmojiKeyboardViewCategoryImageCharacters:
-            selectedIamge = [UIImage imageNamed:@"characters_s"];
-            break;
+
         default:
             break;
     }
@@ -235,20 +223,8 @@
             break;
         case AGEmojiKeyboardViewCategoryImageFace:
             noneSelectedIamge = [UIImage imageNamed:@"face_n"];
-            break;
-        case AGEmojiKeyboardViewCategoryImageBell:
-            noneSelectedIamge = [UIImage imageNamed:@"bell_n"];
-            break;
-        case AGEmojiKeyboardViewCategoryImageFlower:
-            noneSelectedIamge = [UIImage imageNamed:@"flower_n"];
-            break;
-        case AGEmojiKeyboardViewCategoryImageCar:
-            noneSelectedIamge = [UIImage imageNamed:@"car_n"];
-            break;
-        case AGEmojiKeyboardViewCategoryImageCharacters:
-            noneSelectedIamge = [UIImage imageNamed:@"characters_n"];
-            break;
-        default:
+
+                default:
             break;
     }
     return noneSelectedIamge;

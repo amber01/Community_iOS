@@ -8,6 +8,7 @@
 #import "AGEmojiKeyBoardView.h"
 #import "AGEmojiPageView.h"
 #import "CustomImageView.h"
+#import "EaseConvertToCommonEmoticonsHelper.h"
 
 #define kBarHeight  45  //底部选项的高度
 
@@ -125,6 +126,8 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"EmojisList"
                                                           ofType:@"plist"];
     _emojis = [[NSDictionary dictionaryWithContentsOfFile:plistPath] copy];
+      //[EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:[_emojis allValues]];
+      NSLog(@"_emojis:%@",_emojis);
   }
   return _emojis;
 }
@@ -133,6 +136,16 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
   NSArray *categoryList = @[segmentRecentName, @"People", @"Objects", @"Nature", @"Places", @"Symbols"];
   return categoryList[index];
 }
+
+- (NSMutableArray *)recentEmojis {
+    NSArray *emojis = [[NSUserDefaults standardUserDefaults] arrayForKey:RecentUsedEmojiCharactersKey];
+    NSMutableArray *recentEmojis = [emojis mutableCopy];
+    if (recentEmojis == nil) {
+        recentEmojis = [NSMutableArray array];
+    }
+    return recentEmojis;
+}
+
 
 - (AGEmojiKeyboardViewCategoryImage)defaultSelectedCategory {
   if ([self.dataSource respondsToSelector:@selector(defaultCategoryForEmojiKeyboardView:)]) {
@@ -154,7 +167,7 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
   dispatch_once(&onceToken, ^{
     array = [NSMutableArray array];
     for (AGEmojiKeyboardViewCategoryImage i = AGEmojiKeyboardViewCategoryImageRecent;
-         i <= AGEmojiKeyboardViewCategoryImageCharacters;
+         i <= AGEmojiKeyboardViewCategoryImageFace;
          ++i) {
       [array addObject:[self.dataSource emojiKeyboardView:self imageForSelectedCategory:i]];
     }
@@ -162,28 +175,20 @@ NSString *const RecentUsedEmojiCharactersKey = @"RecentUsedEmojiCharactersKey";
   return array;
 }
 
-- (NSArray *)imagesForNonSelectedSegments {
-  static NSMutableArray *array;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    array = [NSMutableArray array];
-    for (AGEmojiKeyboardViewCategoryImage i = AGEmojiKeyboardViewCategoryImageRecent;
-         i <= AGEmojiKeyboardViewCategoryImageCharacters;
-         ++i) {
-      [array addObject:[self.dataSource emojiKeyboardView:self imageForNonSelectedCategory:i]];
-    }
-    [array addObject:[UIImage imageNamed:@"backspace_n"]];
-  });
-  return array;
-}
 
-- (NSMutableArray *)recentEmojis {
-  NSArray *emojis = [[NSUserDefaults standardUserDefaults] arrayForKey:RecentUsedEmojiCharactersKey];
-  NSMutableArray *recentEmojis = [emojis mutableCopy];
-  if (recentEmojis == nil) {
-    recentEmojis = [NSMutableArray array];
-  }
-  return recentEmojis;
+- (NSArray *)imagesForNonSelectedSegments {
+    static NSMutableArray *array;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        array = [NSMutableArray array];
+        for (AGEmojiKeyboardViewCategoryImage i = AGEmojiKeyboardViewCategoryImageRecent;
+             i <= AGEmojiKeyboardViewCategoryImageFace;
+             ++i) {
+            [array addObject:[self.dataSource emojiKeyboardView:self imageForNonSelectedCategory:i]];
+        }
+        [array addObject:[UIImage imageNamed:@"backspace_n"]];
+    });
+    return array;
 }
 
 - (void)setRecentEmojis:(NSMutableArray *)recentEmojis {

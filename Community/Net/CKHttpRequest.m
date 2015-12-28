@@ -8,7 +8,7 @@
 
 #import "CKHttpRequest.h"
 #import "NSString+MyCategory.h"
-#import "MACAddress.h"
+#import "KeychainIDFA.h"
 
 #define TIME_NETOUT     2.0f
 #define  kNotificationToLogin               @"loginNotification"
@@ -67,14 +67,14 @@
     [tempDic setObject:[NSString stringWithUTF8String:cHttpMethod[taskID]] forKey:@"Class"];
     [tempDic setObject:@"community" forKey:@"WebSite"]; //和服务器约定好的，值不变
     
-    [tempDic setObject:[MACAddress  macaddress] forKey:@"Udid"];
-    
-    if (!isStrEmpty(sharedInfo.cityarea)) {
-        [tempDic setObject:[UIUtils  getUniqueStrByUUID] forKey:@"Udid"];
-        [tempDic setObject:isStrEmpty(sharedInfo.provincearea) ? @"" : sharedInfo.provincearea forKey:@"Province"];
-        [tempDic setObject:isStrEmpty(sharedInfo.cityarea) ? @"" : sharedInfo.cityarea  forKey:@"City"];
-        [tempDic setObject:isStrEmpty(sharedInfo.locationAddress) ? @"" : sharedInfo.locationAddress  forKey:@"Address"];
-    }
+//    if ([KeychainIDFA IDFA].length == 0) {
+//        [tempDic setObject:[KeychainIDFA IDFA] forKey:@"Udid"];
+//    }
+//    [tempDic setObject:[KeychainIDFA IDFA] forKey:@"Udid"];
+//    NSLog(@"[KeychainIDFA IDFA]%@",[KeychainIDFA IDFA]);
+//    [tempDic setObject:isStrEmpty(sharedInfo.provincearea) ? @"" : sharedInfo.provincearea forKey:@"Province"];
+//    [tempDic setObject:isStrEmpty(sharedInfo.cityarea) ? @"" : sharedInfo.cityarea  forKey:@"City"];
+//    [tempDic setObject:isStrEmpty(sharedInfo.locationAddress) ? @"" : sharedInfo.locationAddress  forKey:@"Address"];
 
     
     NSDictionary *paramDic       = @{@"ios":tempDic};

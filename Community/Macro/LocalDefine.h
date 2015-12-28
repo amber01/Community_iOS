@@ -46,3 +46,6 @@
 #define kCustomerName @"zhimore_kefu1"
 
 #define Umeng_key         @"56500ca9e0f55a4819002e85"
+
+#define KEY_UUID      @"com.company.app.uuid"
+#define KEY_APPNAME   @"com.company.app.appname"

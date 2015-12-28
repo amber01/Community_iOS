@@ -196,6 +196,7 @@
                 NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
                                             convertToSystemEmoticons:((EMTextMessageBody *)messageBody).text];
                 latestMessageTitle = didReceiveText;
+                NSLog(@"didReceiveText1:%@",didReceiveText);
             } break;
             case eMessageBodyType_Voice:{
                 latestMessageTitle = NSLocalizedString(@"message.voice1", @"[voice]");

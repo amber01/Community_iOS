@@ -480,6 +480,8 @@
 		DBE54E121C0D6DBD0057D68F /* user_info_addfollow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E101C0D6DBD0057D68F /* user_info_addfollow@2x.png */; };
 		DBE54E131C0D6DBD0057D68F /* user_info_follow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E111C0D6DBD0057D68F /* user_info_follow@2x.png */; };
 		DBE54E151C0D70180057D68F /* user_info_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E141C0D70180057D68F /* user_info_chat@2x.png */; };
+		DBEEE0CE1C30FB8F00DA5EF3 /* KeychainHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DBEEE0CB1C30FB8F00DA5EF3 /* KeychainHelper.m */; };
+		DBEEE0CF1C30FB8F00DA5EF3 /* KeychainIDFA.m in Sources */ = {isa = PBXBuildFile; fileRef = DBEEE0CD1C30FB8F00DA5EF3 /* KeychainIDFA.m */; };
 		DBF503E71C1AA6A100AA02BE /* CommentStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF503E61C1AA6A100AA02BE /* CommentStatusViewController.m */; };
 		DBF503EA1C1AAF1700AA02BE /* MyReceiveCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF503E91C1AAF1700AA02BE /* MyReceiveCommentTableViewCell.m */; };
 		DBF503ED1C1AAF2300AA02BE /* MySendCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF503EC1C1AAF2300AA02BE /* MySendCommentTableViewCell.m */; };
@@ -1293,6 +1295,10 @@
 		DBE54E101C0D6DBD0057D68F /* user_info_addfollow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_addfollow@2x.png"; sourceTree = "<group>"; };
 		DBE54E111C0D6DBD0057D68F /* user_info_follow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_follow@2x.png"; sourceTree = "<group>"; };
 		DBE54E141C0D70180057D68F /* user_info_chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_chat@2x.png"; sourceTree = "<group>"; };
+		DBEEE0CA1C30FB8F00DA5EF3 /* KeychainHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainHelper.h; sourceTree = "<group>"; };
+		DBEEE0CB1C30FB8F00DA5EF3 /* KeychainHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainHelper.m; sourceTree = "<group>"; };
+		DBEEE0CC1C30FB8F00DA5EF3 /* KeychainIDFA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainIDFA.h; sourceTree = "<group>"; };
+		DBEEE0CD1C30FB8F00DA5EF3 /* KeychainIDFA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainIDFA.m; sourceTree = "<group>"; };
 		DBF503E51C1AA6A100AA02BE /* CommentStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentStatusViewController.h; sourceTree = "<group>"; };
 		DBF503E61C1AA6A100AA02BE /* CommentStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentStatusViewController.m; sourceTree = "<group>"; };
 		DBF503E81C1AAF1700AA02BE /* MyReceiveCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReceiveCommentTableViewCell.h; sourceTree = "<group>"; };
@@ -1308,6 +1314,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96D255681C2C45E50002E650 /* Security.framework in Frameworks */,
 				DBE3BC011C2D04D6005DBE23 /* libz.tbd in Frameworks */,
 				96D255741C2C46330002E650 /* libz.1.2.5.tbd in Frameworks */,
 				96D255721C2C46270002E650 /* libstdc++.tbd in Frameworks */,
@@ -1316,7 +1323,6 @@
 				9643D7361BF78528003A394D /* CoreGraphics.framework in Frameworks */,
 				96D2556C1C2C45FC0002E650 /* SystemConfiguration.framework in Frameworks */,
 				96D2556A1C2C45F10002E650 /* libiconv.2.4.0.tbd in Frameworks */,
-				96D255681C2C45E50002E650 /* Security.framework in Frameworks */,
 				96D255541C2C393D0002E650 /* libSocialQQ.a in Frameworks */,
 				96D255461C2C393D0002E650 /* libUMSocial_Sdk_4.4.a in Frameworks */,
 				964AA1261BEF844E007CE0E9 /* CoreLocation.framework in Frameworks */,
@@ -2193,6 +2199,7 @@
 		964A9FB11BEF46B0007CE0E9 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				DBEEE0C91C30FB8F00DA5EF3 /* KeychainIDFA */,
 				DBE3BBFB1C2D045F005DBE23 /* UMAnalytics_Sdk_3.6.6 */,
 				96D254FE1C2C393D0002E650 /* umeng_ios_social_sdk_4.4_arm64_custom */,
 				96C5A3241C1D1B500029FC74 /* WSPulldownCheckView */,
@@ -2444,10 +2451,10 @@
 				DB84257A1BF1988D00D1C273 /* OptionButton.h */,
 				DB84257B1BF1988D00D1C273 /* OptionButton.m */,
 				969345E21C1BE9A50056072F /* WSJSObject.h */,
+				963F8AB21C305E110014B41B /* MACAddress.h */,
 				969345E31C1BE9A50056072F /* WSJSObject.m */,
 				DB9A811E1C1FE1E600601780 /* UIImage+Extras.h */,
 				DB9A811F1C1FE1E600601780 /* UIImage+Extras.m */,
-				963F8AB21C305E110014B41B /* MACAddress.h */,
 				963F8AB31C305E110014B41B /* MACAddress.m */,
 			);
 			path = Tools;
@@ -3357,6 +3364,17 @@
 			path = UMAnalytics_Sdk_3.6.6;
 			sourceTree = "<group>";
 		};
+		DBEEE0C91C30FB8F00DA5EF3 /* KeychainIDFA */ = {
+			isa = PBXGroup;
+			children = (
+				DBEEE0CA1C30FB8F00DA5EF3 /* KeychainHelper.h */,
+				DBEEE0CB1C30FB8F00DA5EF3 /* KeychainHelper.m */,
+				DBEEE0CC1C30FB8F00DA5EF3 /* KeychainIDFA.h */,
+				DBEEE0CD1C30FB8F00DA5EF3 /* KeychainIDFA.m */,
+			);
+			path = KeychainIDFA;
+			sourceTree = "<group>";
+		};
 		DBF503E11C1AA6A100AA02BE /* CommentStatus */ = {
 			isa = PBXGroup;
 			children = (
@@ -3892,6 +3910,7 @@
 				963DC49D1C0ACFD9005D1955 /* PSTCollectionViewData.m in Sources */,
 				963DC4A81C0ACFD9005D1955 /* EaseConversationModel.m in Sources */,
 				96B2D1131BFCD70500FE6185 /* RegisterView.m in Sources */,
+				DBEEE0CF1C30FB8F00DA5EF3 /* KeychainIDFA.m in Sources */,
 				969345E41C1BE9A50056072F /* WSJSObject.m in Sources */,
 				DB9A58801C20F32D00AF2340 /* MyDraftListViewController.m in Sources */,
 				963DC4671C0ACFD9005D1955 /* EMAudioPlayerUtil.m in Sources */,
@@ -4029,6 +4048,7 @@
 				963DC4C21C0ACFD9005D1955 /* EaseBubbleView+File.m in Sources */,
 				96D508411C0DE635001DFA49 /* FindPasswordView.m in Sources */,
 				964A9FEE1BEF74C5007CE0E9 /* BaseNavigationController.m in Sources */,
+				DBEEE0CE1C30FB8F00DA5EF3 /* KeychainHelper.m in Sources */,
 				DB9A81201C1FE1E600601780 /* UIImage+Extras.m in Sources */,
 				96C5A3361C1D1B500029FC74 /* ScorellButtonView.m in Sources */,
 				966EE53E1C0028440039325F /* ELCAlbumPickerController.m in Sources */,
@@ -4130,8 +4150,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Wenzhou ed network media Co. Ltd. (46J7996VL8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Wenzhou ed network media Co. Ltd. (46J7996VL8)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -4176,8 +4196,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Wenzhou ed network media Co. Ltd. (46J7996VL8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Wenzhou ed network media Co. Ltd. (46J7996VL8)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -4205,6 +4225,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
@@ -4248,6 +4269,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;

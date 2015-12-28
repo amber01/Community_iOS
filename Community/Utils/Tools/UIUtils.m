@@ -462,5 +462,17 @@ void RunBlockAfterDelay(NSTimeInterval delay, void (^block)(void))
     return retStr;
 }
 
++ (NSString *)createCUID:(NSString *)prefix{
+    NSString *  result;
+    CFUUIDRef   uuid;
+    CFStringRef uuidStr;
+    uuid = CFUUIDCreate(NULL);
+    uuidStr = CFUUIDCreateString(NULL, uuid);
+    result =[NSString stringWithFormat:@"%@-%@", prefix,uuidStr];
+    CFRelease(uuidStr);
+    CFRelease(uuid);
+    return result;
+}
+
 @end
 
