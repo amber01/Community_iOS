@@ -29,12 +29,18 @@
         
         
         imageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(10*scaleToScreenHeight, (contentLabel.bottom+5), 80*scaleToScreenHeight, 60*scaleToScreenHeight)];
+        imageView1.contentMode = UIViewContentModeScaleAspectFill;
+        imageView1.clipsToBounds = YES;
         [self.contentView addSubview:imageView1];
         
         imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(imageView1.right + 10, (contentLabel.bottom+5), 80*scaleToScreenHeight, 60*scaleToScreenHeight)];
+        imageView2.contentMode = UIViewContentModeScaleAspectFill;
+        imageView2.clipsToBounds = YES;
         [self.contentView addSubview:imageView2];
         
         imageView3 = [[UIImageView alloc]initWithFrame:CGRectMake(imageView2.right + 10, (contentLabel.bottom+5), 80*scaleToScreenHeight, 60*scaleToScreenHeight)];
+        imageView3.contentMode = UIViewContentModeScaleAspectFill;
+        imageView3.clipsToBounds = YES;
         [self.contentView addSubview:imageView3];
         
         commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(200, 5*scaleToScreenHeight, ScreenWidth - 210, 20)];

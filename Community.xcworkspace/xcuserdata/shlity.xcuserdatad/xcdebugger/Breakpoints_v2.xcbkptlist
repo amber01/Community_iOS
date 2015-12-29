@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "287"
             endingLineNumber = "287"
-            landmarkName = "-emojiKeyBoardView:didUseEmoji:"
+            landmarkName = "-selectEmojiAction"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

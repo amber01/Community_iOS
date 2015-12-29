@@ -23,6 +23,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10*scaleToScreenHeight, 10*scaleToScreenHeight, 80*scaleToScreenHeight, 60*scaleToScreenHeight)];
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.clipsToBounds = YES;
         [imageView setImage:[UIImage imageNamed:@"001"]];
         [self.contentView addSubview:imageView];
         
