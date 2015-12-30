@@ -14,7 +14,7 @@
     UIImageView *topicImageView;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame withImageName:(NSString *)imageName
+- (instancetype)initWithFrame:(CGRect)frame withImageName:(NSString *)imageName wihtIsShowSubView:(BOOL)isSubView
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -36,6 +36,11 @@
         _todayNumberLabel.font = [UIFont systemFontOfSize:15];
         _todayNumberLabel.text = @"今日：0";
         
+        //有子模块的情况下
+        if (isSubView) {
+            
+        }
+        
         [self addSubview:_blockNameLabel];
         [self addSubview:_todayNumberLabel];
         [self addSubview:_topicNumberLabel];
@@ -45,7 +50,7 @@
     return self;
 }
 
-- (void)setTopImageIcon:(NSString *)imageName
+- (void)setTopImageIcon:(NSString *)imageName withIsShowSubView:(BOOL)isSubView
 {
     topicImageView.image = [UIImage imageNamed:imageName];
 }

@@ -50,7 +50,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    topicBlockTopView = [[TopicBlockTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 45 + 30 + 10 + 15 + 15 + 10)withImageName:self.imageName];
+    topicBlockTopView = [[TopicBlockTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 45 + 30 + 10 + 15 + 15 + 10)withImageName:self.imageName wihtIsShowSubView:self.ishasSubView];
     topicBlockTopView.backgroundColor = [UIColor whiteColor];
     CustomButtonItem *buttonItem = [[CustomButtonItem alloc]initButtonItem:[UIImage imageNamed:@"today_send_topic.png"]];
     [buttonItem.itemBtn addTarget:self action:@selector(selectSendCat) forControlEvents:UIControlEventTouchUpInside];
@@ -199,7 +199,12 @@
     NSArray *titleArr = @[@"同城互动", @"秀自拍", @"百姓话题", @"看资讯", @"聊美食", @"去哪玩",@"谈感情", @"搞笑吧", @"育儿经", @"爱健康", @"灌小区", @"供求信息",@"提建议"];
     NSArray *btnImage = @[@"topic_send_city",@"topic_send_show",@"topic_send_people",@"topic_send_information",@"topic_send_food",@"topic_send_play",@"topic_send_feeling",@"topic_send_funny",@"topic_send_education",@"topic_send_health",@"topic_send_community",@"topic_send_shareinfo",@"topic_send_suggestion"];
     topicBlockTopView.blockNameLabel.text = titleArr[button.tag - 100];
-    [topicBlockTopView setTopImageIcon:btnImage[button.tag - 100]];
+    if ([_cate_id intValue] == 12) {
+        [topicBlockTopView setTopImageIcon:btnImage[button.tag - 100] withIsShowSubView:YES];
+    }else{
+        [topicBlockTopView setTopImageIcon:btnImage[button.tag - 100] withIsShowSubView:NO];
+    }
+    
     sendTopicBtnView.hidden = YES;
     isHidenSendView = NO;
 }

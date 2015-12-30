@@ -11,13 +11,13 @@
 
 @interface TopicBlockTopView : UIView
 
-- (instancetype)initWithFrame:(CGRect)frame withImageName:(NSString *)imageName;
+- (instancetype)initWithFrame:(CGRect)frame withImageName:(NSString *)imageName wihtIsShowSubView:(BOOL)isSubView;
 
 @property (nonatomic,retain) UILabel               *blockNameLabel;
 @property (nonatomic,retain) UILabel               *topicNumberLabel;
 @property (nonatomic,retain) UILabel               *todayNumberLabel;
 @property (nonatomic,retain) EveryoneTopicHeadView *topicHeadView;
 
-- (void)setTopImageIcon:(NSString *)imageName;
+- (void)setTopImageIcon:(NSString *)imageName withIsShowSubView:(BOOL)isSubView;
 
 @end

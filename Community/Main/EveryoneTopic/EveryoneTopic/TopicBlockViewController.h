@@ -10,8 +10,9 @@
 
 @interface TopicBlockViewController : BaseViewController
 
-@property (nonatomic,retain)NSString    *imageName;
-@property (nonatomic,retain)NSString    *blockName;
-@property (nonatomic,retain)NSString    *cate_id;
+@property (nonatomic,copy)NSString    *imageName;
+@property (nonatomic,copy)NSString    *blockName;
+@property (nonatomic,copy)NSString    *cate_id;
+@property (nonatomic,assign)BOOL      ishasSubView;
 
 @end
