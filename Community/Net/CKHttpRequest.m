@@ -8,7 +8,6 @@
 
 #import "CKHttpRequest.h"
 #import "NSString+MyCategory.h"
-#import "KeychainIDFA.h"
 
 #define TIME_NETOUT     2.0f
 #define  kNotificationToLogin               @"loginNotification"
@@ -66,19 +65,6 @@
     NSMutableDictionary *tempDic = [[NSMutableDictionary alloc]initWithDictionary:param];
     [tempDic setObject:[NSString stringWithUTF8String:cHttpMethod[taskID]] forKey:@"Class"];
     [tempDic setObject:@"community" forKey:@"WebSite"]; //和服务器约定好的，值不变
-    
-//    if ([KeychainIDFA IDFA].length == 0) {
-//        [tempDic setObject:[KeychainIDFA IDFA] forKey:@"Udid"];
-//    }
-    [tempDic setObject:[KeychainIDFA IDFA] forKey:@"Udid"];
-    NSLog(@"[KeychainIDFA IDFA]%@",[KeychainIDFA IDFA]);
-    [tempDic setObject:isStrEmpty(sharedInfo.provincearea) ? @"" : sharedInfo.provincearea forKey:@"Province"];
-    [tempDic setObject:isStrEmpty(sharedInfo.cityarea) ? @"" : sharedInfo.cityarea  forKey:@"City"];
-    [tempDic setObject:isStrEmpty(sharedInfo.locationAddress) ? @"" : sharedInfo.locationAddress  forKey:@"CurrentAddress"];
-    
-    NSLog(@"%@",sharedInfo.provincearea);
-    NSLog(@"%@",sharedInfo.cityarea);
-    NSLog(@"%@",sharedInfo.locationAddress);
     
     NSDictionary *paramDic       = @{@"ios":tempDic};
     

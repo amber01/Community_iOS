@@ -544,6 +544,17 @@
 #pragma UIImagePickerController Delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    [self.sendPhotoCountTitle removeAllObjects];
+    /**
+     *  上传照片的个数
+     */
+    if (!self.sendPhotoCountTitle) {
+        self.sendPhotoCountTitle = [[NSMutableArray alloc]init];
+    }
+    sendTopicView.defaultLabel.hidden = YES;
+    [self.sendPhotoCountTitle addObject:[NSString stringWithFormat:@"[图片%d]",imageCount]];
+
+    imageCount = imageCount + 1;
     [picker dismissViewControllerAnimated:YES completion:^{
         
         if (!self.locaPhotoArr) {
@@ -579,8 +590,9 @@
         }
         
         addImageBtn.frame = CGRectMake(photoImageview.right + 10, 2.5, 45, 45);
-        
     }];
+    
+    sendTopicView.contentTextView.text = [NSString stringWithFormat:@"%@%@",sendTopicView.contentTextView.text,[self.sendPhotoCountTitle componentsJoinedByString:@""]];
 }
 
 - (void)createPhotoList
@@ -708,6 +720,9 @@
                 [formData appendPartWithFileData:[imageDic objectForKey:key] name:key fileName:[NSString stringWithFormat:@"%@.png",key] mimeType:@"image/jpeg"];
             }
             [self initMBProgress:@"图片上传中..."];
+            
+            
+            NSLog(@"imageDic:%@",imageDic);
         }
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self setMBProgreeHiden:YES];
@@ -722,9 +737,12 @@
         }
         
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":sendTopicView.titleTextField.text,@"IsShow":@"1",@"Detail":currentEmoji,@"Sort":@"",@"UserID":sharedInfo.user_id,@"IP":@"",@"ProvinceID":isStrEmpty(sharedInfo.area)?@"1":sharedInfo.area,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city}],@"Images":self.imagesArray};
+        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":sendTopicView.titleTextField.text,@"IsShow":@"1",@"Detail":currentEmoji,@"Sort":@"",@"UserID":sharedInfo.user_id,@"IP":@"",@"ProvinceID":isStrEmpty(sharedInfo.area)?@"1":sharedInfo.area,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city,@"Area":sharedInfo.area}],@"Images":self.imagesArray};
+        
+        NSLog(@"paramsss:%@",params);
         
         [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:params withMethod:@"POST" success:^(id result) {
+            NSLog(@"resultss:%@",result);
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {
                 [self initMBProgress:@"发布成功" withModeType:MBProgressHUDModeText afterDelay:1];
                 [self performBlock:^{
@@ -758,7 +776,7 @@
         }
         
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":sendTopicView.titleTextField.text,@"Detail":currentEmoji,@"Sort":@"",@"IP":@"",@"IsShow":@"1",@"UserID":sharedInfo.user_id,@"ProvinceID":isStrEmpty(sharedInfo.area)?@"1":sharedInfo.area,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city}]};
+        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":sendTopicView.titleTextField.text,@"Detail":currentEmoji,@"Sort":@"",@"IP":@"",@"IsShow":@"1",@"UserID":sharedInfo.user_id,@"ProvinceID":isStrEmpty(sharedInfo.area)?@"1":sharedInfo.area,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city,@"Area":sharedInfo.area}]};
         
         [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:params withMethod:@"POST" success:^(id result) {
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {

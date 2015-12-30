@@ -80,5 +80,12 @@
     }
 }
 
+- (void)getWebStatus:(NSString *)status
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(getWebStatus:)]) {
+        [self.delegate getWebStatus:status];
+    }
+}
+
 
 @end

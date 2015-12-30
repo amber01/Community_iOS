@@ -8,6 +8,6 @@
 
 #import "BaseViewController.h"
 
-@interface TodayTopicViewController : BaseViewController<CLLocationManagerDelegate>
+@interface TodayTopicViewController : BaseViewController
 
 @end

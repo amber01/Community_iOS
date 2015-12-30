@@ -22,28 +22,29 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
-        contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(10*scaleToScreenHeight, 5*scaleToScreenHeight, ScreenWidth - 45 * scaleToScreenHeight, 20*scaleToScreenHeight)];
+        contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 8, ScreenWidth - 55, 20)];
         contentLabel.text = @"是现代作家朱自清于1925年所写的一篇回忆性散文这篇散文叙述的是作者离开南京到北京大学，父亲送他到浦口车站，照料他上车，并替他买橘子的情形。";
         contentLabel.font = [UIFont systemFontOfSize:16.0];
         [self.contentView addSubview:contentLabel];
-         
         
-        imageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(10*scaleToScreenHeight, (contentLabel.bottom+5), 80*scaleToScreenHeight, 60*scaleToScreenHeight)];
+        float imageWidth = (ScreenWidth - 10 - 5 - 5 - 10) / 3;
+        
+        imageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(10, (contentLabel.bottom+7), imageWidth, 70 * scaleToScreenHeight)];
         imageView1.contentMode = UIViewContentModeScaleAspectFill;
         imageView1.clipsToBounds = YES;
         [self.contentView addSubview:imageView1];
         
-        imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(imageView1.right + 10, (contentLabel.bottom+5), 80*scaleToScreenHeight, 60*scaleToScreenHeight)];
+        imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(imageView1.right + 5, (contentLabel.bottom+7), imageWidth, 70 * scaleToScreenHeight)];
         imageView2.contentMode = UIViewContentModeScaleAspectFill;
         imageView2.clipsToBounds = YES;
         [self.contentView addSubview:imageView2];
         
-        imageView3 = [[UIImageView alloc]initWithFrame:CGRectMake(imageView2.right + 10, (contentLabel.bottom+5), 80*scaleToScreenHeight, 60*scaleToScreenHeight)];
+        imageView3 = [[UIImageView alloc]initWithFrame:CGRectMake(imageView2.right + 5, (contentLabel.bottom+7), imageWidth, 70 * scaleToScreenHeight)];
         imageView3.contentMode = UIViewContentModeScaleAspectFill;
         imageView3.clipsToBounds = YES;
         [self.contentView addSubview:imageView3];
         
-        commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(200, 5*scaleToScreenHeight, ScreenWidth - 210, 20)];
+        commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(200, 8, ScreenWidth - 210, 20)];
         commentLabel.textColor = TEXT_COLOR;
         commentLabel.textAlignment = NSTextAlignmentRight;
         commentLabel.font = [UIFont systemFontOfSize:10];

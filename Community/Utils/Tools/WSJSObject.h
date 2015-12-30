@@ -84,6 +84,13 @@
  */
 - (void)toGoback;
 
+/**
+ *  根据status的值判断是否允许手势返回
+ *
+ *  @param status 是否允许手势返回
+ */
+- (void)getWebStatus:(NSString *)status;
+
 @end
 
 //为创建的类实现上边的协议
@@ -99,6 +106,7 @@
 - (void)toShowImg:(NSString *)imageData;
 - (void)toShowTitle:(NSString *)title;
 - (void)toGoback;
+- (void)getWebStatus:(NSString *)status;
 
 @property (nonatomic,assign)id <JSObjectProtocolDelegate,NSObject>delegate;
 

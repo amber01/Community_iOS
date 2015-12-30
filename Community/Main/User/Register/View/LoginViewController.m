@@ -85,7 +85,6 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"isbbs"] forKey:@"isbbs"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"createtime"] forKey:@"createtime"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"address"] forKey:@"address"];
-                [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"area"] forKey:@"area"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"city"] forKey:@"city"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"picture"] forKey:@"picture"];
                 
@@ -98,6 +97,7 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"cityarea"] forKey:@"cityarea"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"provincearea"] forKey:@"provincearea"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"picturedomain"] forKey:@"picturedomain"];
+                [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"area"] forKey:@"area"];
                 
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"isbbs"] forKey:@"isbbs"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"ishotnews"] forKey:@"ishotnews"];
@@ -121,6 +121,9 @@
                 sharedInfo.cityarea = [dic objectForKey:@"cityarea"];
                 sharedInfo.provincearea = [dic objectForKey:@"provincearea"];
                 sharedInfo.picturedomain = [dic objectForKey:@"picturedomain"];
+                sharedInfo.city = [dic objectForKey:@"area"];
+                
+                NSLog(@"areaareaarea:%@",[dic objectForKey:@"area"]);
             }
             
             SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];

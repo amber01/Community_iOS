@@ -132,4 +132,10 @@ void RunBlockAfterDelay(NSTimeInterval delay, void (^block)(void));
 //CFUUIDRef和CFStringRef-生成唯一标识符
 + (NSString *)createCUID:(NSString *)prefix;
 
+/**
+ *  仿QQ空间时间显示
+ *  @param string eg:2015年5月24日 02时21分30秒
+ */
++ (NSString *)format:(NSString *)string;
+
 @end

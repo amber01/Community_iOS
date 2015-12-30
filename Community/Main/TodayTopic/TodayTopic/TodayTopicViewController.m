@@ -15,6 +15,7 @@
 #import "NSString+MyCategory.h"
 #import "TodayTopicMoreTableViewCell.h"
 #import "WebDetailViewController.h"
+#import "SelectCityViewController.h"
 
 @interface TodayTopicViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
 {
@@ -52,7 +53,22 @@
     [self.navigationController.view addSubview:headLogImageView];
     [self getTodayTopicDataInfo:1];
     self.cateArray = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12",@"13"];
+    
+    /**
+     *  第一次使用app
+     */
+    if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"isFistUseApp"]intValue] == 0) {
+        SelectCityViewController *selectCityVC = [[SelectCityViewController alloc]init];
+        selectCityVC.status = @"2";
+        selectCityVC.fristLoad = @"1";
+        
+        BaseNavigationController *baseNav = [[BaseNavigationController alloc]initWithRootViewController:selectCityVC];
+        [self.navigationController presentViewController:baseNav animated:YES completion:^{
+            [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"isFistUseApp"]; //是否第一次使用app
+        }];
+    }
 }
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -220,9 +236,9 @@
     
     TodayTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
     if ([model.imagecount intValue] > 1) {
-        return 99*scaleToScreenHeight;
+        return 28 + 5 + (80 *scaleToScreenHeight);
     }else{
-        return 80*scaleToScreenHeight;
+        return 80;
     }
 }
 

@@ -80,6 +80,17 @@
     [self updateBackButton];
     NSString *titleStr = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     self.title  = isStrEmpty(titleStr) ? @"详情" : titleStr;
+    
+    /**
+     *  如果是签到刮奖的页面就不允许手势返回
+     */
+    if ([titleStr isEqualToString:@"签到刮奖"]) {
+        BaseNavigationController *baseNav = (BaseNavigationController *)self.navigationController;
+        baseNav.canDragBack = NO;
+    }else{
+        BaseNavigationController *baseNav = (BaseNavigationController *)self.navigationController;
+        baseNav.canDragBack = YES;
+    }
 }
 
 - (void)backWasClicked:(id)sender {
@@ -185,5 +196,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    BaseNavigationController *baseNav = (BaseNavigationController *)self.navigationController;
+    baseNav.canDragBack = YES;
+
+}
 
 @end

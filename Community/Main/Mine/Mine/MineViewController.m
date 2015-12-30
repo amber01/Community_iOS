@@ -86,7 +86,6 @@
         
         [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:params withMethod:@"POST" success:^(id result) {
             if (result) {
-                
                 NSArray *items = [UserModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
                 if (self.dataArray.count > 1) {
                     [self.dataArray removeAllObjects];

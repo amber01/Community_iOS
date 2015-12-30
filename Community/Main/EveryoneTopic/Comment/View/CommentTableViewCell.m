@@ -87,7 +87,7 @@
     NSLog(@"%@",[NSString stringWithFormat:@"%@%@%@%@",model.logopicturedomain,BASE_IMAGE_URL,face,model.logopicture]);
     NSLog(@"images:%@",[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]);
     
-    dateLabel.text = model.createtime;
+    dateLabel.text = [NSString stringWithFormat:@"%@",[UIUtils format:model.createtime]];
     if ([model.isreplay intValue] == 0) { //未回复的
         // 表情映射。
         NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper

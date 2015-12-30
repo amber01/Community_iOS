@@ -33,10 +33,9 @@
     self.mainVC = [[MainViewController alloc]init];
     self.baseNavi = [[BaseNavigationController alloc]initWithRootViewController:_mainVC];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    [self startLocation];
     
     [self loadADimageView];
-
+    
     /**
      *  友盟分享
      */
@@ -75,7 +74,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:[NSArray arrayWithObjects:@"zh-hans",nil]
                                               forKey:@"AppleLanguages"];
     [self getUserInfo];
-
+    
     
     return YES;
 }
@@ -118,7 +117,6 @@
     sharedInfo.nickname  = [[NSUserDefaults standardUserDefaults]objectForKey:@"nickname"];
     sharedInfo.mobile  = [[NSUserDefaults standardUserDefaults]objectForKey:@"mobile"];
     sharedInfo.username  = [[NSUserDefaults standardUserDefaults]objectForKey:@"username"];
-    sharedInfo.area  = [[NSUserDefaults standardUserDefaults]objectForKey:@"area"];
     sharedInfo.address  = [[NSUserDefaults standardUserDefaults]objectForKey:@"address"];
     sharedInfo.createtime  = [[NSUserDefaults standardUserDefaults]objectForKey:@"createtime"];
     sharedInfo.picture = [[NSUserDefaults standardUserDefaults]objectForKey:@"picture"];
@@ -131,7 +129,7 @@
     sharedInfo.cityarea = [[NSUserDefaults standardUserDefaults] objectForKey:@"cityarea"];
     sharedInfo.provincearea =  [[NSUserDefaults standardUserDefaults] objectForKey:@"provincearea"];
     sharedInfo.picturedomain = [[NSUserDefaults standardUserDefaults] objectForKey:@"picturedomain"];
-    
+    sharedInfo.city = [[NSUserDefaults standardUserDefaults] objectForKey:@"city"];
     EaseMob *easemob = [EaseMob sharedInstance];
     //登陆时记住HuanXin密码
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -168,7 +166,7 @@
         }];
     }
     
-    NSLog(@"username:%@",sharedInfo.username);
+    NSLog(@"username:%@",sharedInfo.city );
 }
 
 - (void)loadADimageView{
@@ -224,6 +222,7 @@
 {
     [self.adImageView removeFromSuperview];
     [self.launchImage removeFromSuperview];
+    
     /**
      *  收到通知的情况下就跳转到消息页面
      */
@@ -232,51 +231,10 @@
         self.window.rootViewController = self.baseNavi;
     }else{
         self.window.rootViewController = self.baseNavi;
-        
     }
     
     self.window.backgroundColor = [UIColor clearColor];
 }
-
-#pragma mark -- LocationManange
--(void)startLocation{
-    self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    self.locationManager.distanceFilter = 10.0f;
-    [self.locationManager requestWhenInUseAuthorization];
-    [self.locationManager startUpdatingLocation];
-}
-
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
-{
-    NSLog(@"change");
-}
-
-//定位代理经纬度回调
--(void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    
-    //NSLog(@"%@",[NSString stringWithFormat:@"经度:%3.5f\n纬度:%3.5f",newLocation.coordinate.latitude,newLocation.coordinate.longitude]);
-    
-    CLGeocoder * geoCoder = [[CLGeocoder alloc] init];
-    [geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error) {
-        for (CLPlacemark * placemark in placemarks) {
-            
-            NSDictionary *test = [placemark addressDictionary];
-            
-            NSString *country = placemark.name;
-            NSString *city = placemark.locality; //当前城市
-            
-            SharedInfo *shared = [SharedInfo sharedDataInfo];
-            shared.cityarea = city;
-            shared.locationAddress = country;
-            shared.provincearea =  [test objectForKey:@"State"]; //省份
-        }
-    }];
-    
-    [self.locationManager stopUpdatingLocation];
-}
-
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -334,11 +292,6 @@
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
     [[EaseMob sharedInstance] application:application didFailToRegisterForRemoteNotificationsWithError:error];
     NSLog(@"error -- %@",error);
-}
-
-- (void)dealloc
-{
-    [self.locationManager stopUpdatingLocation];
 }
 
 @end

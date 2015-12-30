@@ -71,7 +71,7 @@
     CGSize textLabelSize = [model.detail boundingRectWithSize:CGSizeMake(self.detailLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
     
 
-    self.dateLabel.text = model.createtime;
+    self.dateLabel.text = [NSString stringWithFormat:@"%@",[UIUtils format:model.createtime]];
         self.detailLabel.frame = CGRectMake(10, 10, self.msgBgView.width - 10, textLabelSize.height);
     self.msgBgView.frame = CGRectMake(self.avatarImageView.right + 4 - 0.7 + 10, 15, ScreenWidth - self.avatarImageView.right - 25 - 30, self.detailLabel.bottom + 10);
     self.dateLabel.frame = CGRectMake(0, _msgBgView.bottom + 10, ScreenWidth, 20);

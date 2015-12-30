@@ -44,7 +44,7 @@
         [UIUtils setupViewRadius:avatarImageView cornerRadius:45/2];
         
         nicknameLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right+10, 18, ScreenWidth - avatarImageView.width - 40, 20)];
-        nicknameLabel.font = [UIFont systemFontOfSize:14];
+        nicknameLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
         nicknameLabel.text = @"盛夏光年";
         
         dateLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right+10, nicknameLabel.bottom+2, ScreenWidth - avatarImageView.width - 40, 20)];
@@ -147,7 +147,7 @@
     [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
     nicknameLabel.text = model.nickname;
     
-    dateLabel.text = [NSString stringWithFormat:@"%@ %@",model.createtime,model.source];
+    dateLabel.text = [NSString stringWithFormat:@"%@ %@",[UIUtils format:model.createtime],model.source];
     
     // 表情映射。
     NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper

@@ -154,7 +154,7 @@
     fansNumLabel.text = model.myfansnum;
     followNumLabel.text = model.mytofansnum;
     scoreNumLabel.text = model.totalscore;
-    
+    prestigeLabel.text = [NSString stringWithFormat: @"威望:V%@",model.prestige];
     [[NSUserDefaults standardUserDefaults] setObject:model.nickname forKey:@"nickname"];
     [[NSUserDefaults standardUserDefaults] setObject:model.postnum forKey:@"postnum"];
     [[NSUserDefaults standardUserDefaults] setObject:model.myfansnum forKey:@"myfansnum"];

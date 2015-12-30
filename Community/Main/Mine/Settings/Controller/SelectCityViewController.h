@@ -12,6 +12,7 @@
 @interface SelectCityViewController : BaseViewController<CLLocationManagerDelegate>
 
 @property (strong, nonatomic) CLLocationManager  *locationManager;
-@property (strong, nonatomic) NSString           *status;
+@property (strong, nonatomic) NSString           *status;  //1 第一次登录，2第一次使用app 
+@property (strong, nonatomic) NSString           *fristLoad;
 
 @end
