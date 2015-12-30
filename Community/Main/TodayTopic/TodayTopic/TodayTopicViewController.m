@@ -48,7 +48,7 @@
     CustomButtonItem *buttonItem = [[CustomButtonItem alloc]initButtonItem:[UIImage imageNamed:@"today_send_topic.png"]];
     [buttonItem.itemBtn addTarget:self action:@selector(selectSendCat) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = buttonItem;
-    headLogImageView = [[UIImageView alloc]initWithFrame:CGRectMake(ScreenWidth/2-80, 27, 160, 30)];
+    headLogImageView = [[UIImageView alloc]initWithFrame:CGRectMake(ScreenWidth/2-48, 27, 97, 30)];
     [headLogImageView setImage:[UIImage imageNamed:@"today_topic_log"]];
     [self.navigationController.view addSubview:headLogImageView];
     [self getTodayTopicDataInfo:1];

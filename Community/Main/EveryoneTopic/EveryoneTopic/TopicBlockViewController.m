@@ -269,7 +269,7 @@
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     [self initMBProgress:@"数据加载中..."];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
-    NSDictionary *parameters = @{@"Method":@"RePostInfo",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"FldSort":fldSort,@"FldSortType":@"1",@"CityID":isStrEmpty(sharedInfo.city)?@"":sharedInfo.city,@"ProvinceID":isStrEmpty(sharedInfo.city) ? @"" : sharedInfo.provincearea,@"IsEssence":isEssence,@"ClassID":self.cate_id,@"Area":sharedInfo.city}]};
+    NSDictionary *parameters = @{@"Method":@"RePostInfo",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"FldSort":fldSort,@"FldSortType":@"1",@"CityID":isStrEmpty(sharedInfo.city)?@"":sharedInfo.city,@"ProvinceID":isStrEmpty(sharedInfo.city) ? @"" : sharedInfo.city,@"IsEssence":isEssence,@"ClassID":self.cate_id,@"Area":sharedInfo.city}]};
     
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSString *allTopicCount = [result objectForKey:@"Counts"];
