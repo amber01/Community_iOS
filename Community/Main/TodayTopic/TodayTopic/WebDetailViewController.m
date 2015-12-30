@@ -104,6 +104,7 @@
 {
     self.automaticallyAdjustsScrollViewInsets = NO;
     _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-64)];
+    _webView.scalesPageToFit = YES;
     [self.view addSubview:_webView];
     
     NSString *urlString = [event_url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];

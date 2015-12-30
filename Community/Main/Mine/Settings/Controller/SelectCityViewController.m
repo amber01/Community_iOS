@@ -301,6 +301,8 @@
         }
     }
     
+    [[NSNotificationCenter defaultCenter]postNotificationName:kReloadDataNotification object:nil];
+    
     //第一次使用app
     if ([self.status intValue] == 2) {
         NSDictionary *params = @{@"Method":@"SelectArea",@"RunnerIP":@"",@"RunnerIsClient":@"",@"RunnerUserID":@"",@"Detail":@[@{@"Udid":[KeychainIDFA IDFA],@"AreaID":shareInfo.city}]};

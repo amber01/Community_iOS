@@ -57,7 +57,7 @@
 
 - (void)configureCellWithInfo:(TodayTopicModel *)model withImages:(NSArray *)imageArray
 {
-    contentLabel.text = model.detail;
+    contentLabel.text = model.name;
     commentLabel.text = [NSString stringWithFormat:@"%@评论",model.commentnum];
     
     if ([model.imagecount intValue] > 1) {

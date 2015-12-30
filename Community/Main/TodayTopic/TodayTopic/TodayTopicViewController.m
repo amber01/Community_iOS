@@ -54,6 +54,8 @@
     [self getTodayTopicDataInfo:1];
     self.cateArray = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12",@"13"];
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadDataList) name:kReloadDataNotification object:nil];
+    
     /**
      *  第一次使用app
      */
@@ -77,11 +79,21 @@
     [self.adView startTimerPlay];
 }
 
+#pragma mark -- NSNotificationCenter
+- (void)reloadDataList
+{
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    header.lastUpdatedTimeLabel.hidden = YES;
+    [header beginRefreshing];
+    _tableView.mj_header = header;
+}
+
 #pragma mark -- HTTP
 - (void)getTodayTopicDataInfo:(int)pageIndex
 {
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
-    NSDictionary *parameters = @{@"Method":@"RePostInfo",@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"2",@"PageIndex":pageStr,@"FldSort":@"3",@"FldSortType":@"1"}]};
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    NSDictionary *parameters = @{@"Method":@"RePostInfo",@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"2",@"PageIndex":pageStr,@"FldSort":@"3",@"FldSortType":@"1",@"Area":isStrEmpty(sharedInfo.city) ? @"" : sharedInfo.city}]};
     
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSArray *items = [TodayTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];

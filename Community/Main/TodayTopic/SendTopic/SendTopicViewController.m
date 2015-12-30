@@ -737,7 +737,7 @@
         }
         
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":sendTopicView.titleTextField.text,@"IsShow":@"1",@"Detail":currentEmoji,@"Sort":@"",@"UserID":sharedInfo.user_id,@"IP":@"",@"ProvinceID":isStrEmpty(sharedInfo.area)?@"1":sharedInfo.area,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city,@"Area":sharedInfo.area}],@"Images":self.imagesArray};
+        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":sendTopicView.titleTextField.text,@"IsShow":@"1",@"Detail":currentEmoji,@"Sort":@"",@"UserID":sharedInfo.user_id,@"IP":@"",@"ProvinceID":isStrEmpty(sharedInfo.area)?@"1":sharedInfo.area,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city,@"Area":sharedInfo.city}],@"Images":self.imagesArray};
         
         NSLog(@"paramsss:%@",params);
         
@@ -776,7 +776,8 @@
         }
         
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":sendTopicView.titleTextField.text,@"Detail":currentEmoji,@"Sort":@"",@"IP":@"",@"IsShow":@"1",@"UserID":sharedInfo.user_id,@"ProvinceID":isStrEmpty(sharedInfo.area)?@"1":sharedInfo.area,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city,@"Area":sharedInfo.area}]};
+        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":sendTopicView.titleTextField.text,@"Detail":currentEmoji,@"Sort":@"",@"IP":@"",@"IsShow":@"1",@"UserID":sharedInfo.user_id,@"ProvinceID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city,@"Area":sharedInfo.city}]};
+
         
         [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:params withMethod:@"POST" success:^(id result) {
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {
