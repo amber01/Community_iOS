@@ -108,6 +108,7 @@
     detailWebView.delegate = self;
     detailWebView.scorollDelegate = self;
     detailWebView.scalesPageToFit = YES;
+    detailWebView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal; //让webview滚动的时候流畅一些
     headView = [[TopicDetailHeadView alloc]initWithFrame:CGRectMake(0, 0, ScreenHeight, 65)];
     [self.myScrollView addSubview:detailWebView];
     

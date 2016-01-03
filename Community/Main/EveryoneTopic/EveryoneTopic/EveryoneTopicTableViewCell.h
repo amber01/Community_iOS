@@ -7,10 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SDPhotoBrowser.h"
 #import "MLEmojiLabel.h"
 
-@interface EveryoneTopicTableViewCell : UITableViewCell<SDPhotoBrowserDelegate,UIGestureRecognizerDelegate,MLEmojiLabelDelegate>
+#import "MLPhotoBrowserAssets.h"
+#import "MLPhotoBrowserViewController.h"
+#import <UIButton+WebCache.h>
+
+
+@interface EveryoneTopicTableViewCell : UITableViewCell<UIGestureRecognizerDelegate,MLEmojiLabelDelegate,MLPhotoBrowserViewControllerDataSource,MLPhotoBrowserViewControllerDelegate>
 
 - (void)configureCellWithInfo:(EveryoneTopicModel *)model withImages:(NSArray *)imageArray andPraiseData:(NSArray *)praiseArray andRow:(NSInteger )row;
 

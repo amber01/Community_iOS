@@ -14,6 +14,9 @@
 #import "CheckTopicDetailViewController.h"
 #import "EaseConvertToCommonEmoticonsHelper.h"
 
+
+
+
 @implementation EveryoneTopicTableViewCell
 {
     PubliButton         *avatarImageView;
@@ -24,6 +27,9 @@
     UIImageView         *photoImageBtn1;
     UIImageView         *photoImageBtn2;
     UIImageView         *photoImageBtn3;
+    
+    UIView              *photoInfoView;
+    UILabel             *photoNumLabel;
     
     UILabel             *commentLabel;
     UILabel             *fromLabel;
@@ -89,6 +95,18 @@
         lastPhotoTapGesture.delegate = self;
         [photoImageBtn3 addGestureRecognizer:lastPhotoTapGesture];
         
+        photoInfoView = [[UIView alloc]initWithFrame:CGRectMake(40, 80 - 15, 40, 15)];
+        photoInfoView.backgroundColor = [UIColor colorWithHexString:@"#000000" alpha:0.5];
+        
+        UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 2.5, 13, 10)];
+        imageView.image = [UIImage imageNamed:@"topic_photo_num"];
+        [photoInfoView addSubview:imageView];
+        
+        photoNumLabel = [[UILabel alloc]initWithFrame:CGRectMake(28, 15/2-10, 15, 20)];
+        photoNumLabel.font = [UIFont systemFontOfSize:10];
+        photoNumLabel.textColor = [UIColor whiteColor];
+        [photoInfoView addSubview:photoNumLabel];
+        [photoImageBtn3 addSubview:photoInfoView];
         
         self.likeBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
         _likeBtn.frame = CGRectMake(0, photoImageBtn1.bottom + 15, 34, 26);
@@ -274,7 +292,7 @@
                 }else if (k == 8){
                     [self.photoUrlArray addObject:imageURL];
                 }
-                [self showPhotoImage:self.photoUrlArray withTag:row];
+                
             }else{
             }
         }
@@ -309,54 +327,64 @@
         fromLabel.frame = CGRectMake(100, imageHeight + 8, ScreenWidth - 100 - 15, 20);
         self.frame = CGRectMake(0, 0, ScreenWidth,avatarImageView.height + imageHeight - 10);
     }
+    
+    if (self.photoUrlArray.count >3) {
+        photoInfoView.hidden = NO;
+        photoNumLabel.text = [NSString stringWithFormat:@"%d",(int)self.photoUrlArray.count];
+    }else{
+        photoInfoView.hidden = YES;
+    }
 }
 
 #pragma mark - photobrowser代理方法
 - (void)showPhotoBrowseOne:(UITapGestureRecognizer *)tapGesture
 {
-    
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-    SDPhotoBrowser *browser = [[SDPhotoBrowser alloc] init];
-    browser.imageCount = self.photoUrlArray.count; //图片总数
-    browser.currentImageIndex = 0;
-    browser.delegate = self;
-    [browser show];
+    // 图片游览器
+    MLPhotoBrowserViewController *photoBrowser = [[MLPhotoBrowserViewController alloc] init];
+    // 淡入淡出效果
+    photoBrowser.status = UIViewAnimationAnimationStatusFade;
+    // 数据源/delegate
+    photoBrowser.delegate = self;
+    photoBrowser.dataSource = self;
+    // 当前选中的值
+    photoBrowser.currentIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];;
+    // 展示控制器
+    [photoBrowser showPickerVc:self.viewController];
 }
 
 - (void)showPhotoBrowseTwo:(UITapGestureRecognizer *)tapGesture
 {
     if (self.photoUrlArray.count > 1) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-        SDPhotoBrowser *browser = [[SDPhotoBrowser alloc] init];
-        browser.imageCount = self.photoUrlArray.count; //图片总数
-        browser.currentImageIndex = 1;
-        browser.delegate = self;
-        [browser show];
+        // 图片游览器
+        MLPhotoBrowserViewController *photoBrowser = [[MLPhotoBrowserViewController alloc] init];
+        // 淡入淡出效果
+        photoBrowser.status = UIViewAnimationAnimationStatusFade;
+        // 数据源/delegate
+        photoBrowser.delegate = self;
+        photoBrowser.dataSource = self;
+        // 当前选中的值
+        photoBrowser.currentIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
+        // 当前选中的值
+        // 展示控制器
+        [photoBrowser showPickerVc:self.viewController];
     }
 }
 
 - (void)showPhotoBrowseThree:(UITapGestureRecognizer *)tapGesture
 {
     if (self.photoUrlArray.count > 2) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-        SDPhotoBrowser *browser = [[SDPhotoBrowser alloc] init];
-        browser.imageCount = self.photoUrlArray.count; //图片总数
-        browser.currentImageIndex = 2;
-        browser.delegate = self;
-        [browser show];
+        // 图片游览器
+        MLPhotoBrowserViewController *photoBrowser = [[MLPhotoBrowserViewController alloc] init];
+        // 淡入淡出效果
+        photoBrowser.status = UIViewAnimationAnimationStatusFade;
+        // 数据源/delegate
+        photoBrowser.delegate = self;
+        photoBrowser.dataSource = self;
+        // 当前选中的值
+        photoBrowser.currentIndexPath = [NSIndexPath indexPathForItem:2 inSection:0];;
+        // 展示控制器
+        [photoBrowser showPickerVc:self.viewController];
     }
-}
-
-- (void)showPhotoImage:(NSMutableArray *)photoArray withTag:(NSInteger)row
-{
-    //NSLog(@"photo array:%@",photoArray);
-}
-
-// 返回高质量图片的url
-- (NSURL *)photoBrowser:(SDPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index
-{
-    NSString *urlStr = self.photoUrlArray[index];
-    return [NSURL URLWithString:urlStr];
 }
 
 #pragma mark -- action
@@ -421,6 +449,31 @@
             break;
     }
 }
+
+#pragma --------
+#pragma mark - <MLPhotoBrowserViewControllerDataSource>
+- (NSInteger)photoBrowser:(MLPhotoBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
+    return self.photoUrlArray.count;
+}
+
+#pragma mark - 每个组展示什么图片,需要包装下MLPhotoBrowserPhoto
+- (MLPhotoBrowserPhoto *) photoBrowser:(MLPhotoBrowserViewController *)browser photoAtIndexPath:(NSIndexPath *)indexPath{
+    // 包装下imageObj 成 ZLPhotoPickerBrowserPhoto 传给数据源
+    MLPhotoBrowserPhoto *photo = [[MLPhotoBrowserPhoto alloc] init];
+    photo.photoObj = [self.photoUrlArray objectAtIndex:indexPath.row];
+    
+    // 缩略图
+//    if (indexPath.row == 0) {
+//        photo.thumbImage = photoImageBtn1.image;
+//    }else if (indexPath.row == 1){
+//        photo.thumbImage = photoImageBtn2.image;
+//    }else{
+//        photo.thumbImage = photoImageBtn3.image;
+//    }
+
+    return photo;
+}
+
 
 - (void)awakeFromNib {
     // Initialization code

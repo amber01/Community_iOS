@@ -50,12 +50,25 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    topicBlockTopView = [[TopicBlockTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 45 + 30 + 10 + 15 + 15 + 10)withImageName:self.imageName wihtIsShowSubView:self.ishasSubView];
+    if ([_cate_id intValue] == 12) {
+        topicBlockTopView = [[TopicBlockTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 45 + 30 + 10 + 15 + 15 + 10 + 54)withImageName:self.imageName wihtIsShowSubView:YES];
+        NSDictionary *parameters = @{@"Method":@"ReClassInfo",@"Detail":@[@{@"TableName":@"postinfo",@"IsShow":@"888",@"PageIndex":@"1",@"PageSize":@"100",@"ParentID":@"12"}]};
+        [CKHttpRequest createRequest:HTTP_SUB_CLASS_CATE WithParam:parameters withMethod:@"POST" success:^(id result) {
+            if (result) {
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"SubCateDataNotification" object:[result objectForKey:@"Detail"]];
+            }
+        } failure:^(NSError *erro) {
+            
+        }];
+    }else{
+        topicBlockTopView = [[TopicBlockTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 45 + 30 + 10 + 15 + 15 + 10)withImageName:self.imageName wihtIsShowSubView:NO];
+    }
+    
     topicBlockTopView.backgroundColor = [UIColor whiteColor];
     CustomButtonItem *buttonItem = [[CustomButtonItem alloc]initButtonItem:[UIImage imageNamed:@"today_send_topic.png"]];
     [buttonItem.itemBtn addTarget:self action:@selector(selectSendCat) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = buttonItem;
-
+    
     topicBlockTopView.blockNameLabel.text = self.blockName;
     [self.view addSubview:topicBlockTopView];
     
@@ -94,7 +107,7 @@
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.tableHeaderView = topicBlockTopView;
-
+        
         UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(ScreenWidth - 100, topicBlockTopView.height - 40, 90, 40)];
         button.backgroundColor = [UIColor clearColor];
         [button addTarget:self action:@selector(showMoreView) forControlEvents:UIControlEventTouchUpInside];
@@ -201,8 +214,22 @@
     topicBlockTopView.blockNameLabel.text = titleArr[button.tag - 100];
     if ([_cate_id intValue] == 12) {
         [topicBlockTopView setTopImageIcon:btnImage[button.tag - 100] withIsShowSubView:YES];
+        topicBlockTopView.frame = CGRectMake(0, 0, ScreenWidth, 45 + 30 + 10 + 15 + 15 + 10 + 54);
+        _tableView.tableHeaderView = topicBlockTopView;
+        
+        NSDictionary *parameters = @{@"Method":@"ReClassInfo",@"Detail":@[@{@"TableName":@"postinfo",@"IsShow":@"888",@"PageIndex":@"1",@"PageSize":@"100",@"ParentID":@"12"}]};
+        [CKHttpRequest createRequest:HTTP_SUB_CLASS_CATE WithParam:parameters withMethod:@"POST" success:^(id result) {
+            if (result) {
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"SubCateDataNotification" object:[result objectForKey:@"Detail"]];
+            }
+        } failure:^(NSError *erro) {
+            
+        }];
+        
     }else{
         [topicBlockTopView setTopImageIcon:btnImage[button.tag - 100] withIsShowSubView:NO];
+        topicBlockTopView.frame = CGRectMake(0, 0, ScreenWidth, 45 + 30 + 10 + 15 + 15 + 10);
+        _tableView.tableHeaderView = topicBlockTopView;
     }
     
     sendTopicBtnView.hidden = YES;
@@ -523,4 +550,3 @@
 
 
 @end
-

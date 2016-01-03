@@ -40,6 +40,12 @@
     [self setupTableView];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    [_tableView reloadData];
+}
+
 - (UITableView *)setupTableView
 {
     if (!self.tableView) {
@@ -81,6 +87,7 @@
 
     if (!cell) {
         cell = [[SettingTableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
+        [cell layoutSubviews]; 
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
@@ -94,6 +101,14 @@
             cell.logoutTitle.hidden = YES;
         }
         
+        if (indexPath.section == 0 && indexPath.row == 1) {
+            SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+            cell.cityDetailLabel.hidden = NO;
+            cell.cityDetailLabel.text = sharedInfo.cityarea;
+        }else{
+            cell.cityDetailLabel.hidden = YES;
+        }
+
         if (indexPath.section == 1 && indexPath.row == 0) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%0.2fMB",[[SDImageCache sharedImageCache] getSize]/1024.0/1024.0];
         }else{
@@ -109,6 +124,15 @@
         }else{
             cell.logoutTitle.hidden = YES;
         }
+        
+        if (indexPath.section == 0 && indexPath.row == 0) {
+            SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+            cell.cityDetailLabel.hidden = NO;
+            cell.cityDetailLabel.text = sharedInfo.cityarea;
+        }else{
+            cell.cityDetailLabel.hidden = YES;
+        }
+
         
         if (indexPath.section == 1 && indexPath.row == 0) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%0.2fMB",[[SDImageCache sharedImageCache] getSize]/1024.0/1024.0];

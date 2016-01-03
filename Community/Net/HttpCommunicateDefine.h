@@ -62,6 +62,8 @@ typedef NS_ENUM(NSInteger,HTTP_COMMAND_LIST){
     HTTP_SYSTEM_NOTICE,
     //选择城市 14
     HTTP_SELECT_CITY,
+    //供求信息下得子分类 15
+    HTTP_SUB_CLASS_CATE,
     
     /*******************/
     HTTP_METHOD_RESERVE,
@@ -85,6 +87,7 @@ static char cHttpMethod[HTTP_METHOD_COUNT][64] = {
     "UserScoreLogInfo", //12
     "Notice",           //13
     "Installed",       //14
+    "ClassInfo",       //15
 };
 
 /*****************************************************************************/

@@ -94,7 +94,7 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"totalscore"] forKey:@"totalscore"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"sex"] forKey:@"sex"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"client"] forKey:@"client"];
-                [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"cityarea"] forKey:@"cityarea"];
+                
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"provincearea"] forKey:@"provincearea"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"picturedomain"] forKey:@"picturedomain"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"area"] forKey:@"area"];
@@ -118,10 +118,15 @@
                 sharedInfo.totalscore = [dic objectForKey:@"totalscore"];
                 sharedInfo.sex = [dic objectForKey:@"sex"];
                 sharedInfo.client = [dic objectForKey:@"client"];
-                sharedInfo.cityarea = [dic objectForKey:@"cityarea"];
+                
                 sharedInfo.provincearea = [dic objectForKey:@"provincearea"];
                 sharedInfo.picturedomain = [dic objectForKey:@"picturedomain"];
                 sharedInfo.city = [dic objectForKey:@"area"];
+                
+                if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"cityarea"]length] < 1){
+                    [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"cityarea"] forKey:@"cityarea"];
+                    sharedInfo.cityarea = [dic objectForKey:@"cityarea"];
+                }
                 
                 NSLog(@"areaareaarea:%@",[dic objectForKey:@"area"]);
             }

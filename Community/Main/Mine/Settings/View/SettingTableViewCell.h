@@ -11,5 +11,7 @@
 @interface SettingTableViewCell : UITableViewCell
 
 @property (nonatomic,retain)UILabel     *logoutTitle;
+@property (nonatomic,retain)UILabel     *cityDetailLabel;
+
 
 @end

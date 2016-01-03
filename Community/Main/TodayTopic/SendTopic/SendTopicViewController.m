@@ -120,7 +120,7 @@
 #pragma mark -- UITextFieldDelegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    isInput = YES;
+    isInput = NO; //
     return YES;
 }
 
@@ -811,7 +811,11 @@
 
 - (void)dismissKeyBoard
 {
-    [self.view endEditing:YES];
+    if (isInput == YES) {
+        [self.view endEditing:YES];
+    }else{
+        [sendTopicView.contentTextView  becomeFirstResponder];
+    }
 }
 
 - (void)dealloc

@@ -18,6 +18,12 @@
         _logoutTitle.textColor = BASE_COLOR;
         _logoutTitle.textAlignment=NSTextAlignmentCenter;
         [self.contentView addSubview:_logoutTitle];
+        
+        self.cityDetailLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth - 100 - 38, 44/2-10, 100, 20)];
+        _cityDetailLabel.textColor = [UIColor grayColor];
+        _cityDetailLabel.textAlignment = NSTextAlignmentRight;
+        _cityDetailLabel.font = [UIFont systemFontOfSize:16];
+        [self.contentView addSubview:_cityDetailLabel];
     }
     return self;
 }

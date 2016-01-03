@@ -188,7 +188,7 @@
     //启动页面加一个广告宣传
     self.adImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 120 * scaleToScreenHeight)];
     _adImageView.backgroundColor = [UIColor clearColor];
-    NSDictionary *params = @{@"Method":@"ReAdvertis",@"Detail":@[@{@"PageSize":@"1",@"PageIndex":@"1",@"IsShow":@"888",@"TypeID":@"3",@"STypeID":@"14"}]};
+    NSDictionary *params = @{@"Method":@"ReAdvertis",@"Detail":@[@{@"PageSize":@"1",@"PageIndex":@"1",@"IsShow":@"888",@"TypeID":@"3",@"STypeID":@"14",@"AreaID":isStrEmpty([[NSUserDefaults standardUserDefaults] objectForKey:@"city"]) ? @"" : [[NSUserDefaults standardUserDefaults] objectForKey:@"city"]}]};
     [CKHttpRequest createRequest:HTTP_COMMAND_ADVERTIS WithParam:params withMethod:@"POST" success:^(id result) {
         NSLog(@"resultsss:%@",result);
         if (result) {
