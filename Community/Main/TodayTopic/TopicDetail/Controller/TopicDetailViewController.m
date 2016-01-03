@@ -24,6 +24,7 @@
 #import "CheckTopicDetailViewController.h"
 //#import "UMSocialSinaHandler.h"  //新浪微博不要
 
+
 @interface TopicDetailViewController ()<UIScrollViewDelegate,UIWebViewDelegate,TWebScrollViewDelegate,CheckMoreDelegate,UIActionSheetDelegate,JSObjectProtocolDelegate,SDPhotoBrowserDelegate,UMSocialUIDelegate>
 {
     ScorellButtonView    *scorllBtnView;
