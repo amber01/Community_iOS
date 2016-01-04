@@ -371,14 +371,23 @@
  */
 - (void)toShowImg:(NSString *)iamgeData
 {
+    NSLog(@"iamgeData1:%@",iamgeData);
+
+    
     /**
      *  NSString转NSDictionary
      */
     NSData *jsonData = [iamgeData dataUsingEncoding:NSUTF8StringEncoding];
     id object = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
+    NSLog(@"iamgeData2:%@",object);
     
     photoIndext = [[object objectForKey:@"Index"]intValue];
     NSArray *tempArray = [object objectForKey:@"Images"];
+    
+    if (!photoIndext | isArrEmpty(tempArray)) {
+        return;
+    }
+    
     [self.photoArray removeAllObjects];
     for (int i = 0; i < tempArray.count; i ++) {
         if (!self.photoArray) {
@@ -398,7 +407,6 @@
     browser.imageCount = self.photoArray.count; //图片总数
     browser.currentImageIndex = photoIndext - 1;
     [browser show];
-    NSLog(@"iamgeData:%@",object);
 }
 
 /**

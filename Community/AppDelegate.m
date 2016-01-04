@@ -130,6 +130,8 @@
     sharedInfo.provincearea =  [[NSUserDefaults standardUserDefaults] objectForKey:@"provincearea"];
     sharedInfo.picturedomain = [[NSUserDefaults standardUserDefaults] objectForKey:@"picturedomain"];
     sharedInfo.city = [[NSUserDefaults standardUserDefaults] objectForKey:@"city"];
+    sharedInfo.isv  = [[NSUserDefaults standardUserDefaults] objectForKey:@"isv"];
+    
     EaseMob *easemob = [EaseMob sharedInstance];
     //登陆时记住HuanXin密码
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

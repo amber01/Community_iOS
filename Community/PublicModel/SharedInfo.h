@@ -31,7 +31,7 @@
 @property (nonatomic,copy)NSString *provincearea; //省份
 @property (nonatomic,copy)NSString *picturedomain;
 @property (nonatomic,copy)NSString *locationAddress;  //当前地址
-
+@property (nonatomic,copy)NSString *isv; //是否加v
 
 +(SharedInfo *)sharedDataInfo;
 

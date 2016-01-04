@@ -28,5 +28,6 @@
 @property (nonatomic,copy)NSString  *username;
 @property (nonatomic,copy)NSString  *userid;
 @property (nonatomic,copy)NSString  *source;
+@property (nonatomic,copy)NSString  *isv;  //是否加v
 
 @end

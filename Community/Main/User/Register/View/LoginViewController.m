@@ -102,6 +102,7 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"isbbs"] forKey:@"isbbs"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"ishotnews"] forKey:@"ishotnews"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"ismessagepush"] forKey:@"ismessagepush"];
+                [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"isv"] forKey:@"isv"];
                 
                 SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
                 sharedInfo.user_id  = [dic objectForKey:@"id"];
@@ -122,6 +123,7 @@
                 sharedInfo.provincearea = [dic objectForKey:@"provincearea"];
                 sharedInfo.picturedomain = [dic objectForKey:@"picturedomain"];
                 sharedInfo.city = [dic objectForKey:@"area"];
+                sharedInfo.isv  = [dic objectForKey:@"isv"];
                 
                 if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"cityarea"]length] < 1){
                     [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"cityarea"] forKey:@"cityarea"];

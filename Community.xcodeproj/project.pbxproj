@@ -243,6 +243,9 @@
 		967700781C3944E6005EA280 /* MLPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9677006D1C3944E6005EA280 /* MLPhotoBrowser.bundle */; };
 		968426231C01734E00774538 /* TodayTopicImagesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 968426221C01734E00774538 /* TodayTopicImagesModel.m */; };
 		968426261C01A10B00774538 /* EveryoneTopicHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 968426251C01A10B00774538 /* EveryoneTopicHeadView.m */; };
+		9687A75A1C3AB4B4007BC29B /* topic_isv_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9687A7591C3AB4B4007BC29B /* topic_isv_icon@2x.png */; };
+		9687A75C1C3AB53E007BC29B /* default_background_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9687A75B1C3AB53E007BC29B /* default_background_icon@2x.png */; };
+		9687A75E1C3AB56E007BC29B /* topic_is_ activity@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9687A75D1C3AB56E007BC29B /* topic_is_ activity@2x.png */; };
 		969345C41C1B11360056072F /* MyCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 969345C31C1B11360056072F /* MyCommentModel.m */; };
 		969345CF1C1B1FFE0056072F /* TopicLikeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 969345CE1C1B1FFE0056072F /* TopicLikeViewController.m */; };
 		969345D21C1B20120056072F /* CommentLikeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 969345D11C1B20120056072F /* CommentLikeViewController.m */; };
@@ -963,6 +966,9 @@
 		968426221C01734E00774538 /* TodayTopicImagesModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicImagesModel.m; sourceTree = "<group>"; };
 		968426241C01A10B00774538 /* EveryoneTopicHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EveryoneTopicHeadView.h; sourceTree = "<group>"; };
 		968426251C01A10B00774538 /* EveryoneTopicHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EveryoneTopicHeadView.m; sourceTree = "<group>"; };
+		9687A7591C3AB4B4007BC29B /* topic_isv_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topic_isv_icon@2x.png"; sourceTree = "<group>"; };
+		9687A75B1C3AB53E007BC29B /* default_background_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default_background_icon@2x.png"; sourceTree = "<group>"; };
+		9687A75D1C3AB56E007BC29B /* topic_is_ activity@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topic_is_ activity@2x.png"; sourceTree = "<group>"; };
 		969345C21C1B11360056072F /* MyCommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyCommentModel.h; path = Community/Main/EveryoneTopic/TopicSearch/Model/MyCommentModel.h; sourceTree = SOURCE_ROOT; };
 		969345C31C1B11360056072F /* MyCommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyCommentModel.m; path = Community/Main/EveryoneTopic/TopicSearch/Model/MyCommentModel.m; sourceTree = SOURCE_ROOT; };
 		969345CD1C1B1FFE0056072F /* TopicLikeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicLikeViewController.h; sourceTree = "<group>"; };
@@ -2128,6 +2134,8 @@
 				96C8D2571C0A0F4E004642FC /* everyoneTopic_send_down@2x.png */,
 				96C8D2581C0A0F4E004642FC /* mine_ rewards@2x.png */,
 				96C8D2591C0A0F4E004642FC /* mine_check_in@2x.png */,
+				9687A75D1C3AB56E007BC29B /* topic_is_ activity@2x.png */,
+				9687A75B1C3AB53E007BC29B /* default_background_icon@2x.png */,
 				96C8D25A1C0A0F4E004642FC /* mine_store_car@2x.png */,
 				96C8D25B1C0A0F4E004642FC /* msg_about_me@2x.png */,
 				96C8D25C1C0A0F4E004642FC /* msg_comment@2x.png */,
@@ -2180,6 +2188,7 @@
 				96C8D28B1C0A0F4E004642FC /* mine_tabbar_high@3x.png */,
 				96C8D28C1C0A0F4E004642FC /* mine_tabbar_normal@2x.png */,
 				96C8D28D1C0A0F4E004642FC /* mine_tabbar_normal@3x.png */,
+				9687A7591C3AB4B4007BC29B /* topic_isv_icon@2x.png */,
 				96C8D28E1C0A0F4E004642FC /* todayTopic_tabbar_high@2x.png */,
 				96C8D28F1C0A0F4E004642FC /* todayTopic_tabbar_high@3x.png */,
 				96C8D2901C0A0F4E004642FC /* todayTopic_tabbar_normal@2x.png */,
@@ -3729,6 +3738,7 @@
 				96ED34401C133BCE0021C9C4 /* user_finish_follow@2x.png in Resources */,
 				969345EA1C1BF1960056072F /* launchimage_iphone4@2x.png in Resources */,
 				9643D71C1BF781DD003A394D /* characters_s@2x.png in Resources */,
+				9687A75A1C3AB4B4007BC29B /* topic_isv_icon@2x.png in Resources */,
 				96D255591C2C393D0002E650 /* iOS-social-analytics-releasenote.html in Resources */,
 				9643D7111BF781DD003A394D /* bell_n.png in Resources */,
 				9643D7221BF781DD003A394D /* emoji_touch@2x.png in Resources */,
@@ -3758,6 +3768,7 @@
 				96C8D2AD1C0A0F4E004642FC /* everyone_topic_like@2x.png in Resources */,
 				96C8D2BD1C0A0F4E004642FC /* topic_send_health@2x.png in Resources */,
 				96C8D2AC1C0A0F4E004642FC /* everyone_topic_comment@2x.png in Resources */,
+				9687A75E1C3AB56E007BC29B /* topic_is_ activity@2x.png in Resources */,
 				96C8D2B91C0A0F4E004642FC /* topic_send_emoji@2x.png in Resources */,
 				9643D71D1BF781DD003A394D /* corner_left.png in Resources */,
 				9643D71F1BF781DD003A394D /* corner_right.png in Resources */,
@@ -3843,6 +3854,7 @@
 				96C5A3341C1D1B500029FC74 /* pullup_icon@2x.png in Resources */,
 				96C8D2E51C0A0F4E004642FC /* todayTopic_tabbar_high@2x.png in Resources */,
 				96C8D2B11C0A0F4E004642FC /* mine_store_car@2x.png in Resources */,
+				9687A75C1C3AB53E007BC29B /* default_background_icon@2x.png in Resources */,
 				96C8D2B31C0A0F4E004642FC /* msg_comment@2x.png in Resources */,
 				96D2555F1C2C393D0002E650 /* ios-social-sdk-login-quick.html in Resources */,
 				964A9F721BEF45EC007CE0E9 /* Default.png in Resources */,

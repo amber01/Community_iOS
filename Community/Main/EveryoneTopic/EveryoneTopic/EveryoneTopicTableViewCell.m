@@ -23,6 +23,8 @@
     UILabel             *nicknameLabel;
     UILabel             *dateLabel;
 
+    UIImageView         *showVImageView;
+    
     MLEmojiLabel        *contentLabel;
     UIImageView         *photoImageBtn1;
     UIImageView         *photoImageBtn2;
@@ -48,6 +50,9 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         avatarImageView = [[PubliButton alloc]initWithFrame:CGRectMake(15, 15, 45, 45)];
         [UIUtils setupViewRadius:avatarImageView cornerRadius:45/2];
+        
+        showVImageView = [[UIImageView alloc]initWithFrame:CGRectMake(avatarImageView.width + 2, avatarImageView.bottom - 15, 15, 15)];
+        showVImageView.image = [UIImage imageNamed:@"topic_isv_icon"];
         
         nicknameLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right+10, 18, ScreenWidth - avatarImageView.width - 40, 20)];
         nicknameLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
@@ -156,6 +161,7 @@
         [self.contentView addSubview:nicknameLabel];
         [self.contentView addSubview:avatarImageView];
         
+        [self.contentView addSubview:showVImageView];
     }
     return self;
 }
