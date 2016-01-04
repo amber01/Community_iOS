@@ -463,13 +463,13 @@
     photo.photoObj = [self.photoUrlArray objectAtIndex:indexPath.row];
     
     // 缩略图
-//    if (indexPath.row == 0) {
-//        photo.thumbImage = photoImageBtn1.image;
-//    }else if (indexPath.row == 1){
-//        photo.thumbImage = photoImageBtn2.image;
-//    }else{
-//        photo.thumbImage = photoImageBtn3.image;
-//    }
+    if (indexPath.row == 0) {
+        photo.thumbImage = photoImageBtn1.image;
+    }else if (indexPath.row == 1){
+        photo.thumbImage = photoImageBtn2.image;
+    }else{
+        photo.thumbImage = photoImageBtn3.image;
+    }
 
     return photo;
 }

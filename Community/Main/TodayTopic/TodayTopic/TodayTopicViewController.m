@@ -48,7 +48,7 @@
     CustomButtonItem *buttonItem = [[CustomButtonItem alloc]initButtonItem:[UIImage imageNamed:@"today_send_topic.png"]];
     [buttonItem.itemBtn addTarget:self action:@selector(selectSendCat) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = buttonItem;
-    headLogImageView = [[UIImageView alloc]initWithFrame:CGRectMake(ScreenWidth/2-48, 27, 97, 30)];
+    headLogImageView = [[UIImageView alloc]initWithFrame:CGRectMake(ScreenWidth/2-55, 27, 111, 29)];
     [headLogImageView setImage:[UIImage imageNamed:@"today_topic_log"]];
     [self.navigationController.view addSubview:headLogImageView];
     [self getTodayTopicDataInfo:1];
@@ -127,7 +127,7 @@
 
 - (void)getAdImageData
 {
-    NSDictionary *parameters = @{@"Method":@"ReAdvertis",@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":@"1",@"TypeID":@"3",@"STypeID":@"5"}]};
+    NSDictionary *parameters = @{@"Method":@"ReAdvertis",@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":@"1",@"TypeID":@"3",@"STypeID":@"5",@"AreaID":isStrEmpty([[NSUserDefaults standardUserDefaults] objectForKey:@"city"]) ? @"" : [[NSUserDefaults standardUserDefaults] objectForKey:@"city"]}]};
     
     [CKHttpRequest createRequest:HTTP_COMMAND_ADVERTIS WithParam:parameters withMethod:@"POST" success:^(id result) {
         if (result) {
