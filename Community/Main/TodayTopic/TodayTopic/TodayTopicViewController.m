@@ -132,6 +132,7 @@
     [CKHttpRequest createRequest:HTTP_COMMAND_ADVERTIS WithParam:parameters withMethod:@"POST" success:^(id result) {
         if (result) {
             if (self.adView) {
+                
                 NSLog(@"resulaat:%@",result);
                 NSLog(@"resulaat:%@",[result objectForKey:@"Msg"]);
                 NSMutableArray *imageArray = [[NSMutableArray alloc]init];
@@ -143,6 +144,10 @@
                     NSString *filedomain = [dic objectForKey:@"filedomain"];
                     NSString *imageStr = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",filedomain],BASE_IMAGE_URL,guanggao,tempStr];
                     [imageArray addObject:imageStr];
+                }
+                
+                if (detailArray.count < 1) {
+                    return ;
                 }
                 
                 [_adView getCurrentAdData:detailArray];
