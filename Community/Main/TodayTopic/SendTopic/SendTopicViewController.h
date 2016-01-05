@@ -17,7 +17,7 @@ typedef enum : NSUInteger {
     SendTopicTypePlay,//   去哪玩
     SendTopicTypeFeeling,// 男女情感
     SendTopicTypeFunny,//  轻松一刻
-    SendTopicTypeEducation,//"育儿经
+    SendTopicTypeEducation,//"汽车之家
     SendTopicTypeHealth,//  健康养生
     SendTopicTypeCommunity,//灌小区
     SendTopicTypeShareInfo,//供求信息

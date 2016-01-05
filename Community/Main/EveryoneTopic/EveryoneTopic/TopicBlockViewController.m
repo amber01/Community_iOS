@@ -210,7 +210,7 @@
     page = 1;
     [self getEveryoneTopicData:page withFldSort:self.fldSort andIsEssence:self.isEssence];
     
-    NSArray *titleArr = @[@"同城互动", @"秀自拍", @"相亲交友", @"热点", @"吃货吧", @"去哪玩",@"男女情感", @"轻松一刻", @"育儿经", @"健康养生", @"灌小区", @"供求信息",@"提建议"];
+    NSArray *titleArr = @[@"同城互动", @"秀自拍", @"相亲交友", @"热点", @"吃货吧", @"去哪玩",@"男女情感", @"轻松一刻", @"汽车之家", @"健康养生", @"灌小区", @"供求信息",@"提建议"];
     NSArray *btnImage = @[@"topic_send_city",@"topic_send_show",@"topic_send_people",@"topic_send_information",@"topic_send_food",@"topic_send_play",@"topic_send_feeling",@"topic_send_funny",@"topic_send_education",@"topic_send_health",@"topic_send_community",@"topic_send_shareinfo",@"topic_send_suggestion"];
     topicBlockTopView.blockNameLabel.text = titleArr[button.tag - 100];
     if ([_cate_id intValue] == 12) {

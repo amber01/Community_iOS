@@ -306,13 +306,13 @@
     menuItem = [MenuItem itemWithTitle:@"轻松一刻" iconName:@"topic_send_funny" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
-    menuItem = [MenuItem itemWithTitle:@"育儿经" iconName:@"topic_send_education" glowColor:[UIColor clearColor]];
+    menuItem = [MenuItem itemWithTitle:@"汽车之家" iconName:@"topic_send_education" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
     menuItem = [MenuItem itemWithTitle:@"健康养生" iconName:@"topic_send_health" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
-    menuItem = [MenuItem itemWithTitle:@"灌水区" iconName:@"topic_send_community" glowColor:[UIColor clearColor]];
+    menuItem = [MenuItem itemWithTitle:@"本地散件" iconName:@"topic_send_community" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
     menuItem = [MenuItem itemWithTitle:@"供求信息" iconName:@"topic_send_shareinfo" glowColor:[UIColor clearColor]];

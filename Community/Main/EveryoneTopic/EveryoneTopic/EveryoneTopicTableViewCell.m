@@ -146,7 +146,7 @@
         fromLabel.textColor = [UIColor grayColor];
         fromLabel.font = [UIFont systemFontOfSize:10];
         fromLabel.textAlignment = NSTextAlignmentRight;
-        fromLabel.text = @"灌水区";
+        fromLabel.text = @"本地散件";
         
         
         [self.contentView addSubview:fromLabel];

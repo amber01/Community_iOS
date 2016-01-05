@@ -85,7 +85,7 @@
     /**
      *  第二页按钮
      */
-    titleArrOne = @[@"育儿经",@"健康养生",@"灌水区",@"供求信息",@"提建议"];
+    titleArrOne = @[@"汽车之家",@"健康养生",@"本地散件",@"供求信息",@"提建议"];
     btnImageOne = @[@"topic_send_education",@"topic_send_health",@"topic_send_community",@"topic_send_shareinfo",@"topic_send_suggestion"];
     CGFloat width_one = ScreenWidth / 4;
     CGFloat height_one = 80;
