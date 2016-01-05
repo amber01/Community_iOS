@@ -81,7 +81,7 @@
     [self getEveryoneTopicData:1 withFldSort:@"0" andIsEssence:@"0"];
     isFirst = YES;
     
-    self.cateArray = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12",@"13"];
+    self.cateArray = @[@"11",@"1",@"2",@"3",@"4",@"5",@"6",@"12",@"7",@"9",@"10",@"8",@"13"];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginFinish) name:kSendIsLoginNotification object:nil];
     
@@ -93,6 +93,8 @@
     
     [self setupRefreshHeader];
     [self setupUploadMore];
+    
+    NSLog(@"cuuuuuuL%@",_cate_id);
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -205,13 +207,35 @@
 
 - (void)onClickPageOne:(UIButton *)button
 {
-    self.cate_id = [NSString stringWithFormat:@"%ld",button.tag - 99];
+    self.cate_id = self.cateArray[button.tag - 100];
     NSLog(@"current cati :%@",_cate_id);
     page = 1;
     [self getEveryoneTopicData:page withFldSort:self.fldSort andIsEssence:self.isEssence];
     
-    NSArray *titleArr = @[@"同城互动", @"秀自拍", @"相亲交友", @"热点", @"吃货吧", @"去哪玩",@"男女情感", @"轻松一刻", @"汽车之家", @"健康养生", @"灌小区", @"供求信息",@"提建议"];
-    NSArray *btnImage = @[@"topic_send_city",@"topic_send_show",@"topic_send_people",@"topic_send_information",@"topic_send_food",@"topic_send_play",@"topic_send_feeling",@"topic_send_funny",@"topic_send_education",@"topic_send_health",@"topic_send_community",@"topic_send_shareinfo",@"topic_send_suggestion"];
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    NSString *cityName;
+    
+    NSRange foundObj=[sharedInfo.cityarea rangeOfString:@"城区"];  // options:NSCaseInsensitiveSearch
+    if(foundObj.length>0){
+        cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"城区" withString:@""];
+    }else{
+        NSRange foundObj2 = [sharedInfo.cityarea rangeOfString:@"县"];
+        if (foundObj2.length > 0) {
+            cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"县" withString:@""];
+        }else{
+            NSRange foundObj3 = [sharedInfo.cityarea rangeOfString:@"区"];
+            if (foundObj3.length > 0) {
+                cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"区" withString:@""];
+            }else{
+                cityName = sharedInfo.cityarea;
+            }
+        }
+    }
+    
+    NSString *tempCityName = [NSString stringWithFormat:@"%@热点",cityName];
+    
+    NSArray *titleArr = @[@"本地散件",@"同城互助",@"秀自拍",@"相亲交友",tempCityName,@"吃货吧",@"去哪玩",@"供求信息",@"男女情感",@"汽车之家",@"健康养生",@"轻松一刻",@"提建议"];
+    NSArray *btnImage = @[@"topic_send_community",@"topic_send_city",@"topic_send_show",@"topic_send_people",@"topic_send_information",@"topic_send_food",@"topic_send_play",@"topic_send_shareinfo",@"topic_send_feeling",@"topic_send_education",@"topic_send_health",@"topic_send_funny",@"topic_send_suggestion"];
     topicBlockTopView.blockNameLabel.text = titleArr[button.tag - 100];
     if ([_cate_id intValue] == 12) {
         [topicBlockTopView setTopImageIcon:btnImage[button.tag - 100] withIsShowSubView:YES];
@@ -269,7 +293,7 @@
     self.isEssence = @"1";
     page = 1;
     [self getEveryoneTopicData:page withFldSort:self.fldSort andIsEssence:self.isEssence];
-    topicBlockTopView.topicHeadView.sendTitle.text = @"只看精华";
+    topicBlockTopView.topicHeadView.sendTitle.text = @"最多评论";
     [checkMoreView.latestSendBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [checkMoreView.lastCommentBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [checkMoreView.lookGoodBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];

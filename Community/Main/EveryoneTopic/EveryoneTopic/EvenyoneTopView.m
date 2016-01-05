@@ -19,6 +19,7 @@
     NSArray *btnImage;
     NSArray *titleArrOne;
     NSArray *btnImageOne;
+    NSArray *cateArray;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -27,6 +28,7 @@
     if (self) {
         imageIndex = 0;
         [self initPhotoView:frame];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeBtnTitle) name:kChangeCityNameNotification object:nil];
     }
     return self;
 }
@@ -50,11 +52,62 @@
     [self addSubview:_topicHeadView];
 }
 
+- (void)changeBtnTitle
+{
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    NSString *cityName;
+    
+    NSRange foundObj=[sharedInfo.cityarea rangeOfString:@"城区"];  // options:NSCaseInsensitiveSearch
+    if(foundObj.length>0){
+        cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"城区" withString:@""];
+    }else{
+        NSRange foundObj2 = [sharedInfo.cityarea rangeOfString:@"县"];
+        if (foundObj2.length > 0) {
+            cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"县" withString:@""];
+        }else{
+            NSRange foundObj3 = [sharedInfo.cityarea rangeOfString:@"区"];
+            if (foundObj3.length > 0) {
+                cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"区" withString:@""];
+            }else{
+                cityName = sharedInfo.cityarea;
+            }
+        }
+    }
+    
+    self.currentCityName = [NSString stringWithFormat:@"%@热点",cityName];
+    
+    UILabel *tempLabel = [self viewWithTag:204];
+    tempLabel.text = self.currentCityName;
+}
+
 - (void)setupTopButton:(int)page
 {
     btnScrollView.contentSize = CGSizeMake(ScreenWidth*page, btnScrollView.frame.size.height);
-    titleArr = @[@"同城互动",@"秀自拍",@"相亲交友",@"热点",@"吃货吧",@"去哪玩",@"男女情感",@"轻松一刻"];
-    btnImage = @[@"topic_send_city",@"topic_send_show",@"topic_send_people",@"topic_send_information",@"topic_send_food",@"topic_send_play",@"topic_send_feeling",@"topic_send_funny"];
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    NSString *cityName;
+    
+    NSRange foundObj=[sharedInfo.cityarea rangeOfString:@"城区"];  // options:NSCaseInsensitiveSearch
+    if(foundObj.length>0){
+        cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"城区" withString:@""];
+    }else{
+        NSRange foundObj2 = [sharedInfo.cityarea rangeOfString:@"县"];
+        if (foundObj2.length > 0) {
+            cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"县" withString:@""];
+        }else{
+            NSRange foundObj3 = [sharedInfo.cityarea rangeOfString:@"区"];
+            if (foundObj3.length > 0) {
+                cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"区" withString:@""];
+            }else{
+                cityName = sharedInfo.cityarea;
+            }
+        }
+    }
+    
+    self.currentCityName = [NSString stringWithFormat:@"%@热点",cityName];
+    
+    titleArr = @[@"本地散件",@"同城互助",@"秀自拍",@"相亲交友",_currentCityName,@"吃货吧",@"去哪玩",@"供求信息"];
+    btnImage = @[@"topic_send_community",@"topic_send_city",@"topic_send_show",@"topic_send_people",@"topic_send_information",@"topic_send_food",@"topic_send_play",@"topic_send_shareinfo"];
+    cateArray = @[@"11",@"1",@"2",@"3",@"4",@"5",@"6",@"12",@"7",@"9",@"10",@"8",@"13"];
     CGFloat width = ScreenWidth / 4;
     CGFloat height = 80;
     CGFloat start_x = 0;
@@ -78,6 +131,7 @@
         btnTitle.textColor = [UIColor grayColor];
         btnTitle.font = [UIFont systemFontOfSize:14];
         btnTitle.textAlignment = NSTextAlignmentCenter;
+        btnTitle.tag = i + 200;
         btnTitle.text = titleArr[i];
         [btnScrollView addSubview:btnTitle];
     }
@@ -85,8 +139,8 @@
     /**
      *  第二页按钮
      */
-    titleArrOne = @[@"汽车之家",@"健康养生",@"本地散件",@"供求信息",@"提建议"];
-    btnImageOne = @[@"topic_send_education",@"topic_send_health",@"topic_send_community",@"topic_send_shareinfo",@"topic_send_suggestion"];
+    titleArrOne = @[@"男女情感",@"汽车之家",@"健康养生",@"轻松一刻",@"提建议"];
+    btnImageOne = @[@"topic_send_feeling",@"topic_send_education",@"topic_send_health",@"topic_send_funny",@"topic_send_suggestion"];
     CGFloat width_one = ScreenWidth / 4;
     CGFloat height_one = 80;
     float start_x_one = 0;
@@ -107,12 +161,12 @@
         [btnScrollView addSubview:mineBtn];
         [mineBtn addTarget:self action:@selector(onClickPageTwo:) forControlEvents:UIControlEventTouchUpInside];
         mineBtn.tag = i + 200;
-        UILabel *btnTitle = [[UILabel alloc]initWithFrame:CGRectMake(start_x_one + ScreenWidth, start_y_one + height_one - 33, width, 20)];
-        btnTitle.textColor = [UIColor grayColor];
-        btnTitle.font = [UIFont systemFontOfSize:14];
-        btnTitle.textAlignment = NSTextAlignmentCenter;
-        btnTitle.text = titleArrOne[i];
-        [btnScrollView addSubview:btnTitle];
+        UILabel *twoBtnTitle = [[UILabel alloc]initWithFrame:CGRectMake(start_x_one + ScreenWidth, start_y_one + height_one - 33, width, 20)];
+        twoBtnTitle.textColor = [UIColor grayColor];
+        twoBtnTitle.font = [UIFont systemFontOfSize:14];
+        twoBtnTitle.textAlignment = NSTextAlignmentCenter;
+        twoBtnTitle.text = titleArrOne[i];
+        [btnScrollView addSubview:twoBtnTitle];
     }
     
     
@@ -133,7 +187,7 @@
         {
             topicBlockVC.imageName = btnImage[tag];
             topicBlockVC.blockName = titleArr[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",tag + 1];
+            topicBlockVC.cate_id = cateArray[tag];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }
@@ -142,7 +196,7 @@
         {
             topicBlockVC.imageName = btnImage[tag];
             topicBlockVC.blockName = titleArr[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",tag + 1];
+            topicBlockVC.cate_id = cateArray[tag];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }
@@ -151,7 +205,7 @@
         {
             topicBlockVC.imageName = btnImage[tag];
             topicBlockVC.blockName = titleArr[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",tag + 1];
+            topicBlockVC.cate_id = cateArray[tag];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }
@@ -160,7 +214,7 @@
         {
             topicBlockVC.imageName = btnImage[tag];
             topicBlockVC.blockName = titleArr[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",tag + 1];
+            topicBlockVC.cate_id = cateArray[tag];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }
@@ -169,7 +223,7 @@
         {
             topicBlockVC.imageName = btnImage[tag];
             topicBlockVC.blockName = titleArr[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",tag + 1];
+            topicBlockVC.cate_id = cateArray[tag];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];        }
             break;
@@ -177,7 +231,7 @@
         {
             topicBlockVC.imageName = btnImage[tag];
             topicBlockVC.blockName = titleArr[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",tag + 1];
+            topicBlockVC.cate_id = cateArray[tag];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];        }
             break;
@@ -185,7 +239,7 @@
         {
             topicBlockVC.imageName = btnImage[tag];
             topicBlockVC.blockName = titleArr[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",tag + 1];
+            topicBlockVC.cate_id = cateArray[tag];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }
@@ -194,7 +248,7 @@
         {
             topicBlockVC.imageName = btnImage[tag];
             topicBlockVC.blockName = titleArr[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",tag + 1];
+            topicBlockVC.cate_id = cateArray[tag];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }
@@ -214,7 +268,7 @@
         {
             topicBlockVC.imageName = btnImageOne[tag];
             topicBlockVC.blockName = titleArrOne[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",(tag + 1)+8];
+            topicBlockVC.cate_id = cateArray[tag + 8];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }
@@ -223,7 +277,7 @@
         {
             topicBlockVC.imageName = btnImageOne[tag];
             topicBlockVC.blockName = titleArrOne[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",(tag + 1)+8];
+            topicBlockVC.cate_id = cateArray[tag + 8];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }
@@ -232,7 +286,7 @@
         {
             topicBlockVC.imageName = btnImageOne[tag];
             topicBlockVC.blockName = titleArrOne[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",(tag + 1)+8];
+            topicBlockVC.cate_id = cateArray[tag + 8];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }
@@ -241,7 +295,7 @@
         {
             topicBlockVC.imageName = btnImageOne[tag];
             topicBlockVC.blockName = titleArrOne[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",(tag + 1)+8];
+            topicBlockVC.cate_id = cateArray[tag + 8];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }
@@ -250,7 +304,7 @@
         {
             topicBlockVC.imageName = btnImageOne[tag];
             topicBlockVC.blockName = titleArrOne[tag];
-            topicBlockVC.cate_id = [NSString stringWithFormat:@"%d",(tag + 1)+8];
+            topicBlockVC.cate_id = cateArray[tag + 8];
             [topicBlockVC setHidesBottomBarWhenPushed:YES];
             [self.viewController.navigationController pushViewController:topicBlockVC animated:YES];
         }
@@ -258,6 +312,11 @@
         default:
             break;
     }
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 @end

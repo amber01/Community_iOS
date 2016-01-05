@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Community/Main/TodayTopic/SendTopic/SendTopicViewController.m"
-            timestampString = "472991506.962003"
+            timestampString = "473673890.381859"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
+            startingLineNumber = "309"
+            endingLineNumber = "309"
             landmarkName = "-selectEmojiAction"
             landmarkType = "5">
          </BreakpointContent>

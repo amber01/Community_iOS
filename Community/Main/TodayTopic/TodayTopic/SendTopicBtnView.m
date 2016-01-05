@@ -22,9 +22,32 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        NSString *cityName;
+        
+        NSRange foundObj=[sharedInfo.cityarea rangeOfString:@"城区"];  // options:NSCaseInsensitiveSearch
+        if(foundObj.length>0){
+            cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"城区" withString:@""];
+        }else{
+            NSRange foundObj2 = [sharedInfo.cityarea rangeOfString:@"县"];
+            if (foundObj2.length > 0) {
+                cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"县" withString:@""];
+            }else{
+                NSRange foundObj3 = [sharedInfo.cityarea rangeOfString:@"区"];
+                if (foundObj3.length > 0) {
+                    cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"区" withString:@""];
+                }else{
+                    cityName = sharedInfo.cityarea;
+                }
+            }
+        }
+        
+        NSString *tempCityName = [NSString stringWithFormat:@"%@热点",cityName];
+        
         self.backgroundColor = [UIColor whiteColor];
-        NSArray *titleArr = @[@"同城互动", @"秀自拍", @"相亲交友", @"热点", @"吃货吧", @"去哪玩",@"男女情感", @"轻松一刻", @"汽车之家", @"健康养生", @"灌小区", @"供求信息",@"提建议"];
-        NSArray *btnImage = @[@"topic_send_city",@"topic_send_show",@"topic_send_people",@"topic_send_information",@"topic_send_food",@"topic_send_play",@"topic_send_feeling",@"topic_send_funny",@"topic_send_education",@"topic_send_health",@"topic_send_community",@"topic_send_shareinfo",@"topic_send_suggestion"];
+        NSArray *titleArr = @[@"本地散件",@"同城互助",@"秀自拍",@"相亲交友",tempCityName,@"吃货吧",@"去哪玩",@"供求信息",@"男女情感",@"汽车之家",@"健康养生",@"轻松一刻",@"提建议"];
+        NSArray *btnImage = @[@"topic_send_community",@"topic_send_city",@"topic_send_show",@"topic_send_people",@"topic_send_information",@"topic_send_food",@"topic_send_play",@"topic_send_shareinfo",@"topic_send_feeling",@"topic_send_education",@"topic_send_health",@"topic_send_funny",@"topic_send_suggestion"];
         CGFloat width = ScreenWidth / 4;
         CGFloat height = 80;
         CGFloat start_x = 0;
@@ -57,7 +80,28 @@
 - (void)clickSendTopicAction:(UIButton *)button
 {
     [[NSNotificationCenter defaultCenter]postNotificationName:kHideSendTopicNotification object:nil];
-    NSArray *buttonTitles = @[@"同城互动", @"秀自拍", @"相亲交友", @"热点", @"吃货吧", @"去哪玩",@"男女情感", @"轻松一刻", @"汽车之家", @"健康养生", @"灌小区", @"供求信息",@"提建议"];
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    NSString *cityName;
+    
+    NSRange foundObj=[sharedInfo.cityarea rangeOfString:@"城区"];  // options:NSCaseInsensitiveSearch
+    if(foundObj.length>0){
+        cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"城区" withString:@""];
+    }else{
+        NSRange foundObj2 = [sharedInfo.cityarea rangeOfString:@"县"];
+        if (foundObj2.length > 0) {
+            cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"县" withString:@""];
+        }else{
+            NSRange foundObj3 = [sharedInfo.cityarea rangeOfString:@"区"];
+            if (foundObj3.length > 0) {
+                cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"区" withString:@""];
+            }else{
+                cityName = sharedInfo.cityarea;
+            }
+        }
+    }
+    
+    NSString *tempCityName = [NSString stringWithFormat:@"%@热点",cityName];
+    NSArray *buttonTitles = @[@"本地散件",@"同城互助",@"秀自拍",@"相亲交友",tempCityName,@"吃货吧",@"去哪玩",@"供求信息",@"男女情感",@"汽车之家",@"健康养生",@"轻松一刻",@"提建议"];
     SendTopicViewController *sendTopVC = [[SendTopicViewController alloc]init];
     sendTopVC.title = buttonTitles[button.tag];
     BaseNavigationController *navi =[[BaseNavigationController alloc] initWithRootViewController:sendTopVC];

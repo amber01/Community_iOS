@@ -24,6 +24,7 @@
     UILabel             *dateLabel;
 
     UIImageView         *showVImageView;
+    UIImageView         *activityImageView;
     
     MLEmojiLabel        *contentLabel;
     UIImageView         *photoImageBtn1;
@@ -63,6 +64,9 @@
         dateLabel.font = [UIFont systemFontOfSize:12];
         dateLabel.text = @"今天 12:23 iPhone6";
         
+        activityImageView = [[UIImageView alloc]initWithFrame:CGRectMake(dateLabel.right, nicknameLabel.bottom+2, 20*1.5, 9*1.5)];
+        activityImageView.image = [UIImage imageNamed:@"topic_is_activity.png"];
+        [self.contentView addSubview:activityImageView];
         
         contentLabel = [[MLEmojiLabel alloc]initWithFrame:CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, 20)];
         [contentLabel verticalUpAlignmentWithText: @"说的方法第三方水电费水电费水电费说的方法第三方第三方第三方的说法是法师打发" maxHeight:10];
@@ -170,9 +174,15 @@
 {
     [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
     nicknameLabel.text = model.nickname;
-    
-    dateLabel.text = [NSString stringWithFormat:@"%@ %@",[UIUtils format:model.createtime],model.source];
-    
+    NSString *deteString  = [NSString stringWithFormat:@"%@ %@",[UIUtils format:model.createtime],model.source];
+    dateLabel.text = deteString;
+    CGSize textWith = [deteString sizeWithFont:[UIFont systemFontOfSize:12] maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT)];
+    if ([model.isact intValue] == 1) {
+        activityImageView.hidden = NO;
+        activityImageView.frame = CGRectMake(avatarImageView.right+10 + textWith.width + 5, nicknameLabel.bottom+6, 20*1.5, 9*1.5);
+    }else{
+        activityImageView.hidden = YES;
+    }
     // 表情映射。
     NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
                                 convertToSystemEmoticons:model.detail];
@@ -481,7 +491,6 @@
     }else{
         photo.thumbImage = photoImageBtn3.image;
     }
-
     return photo;
 }
 

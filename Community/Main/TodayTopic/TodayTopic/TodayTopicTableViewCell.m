@@ -59,7 +59,7 @@
 - (void)configureCellWithInfo:(TodayTopicModel *)model
 {
     contentLabel.text = model.name;
-    [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.picturedomain],BASE_IMAGE_URL,postinfo,model.picture]]placeholderImage:[UIImage imageNamed:@"default_background"]];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.picturedomain],BASE_IMAGE_URL,postinfo,model.picture]]placeholderImage:[UIImage imageNamed:@"default_background_icon"]];
     likeNumLabel.text = model.praisenum;
     commentLabel.text = [NSString stringWithFormat:@"%@评论",model.commentnum];
     if ([model.isact intValue] == 1) {

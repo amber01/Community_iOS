@@ -52,7 +52,7 @@
     [headLogImageView setImage:[UIImage imageNamed:@"today_topic_log"]];
     [self.navigationController.view addSubview:headLogImageView];
     [self getTodayTopicDataInfo:1];
-    self.cateArray = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12",@"13"];
+    self.cateArray = @[@"11",@"1",@"2",@"3",@"4",@"5",@"6",@"12",@"7",@"9",@"10",@"8",@"13"];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadDataList) name:kReloadDataNotification object:nil];
     
@@ -272,17 +272,42 @@
 #pragma mark -- action
 -(void)selectSendCat
 {
-    SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
-    if (isStrEmpty(shareInfo.user_id)) {
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    if (isStrEmpty(sharedInfo.user_id)) {
         LoginViewController *loginVC = [[LoginViewController alloc]init];
         [loginVC setHidesBottomBarWhenPushed:YES];
         [self.navigationController pushViewController:loginVC animated:YES];
         return;
     }
+
+    
+    NSString *cityName;
+    
+    NSRange foundObj=[sharedInfo.cityarea rangeOfString:@"城区"];  // options:NSCaseInsensitiveSearch
+    if(foundObj.length>0){
+        cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"城区" withString:@""];
+    }else{
+        NSRange foundObj2 = [sharedInfo.cityarea rangeOfString:@"县"];
+        if (foundObj2.length > 0) {
+            cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"县" withString:@""];
+        }else{
+            NSRange foundObj3 = [sharedInfo.cityarea rangeOfString:@"区"];
+            if (foundObj3.length > 0) {
+                cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"区" withString:@""];
+            }else{
+                cityName = sharedInfo.cityarea;
+            }
+        }
+    }
+    
+    NSString *tempCityName = [NSString stringWithFormat:@"%@热点",cityName];
     
     NSMutableArray *items = [[NSMutableArray alloc] initWithCapacity:3];
     
-    MenuItem *menuItem = [MenuItem itemWithTitle:@"同城互动" iconName:@"topic_send_city"];
+    MenuItem *menuItem = [MenuItem itemWithTitle:@"本地散件" iconName:@"topic_send_community"];
+    [items addObject:menuItem];
+    
+    menuItem = [MenuItem itemWithTitle:@"同城互助" iconName:@"topic_send_city"];
     [items addObject:menuItem];
     
     menuItem = [MenuItem itemWithTitle:@"秀自拍" iconName:@"topic_send_show" glowColor:[UIColor clearColor]];
@@ -291,7 +316,7 @@
     menuItem = [MenuItem itemWithTitle:@"相亲交友" iconName:@"topic_send_people" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
-    menuItem = [MenuItem itemWithTitle:@"热点" iconName:@"topic_send_information" glowColor:[UIColor clearColor]];
+    menuItem = [MenuItem itemWithTitle:tempCityName iconName:@"topic_send_information" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
     menuItem = [MenuItem itemWithTitle:@"吃货吧" iconName:@"topic_send_food" glowColor:[UIColor clearColor]];
@@ -300,10 +325,10 @@
     menuItem = [MenuItem itemWithTitle:@"去哪玩" iconName:@"topic_send_play" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
-    menuItem = [MenuItem itemWithTitle:@"男女情感" iconName:@"topic_send_feeling" glowColor:[UIColor clearColor]];
+    menuItem = [MenuItem itemWithTitle:@"供求信息" iconName:@"topic_send_shareinfo" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
-    menuItem = [MenuItem itemWithTitle:@"轻松一刻" iconName:@"topic_send_funny" glowColor:[UIColor clearColor]];
+    menuItem = [MenuItem itemWithTitle:@"男女情感" iconName:@"topic_send_feeling" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
     menuItem = [MenuItem itemWithTitle:@"汽车之家" iconName:@"topic_send_education" glowColor:[UIColor clearColor]];
@@ -312,15 +337,11 @@
     menuItem = [MenuItem itemWithTitle:@"健康养生" iconName:@"topic_send_health" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
-    menuItem = [MenuItem itemWithTitle:@"本地散件" iconName:@"topic_send_community" glowColor:[UIColor clearColor]];
-    [items addObject:menuItem];
-    
-    menuItem = [MenuItem itemWithTitle:@"供求信息" iconName:@"topic_send_shareinfo" glowColor:[UIColor clearColor]];
+    menuItem = [MenuItem itemWithTitle:@"轻松一刻" iconName:@"topic_send_funny" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
     menuItem = [MenuItem itemWithTitle:@"提建议" iconName:@"topic_send_suggestion" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
-    
     
     if (!_popMenu) {
         _popMenu = [[PopMenu alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) items:items];

@@ -248,7 +248,7 @@
     self.isEssence = @"1";
     page = 1;
     [self getEveryoneTopicData:page withFldSort:self.fldSort andIsEssence:self.isEssence keyword:self.keyword];
-    checkTopicTopView.sendTitle.text = @"只看精华";
+    checkTopicTopView.sendTitle.text = @"最多评论";
     [checkMoreView.latestSendBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [checkMoreView.lastCommentBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [checkMoreView.lookGoodBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];

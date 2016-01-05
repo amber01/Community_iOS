@@ -41,7 +41,7 @@
         self.lookGoodBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _lookGoodBtn.frame = CGRectMake(0, _lastCommentBtn.bottom, bgView.width, bgView.height/3);
         _lookGoodBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-        [_lookGoodBtn setTitle:@"只看精华" forState:UIControlStateNormal];
+        [_lookGoodBtn setTitle:@"最多评论" forState:UIControlStateNormal];
 
         
         [bgView addSubview:_latestSendBtn];

@@ -198,9 +198,31 @@
 
 - (void)onClickPageOne:(UIButton *)button
 {
-    self.cate_id = [NSString stringWithFormat:@"%ld",button.tag - 99];
+    NSArray *cateArray = @[@"11",@"1",@"2",@"3",@"4",@"5",@"6",@"12",@"7",@"9",@"10",@"8",@"13"];
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    NSString *cityName;
+    
+    NSRange foundObj=[sharedInfo.cityarea rangeOfString:@"城区"];  // options:NSCaseInsensitiveSearch
+    if(foundObj.length>0){
+        cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"城区" withString:@""];
+    }else{
+        NSRange foundObj2 = [sharedInfo.cityarea rangeOfString:@"县"];
+        if (foundObj2.length > 0) {
+            cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"县" withString:@""];
+        }else{
+            NSRange foundObj3 = [sharedInfo.cityarea rangeOfString:@"区"];
+            if (foundObj3.length > 0) {
+                cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"区" withString:@""];
+            }else{
+                cityName = sharedInfo.cityarea;
+            }
+        }
+    }
+    NSString *tempCityName = [NSString stringWithFormat:@"%@热点",cityName];
+    self.cate_id = cateArray[button.tag - 100];
+    
     NSLog(@"current cati :%@",_cate_id);
-    NSArray *titleArr = @[@"同城互动", @"秀自拍", @"相亲交友", @"热点", @"吃货吧", @"去哪玩",@"男女情感", @"轻松一刻", @"汽车之家", @"健康养生", @"灌小区", @"供求信息",@"提建议"];
+    NSArray *titleArr = @[@"本地散件",@"同城互助",@"秀自拍",@"相亲交友",tempCityName,@"吃货吧",@"去哪玩",@"供求信息",@"男女情感",@"汽车之家",@"健康养生",@"轻松一刻",@"提建议"];
     [sendNavigationView setNavigationTitle:titleArr[button.tag - 100]];
     sendTopicBtnView.hidden = YES;
     isHidenSendView = NO;

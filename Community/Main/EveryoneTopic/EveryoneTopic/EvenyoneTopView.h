@@ -12,6 +12,7 @@
 @interface EvenyoneTopView : UIView<UIScrollViewDelegate>
 
 @property (nonatomic,retain) EveryoneTopicHeadView *topicHeadView;
+@property (nonatomic,copy)   NSString              *currentCityName;
 
 - (void)setupTopButton:(int)page;
 
