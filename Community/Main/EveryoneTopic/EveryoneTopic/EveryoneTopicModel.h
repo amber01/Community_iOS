@@ -29,5 +29,6 @@
 @property (nonatomic,copy)NSString  *userid;
 @property (nonatomic,copy)NSString  *source;
 @property (nonatomic,copy)NSString  *isv;  //是否加v
+@property (nonatomic,copy)NSString *isact;  //isact=1  显示活动图标
 
 @end

@@ -15,6 +15,7 @@
 #import "SendTopicViewController.h"
 #import "TopicSendNavigationView.h"
 #import "SendTopicBtnView.h"
+#import "TopicDetailViewController.h"
 
 @interface TopicBlockViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
 {
@@ -209,7 +210,7 @@
     page = 1;
     [self getEveryoneTopicData:page withFldSort:self.fldSort andIsEssence:self.isEssence];
     
-    NSArray *titleArr = @[@"同城互动", @"秀自拍", @"百姓话题", @"看资讯", @"聊美食", @"去哪玩",@"谈感情", @"搞笑吧", @"育儿经", @"爱健康", @"灌小区", @"供求信息",@"提建议"];
+    NSArray *titleArr = @[@"同城互动", @"秀自拍", @"相亲交友", @"热点", @"吃货吧", @"去哪玩",@"男女情感", @"轻松一刻", @"育儿经", @"健康养生", @"灌小区", @"供求信息",@"提建议"];
     NSArray *btnImage = @[@"topic_send_city",@"topic_send_show",@"topic_send_people",@"topic_send_information",@"topic_send_food",@"topic_send_play",@"topic_send_feeling",@"topic_send_funny",@"topic_send_education",@"topic_send_health",@"topic_send_community",@"topic_send_shareinfo",@"topic_send_suggestion"];
     topicBlockTopView.blockNameLabel.text = titleArr[button.tag - 100];
     if ([_cate_id intValue] == 12) {
@@ -428,6 +429,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    EveryoneTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
+    TopicDetailViewController *topicDetaiVC = [[TopicDetailViewController alloc]init];
+    topicDetaiVC.post_id = model.id;
+    topicDetaiVC.user_id = model.userid;
+    [topicDetaiVC setHidesBottomBarWhenPushed:YES];
+    [self.navigationController pushViewController:topicDetaiVC animated:YES];
 }
 
 #pragma mark -- action

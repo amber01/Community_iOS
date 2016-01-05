@@ -176,7 +176,12 @@
     // 表情映射。
     NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
                                 convertToSystemEmoticons:model.detail];
-    
+    //是否加V的判断
+    if ([model.isv intValue] == 1) {
+        showVImageView.hidden = NO;
+    }else{
+        showVImageView.hidden = YES;
+    }
     
     /**
      *  获取是否点赞过的数据状态

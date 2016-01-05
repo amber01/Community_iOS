@@ -14,6 +14,7 @@
     PubliButton  *avatarImageView;
     UILabel             *nicknameLabel;
     UILabel             *dateLabel;
+    UIImageView         *showVImageView;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -37,6 +38,10 @@
         [self addSubview:avatarImageView];
         [self addSubview:nicknameLabel];
         [self addSubview:dateLabel];
+        
+        showVImageView = [[UIImageView alloc]initWithFrame:CGRectMake(avatarImageView.width - 2, avatarImageView.bottom - 15, 15, 15)];
+        showVImageView.image = [UIImage imageNamed:@"topic_isv_icon"];
+        [self addSubview:showVImageView];
     }
     return self;
 }
@@ -51,6 +56,14 @@
     avatarImageView.avatarUrl = [data objectForKey:@"avatarImage"];
     avatarImageView.userName = [data objectForKey:@"username"];
     avatarImageView.nickname = nickname;
+    
+    NSString *isvString = [data objectForKey:@"isv"];
+    if ([isvString intValue] == 1) {
+        showVImageView.hidden = NO;
+    }else{
+        showVImageView.hidden = YES;
+    }
+    
     
     nicknameLabel.text = nickname;
     dateLabel.text = date;

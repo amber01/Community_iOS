@@ -23,7 +23,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
-        NSArray *titleArr = @[@"同城互动", @"秀自拍", @"百姓话题", @"看资讯", @"聊美食", @"去哪玩",@"谈感情", @"搞笑吧", @"育儿经", @"爱健康", @"灌小区", @"供求信息",@"提建议"];
+        NSArray *titleArr = @[@"同城互动", @"秀自拍", @"相亲交友", @"热点", @"吃货吧", @"去哪玩",@"男女情感", @"轻松一刻", @"育儿经", @"健康养生", @"灌小区", @"供求信息",@"提建议"];
         NSArray *btnImage = @[@"topic_send_city",@"topic_send_show",@"topic_send_people",@"topic_send_information",@"topic_send_food",@"topic_send_play",@"topic_send_feeling",@"topic_send_funny",@"topic_send_education",@"topic_send_health",@"topic_send_community",@"topic_send_shareinfo",@"topic_send_suggestion"];
         CGFloat width = ScreenWidth / 4;
         CGFloat height = 80;
@@ -57,7 +57,7 @@
 - (void)clickSendTopicAction:(UIButton *)button
 {
     [[NSNotificationCenter defaultCenter]postNotificationName:kHideSendTopicNotification object:nil];
-    NSArray *buttonTitles = @[@"同城互动", @"秀自拍", @"百姓话题", @"看资讯", @"聊美食", @"去哪玩",@"谈感情", @"搞笑吧", @"育儿经", @"爱健康", @"灌小区", @"供求信息",@"提建议"];
+    NSArray *buttonTitles = @[@"同城互动", @"秀自拍", @"相亲交友", @"热点", @"吃货吧", @"去哪玩",@"男女情感", @"轻松一刻", @"育儿经", @"健康养生", @"灌小区", @"供求信息",@"提建议"];
     SendTopicViewController *sendTopVC = [[SendTopicViewController alloc]init];
     sendTopVC.title = buttonTitles[button.tag];
     BaseNavigationController *navi =[[BaseNavigationController alloc] initWithRootViewController:sendTopVC];

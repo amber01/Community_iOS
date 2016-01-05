@@ -257,6 +257,7 @@
                 NSString *commentnum = [dic objectForKey:@"commentnum"];
                 NSString *praisenum  = [dic objectForKey:@"praisenum"];
                 NSString *username = [dic objectForKey:@"username"];
+                NSString *isvString = [dic objectForKey:@"isv"];
                 self.user_id = [dic objectForKey:@"userid"];
                 self.likeNumber = praisenum;
                 CGSize commentSize = [commentnum sizeWithFont:[UIFont systemFontOfSize:10] maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT)];
@@ -273,7 +274,7 @@
                 footView.commentNumLabel.frame = commentRect;
                 
                 NSString *avataURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",picturedomain],BASE_IMAGE_URL,face,logopicture];
-                NSDictionary *dataDic = @{@"date":[NSString stringWithFormat:@"%@ %@",date,source],@"avataURL":avataURL,@"nickname":nickname,@"user_id":self.user_id,@"username":username,@"avatarImage":logopicture};
+                NSDictionary *dataDic = @{@"date":[NSString stringWithFormat:@"%@ %@",date,source],@"avataURL":avataURL,@"nickname":nickname,@"user_id":self.user_id,@"username":username,@"avatarImage":logopicture,@"isv":isvString};
                 [headView getUserInfoData:dataDic];
                 
                 //是否可以打赏

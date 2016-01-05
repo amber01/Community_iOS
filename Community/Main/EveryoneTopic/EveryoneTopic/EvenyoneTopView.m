@@ -53,7 +53,7 @@
 - (void)setupTopButton:(int)page
 {
     btnScrollView.contentSize = CGSizeMake(ScreenWidth*page, btnScrollView.frame.size.height);
-    titleArr = @[@"同城互动",@"秀自拍",@"百姓话题",@"看资讯",@"聊美食",@"去哪玩",@"谈感情",@"搞笑吧"];
+    titleArr = @[@"同城互动",@"秀自拍",@"相亲交友",@"热点",@"吃货吧",@"去哪玩",@"男女情感",@"轻松一刻"];
     btnImage = @[@"topic_send_city",@"topic_send_show",@"topic_send_people",@"topic_send_information",@"topic_send_food",@"topic_send_play",@"topic_send_feeling",@"topic_send_funny"];
     CGFloat width = ScreenWidth / 4;
     CGFloat height = 80;
@@ -85,7 +85,7 @@
     /**
      *  第二页按钮
      */
-    titleArrOne = @[@"育儿经",@"爱健康",@"灌水区",@"供求信息",@"提建议"];
+    titleArrOne = @[@"育儿经",@"健康养生",@"灌水区",@"供求信息",@"提建议"];
     btnImageOne = @[@"topic_send_education",@"topic_send_health",@"topic_send_community",@"topic_send_shareinfo",@"topic_send_suggestion"];
     CGFloat width_one = ScreenWidth / 4;
     CGFloat height_one = 80;

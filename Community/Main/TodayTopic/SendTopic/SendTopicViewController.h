@@ -11,14 +11,14 @@
 typedef enum : NSUInteger {
     SendTopicTypeCity = 0, //同城互动
     SendTopicTypePhotosShow,//秀自拍
-    SendTopicTypePeople,  //百姓话题
-    SendTopicTypeInformation,//看资讯
-    SendTopicTypePhotosFood,//聊美食
+    SendTopicTypePeople,  //相亲交友
+    SendTopicTypeInformation,//热点
+    SendTopicTypePhotosFood,//吃货吧
     SendTopicTypePlay,//   去哪玩
-    SendTopicTypeFeeling,// 谈感情
-    SendTopicTypeFunny,//  搞笑吧
+    SendTopicTypeFeeling,// 男女情感
+    SendTopicTypeFunny,//  轻松一刻
     SendTopicTypeEducation,//"育儿经
-    SendTopicTypeHealth,//  爱健康
+    SendTopicTypeHealth,//  健康养生
     SendTopicTypeCommunity,//灌小区
     SendTopicTypeShareInfo,//供求信息
     SendTopicTypeSuggestion,//提建议

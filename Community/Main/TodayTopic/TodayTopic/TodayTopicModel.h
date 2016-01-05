@@ -20,5 +20,6 @@
 @property (nonatomic,copy)NSString *name;
 @property (nonatomic,copy)NSString *praisenum;
 @property (nonatomic,copy)NSString *userid;
+@property (nonatomic,copy)NSString *isact;  //isact=1  显示活动图标
 
 @end

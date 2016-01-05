@@ -16,6 +16,7 @@
     UILabel       *contentLabel;
     UIImageView   *likeImageView;
     UILabel       *likeNumLabel;
+    UIImageView   *activityImageView;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -41,12 +42,16 @@
         likeNumLabel.font = [UIFont systemFontOfSize:12];
         [self.contentView addSubview:likeNumLabel];
         
-        commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(100, imageView.bottom - 17, ScreenWidth - 115, 20)];
+        commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(100, imageView.bottom - 17, ScreenWidth - 110, 20)];
         commentLabel.textColor = TEXT_COLOR;
         commentLabel.font = [UIFont systemFontOfSize:12];
         commentLabel.text = @"232评论";
         commentLabel.textAlignment = NSTextAlignmentRight;
         [self.contentView addSubview:commentLabel];
+        
+        activityImageView = [[UIImageView alloc]initWithFrame:CGRectMake(commentLabel.right, imageView.bottom - 13, 20*1.5, 9*1.5)];
+        activityImageView.image = [UIImage imageNamed:@"topic_is_activity.png"];
+        [self.contentView addSubview:activityImageView];
     }
     return self;
 }
@@ -57,6 +62,14 @@
     [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.picturedomain],BASE_IMAGE_URL,postinfo,model.picture]]placeholderImage:[UIImage imageNamed:@"default_background"]];
     likeNumLabel.text = model.praisenum;
     commentLabel.text = [NSString stringWithFormat:@"%@评论",model.commentnum];
+    if ([model.isact intValue] == 1) {
+        commentLabel.frame = CGRectMake(100 - 30 - 5,  imageView.bottom - 17, ScreenWidth - 110, 20);
+        activityImageView.frame = CGRectMake(commentLabel.right + 5, imageView.bottom - 13, 20*1.5, 9*1.5);
+        activityImageView.hidden = NO;
+    }else{
+        commentLabel.frame = CGRectMake(100,  imageView.bottom - 17, ScreenWidth - 110, 20);
+        activityImageView.hidden = YES;
+    }
 }
 
 - (void)awakeFromNib {

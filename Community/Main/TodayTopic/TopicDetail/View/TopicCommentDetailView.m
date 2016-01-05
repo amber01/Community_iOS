@@ -25,6 +25,7 @@
     UILabel             *tipsLabel;
     UILabel             *label;
     InputBuyNumberView  *inputBuyNumberView;
+    UIImageView         *showVImageView;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame withPostID:(NSString *)post_id isReawrd:(NSString *)isReawrd withUserID:(NSString *)to_user_id
@@ -143,15 +144,22 @@
                         
                         NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",[dic objectForKey:@"logopicturedomain"]],BASE_IMAGE_URL,face,[dic objectForKey:@"logopicture"]];
                         avatarBtn = [[PubliButton alloc]initWithFrame:CGRectMake(10+(((34 + 5) * i)), 30, 34, 34)];
+                        showVImageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 19, 11, 11)];
+                        showVImageView.image = [UIImage imageNamed:@"topic_isv_icon"];
                         
                         [avatarBtn setUser_id:[dic objectForKey:@"userid"]];
                         avatarBtn.nickname = [dic objectForKey:@"nickname"];
                         avatarBtn.userName = [dic objectForKey:@"username"];
                         avatarBtn.avatarUrl = [dic objectForKey:@"logopicture"];
+                        NSString *isvString = [dic objectForKey:@"isv"];
                         [avatarBtn addTarget:self action:@selector(checkUserInfoBtn:) forControlEvents:UIControlEventTouchUpInside];
                         [UIUtils setupViewRadius:avatarBtn cornerRadius:avatarBtn.height/2];
                         [avatarBtn sd_setImageWithURL:[NSURL URLWithString:imageURL] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
                         [_rewardView addSubview:avatarBtn];
+                        
+                        if ([isvString intValue] == 1) {
+                            [avatarBtn addSubview:showVImageView];
+                        }
                     }
                 }
                 checkMoreBtn = [[UIButton alloc]initWithFrame:CGRectMake(avatarBtn.right + 5, 30, 34, 34)];

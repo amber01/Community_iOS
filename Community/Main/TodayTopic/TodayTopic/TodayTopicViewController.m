@@ -288,28 +288,28 @@
     menuItem = [MenuItem itemWithTitle:@"秀自拍" iconName:@"topic_send_show" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
-    menuItem = [MenuItem itemWithTitle:@"百姓话题" iconName:@"topic_send_people" glowColor:[UIColor clearColor]];
+    menuItem = [MenuItem itemWithTitle:@"相亲交友" iconName:@"topic_send_people" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
-    menuItem = [MenuItem itemWithTitle:@"看资讯" iconName:@"topic_send_information" glowColor:[UIColor clearColor]];
+    menuItem = [MenuItem itemWithTitle:@"热点" iconName:@"topic_send_information" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
-    menuItem = [MenuItem itemWithTitle:@"聊美食" iconName:@"topic_send_food" glowColor:[UIColor clearColor]];
+    menuItem = [MenuItem itemWithTitle:@"吃货吧" iconName:@"topic_send_food" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
     menuItem = [MenuItem itemWithTitle:@"去哪玩" iconName:@"topic_send_play" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
-    menuItem = [MenuItem itemWithTitle:@"谈感情" iconName:@"topic_send_feeling" glowColor:[UIColor clearColor]];
+    menuItem = [MenuItem itemWithTitle:@"男女情感" iconName:@"topic_send_feeling" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
-    menuItem = [MenuItem itemWithTitle:@"搞笑吧" iconName:@"topic_send_funny" glowColor:[UIColor clearColor]];
+    menuItem = [MenuItem itemWithTitle:@"轻松一刻" iconName:@"topic_send_funny" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
     menuItem = [MenuItem itemWithTitle:@"育儿经" iconName:@"topic_send_education" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
-    menuItem = [MenuItem itemWithTitle:@"爱健康" iconName:@"topic_send_health" glowColor:[UIColor clearColor]];
+    menuItem = [MenuItem itemWithTitle:@"健康养生" iconName:@"topic_send_health" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
     menuItem = [MenuItem itemWithTitle:@"灌水区" iconName:@"topic_send_community" glowColor:[UIColor clearColor]];

@@ -15,6 +15,7 @@
     UIImageView   *imageView3;
     UILabel       *commentLabel;
     UILabel       *contentLabel;
+    UIImageView   *activityImageView;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -47,10 +48,14 @@
         commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(200, 8, ScreenWidth - 210, 20)];
         commentLabel.textColor = TEXT_COLOR;
         commentLabel.textAlignment = NSTextAlignmentRight;
-        commentLabel.font = [UIFont systemFontOfSize:10];
+        commentLabel.font = [UIFont systemFontOfSize:12];
         commentLabel.text = @"232评论";
         
         [self.contentView addSubview:commentLabel];
+        
+        activityImageView = [[UIImageView alloc]initWithFrame:CGRectMake(commentLabel.right, 11.5, 20*1.5, 9*1.5)];
+        activityImageView.image = [UIImage imageNamed:@"topic_is_activity.png"];
+        [self.contentView addSubview:activityImageView];
     }
     return self;
 }
@@ -59,6 +64,17 @@
 {
     contentLabel.text = model.name;
     commentLabel.text = [NSString stringWithFormat:@"%@评论",model.commentnum];
+    
+    if ([model.isact intValue] == 1) {
+        contentLabel.frame = CGRectMake(10, 8, ScreenWidth - 55 - 25, 20);
+        commentLabel.frame = CGRectMake(100 - 30 - 5,  8, ScreenWidth - 110, 20);
+        activityImageView.frame = CGRectMake(commentLabel.right + 5, 11.5 , 20*1.5, 9*1.5);
+        activityImageView.hidden = NO;
+    }else{
+        contentLabel.frame = CGRectMake(10, 8, ScreenWidth - 55, 20);
+        commentLabel.frame = CGRectMake(100,  8, ScreenWidth - 110, 20);
+        activityImageView.hidden = YES;
+    }
     
     if ([model.imagecount intValue] > 1) {
         int k=0;
