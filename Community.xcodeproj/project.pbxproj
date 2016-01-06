@@ -498,6 +498,10 @@
 		DBE54E151C0D70180057D68F /* user_info_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E141C0D70180057D68F /* user_info_chat@2x.png */; };
 		DBEEE0CE1C30FB8F00DA5EF3 /* KeychainHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DBEEE0CB1C30FB8F00DA5EF3 /* KeychainHelper.m */; };
 		DBEEE0CF1C30FB8F00DA5EF3 /* KeychainIDFA.m in Sources */ = {isa = PBXBuildFile; fileRef = DBEEE0CD1C30FB8F00DA5EF3 /* KeychainIDFA.m */; };
+		DBF06F251C3CCE6C002062C5 /* HZIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF06F1E1C3CCE6C002062C5 /* HZIndicatorView.m */; };
+		DBF06F261C3CCE6C002062C5 /* HZPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF06F201C3CCE6C002062C5 /* HZPhotoBrowser.m */; };
+		DBF06F271C3CCE6C002062C5 /* HZPhotoBrowserView.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF06F231C3CCE6C002062C5 /* HZPhotoBrowserView.m */; };
+		DBF06F281C3CCE6C002062C5 /* whiteplaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = DBF06F241C3CCE6C002062C5 /* whiteplaceholder.png */; };
 		DBF503E71C1AA6A100AA02BE /* CommentStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF503E61C1AA6A100AA02BE /* CommentStatusViewController.m */; };
 		DBF503EA1C1AAF1700AA02BE /* MyReceiveCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF503E91C1AAF1700AA02BE /* MyReceiveCommentTableViewCell.m */; };
 		DBF503ED1C1AAF2300AA02BE /* MySendCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF503EC1C1AAF2300AA02BE /* MySendCommentTableViewCell.m */; };
@@ -1342,6 +1346,14 @@
 		DBEEE0CB1C30FB8F00DA5EF3 /* KeychainHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainHelper.m; sourceTree = "<group>"; };
 		DBEEE0CC1C30FB8F00DA5EF3 /* KeychainIDFA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainIDFA.h; sourceTree = "<group>"; };
 		DBEEE0CD1C30FB8F00DA5EF3 /* KeychainIDFA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainIDFA.m; sourceTree = "<group>"; };
+		DBF06F1D1C3CCE6C002062C5 /* HZIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HZIndicatorView.h; sourceTree = "<group>"; };
+		DBF06F1E1C3CCE6C002062C5 /* HZIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HZIndicatorView.m; sourceTree = "<group>"; };
+		DBF06F1F1C3CCE6C002062C5 /* HZPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HZPhotoBrowser.h; sourceTree = "<group>"; };
+		DBF06F201C3CCE6C002062C5 /* HZPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HZPhotoBrowser.m; sourceTree = "<group>"; };
+		DBF06F211C3CCE6C002062C5 /* HZPhotoBrowserConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HZPhotoBrowserConfig.h; sourceTree = "<group>"; };
+		DBF06F221C3CCE6C002062C5 /* HZPhotoBrowserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HZPhotoBrowserView.h; sourceTree = "<group>"; };
+		DBF06F231C3CCE6C002062C5 /* HZPhotoBrowserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HZPhotoBrowserView.m; sourceTree = "<group>"; };
+		DBF06F241C3CCE6C002062C5 /* whiteplaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteplaceholder.png; sourceTree = "<group>"; };
 		DBF503E51C1AA6A100AA02BE /* CommentStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentStatusViewController.h; sourceTree = "<group>"; };
 		DBF503E61C1AA6A100AA02BE /* CommentStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentStatusViewController.m; sourceTree = "<group>"; };
 		DBF503E81C1AAF1700AA02BE /* MyReceiveCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReceiveCommentTableViewCell.h; sourceTree = "<group>"; };
@@ -2255,6 +2267,7 @@
 		964A9FB11BEF46B0007CE0E9 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				DBF06F1C1C3CCE6C002062C5 /* HZPhotoBrowser */,
 				967700541C3944E6005EA280 /* MLPhotoBrowser */,
 				962C24A21C38EC2600B74B2E /* DWTagList */,
 				DBEEE0C91C30FB8F00DA5EF3 /* KeychainIDFA */,
@@ -3493,6 +3506,21 @@
 			path = KeychainIDFA;
 			sourceTree = "<group>";
 		};
+		DBF06F1C1C3CCE6C002062C5 /* HZPhotoBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				DBF06F1D1C3CCE6C002062C5 /* HZIndicatorView.h */,
+				DBF06F1E1C3CCE6C002062C5 /* HZIndicatorView.m */,
+				DBF06F1F1C3CCE6C002062C5 /* HZPhotoBrowser.h */,
+				DBF06F201C3CCE6C002062C5 /* HZPhotoBrowser.m */,
+				DBF06F211C3CCE6C002062C5 /* HZPhotoBrowserConfig.h */,
+				DBF06F221C3CCE6C002062C5 /* HZPhotoBrowserView.h */,
+				DBF06F231C3CCE6C002062C5 /* HZPhotoBrowserView.m */,
+				DBF06F241C3CCE6C002062C5 /* whiteplaceholder.png */,
+			);
+			path = HZPhotoBrowser;
+			sourceTree = "<group>";
+		};
 		DBF503E11C1AA6A100AA02BE /* CommentStatus */ = {
 			isa = PBXGroup;
 			children = (
@@ -3705,6 +3733,7 @@
 				96C8D2A61C0A0F4E004642FC /* back_btn_image@2x.png in Resources */,
 				961162D11C2FC8F900D45E5D /* send_topic_down@2x.png in Resources */,
 				96C8D2D21C0A0F4E004642FC /* topic_send_photo@3x.png in Resources */,
+				DBF06F281C3CCE6C002062C5 /* whiteplaceholder.png in Resources */,
 				96C8D2DF1C0A0F4E004642FC /* message_tabbar_normal@2x.png in Resources */,
 				96D255631C2C393D0002E650 /* ios-social-sdk-socialbar.html in Resources */,
 				96C8D2E31C0A0F4E004642FC /* mine_tabbar_normal@2x.png in Resources */,
@@ -3980,6 +4009,7 @@
 				963DC48E1C0ACFD9005D1955 /* EMSDWebImageManager.m in Sources */,
 				969345F01C1C602A0056072F /* TopicDetailHeadView.m in Sources */,
 				967700711C3944E6005EA280 /* UIImage+MLBrowserPhotoImageForBundle.m in Sources */,
+				DBF06F271C3CCE6C002062C5 /* HZPhotoBrowserView.m in Sources */,
 				96ED34571C15BE110021C9C4 /* pinyin.c in Sources */,
 				963DC4B51C0ACFD9005D1955 /* EaseEmojiEmoticons.m in Sources */,
 				963DC4BB1C0ACFD9005D1955 /* EaseRefreshTableViewController.m in Sources */,
@@ -4003,6 +4033,7 @@
 				96E832CE1C23015E0036B311 /* MyCollectionViewController.m in Sources */,
 				960173651BEF8D7900F2E272 /* MessageViewController.m in Sources */,
 				967700731C3944E6005EA280 /* MLPhotoBrowserViewController.m in Sources */,
+				DBF06F261C3CCE6C002062C5 /* HZPhotoBrowser.m in Sources */,
 				963DC4801C0ACFD9005D1955 /* MWCaptionView.m in Sources */,
 				963DC4A01C0ACFD9005D1955 /* PSTCollectionViewLayout.m in Sources */,
 				9655677B1C00A3D7005F8744 /* EvenyoneTopView.m in Sources */,
@@ -4130,6 +4161,7 @@
 				96ED343B1C1338460021C9C4 /* FansTableViewCell.m in Sources */,
 				963DC46F1C0ACFD9005D1955 /* wav.mm in Sources */,
 				964111AB1C29797C00561223 /* SystemNoticeModel.m in Sources */,
+				DBF06F251C3CCE6C002062C5 /* HZIndicatorView.m in Sources */,
 				962D73BF1BFE0C4200412A50 /* LoginView.m in Sources */,
 				964AA1151BEF7B5E007CE0E9 /* NSString+MyCategory.m in Sources */,
 				963DC46D1C0ACFD9005D1955 /* EMCDDeviceManagerBase.m in Sources */,

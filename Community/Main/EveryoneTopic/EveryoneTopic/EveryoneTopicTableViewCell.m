@@ -41,6 +41,8 @@
     
     float               firstImageHeight;
     float               firstImageWidth;
+    
+    NSMutableArray      *thumbnailArray;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -152,6 +154,7 @@
         fromLabel.textAlignment = NSTextAlignmentRight;
         fromLabel.text = @"本地散件";
         
+        thumbnailArray = [NSMutableArray new];
         
         [self.contentView addSubview:fromLabel];
         [self.contentView addSubview:commentBtn];
@@ -192,6 +195,8 @@
     }else{
         showVImageView.hidden = YES;
     }
+    
+    [thumbnailArray removeAllObjects];
     
     /**
      *  获取是否点赞过的数据状态
@@ -266,6 +271,7 @@
                 }
                 
                 NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",imagesModel.picturedomain],BASE_IMAGE_URL,BigImage,imagesModel.picture];
+                
                 if (k==0) {
                     if (!isStrEmpty(imagesModel.picture)) {
                         
@@ -276,6 +282,7 @@
                             }else{
                                 firstImageHeight = 80;
                             }
+                            [thumbnailArray addObject:photoImageBtn1.image];
                         }];
                         [self.photoUrlArray addObject:imageURL];
                     }
@@ -286,12 +293,14 @@
                         [photoImageBtn2 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",imagesModel.picturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]]placeholderImage:[UIImage imageNamed:@"default_background"]];
                         
                         //[photoImageBtn2 sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_background"]];
+                        [thumbnailArray addObject:photoImageBtn2.image];
                         [self.photoUrlArray addObject:imageURL];
                     }
                     k=2;
                 }else if (k == 2){
                     if (!isStrEmpty(imagesModel.picture)) {
                         [photoImageBtn3 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",imagesModel.picturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]]placeholderImage:[UIImage imageNamed:@"default_background"]];
+                        [thumbnailArray addObject:photoImageBtn3.image];
                         [self.photoUrlArray addObject:imageURL];
                     }
                     k = 3;
@@ -360,17 +369,40 @@
 #pragma mark - photobrowser代理方法
 - (void)showPhotoBrowseOne:(UITapGestureRecognizer *)tapGesture
 {
-    // 图片游览器
-    MLPhotoBrowserViewController *photoBrowser = [[MLPhotoBrowserViewController alloc] init];
-    // 淡入淡出效果
-    photoBrowser.status = UIViewAnimationAnimationStatusFade;
-    // 数据源/delegate
-    photoBrowser.delegate = self;
-    photoBrowser.dataSource = self;
-    // 当前选中的值
-    photoBrowser.currentIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];;
-    // 展示控制器
-    [photoBrowser showPickerVc:self.viewController];
+    HZPhotoBrowser *browserVc = [[HZPhotoBrowser alloc] init];
+    browserVc.sourceImagesContainerView = self;
+    browserVc.imageCount = self.photoUrlArray.count;
+    browserVc.currentImageIndex = 0;
+    // 代理
+    browserVc.delegate = self;
+    // 展示图片浏览器
+    [browserVc show];
+    
+//    // 图片游览器
+//    MLPhotoBrowserViewController *photoBrowser = [[MLPhotoBrowserViewController alloc] init];
+//    // 淡入淡出效果
+//    photoBrowser.status = UIViewAnimationAnimationStatusFade;
+//    // 数据源/delegate
+//    photoBrowser.delegate = self;
+//    photoBrowser.dataSource = self;
+//    // 当前选中的值
+//    photoBrowser.currentIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];;
+//    // 展示控制器
+//    [photoBrowser showPickerVc:self.viewController];
+}
+
+#pragma mark - photobrowser代理方法
+- (UIImage *)photoBrowser:(HZPhotoBrowser *)browser placeholderImageForIndex:(NSInteger)index
+{
+    //return photoImageBtn1.image;
+    UIImage *image = thumbnailArray[index];
+    return image;
+}
+
+- (NSURL *)photoBrowser:(HZPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index
+{
+    NSString *urlStr = self.photoUrlArray[index];
+    return [NSURL URLWithString:urlStr];
 }
 
 - (void)showPhotoBrowseTwo:(UITapGestureRecognizer *)tapGesture
