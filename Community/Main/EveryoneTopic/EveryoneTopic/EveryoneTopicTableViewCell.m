@@ -15,6 +15,9 @@
 #import "EaseConvertToCommonEmoticonsHelper.h"
 
 
+#import "HZIndicatorView.h"
+#import "HZImagesGroupView.h"
+#import "HZPhotoItemModel.h"
 
 
 @implementation EveryoneTopicTableViewCell
@@ -282,7 +285,7 @@
                             }else{
                                 firstImageHeight = 80;
                             }
-                            [thumbnailArray addObject:photoImageBtn1.image];
+                            [thumbnailArray addObject:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",imagesModel.picturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]];
                         }];
                         [self.photoUrlArray addObject:imageURL];
                     }
@@ -293,14 +296,14 @@
                         [photoImageBtn2 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",imagesModel.picturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]]placeholderImage:[UIImage imageNamed:@"default_background"]];
                         
                         //[photoImageBtn2 sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_background"]];
-                        [thumbnailArray addObject:photoImageBtn2.image];
+                            [thumbnailArray addObject:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",imagesModel.picturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]];
                         [self.photoUrlArray addObject:imageURL];
                     }
                     k=2;
                 }else if (k == 2){
                     if (!isStrEmpty(imagesModel.picture)) {
                         [photoImageBtn3 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",imagesModel.picturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]]placeholderImage:[UIImage imageNamed:@"default_background"]];
-                        [thumbnailArray addObject:photoImageBtn3.image];
+                            [thumbnailArray addObject:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",imagesModel.picturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]];
                         [self.photoUrlArray addObject:imageURL];
                     }
                     k = 3;
@@ -369,27 +372,23 @@
 #pragma mark - photobrowser代理方法
 - (void)showPhotoBrowseOne:(UITapGestureRecognizer *)tapGesture
 {
-    HZPhotoBrowser *browserVc = [[HZPhotoBrowser alloc] init];
-    browserVc.sourceImagesContainerView = self;
-    browserVc.imageCount = self.photoUrlArray.count;
-    browserVc.currentImageIndex = 0;
-    // 代理
-    browserVc.delegate = self;
-    // 展示图片浏览器
-    [browserVc show];
     
-//    // 图片游览器
-//    MLPhotoBrowserViewController *photoBrowser = [[MLPhotoBrowserViewController alloc] init];
-//    // 淡入淡出效果
-//    photoBrowser.status = UIViewAnimationAnimationStatusFade;
-//    // 数据源/delegate
-//    photoBrowser.delegate = self;
-//    photoBrowser.dataSource = self;
-//    // 当前选中的值
-//    photoBrowser.currentIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];;
-//    // 展示控制器
-//    [photoBrowser showPickerVc:self.viewController];
-}
+    HZImagesGroupView *imagesGroupView = [[HZImagesGroupView alloc] init];
+    NSMutableArray *temp = [NSMutableArray array];
+    [thumbnailArray enumerateObjectsUsingBlock:^(NSString *src, NSUInteger idx, BOOL *stop) {
+        HZPhotoItemModel *item = [[HZPhotoItemModel alloc] init];
+        item.thumbnail_pic = src;
+        [temp addObject:item];
+    }];
+    
+    CGRect rect = imagesGroupView.frame;
+    imagesGroupView.btn.frame = photoImageBtn1.frame;
+    
+    imagesGroupView.frame = photoImageBtn1.frame;
+    imagesGroupView.photoItemArray = temp;
+    //cell.imageContentHeight.constant = imagesGroupView.bounds.size.height;
+    
+    [photoImageBtn1 addSubview:imagesGroupView];}
 
 #pragma mark - photobrowser代理方法
 - (UIImage *)photoBrowser:(HZPhotoBrowser *)browser placeholderImageForIndex:(NSInteger)index
@@ -408,35 +407,28 @@
 - (void)showPhotoBrowseTwo:(UITapGestureRecognizer *)tapGesture
 {
     if (self.photoUrlArray.count > 1) {
-        // 图片游览器
-        MLPhotoBrowserViewController *photoBrowser = [[MLPhotoBrowserViewController alloc] init];
-        // 淡入淡出效果
-        photoBrowser.status = UIViewAnimationAnimationStatusFade;
-        // 数据源/delegate
-        photoBrowser.delegate = self;
-        photoBrowser.dataSource = self;
-        // 当前选中的值
-        photoBrowser.currentIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
-        // 当前选中的值
-        // 展示控制器
-        [photoBrowser showPickerVc:self.viewController];
+        HZPhotoBrowser *browserVc = [[HZPhotoBrowser alloc] init];
+        browserVc.sourceImagesContainerView = self.contentView;
+        browserVc.imageCount = self.photoUrlArray.count;
+        browserVc.currentImageIndex = 1;
+        // 代理
+        browserVc.delegate = self;
+        // 展示图片浏览器
+        [browserVc show];
     }
 }
 
 - (void)showPhotoBrowseThree:(UITapGestureRecognizer *)tapGesture
 {
     if (self.photoUrlArray.count > 2) {
-        // 图片游览器
-        MLPhotoBrowserViewController *photoBrowser = [[MLPhotoBrowserViewController alloc] init];
-        // 淡入淡出效果
-        photoBrowser.status = UIViewAnimationAnimationStatusFade;
-        // 数据源/delegate
-        photoBrowser.delegate = self;
-        photoBrowser.dataSource = self;
-        // 当前选中的值
-        photoBrowser.currentIndexPath = [NSIndexPath indexPathForItem:2 inSection:0];;
-        // 展示控制器
-        [photoBrowser showPickerVc:self.viewController];
+        HZPhotoBrowser *browserVc = [[HZPhotoBrowser alloc] init];
+        browserVc.sourceImagesContainerView = self.contentView;
+        browserVc.imageCount = self.photoUrlArray.count;
+        browserVc.currentImageIndex = 2;
+        // 代理
+        browserVc.delegate = self;
+        // 展示图片浏览器
+        [browserVc show];
     }
 }
 
@@ -503,28 +495,6 @@
     }
 }
 
-#pragma --------
-#pragma mark - <MLPhotoBrowserViewControllerDataSource>
-- (NSInteger)photoBrowser:(MLPhotoBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
-    return self.photoUrlArray.count;
-}
-
-#pragma mark - 每个组展示什么图片,需要包装下MLPhotoBrowserPhoto
-- (MLPhotoBrowserPhoto *) photoBrowser:(MLPhotoBrowserViewController *)browser photoAtIndexPath:(NSIndexPath *)indexPath{
-    // 包装下imageObj 成 ZLPhotoPickerBrowserPhoto 传给数据源
-    MLPhotoBrowserPhoto *photo = [[MLPhotoBrowserPhoto alloc] init];
-    photo.photoObj = [self.photoUrlArray objectAtIndex:indexPath.row];
-    
-    // 缩略图
-    if (indexPath.row == 0) {
-        photo.thumbImage = photoImageBtn1.image;
-    }else if (indexPath.row == 1){
-        photo.thumbImage = photoImageBtn2.image;
-    }else{
-        photo.thumbImage = photoImageBtn3.image;
-    }
-    return photo;
-}
 
 
 - (void)awakeFromNib {

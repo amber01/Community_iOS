@@ -9,12 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "MLEmojiLabel.h"
 
-#import "MLPhotoBrowserAssets.h"
-#import "MLPhotoBrowserViewController.h"
 #import <UIButton+WebCache.h>
 #import "HZPhotoBrowser.h"
 
-@interface EveryoneTopicTableViewCell : UITableViewCell<UIGestureRecognizerDelegate,MLEmojiLabelDelegate,MLPhotoBrowserViewControllerDataSource,MLPhotoBrowserViewControllerDelegate,HZPhotoBrowserDelegate>
+@interface EveryoneTopicTableViewCell : UITableViewCell<UIGestureRecognizerDelegate,MLEmojiLabelDelegate,HZPhotoBrowserDelegate>
 
 - (void)configureCellWithInfo:(EveryoneTopicModel *)model withImages:(NSArray *)imageArray andPraiseData:(NSArray *)praiseArray andRow:(NSInteger )row;
 
