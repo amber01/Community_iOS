@@ -391,19 +391,6 @@
     [photoImageBtn1 addSubview:imagesGroupView];}
 
 #pragma mark - photobrowser代理方法
-- (UIImage *)photoBrowser:(HZPhotoBrowser *)browser placeholderImageForIndex:(NSInteger)index
-{
-    //return photoImageBtn1.image;
-    UIImage *image = thumbnailArray[index];
-    return image;
-}
-
-- (NSURL *)photoBrowser:(HZPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index
-{
-    NSString *urlStr = self.photoUrlArray[index];
-    return [NSURL URLWithString:urlStr];
-}
-
 - (void)showPhotoBrowseTwo:(UITapGestureRecognizer *)tapGesture
 {
     if (self.photoUrlArray.count > 1) {

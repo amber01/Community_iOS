@@ -496,7 +496,7 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
             originalFrame = [toImageView2.superview convertRect:toImageView2.frame toView:[weakSelf getParsentView:toImageView2]];
         }
         
-        [UIView animateWithDuration:0.25 animations:^{
+        [UIView animateWithDuration:0.7 animations:^{
             if (weakSelf.status == UIViewAnimationAnimationStatusFade){
                 imageView.alpha = 0.0;
                 mainView.alpha = 0.0;
@@ -512,7 +512,7 @@ static CGFloat const ZLPickerColletionViewPadding = 20;
         }];
     };
     
-    [UIView animateWithDuration:0.25 animations:^{
+    [UIView animateWithDuration:0.7 animations:^{
         if (self.status == UIViewAnimationAnimationStatusFade){
             // 淡入淡出
             imageView.alpha = 1.0;
