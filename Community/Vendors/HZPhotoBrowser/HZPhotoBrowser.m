@@ -82,9 +82,19 @@
         UITableView *tableview = (UITableView *)parentView;
         rect.origin.y =  rect.origin.y - tableview.contentOffset.y;
     }
-    
+
     UIImageView *tempImageView = [[UIImageView alloc] init];
-    tempImageView.frame = rect;
+    if (self.currentImageIndex == 0) {
+        rect.size.height = 0.2;
+        rect.origin.y = rect.origin.y + 212;
+        tempImageView.frame = rect;
+    }else if (self.currentImageIndex == 2){
+        rect.origin.x = rect.origin.x + 30;
+        tempImageView.frame = rect;
+    }else{
+        tempImageView.frame = rect;
+    }
+    
     tempImageView.image = [self placeholderImageForIndex:self.currentImageIndex];
     [self.view addSubview:tempImageView];
     tempImageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -247,53 +257,19 @@
     HZPhotoBrowserView *view = (HZPhotoBrowserView *)recognizer.view;
     UIImageView *currentImageView = view.imageview;
     
-    UIView *sourceView = self.sourceImagesContainerView.subviews[self.currentImageIndex];
-    UIView *parentView = [self getParsentView:sourceView];
-    CGRect targetTemp = [sourceView.superview convertRect:sourceView.frame toView:parentView];
     
-    // 减去偏移量
-    if ([parentView isKindOfClass:[UITableView class]]) {
-        UITableView *tableview = (UITableView *)parentView;
-        targetTemp.origin.y =  targetTemp.origin.y - tableview.contentOffset.y;
-    }
-    
-    CGFloat appWidth;
-    CGFloat appHeight;
-    if (kAPPWidth < kAppHeight) {
-        appWidth = kAPPWidth;
-        appHeight = kAppHeight;
-    } else {
-        appWidth = kAppHeight;
-        appHeight = kAPPWidth;
-    }
-    
-    UIImageView *tempImageView = [[UIImageView alloc] init];
-    tempImageView.image = currentImageView.image;
-    if (tempImageView.image) {
-        CGFloat tempImageSizeH = tempImageView.image.size.height;
-        CGFloat tempImageSizeW = tempImageView.image.size.width;
-        CGFloat tempImageViewH = (tempImageSizeH * appWidth)/tempImageSizeW;
-        if (tempImageViewH < appHeight) {
-            tempImageView.frame = CGRectMake(0, (appHeight - tempImageViewH)*0.5, appWidth, tempImageViewH);
-        } else {
-            tempImageView.frame = CGRectMake(0, 0, appWidth, tempImageViewH);
-        }
-    } else {
-        tempImageView.backgroundColor = [UIColor whiteColor];
-        tempImageView.frame = CGRectMake(0, (appHeight - appWidth)*0.5, appWidth, appWidth);
-    }
-    
-    [self.view.window addSubview:tempImageView];
-    
-    [self dismissViewControllerAnimated:NO completion:nil];
-    [UIView animateWithDuration:kPhotoBrowserHideDuration animations:^{
-        tempImageView.frame = targetTemp;
-        
-    } completion:^(BOOL finished) {
-        [tempImageView removeFromSuperview];
-    }];
+    currentImageView.transform = CGAffineTransformMakeScale(1, 1);
+    currentImageView.alpha = 1;
+    [UIView animateWithDuration:0.35
+                     animations:^{
+                         currentImageView.transform = CGAffineTransformMakeScale(0.3, 0.3);
+                         currentImageView.alpha = 0.1;
+                     }completion:^(BOOL finish){
+                         
+                         [self dismissViewControllerAnimated:NO completion:nil];
+                         [currentImageView removeFromSuperview];
+                    }];
 }
-
 #pragma mark 网络加载图片
 - (void)setupImageOfImageViewForIndex:(NSInteger)index
 {

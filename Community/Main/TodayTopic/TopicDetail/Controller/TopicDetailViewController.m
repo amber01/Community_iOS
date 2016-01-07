@@ -17,15 +17,17 @@
 #import "GoodsLoadMoreFootView.h"
 #import "TopicCommentDetailView.h"
 #import "WSJSObject.h"
-#import "SDPhotoBrowser.h"
 #import "UMSocial.h"
 #import "UMSocialWechatHandler.h"
 #import "UMSocialQQHandler.h"
 #import "CheckTopicDetailViewController.h"
+
+#import "HZPhotoBrowser.h"
+
 //#import "UMSocialSinaHandler.h"  //新浪微博不要
 
 
-@interface TopicDetailViewController ()<UIScrollViewDelegate,UIWebViewDelegate,TWebScrollViewDelegate,CheckMoreDelegate,UIActionSheetDelegate,JSObjectProtocolDelegate,SDPhotoBrowserDelegate,UMSocialUIDelegate>
+@interface TopicDetailViewController ()<UIScrollViewDelegate,UIWebViewDelegate,TWebScrollViewDelegate,CheckMoreDelegate,UIActionSheetDelegate,JSObjectProtocolDelegate,HZPhotoBrowserDelegate,HZPhotoBrowserDelegate,UMSocialUIDelegate>
 {
     ScorellButtonView    *scorllBtnView;
     TopicDetailHeadView  *headView;
@@ -398,16 +400,14 @@
         [self.photoArray addObject:[dic objectForKey:@"picture"]];
     }
     
-    SDPhotoBrowser *browser; 
-    //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-    if (!browser) {
-        browser = [[SDPhotoBrowser alloc] init];
-        browser.delegate = self;
-    }
-    
-    browser.imageCount = self.photoArray.count; //图片总数
-    browser.currentImageIndex = photoIndext - 1;
-    [browser show];
+    HZPhotoBrowser *browserVc = [[HZPhotoBrowser alloc] init];
+    browserVc.sourceImagesContainerView = self.view;
+    browserVc.imageCount = self.photoArray.count;
+    browserVc.currentImageIndex = photoIndext - 1;
+    // 代理
+    browserVc.delegate = self;
+    // 展示图片浏览器
+    [browserVc show];
 }
 
 /**
@@ -440,12 +440,23 @@
     //NSLog(@"photo array:%@",photoArray);
 }
 
-// 返回高质量图片的url
-- (NSURL *)photoBrowser:(SDPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index
+#pragma mark - photobrowser代理方法
+//临时占位图（thumbnail图）
+- (UIImage *)photoBrowser:(HZPhotoBrowser *)browser placeholderImageForIndex:(NSInteger)index
 {
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:self.photoArray[index]] placeholderImage:[UIImage imageNamed:@"default_background_icon"]];
+    return imageView.image;
+}
+
+//高清原图 （bmiddle图）
+- (NSURL *)photoBrowser:(HZPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index
+{
+    NSLog(@"self.photoArray:%@",self.photoArray);
     NSString *urlStr = self.photoArray[index];
     return [NSURL URLWithString:urlStr];
 }
+
 
 #pragma mark -- action
 - (void)writeCommentAction

@@ -78,6 +78,8 @@
     
     UILabel *tempLabel = [self viewWithTag:204];
     tempLabel.text = self.currentCityName;
+    
+    titleArr = @[@"本地散讲",@"同城互助",@"秀自拍",@"相亲交友",_currentCityName,@"吃货吧",@"去哪玩",@"供求信息"];
 }
 
 - (void)setupTopButton:(int)page
@@ -105,7 +107,7 @@
     
     self.currentCityName = [NSString stringWithFormat:@"%@热点",cityName];
     
-    titleArr = @[@"本地散件",@"同城互助",@"秀自拍",@"相亲交友",_currentCityName,@"吃货吧",@"去哪玩",@"供求信息"];
+    titleArr = @[@"本地散讲",@"同城互助",@"秀自拍",@"相亲交友",_currentCityName,@"吃货吧",@"去哪玩",@"供求信息"];
     btnImage = @[@"topic_send_community",@"topic_send_city",@"topic_send_show",@"topic_send_people",@"topic_send_information",@"topic_send_food",@"topic_send_play",@"topic_send_shareinfo"];
     cateArray = @[@"11",@"1",@"2",@"3",@"4",@"5",@"6",@"12",@"7",@"9",@"10",@"8",@"13"];
     CGFloat width = ScreenWidth / 4;

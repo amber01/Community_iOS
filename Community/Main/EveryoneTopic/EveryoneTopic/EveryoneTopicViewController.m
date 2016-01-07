@@ -24,6 +24,7 @@
     CheckMoreView *checkMoreView;
     BOOL    isShowMore;
     BOOL    isFirst;
+    BOOL    isSelectCity;
     PopMenu *_popMenu;
 }
 
@@ -37,6 +38,7 @@
 
 @property (nonatomic,retain) NSMutableArray *likeDataArray;  //记录本地点赞的状态
 @property (nonatomic,retain) NSArray        *cateArray;
+
 
 @end
 
@@ -70,33 +72,12 @@
     self.navigationItem.leftBarButtonItem = leftItem;
     
     self.cateArray = @[@"11",@"1",@"2",@"3",@"4",@"5",@"6",@"12",@"7",@"9",@"10",@"8",@"13"];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeBtnTitle) name:kChangeCityNameNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
-    
-    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-    NSString *cityName;
-    
-    NSRange foundObj=[sharedInfo.cityarea rangeOfString:@"城区"];  // options:NSCaseInsensitiveSearch
-    if(foundObj.length>0){
-        cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"城区" withString:@""];
-    }else{
-        NSRange foundObj2 = [sharedInfo.cityarea rangeOfString:@"县"];
-        if (foundObj2.length > 0) {
-            cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"县" withString:@""];
-        }else{
-            NSRange foundObj3 = [sharedInfo.cityarea rangeOfString:@"区"];
-            if (foundObj3.length > 0) {
-                cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"区" withString:@""];
-            }else{
-                cityName = sharedInfo.cityarea;
-            }
-        }
-    }
-
-    topView.currentCityName = [NSString stringWithFormat:@"%@热点",cityName];
 }
 
 - (UITableView *)setupTableView
@@ -224,6 +205,11 @@
     [self.navigationController pushViewController:topicSearchVC animated:YES];
 }
 
+- (void)changeBtnTitle
+{
+    isSelectCity = YES;
+}
+
 -(void)selectSendCat
 {
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
@@ -255,9 +241,11 @@
     
     NSString *tempCityName = [NSString stringWithFormat:@"%@热点",cityName];
     
+    NSLog(@"tempCityName:%@",tempCityName);
+    
     NSMutableArray *items = [[NSMutableArray alloc] initWithCapacity:3];
     
-    MenuItem *menuItem = [MenuItem itemWithTitle:@"本地散件" iconName:@"topic_send_community"];
+    MenuItem *menuItem = [MenuItem itemWithTitle:@"本地散讲" iconName:@"topic_send_community"];
     [items addObject:menuItem];
     
     menuItem = [MenuItem itemWithTitle:@"同城互助" iconName:@"topic_send_city"];
@@ -297,11 +285,12 @@
     [items addObject:menuItem];
     
     
-    if (!_popMenu) {
+    if (!_popMenu | isSelectCity) {
         _popMenu = [[PopMenu alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) items:items];
         _popMenu.perRowItemCount = 4;
         _popMenu.menuAnimationType = kPopMenuAnimationTypeNetEase;
     }
+    
     if (_popMenu.isShowed) {
         return;
     }
@@ -317,6 +306,7 @@
         } ];
     };
     [_popMenu showMenuAtView:self.view.window];
+    isSelectCity = NO;
 }
 
 #pragma mark -- HTTP

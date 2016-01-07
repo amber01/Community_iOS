@@ -21,6 +21,7 @@
 {
     PopMenu *_popMenu;
     int     page;
+    BOOL    isSelectCity;
     UIImageView *headLogImageView;
 }
 
@@ -55,7 +56,7 @@
     self.cateArray = @[@"11",@"1",@"2",@"3",@"4",@"5",@"6",@"12",@"7",@"9",@"10",@"8",@"13"];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadDataList) name:kReloadDataNotification object:nil];
-    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeBtnTitle) name:kChangeCityNameNotification object:nil];
     /**
      *  第一次使用app
      */
@@ -269,6 +270,12 @@
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 
+- (void)changeBtnTitle
+{
+    isSelectCity = YES;
+}
+
+
 #pragma mark -- action
 -(void)selectSendCat
 {
@@ -304,7 +311,7 @@
     
     NSMutableArray *items = [[NSMutableArray alloc] initWithCapacity:3];
     
-    MenuItem *menuItem = [MenuItem itemWithTitle:@"本地散件" iconName:@"topic_send_community"];
+    MenuItem *menuItem = [MenuItem itemWithTitle:@"本地散讲" iconName:@"topic_send_community"];
     [items addObject:menuItem];
     
     menuItem = [MenuItem itemWithTitle:@"同城互助" iconName:@"topic_send_city"];
@@ -343,7 +350,7 @@
     menuItem = [MenuItem itemWithTitle:@"提建议" iconName:@"topic_send_suggestion" glowColor:[UIColor clearColor]];
     [items addObject:menuItem];
     
-    if (!_popMenu) {
+    if (!_popMenu | isSelectCity) {
         _popMenu = [[PopMenu alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) items:items];
         _popMenu.perRowItemCount = 4;
         _popMenu.menuAnimationType = kPopMenuAnimationTypeNetEase;
@@ -363,6 +370,7 @@
         } ];
     };
     [_popMenu showMenuAtView:self.view.window];
+    isSelectCity = NO;
 }
 
 #pragma mark -- ohter

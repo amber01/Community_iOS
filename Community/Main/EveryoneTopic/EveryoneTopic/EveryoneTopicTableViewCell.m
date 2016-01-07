@@ -15,9 +15,6 @@
 #import "EaseConvertToCommonEmoticonsHelper.h"
 
 
-#import "HZIndicatorView.h"
-#import "HZImagesGroupView.h"
-#import "HZPhotoItemModel.h"
 
 
 @implementation EveryoneTopicTableViewCell
@@ -25,7 +22,7 @@
     PubliButton         *avatarImageView;
     UILabel             *nicknameLabel;
     UILabel             *dateLabel;
-
+    
     UIImageView         *showVImageView;
     UIImageView         *activityImageView;
     
@@ -155,7 +152,7 @@
         fromLabel.textColor = [UIColor grayColor];
         fromLabel.font = [UIFont systemFontOfSize:10];
         fromLabel.textAlignment = NSTextAlignmentRight;
-        fromLabel.text = @"本地散件";
+        fromLabel.text = @"本地散讲";
         
         thumbnailArray = [NSMutableArray new];
         
@@ -227,11 +224,7 @@
     
     NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
     CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-    
-//    if (contentLabel.text.length == 0) {
-//        contentHeight.height = 0;
-//    }
-    
+
     commentBtn.post_id = model.id;
     commentBtn.user_id = model.userid;
     avatarImageView.user_id = model.userid;
@@ -280,8 +273,8 @@
                         
                         [photoImageBtn1 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",imagesModel.picturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] placeholderImage:[UIImage imageNamed:@"default_background"]  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                             if (image) {
-                                firstImageWidth = image.size.width;
-                                firstImageHeight = image.size.height;
+                                firstImageWidth = image.size.width * 0.7;
+                                firstImageHeight = image.size.height * 0.7;
                             }else{
                                 firstImageHeight = 80;
                             }
@@ -294,16 +287,12 @@
                     if (!isStrEmpty(imagesModel.picture)) {
                         
                         [photoImageBtn2 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",imagesModel.picturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]]placeholderImage:[UIImage imageNamed:@"default_background"]];
-                        
-                        //[photoImageBtn2 sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"default_background"]];
-                            [thumbnailArray addObject:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",imagesModel.picturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]];
                         [self.photoUrlArray addObject:imageURL];
                     }
                     k=2;
                 }else if (k == 2){
                     if (!isStrEmpty(imagesModel.picture)) {
                         [photoImageBtn3 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",imagesModel.picturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]]placeholderImage:[UIImage imageNamed:@"default_background"]];
-                            [thumbnailArray addObject:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",imagesModel.picturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]];
                         [self.photoUrlArray addObject:imageURL];
                     }
                     k = 3;
@@ -370,32 +359,45 @@
 }
 
 #pragma mark - photobrowser代理方法
+//临时占位图（thumbnail图）
+- (UIImage *)photoBrowser:(HZPhotoBrowser *)browser placeholderImageForIndex:(NSInteger)index
+{
+    if (index == 0) {
+        return photoImageBtn1.image;
+    }else if (index == 1){
+        return photoImageBtn2.image;
+    }else if (index == 2){
+        return  photoImageBtn3.image;
+    }
+    return nil;
+}
+//高清原图 （bmiddle图）
+- (NSURL *)photoBrowser:(HZPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index
+{
+    NSString *urlStr = self.photoUrlArray[index];
+    return [NSURL URLWithString:urlStr];
+}
+
+
 - (void)showPhotoBrowseOne:(UITapGestureRecognizer *)tapGesture
 {
-    
-    HZImagesGroupView *imagesGroupView = [[HZImagesGroupView alloc] init];
-    NSMutableArray *temp = [NSMutableArray array];
-    [thumbnailArray enumerateObjectsUsingBlock:^(NSString *src, NSUInteger idx, BOOL *stop) {
-        HZPhotoItemModel *item = [[HZPhotoItemModel alloc] init];
-        item.thumbnail_pic = src;
-        [temp addObject:item];
-    }];
-    
-    CGRect rect = imagesGroupView.frame;
-    imagesGroupView.btn.frame = photoImageBtn1.frame;
-    
-    imagesGroupView.frame = photoImageBtn1.frame;
-    imagesGroupView.photoItemArray = temp;
-    //cell.imageContentHeight.constant = imagesGroupView.bounds.size.height;
-    
-    [photoImageBtn1 addSubview:imagesGroupView];}
+    HZPhotoBrowser *browserVc = [[HZPhotoBrowser alloc] init];
+    browserVc.sourceImagesContainerView = self;
+    browserVc.imageCount = self.photoUrlArray.count;
+    browserVc.currentImageIndex = 0;
+    // 代理
+    browserVc.delegate = self;
+    // 展示图片浏览器
+    [browserVc show];
+}
 
 #pragma mark - photobrowser代理方法
 - (void)showPhotoBrowseTwo:(UITapGestureRecognizer *)tapGesture
 {
     if (self.photoUrlArray.count > 1) {
+        
         HZPhotoBrowser *browserVc = [[HZPhotoBrowser alloc] init];
-        browserVc.sourceImagesContainerView = self.contentView;
+        browserVc.sourceImagesContainerView = self;
         browserVc.imageCount = self.photoUrlArray.count;
         browserVc.currentImageIndex = 1;
         // 代理
@@ -408,6 +410,7 @@
 - (void)showPhotoBrowseThree:(UITapGestureRecognizer *)tapGesture
 {
     if (self.photoUrlArray.count > 2) {
+        
         HZPhotoBrowser *browserVc = [[HZPhotoBrowser alloc] init];
         browserVc.sourceImagesContainerView = self.contentView;
         browserVc.imageCount = self.photoUrlArray.count;
@@ -481,8 +484,6 @@
             break;
     }
 }
-
-
 
 - (void)awakeFromNib {
     // Initialization code

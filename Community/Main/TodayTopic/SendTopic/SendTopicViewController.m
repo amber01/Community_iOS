@@ -222,7 +222,7 @@
     self.cate_id = cateArray[button.tag - 100];
     
     NSLog(@"current cati :%@",_cate_id);
-    NSArray *titleArr = @[@"本地散件",@"同城互助",@"秀自拍",@"相亲交友",tempCityName,@"吃货吧",@"去哪玩",@"供求信息",@"男女情感",@"汽车之家",@"健康养生",@"轻松一刻",@"提建议"];
+    NSArray *titleArr = @[@"本地散讲",@"同城互助",@"秀自拍",@"相亲交友",tempCityName,@"吃货吧",@"去哪玩",@"供求信息",@"男女情感",@"汽车之家",@"健康养生",@"轻松一刻",@"提建议"];
     [sendNavigationView setNavigationTitle:titleArr[button.tag - 100]];
     sendTopicBtnView.hidden = YES;
     isHidenSendView = NO;
