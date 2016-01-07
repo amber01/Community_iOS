@@ -369,42 +369,20 @@
 #pragma mark - photobrowser代理方法
 - (void)showPhotoBrowseOne:(UITapGestureRecognizer *)tapGesture
 {
-    HZPhotoBrowser *browserVc = [[HZPhotoBrowser alloc] init];
-    browserVc.sourceImagesContainerView = self;
-    browserVc.imageCount = self.photoUrlArray.count;
-    browserVc.currentImageIndex = 0;
-    // 代理
-    browserVc.delegate = self;
-    // 展示图片浏览器
-    [browserVc show];
-    
-//    // 图片游览器
-//    MLPhotoBrowserViewController *photoBrowser = [[MLPhotoBrowserViewController alloc] init];
-//    // 淡入淡出效果
-//    photoBrowser.status = UIViewAnimationAnimationStatusFade;
-//    // 数据源/delegate
-//    photoBrowser.delegate = self;
-//    photoBrowser.dataSource = self;
-//    // 当前选中的值
-//    photoBrowser.currentIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];;
-//    // 展示控制器
-//    [photoBrowser showPickerVc:self.viewController];
+    // 图片游览器
+    MLPhotoBrowserViewController *photoBrowser = [[MLPhotoBrowserViewController alloc] init];
+    // 淡入淡出效果
+    photoBrowser.status = UIViewAnimationAnimationStatusFade;
+    // 数据源/delegate
+    photoBrowser.delegate = self;
+    photoBrowser.dataSource = self;
+    // 当前选中的值
+    photoBrowser.currentIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];;
+    // 展示控制器
+    [photoBrowser showPickerVc:self.viewController];
 }
 
 #pragma mark - photobrowser代理方法
-- (UIImage *)photoBrowser:(HZPhotoBrowser *)browser placeholderImageForIndex:(NSInteger)index
-{
-    //return photoImageBtn1.image;
-    UIImage *image = thumbnailArray[index];
-    return image;
-}
-
-- (NSURL *)photoBrowser:(HZPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index
-{
-    NSString *urlStr = self.photoUrlArray[index];
-    return [NSURL URLWithString:urlStr];
-}
-
 - (void)showPhotoBrowseTwo:(UITapGestureRecognizer *)tapGesture
 {
     if (self.photoUrlArray.count > 1) {
@@ -420,6 +398,7 @@
         // 当前选中的值
         // 展示控制器
         [photoBrowser showPickerVc:self.viewController];
+        
     }
 }
 
