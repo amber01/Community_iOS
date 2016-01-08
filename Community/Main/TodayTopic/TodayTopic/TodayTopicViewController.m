@@ -256,7 +256,7 @@
     if ([model.imagecount intValue] > 1) {
         return 28 + 5 + (80 *scaleToScreenHeight);
     }else{
-        return 80;
+        return 85;
     }
 }
 

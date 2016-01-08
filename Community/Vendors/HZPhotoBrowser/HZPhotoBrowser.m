@@ -260,13 +260,15 @@
     
     currentImageView.transform = CGAffineTransformMakeScale(1, 1);
     currentImageView.alpha = 1;
-    [UIView animateWithDuration:0.35
+    [self.view.window addSubview:currentImageView];
+    [self dismissViewControllerAnimated:NO completion:nil];
+    [UIView animateWithDuration:0.4
                      animations:^{
-                         currentImageView.transform = CGAffineTransformMakeScale(0.3, 0.3);
+                         currentImageView.transform = CGAffineTransformMakeScale(0.4, 0.4);
                          currentImageView.alpha = 0.1;
                      }completion:^(BOOL finish){
                          
-                         [self dismissViewControllerAnimated:NO completion:nil];
+                         
                          [currentImageView removeFromSuperview];
                     }];
 }

@@ -23,7 +23,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 80, 60)];
+        imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 85, 64)];
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.clipsToBounds = YES;
         [imageView setImage:[UIImage imageNamed:@"001"]];
