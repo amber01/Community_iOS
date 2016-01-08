@@ -23,6 +23,8 @@
     
     UILabel         *addFollowLabel;
     BOOL            isToFans;
+    
+    UIImageView         *showVImageView;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame withUserID:(NSString *)user_id andNickname:(NSString *)nickname andUserName:(NSString *)userName andAvararUrl:(NSString *)avatarUrl;
@@ -75,10 +77,19 @@
         _followBtn.titleLabel.font = [UIFont systemFontOfSize:14];
         [_followBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         
+        showVImageView = [[UIImageView alloc]initWithFrame:CGRectMake(_avatarImageView.right - 15, _avatarImageView.bottom - 18, 15, 15)];
+        showVImageView.image = [UIImage imageNamed:@"topic_isv_icon"];
+        
         /**
          *  查看自己的
          */
         if ([share.user_id isEqualToString:user_id]) {
+            if ([share.isv intValue] == 1) {
+                showVImageView.hidden = NO;
+            }else{
+                showVImageView.hidden = YES;
+            }
+            
             editUserInfoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             editUserInfoBtn.frame = CGRectMake(ScreenWidth/2 - (236/2)/2, _followBtn.bottom + 18, 236/2, 75/2);
             [editUserInfoBtn addTarget:self action:@selector(editUserInfoAction) forControlEvents:UIControlEventTouchUpInside];
@@ -144,6 +155,7 @@
             
             [self addSubview:chatBtn];
             [self addSubview:addFollowBtn];
+            
         }
         
         UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, 136 + 10, ScreenWidth, 10)];
@@ -162,6 +174,8 @@
         [self addSubview:_followBtn];
         [self addSubview:editUserInfoBtn];
         [self addSubview:_sexImageView];
+        
+        [self addSubview:showVImageView];
     }
     return self;
 }
@@ -291,6 +305,12 @@
                 [_myFansBtn setTitle:[NSString stringWithFormat:@"%@粉丝",[dic objectForKey:@"myfansnum"]] forState:UIControlStateNormal];
                 
                 [_followBtn setTitle:[NSString stringWithFormat:@"%@关注",[dic objectForKey:@"mytofansnum"]] forState:UIControlStateNormal];
+                
+                if ([[dic objectForKey:@"isv"]intValue] == 1) {
+                    showVImageView.hidden = NO;
+                }else{
+                    showVImageView.hidden = YES;
+                }
             }
         }
     } failure:^(NSError *erro) {

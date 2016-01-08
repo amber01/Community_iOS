@@ -25,6 +25,8 @@
     
     UILabel     *nicknameLabel;
     UILabel     *prestigeLabel;
+    
+    UIImageView         *showVImageView;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -36,6 +38,9 @@
         UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 125)];
         avatarImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 60, 60)];
         [UIUtils setupViewRadius:avatarImageView cornerRadius:30];
+        
+        showVImageView = [[UIImageView alloc]initWithFrame:CGRectMake(avatarImageView.right - 15, avatarImageView.bottom - 18, 15, 15)];
+        showVImageView.image = [UIImage imageNamed:@"topic_isv_icon"];
         
         nicknameLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right + 10, 15, ScreenWidth - avatarImageView.right - 30, 20)];
         nicknameLabel.text = @"盛夏光年";
@@ -133,6 +138,7 @@
         [fansBtn addSubview:fansLabel];
         [postsBtn addSubview:postLabel];
         
+        
         [bgView addSubview:prestigeLabel];
         [bgView addSubview:scoreBtn];
         [bgView addSubview:followBtn];
@@ -140,6 +146,7 @@
         [bgView addSubview:postsBtn];
         [bgView addSubview:nicknameLabel];
         [bgView addSubview:avatarImageView];
+        [bgView addSubview:showVImageView];
         [self.contentView addSubview:bgView];
     }
     return self;
@@ -168,12 +175,19 @@
         self.tipsView.hidden = YES;
     }
     
+    
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     sharedInfo.nickname = model.nickname;
     sharedInfo.postnum = model.postnum;
     sharedInfo.myfansnum = model.myfansnum;
     sharedInfo.mytofansnum = model.mytofansnum;
     sharedInfo.totalscore = model.totalscore;
+    if ([sharedInfo.isv intValue] == 1) {
+        showVImageView.hidden = NO;
+    }else{
+        showVImageView.hidden = YES;
+    }
+    
 }
 
 - (void)checkPostListAction
