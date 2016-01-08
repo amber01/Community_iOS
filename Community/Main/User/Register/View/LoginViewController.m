@@ -75,6 +75,7 @@
             
             for (int i = 0; i < userInfoArr.count; i ++) {
                 
+                //area 才是城市id，city作为NSUserDefaults的Key用来存储的
                 NSDictionary *dic = [userInfoArr objectAtIndex:i];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"nickname"] forKey:@"nickname"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"mobile"] forKey:@"mobile"];
@@ -85,7 +86,7 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"isbbs"] forKey:@"isbbs"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"createtime"] forKey:@"createtime"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"address"] forKey:@"address"];
-                [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"city"] forKey:@"city"];
+                [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"area"] forKey:@"city"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"picture"] forKey:@"picture"];
                 
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"myfansnum"] forKey:@"myfansnum"];
@@ -97,7 +98,6 @@
                 
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"provincearea"] forKey:@"provincearea"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"picturedomain"] forKey:@"picturedomain"];
-                [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"area"] forKey:@"area"];
                 
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"isbbs"] forKey:@"isbbs"];
                 [[NSUserDefaults standardUserDefaults] setObject:[dic objectForKey:@"ishotnews"] forKey:@"ishotnews"];
@@ -109,7 +109,6 @@
                 sharedInfo.nickname  = [dic objectForKey:@"nickname"];
                 sharedInfo.mobile  = [dic objectForKey:@"mobile"];
                 sharedInfo.username  = [dic objectForKey:@"username"];
-                sharedInfo.area  = [dic objectForKey:@"area"];
                 sharedInfo.address  = [dic objectForKey:@"address"];
                 sharedInfo.createtime  = [dic objectForKey:@"createtime"];
                 sharedInfo.picture = [dic objectForKey:@"picture"];
@@ -122,7 +121,7 @@
                 
                 sharedInfo.provincearea = [dic objectForKey:@"provincearea"];
                 sharedInfo.picturedomain = [dic objectForKey:@"picturedomain"];
-                sharedInfo.city = [dic objectForKey:@"area"];
+                sharedInfo.city = [dic objectForKey:@"area"]; //城市id
                 sharedInfo.isv  = [dic objectForKey:@"isv"];
                 
                 if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"cityarea"]length] < 1){
