@@ -212,6 +212,7 @@
 		964AA1261BEF844E007CE0E9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 964AA1251BEF844E007CE0E9 /* CoreLocation.framework */; };
 		964AA12C1BEF8631007CE0E9 /* EveryoneTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 964AA12B1BEF8631007CE0E9 /* EveryoneTopicViewController.m */; };
 		964AA1321BEF864C007CE0E9 /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 964AA1311BEF864C007CE0E9 /* MineViewController.m */; };
+		964FA77A1C40E7ED007CF634 /* libUMessage_Sdk_1.2.3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 964FA7781C40E7ED007CF634 /* libUMessage_Sdk_1.2.3.a */; };
 		965567781C009A37005F8744 /* EveryoneTopicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 965567771C009A37005F8744 /* EveryoneTopicTableViewCell.m */; };
 		9655677B1C00A3D7005F8744 /* EvenyoneTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9655677A1C00A3D7005F8744 /* EvenyoneTopView.m */; };
 		9657DD541C2C5C4E000A243B /* mine_score_ex@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9657DD521C2C5C4E000A243B /* mine_score_ex@2x.png */; };
@@ -916,6 +917,8 @@
 		964AA12B1BEF8631007CE0E9 /* EveryoneTopicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EveryoneTopicViewController.m; sourceTree = "<group>"; };
 		964AA1301BEF864C007CE0E9 /* MineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MineViewController.h; sourceTree = "<group>"; };
 		964AA1311BEF864C007CE0E9 /* MineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineViewController.m; sourceTree = "<group>"; };
+		964FA7781C40E7ED007CF634 /* libUMessage_Sdk_1.2.3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMessage_Sdk_1.2.3.a; sourceTree = "<group>"; };
+		964FA7791C40E7ED007CF634 /* UMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMessage.h; sourceTree = "<group>"; };
 		965567761C009A37005F8744 /* EveryoneTopicTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EveryoneTopicTableViewCell.h; sourceTree = "<group>"; };
 		965567771C009A37005F8744 /* EveryoneTopicTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EveryoneTopicTableViewCell.m; sourceTree = "<group>"; };
 		965567791C00A3D7005F8744 /* EvenyoneTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvenyoneTopView.h; sourceTree = "<group>"; };
@@ -1380,6 +1383,7 @@
 				96D255741C2C46330002E650 /* libz.1.2.5.tbd in Frameworks */,
 				96D255721C2C46270002E650 /* libstdc++.tbd in Frameworks */,
 				96D255701C2C46190002E650 /* CoreTelephony.framework in Frameworks */,
+				964FA77A1C40E7ED007CF634 /* libUMessage_Sdk_1.2.3.a in Frameworks */,
 				96D2556E1C2C460F0002E650 /* libsqlite3.0.tbd in Frameworks */,
 				9643D7361BF78528003A394D /* CoreGraphics.framework in Frameworks */,
 				96D2556C1C2C45FC0002E650 /* SystemConfiguration.framework in Frameworks */,
@@ -2273,6 +2277,7 @@
 		964A9FB11BEF46B0007CE0E9 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				964FA7771C40E7ED007CF634 /* UMessage_Sdk_1.2.3 */,
 				96C9A6291C3D576900B00F22 /* HZPhotoBrowser */,
 				967700541C3944E6005EA280 /* MLPhotoBrowser */,
 				962C24A21C38EC2600B74B2E /* DWTagList */,
@@ -2545,6 +2550,15 @@
 				962A5DFA1BF8AC8400171C72 /* CKHttpRequest.m */,
 			);
 			path = Net;
+			sourceTree = "<group>";
+		};
+		964FA7771C40E7ED007CF634 /* UMessage_Sdk_1.2.3 */ = {
+			isa = PBXGroup;
+			children = (
+				964FA7781C40E7ED007CF634 /* libUMessage_Sdk_1.2.3.a */,
+				964FA7791C40E7ED007CF634 /* UMessage.h */,
+			);
+			path = UMessage_Sdk_1.2.3;
 			sourceTree = "<group>";
 		};
 		966EE5261C0028440039325F /* ELCImagePicker */ = {
@@ -4432,6 +4446,7 @@
 					"$(PROJECT_DIR)/Community/Vendors/umeng_ios_social_sdk_4.4_arm64_custom/UMSocial_Sdk_Extra_Frameworks/SinaSSO",
 					"$(PROJECT_DIR)/Community/Vendors/umsdk_IOS_analytics_idfa_v3.6.6/umsdk_IOS_analytics_idfa_v3.6.6/UMAnalytics_Sdk_3.6.6",
 					"$(PROJECT_DIR)/Community/Vendors/UMAnalytics_Sdk_3.6.6",
+					"$(PROJECT_DIR)/Community/Vendors/UMessage_Sdk_1.2.3",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.microwenzhou.wansons;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4476,6 +4491,7 @@
 					"$(PROJECT_DIR)/Community/Vendors/umeng_ios_social_sdk_4.4_arm64_custom/UMSocial_Sdk_Extra_Frameworks/SinaSSO",
 					"$(PROJECT_DIR)/Community/Vendors/umsdk_IOS_analytics_idfa_v3.6.6/umsdk_IOS_analytics_idfa_v3.6.6/UMAnalytics_Sdk_3.6.6",
 					"$(PROJECT_DIR)/Community/Vendors/UMAnalytics_Sdk_3.6.6",
+					"$(PROJECT_DIR)/Community/Vendors/UMessage_Sdk_1.2.3",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.microwenzhou.wansons;
 				PRODUCT_NAME = "$(TARGET_NAME)";

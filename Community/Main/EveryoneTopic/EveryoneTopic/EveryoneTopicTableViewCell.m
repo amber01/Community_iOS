@@ -273,8 +273,8 @@
                         
                         [photoImageBtn1 sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",imagesModel.picturedomain],BASE_IMAGE_URL,postinfo,imagesModel.picture]] placeholderImage:[UIImage imageNamed:@"default_background"]  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                             if (image) {
-                                firstImageWidth = image.size.width * 0.7;
-                                firstImageHeight = image.size.height * 0.7;
+                                firstImageWidth = image.size.width * 0.5;
+                                firstImageHeight = image.size.height * 0.5;
                             }else{
                                 firstImageHeight = 80;
                             }

@@ -11,6 +11,8 @@
 #import "EaseMob.h"
 #import "UMSocial.h"
 #import "MobClick.h"
+#import "UMessage.h"
+#import "KeychainIDFA.h"
 
 @interface AppDelegate ()
 
@@ -45,6 +47,13 @@
     
     //YouMeng统计平台
     [MobClick startWithAppkey:Umeng_key reportPolicy:BATCH channelId:@"appStore"];
+    
+    /**
+     *  友盟推送
+     */
+    [UMessage startWithAppkey:Umeng_key launchOptions:launchOptions];
+    //for log
+    [UMessage setLogEnabled:YES];
     
     /**
      *  环信
@@ -288,12 +297,31 @@
 // 将得到的deviceToken传给SDK
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
     [[EaseMob sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+    [UMessage registerDeviceToken:deviceToken];
+    
+    NSLog(@"deviceToken:%@",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                  stringByReplacingOccurrencesOfString: @">" withString: @""]
+                 stringByReplacingOccurrencesOfString: @" " withString: @""]);
+    
+    [[[UIAlertView alloc]initWithTitle:@"请将DeviceToken复制到友盟后台系统中去" message:[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                                                                           stringByReplacingOccurrencesOfString: @">" withString: @""]
+                                                                          stringByReplacingOccurrencesOfString: @" " withString: @""] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil]show];
+    
+    [UMessage addAlias:[KeychainIDFA IDFA] type:@"MicroWenZhouUSER" response:^(id responseObject, NSError *error) {
+        NSLog(@"responseOjbect:%@",responseObject);
+        NSLog(@"[KeychainIDFA IDFA]:%@",[KeychainIDFA IDFA]);
+    }];
 }
 
 // 注册deviceToken失败
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
     [[EaseMob sharedInstance] application:application didFailToRegisterForRemoteNotificationsWithError:error];
     NSLog(@"error -- %@",error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    [UMessage didReceiveRemoteNotification:userInfo];
 }
 
 @end
