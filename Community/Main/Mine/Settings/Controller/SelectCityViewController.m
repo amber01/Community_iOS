@@ -9,6 +9,7 @@
 #import "SelectCityViewController.h"
 #import "ChineseString.h"
 #import "KeychainIDFA.h"
+#import "UMessage.h"
 
 @interface SelectCityViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -132,10 +133,43 @@
     NSString *cityName = [dic objectForKey:@"area_city"];
     shareInfo.city = area_szcode; //城市id
     
+    if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"city"]length] > 1) {
+        [UMessage removeTag:[[NSUserDefaults standardUserDefaults]objectForKey:@"city"]
+                   response:^(id responseObject, NSInteger remain, NSError *error) {
+                       NSLog(@"剩余次数：%@",[NSString stringWithFormat:@"剩余:%ld",(long)remain]);
+                       if(responseObject)
+                       {
+                           NSLog(@"删除成功！");
+                       }
+                       else
+                       {
+                           NSLog(@"error log%@",error.localizedDescription);
+                       }
+                   }];
+    }
+    
+    //讲tag发送到服务器，然后根据tag发送推送到指定的设备上去
+    [UMessage addTag:area_szcode
+            response:^(id responseObject, NSInteger remain, NSError *error) {
+                NSLog(@"剩余次数：%@",[NSString stringWithFormat:@"剩余:%ld",(long)remain]);
+                if(responseObject)
+                {
+                    NSLog(@"添加成功");
+                }
+                else
+                {
+                    NSLog(@"error log%@",error.localizedDescription);
+                }
+                
+            }];
+    
+    
     [[NSUserDefaults standardUserDefaults] setObject:area_szcode forKey:@"city"];
     [[NSUserDefaults standardUserDefaults]setObject:[dic objectForKey:@"area_city"] forKey:@"cityarea"];
     shareInfo.cityarea = [dic objectForKey:@"area_city"];
-
+    
+    
+    NSLog(@"area_szcode:%@",area_szcode);
     
     NSLog(@"citynameL%@",cityName);
     

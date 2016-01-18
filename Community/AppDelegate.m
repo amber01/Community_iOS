@@ -302,15 +302,12 @@
     NSLog(@"deviceToken:%@",[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]
                   stringByReplacingOccurrencesOfString: @">" withString: @""]
                  stringByReplacingOccurrencesOfString: @" " withString: @""]);
+
     
-    [[[UIAlertView alloc]initWithTitle:@"请将DeviceToken复制到友盟后台系统中去" message:[[[[deviceToken description] stringByReplacingOccurrencesOfString: @"<" withString: @""]
-                                                                           stringByReplacingOccurrencesOfString: @">" withString: @""]
-                                                                          stringByReplacingOccurrencesOfString: @" " withString: @""] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil]show];
-    
-    [UMessage addAlias:[KeychainIDFA IDFA] type:@"MicroWenZhouUSER" response:^(id responseObject, NSError *error) {
-        NSLog(@"responseOjbect:%@",responseObject);
-        NSLog(@"[KeychainIDFA IDFA]:%@",[KeychainIDFA IDFA]);
-    }];
+    //[UMessage addAlias:[KeychainIDFA IDFA] type:@"MicroWenZhouUSER" response:^(id responseObject, NSError *error) {
+      //  NSLog(@"responseOjbect:%@",responseObject);
+        //NSLog(@"[KeychainIDFA IDFA]:%@",[KeychainIDFA IDFA]);
+    //}];
 }
 
 // 注册deviceToken失败
