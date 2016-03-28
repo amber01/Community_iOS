@@ -152,7 +152,32 @@
         fromLabel.textColor = [UIColor grayColor];
         fromLabel.font = [UIFont systemFontOfSize:10];
         fromLabel.textAlignment = NSTextAlignmentRight;
-        fromLabel.text = @"本地散讲";
+        
+        
+        
+        
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        NSString *cityName;
+        
+        NSRange foundObj=[sharedInfo.cityarea rangeOfString:@"城区"];  // options:NSCaseInsensitiveSearch
+        if(foundObj.length>0){
+            cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"城区" withString:@""];
+        }else{
+            NSRange foundObj2 = [sharedInfo.cityarea rangeOfString:@"县"];
+            if (foundObj2.length > 0) {
+                cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"县" withString:@""];
+            }else{
+                NSRange foundObj3 = [sharedInfo.cityarea rangeOfString:@"区"];
+                if (foundObj3.length > 0) {
+                    cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"区" withString:@""];
+                }else{
+                    cityName = sharedInfo.cityarea;
+                }
+            }
+        }
+        
+        fromLabel.text = [NSString stringWithFormat:@"%@散讲",cityName];
+
         
         thumbnailArray = [NSMutableArray new];
         

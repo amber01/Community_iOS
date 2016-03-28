@@ -46,7 +46,7 @@
         NSString *tempCityName = [NSString stringWithFormat:@"%@热点",cityName];
         
         self.backgroundColor = [UIColor whiteColor];
-        NSArray *titleArr = @[@"本地散讲",@"同城互助",@"秀自拍",@"相亲交友",tempCityName,@"吃货吧",@"去哪玩",@"供求信息",@"男女情感",@"汽车之家",@"健康养生",@"轻松一刻",@"提建议"];
+        NSArray *titleArr = @[[NSString stringWithFormat:@"%@散讲",cityName],@"同城互助",@"秀自拍",@"相亲交友",tempCityName,@"吃货吧",@"去哪玩",@"供求信息",@"男女情感",@"汽车之家",@"健康养生",@"轻松一刻",@"提建议"];
         NSArray *btnImage = @[@"topic_send_community",@"topic_send_city",@"topic_send_show",@"topic_send_people",@"topic_send_information",@"topic_send_food",@"topic_send_play",@"topic_send_shareinfo",@"topic_send_feeling",@"topic_send_education",@"topic_send_health",@"topic_send_funny",@"topic_send_suggestion"];
         CGFloat width = ScreenWidth / 4;
         CGFloat height = 80;
@@ -101,7 +101,7 @@
     }
     
     NSString *tempCityName = [NSString stringWithFormat:@"%@热点",cityName];
-    NSArray *buttonTitles = @[@"本地散讲",@"同城互助",@"秀自拍",@"相亲交友",tempCityName,@"吃货吧",@"去哪玩",@"供求信息",@"男女情感",@"汽车之家",@"健康养生",@"轻松一刻",@"提建议"];
+    NSArray *buttonTitles = @[[NSString stringWithFormat:@"%@散讲",cityName],@"同城互助",@"秀自拍",@"相亲交友",tempCityName,@"吃货吧",@"去哪玩",@"供求信息",@"男女情感",@"汽车之家",@"健康养生",@"轻松一刻",@"提建议"];
     SendTopicViewController *sendTopVC = [[SendTopicViewController alloc]init];
     sendTopVC.title = buttonTitles[button.tag];
     BaseNavigationController *navi =[[BaseNavigationController alloc] initWithRootViewController:sendTopVC];

@@ -105,7 +105,7 @@
     [[UINavigationBar appearance]setTitleTextAttributes:textAttributes];
     
     //自定义view颜色
-    UIImage *image = [UIImage imageWithColor:[UIColor colorWithHexString:@"#d33234"]];
+    UIImage *image = [UIImage imageWithColor:[UIColor colorWithHexString:@"#ef5754"]];
     [self.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 }
 

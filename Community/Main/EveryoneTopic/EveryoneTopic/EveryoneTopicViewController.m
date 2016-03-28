@@ -17,6 +17,7 @@
 #import "TopicSearchViewController.h"
 #import "TopicDetailViewController.h"
 
+
 @interface EveryoneTopicViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
 {
     int    page;
@@ -28,16 +29,17 @@
     PopMenu *_popMenu;
 }
 
-@property (nonatomic,retain) UITableView    *tableView;
-@property (nonatomic,retain) NSMutableArray *dataArray;
-@property (nonatomic,retain) NSMutableArray *imagesArray;
-@property (nonatomic,retain) NSMutableArray *praiseDataArray; //自己是否点赞的数据
+@property (nonatomic,retain) UITableView          *tableView;
+@property (nonatomic,retain) NSMutableArray       *dataArray;
+@property (nonatomic,retain) NSMutableArray       *imagesArray;
+@property (nonatomic,retain) NSMutableArray       *praiseDataArray;//自己是否点赞的数据
 
-@property (nonatomic,copy)   NSString       *fldSort;
-@property (nonatomic,copy)   NSString       *isEssence;
+@property (nonatomic,copy  ) NSString             *fldSort;
+@property (nonatomic,copy  ) NSString             *isEssence;
 
-@property (nonatomic,retain) NSMutableArray *likeDataArray;  //记录本地点赞的状态
-@property (nonatomic,retain) NSArray        *cateArray;
+@property (nonatomic,retain) NSMutableArray       *likeDataArray;//记录本地点赞的状态
+@property (nonatomic,retain) NSArray              *cateArray;
+
 
 
 @end
@@ -63,7 +65,7 @@
     
     CustomButtonItem *buttonItem = [[CustomButtonItem alloc]initButtonItem:[UIImage imageNamed:@"today_send_topic.png"]];
     [buttonItem.itemBtn addTarget:self action:@selector(selectSendCat) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem = buttonItem;
+    //self.navigationItem.rightBarButtonItem = buttonItem;
     
     UIButton *leftBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 23, 23)];
     [leftBtn setImage:[UIImage imageNamed:@"topic_search_icon"] forState:UIControlStateNormal];
@@ -245,7 +247,7 @@
     
     NSMutableArray *items = [[NSMutableArray alloc] initWithCapacity:3];
     
-    MenuItem *menuItem = [MenuItem itemWithTitle:@"本地散讲" iconName:@"topic_send_community"];
+    MenuItem *menuItem = [MenuItem itemWithTitle:[NSString stringWithFormat:@"%@散讲",cityName] iconName:@"topic_send_community"];
     [items addObject:menuItem];
     
     menuItem = [MenuItem itemWithTitle:@"同城互助" iconName:@"topic_send_city"];

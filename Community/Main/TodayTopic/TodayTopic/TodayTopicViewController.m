@@ -16,6 +16,7 @@
 #import "TodayTopicMoreTableViewCell.h"
 #import "WebDetailViewController.h"
 #import "SelectCityViewController.h"
+#import "EveryoneLeftItemView.h"
 
 @interface TodayTopicViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
 {
@@ -25,12 +26,12 @@
     UIImageView *headLogImageView;
 }
 
-@property (nonatomic,retain) UITableView    *tableView;
-@property (nonatomic,retain) JXBAdPageView  *adView;
-@property (nonatomic,retain) NSMutableArray *dataArray;
-@property (nonatomic,retain) NSMutableArray *imagesArray;
-@property (nonatomic,retain) NSArray        *cateArray;
-
+@property (nonatomic,retain) UITableView          *tableView;
+@property (nonatomic,retain) JXBAdPageView        *adView;
+@property (nonatomic,retain) NSMutableArray       *dataArray;
+@property (nonatomic,retain) NSMutableArray       *imagesArray;
+@property (nonatomic,retain) NSArray              *cateArray;
+@property (nonatomic,retain) EveryoneLeftItemView *everyoneLeftItemView;
 
 @end
 
@@ -44,8 +45,11 @@
     [self setupRefreshHeader];
     [self setupUploadMore];
     
+    [self everyoneLeftItemView];
+    
     page = 1;
     
+
     CustomButtonItem *buttonItem = [[CustomButtonItem alloc]initButtonItem:[UIImage imageNamed:@"today_send_topic.png"]];
     [buttonItem.itemBtn addTarget:self action:@selector(selectSendCat) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = buttonItem;
@@ -77,6 +81,8 @@
 {
     [super viewWillAppear:YES];
     headLogImageView.hidden = NO;
+    _everyoneLeftItemView.hidden = NO;
+    [self getCurrentCityName];
     [self.adView startTimerPlay];
 }
 
@@ -97,6 +103,7 @@
     NSDictionary *parameters = @{@"Method":@"RePostInfo",@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"2",@"PageIndex":pageStr,@"FldSort":@"3",@"FldSortType":@"1",@"Area":isStrEmpty(sharedInfo.city) ? @"" : sharedInfo.city}]};
     
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
+
         NSArray *items = [TodayTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
         NSArray *imageItems = [TodayTopicImagesModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
         
@@ -175,6 +182,42 @@
     } failure:^(NSError *erro) {
         
     }];
+}
+
+- (EveryoneLeftItemView *)everyoneLeftItemView
+{
+    if (!_everyoneLeftItemView) {
+        _everyoneLeftItemView = [[EveryoneLeftItemView alloc]initWithFrame:CGRectMake(0, 20, 120, 44)];
+        [_everyoneLeftItemView.leftBtn addTarget:self action:@selector(selectCityAction) forControlEvents:UIControlEventTouchUpInside];
+        [self getCurrentCityName];
+        [self.navigationController.view addSubview:_everyoneLeftItemView];
+    }
+    return _everyoneLeftItemView;
+}
+
+- (void)getCurrentCityName
+{
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    
+    NSString *cityName;
+    
+    NSRange foundObj=[sharedInfo.cityarea rangeOfString:@"城区"];  // options:NSCaseInsensitiveSearch
+    if(foundObj.length>0){
+        cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"城区" withString:@""];
+    }else{
+        NSRange foundObj2 = [sharedInfo.cityarea rangeOfString:@"县"];
+        if (foundObj2.length > 0) {
+            cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"县" withString:@""];
+        }else{
+            NSRange foundObj3 = [sharedInfo.cityarea rangeOfString:@"区"];
+            if (foundObj3.length > 0) {
+                cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"区" withString:@""];
+            }else{
+                cityName = sharedInfo.cityarea;
+            }
+        }
+    }
+    _everyoneLeftItemView.titleLabel.text = cityName;
 }
 
 - (UITableView *)setupTableView
@@ -277,6 +320,23 @@
 
 
 #pragma mark -- action
+
+/**
+ *  选择城市
+ */
+- (void)selectCityAction
+{
+    SelectCityViewController    *selectCityVC = [[SelectCityViewController alloc]init];
+    [selectCityVC setHidesBottomBarWhenPushed:YES];
+    [self.navigationController pushViewController:selectCityVC animated:YES];
+    
+//    BaseNavigationController    *baseNav = [[BaseNavigationController alloc]initWithRootViewController:selectCityVC];
+//    
+//    [self.navigationController presentViewController:baseNav animated:YES completion:^{
+//        
+//    }];
+}
+
 -(void)selectSendCat
 {
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
@@ -311,7 +371,7 @@
     
     NSMutableArray *items = [[NSMutableArray alloc] initWithCapacity:3];
     
-    MenuItem *menuItem = [MenuItem itemWithTitle:@"本地散讲" iconName:@"topic_send_community"];
+    MenuItem *menuItem = [MenuItem itemWithTitle:[NSString stringWithFormat:@"%@散讲",cityName] iconName:@"topic_send_community"];
     [items addObject:menuItem];
     
     menuItem = [MenuItem itemWithTitle:@"同城互助" iconName:@"topic_send_city"];
@@ -383,6 +443,7 @@
 {
     [self.adView.myTimer invalidate];
     headLogImageView.hidden = YES;
+    _everyoneLeftItemView.hidden = YES;
     [super viewWillDisappear:YES];
 }
 

@@ -17,7 +17,7 @@
 #import "ModelHeader.h"
 #import "LocalDefine.h"
 #import "Commen.h"
-
+#import "UIButton+UIButtonImageWithLable.h"
 
 #endif /* Community_Prefix_pch */
 
