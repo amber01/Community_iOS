@@ -48,7 +48,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"大家在聊";
+    self.title = @"发现";
     self.view.backgroundColor = CELL_COLOR;
     [self setupTableView];
     page = 1;

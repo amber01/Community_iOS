@@ -12,6 +12,7 @@
 #import "EveryoneTopicViewController.h"
 #import "MessageViewController.h"
 #import "MineViewController.h"
+#import "SendPhotoTopicViewController.h"
 
 @interface MainViewController ()
 
@@ -41,16 +42,16 @@
 {
     TodayTopicViewController     *todayTopicVC    = [[TodayTopicViewController alloc]init];
     EveryoneTopicViewController  *everyoneTopicVC = [[EveryoneTopicViewController alloc]init];
+    SendPhotoTopicViewController *sendTopicVC     = [[SendPhotoTopicViewController alloc]init];
     MessageViewController        *messageVC       = [[MessageViewController alloc]init];
     MineViewController           *mineVC          = [[MineViewController alloc]init];
 
     //TodayTopic
     UITabBarItem *todayTopicItem =[[UITabBarItem alloc]initWithTitle:@"热点" image:nil tag:1];
-    
     todayTopicItem.image = [UIImage imageNamed:@"todayTopic_tabbar_normal"];
     todayTopicItem.selectedImage = [UIImage imageNamed:@"todayTopic_tabbar_high"];
     BaseNavigationController *todayTopicNav = [[BaseNavigationController alloc]initWithRootViewController:todayTopicVC];
-    self.tabBar.tintColor = [UIColor colorWithHexString:@"#d33234"];  //改变tabBar上的按钮文字颜色
+    self.tabBar.tintColor = [UIColor colorWithHexString:@"#ef5755"];  //改变tabBar上的按钮文字颜色
     todayTopicVC.tabBarItem = todayTopicItem;
     
     //EveryoneTopic
@@ -60,21 +61,29 @@
     BaseNavigationController *everyoneTopicNav = [[BaseNavigationController alloc]initWithRootViewController:everyoneTopicVC];
     everyoneTopicVC.tabBarItem = everyoneTopicItem;
     
+    //sendTopic
+    UITabBarItem *sendTopicItem =[[UITabBarItem alloc]initWithTitle:@"发布" image:nil tag:3];
+    sendTopicItem.image = [UIImage imageNamed:@"sendTopic_tabbar_normal"];
+    sendTopicItem.selectedImage = [UIImage imageNamed:@"sendTopic_tabbar_normal"];
+    BaseNavigationController *sendTopicNav = [[BaseNavigationController alloc]initWithRootViewController:sendTopicVC];
+    sendTopicVC.tabBarItem = sendTopicItem;
+
+    
     //Message
-    UITabBarItem *messageItem =[[UITabBarItem alloc]initWithTitle:@"消息" image:nil tag:3];
+    UITabBarItem *messageItem =[[UITabBarItem alloc]initWithTitle:@"消息" image:nil tag:4];
     messageItem.image = [UIImage imageNamed:@"message_tabbar_normal"];
     messageItem.selectedImage = [UIImage imageNamed:@"message_tabbar_high"];
     BaseNavigationController *messageNav = [[BaseNavigationController alloc]initWithRootViewController:messageVC];
     messageVC.tabBarItem = messageItem;
     
     //Mine
-    UITabBarItem *mineItem =[[UITabBarItem alloc]initWithTitle:@"我的" image:nil tag:4];
+    UITabBarItem *mineItem =[[UITabBarItem alloc]initWithTitle:@"我的" image:nil tag:5];
     mineItem.image = [UIImage imageNamed:@"mine_tabbar_normal"];
     mineItem.selectedImage = [UIImage imageNamed:@"mine_tabbar_high"];
     BaseNavigationController *mineNav = [[BaseNavigationController alloc]initWithRootViewController:mineVC];
     mineVC.tabBarItem = mineItem;
     
-    NSArray *array = @[todayTopicNav,everyoneTopicNav,messageNav,mineNav];
+    NSArray *array = @[todayTopicNav,everyoneTopicNav,sendTopicNav,messageNav,mineNav];
     [self setViewControllers:array animated:YES];
 }
 
