@@ -17,6 +17,7 @@
     UIImageView   *likeImageView;
     UILabel       *likeNumLabel;
     UIImageView   *activityImageView;
+    UILabel       *sendDateLabel;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -41,6 +42,13 @@
         likeNumLabel.textColor = TEXT_COLOR;
         likeNumLabel.font = [UIFont systemFontOfSize:12];
         [self.contentView addSubview:likeNumLabel];
+        
+        sendDateLabel = [[UILabel alloc]initWithFrame:CGRectMake(imageView.right, imageView.bottom - 17, ScreenWidth - 110, 20)];
+        sendDateLabel.textAlignment = NSTextAlignmentCenter;
+        sendDateLabel.textColor = TEXT_COLOR;
+        sendDateLabel.text = @"1小时前";
+        sendDateLabel.font = [UIFont systemFontOfSize:12];
+        [self.contentView addSubview:sendDateLabel];
         
         commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(100, imageView.bottom - 17, ScreenWidth - 110, 20)];
         commentLabel.textColor = TEXT_COLOR;

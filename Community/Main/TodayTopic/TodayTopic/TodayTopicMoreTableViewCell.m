@@ -16,6 +16,7 @@
     UILabel       *commentLabel;
     UILabel       *contentLabel;
     UIImageView   *activityImageView;
+    UILabel       *sendDateLabel;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -30,26 +31,33 @@
         
         float imageWidth = (ScreenWidth - 10 - 5 - 5 - 10) / 3;
         
-        imageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(10, (contentLabel.bottom+7), imageWidth, 70 * scaleToScreenHeight)];
+        imageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(10, (contentLabel.bottom+10), imageWidth, 70 * scaleToScreenHeight)];
         imageView1.contentMode = UIViewContentModeScaleAspectFill;
         imageView1.clipsToBounds = YES;
         [self.contentView addSubview:imageView1];
         
-        imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(imageView1.right + 5, (contentLabel.bottom+7), imageWidth, 70 * scaleToScreenHeight)];
+        imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(imageView1.right + 5, (contentLabel.bottom+10), imageWidth, 70 * scaleToScreenHeight)];
         imageView2.contentMode = UIViewContentModeScaleAspectFill;
         imageView2.clipsToBounds = YES;
         [self.contentView addSubview:imageView2];
         
-        imageView3 = [[UIImageView alloc]initWithFrame:CGRectMake(imageView2.right + 5, (contentLabel.bottom+7), imageWidth, 70 * scaleToScreenHeight)];
+        imageView3 = [[UIImageView alloc]initWithFrame:CGRectMake(imageView2.right + 5, (contentLabel.bottom+10), imageWidth, 70 * scaleToScreenHeight)];
         imageView3.contentMode = UIViewContentModeScaleAspectFill;
         imageView3.clipsToBounds = YES;
         [self.contentView addSubview:imageView3];
         
-        commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(200, 8, ScreenWidth - 210, 20)];
+        commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(200, imageView1.bottom + 10, ScreenWidth - 210, 20)];
         commentLabel.textColor = TEXT_COLOR;
         commentLabel.textAlignment = NSTextAlignmentRight;
         commentLabel.font = [UIFont systemFontOfSize:12];
         commentLabel.text = @"232评论";
+        
+        sendDateLabel = [[UILabel alloc]initWithFrame:CGRectMake(85 + 10, imageView1.bottom + 10, ScreenWidth - 110, 20)];
+        sendDateLabel.textAlignment = NSTextAlignmentCenter;
+        sendDateLabel.textColor = TEXT_COLOR;
+        sendDateLabel.text = @"1小时前";
+        sendDateLabel.font = [UIFont systemFontOfSize:12];
+        [self.contentView addSubview:sendDateLabel];
         
         [self.contentView addSubview:commentLabel];
         
@@ -66,13 +74,13 @@
     commentLabel.text = [NSString stringWithFormat:@"%@评论",model.commentnum];
     
     if ([model.isact intValue] == 1) {
-        contentLabel.frame = CGRectMake(10, 8, ScreenWidth - 55 - 25, 20);
-        commentLabel.frame = CGRectMake(100 - 30 - 5,  8, ScreenWidth - 110, 20);
+        contentLabel.frame = CGRectMake(10, 10, ScreenWidth - 55 - 25, 20);
+        commentLabel.frame = CGRectMake(100 - 30 - 5,  imageView1.bottom + 10, ScreenWidth - 110, 20);
         activityImageView.frame = CGRectMake(commentLabel.right + 5, 11.5 , 20*1.5, 9*1.5);
         activityImageView.hidden = NO;
     }else{
-        contentLabel.frame = CGRectMake(10, 8, ScreenWidth - 55, 20);
-        commentLabel.frame = CGRectMake(100,  8, ScreenWidth - 110, 20);
+        contentLabel.frame = CGRectMake(10, 10, ScreenWidth - 55, 20);
+        commentLabel.frame = CGRectMake(100,  imageView1.bottom + 10, ScreenWidth - 110, 20);
         activityImageView.hidden = YES;
     }
     

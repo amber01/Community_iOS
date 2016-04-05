@@ -50,7 +50,7 @@
     page = 1;
     
 
-    CustomButtonItem *buttonItem = [[CustomButtonItem alloc]initButtonItem:[UIImage imageNamed:@"today_send_topic.png"]];
+    CustomButtonItem *buttonItem = [[CustomButtonItem alloc]initButtonItem:[UIImage imageNamed:@"home_top_search.png"]];
     [buttonItem.itemBtn addTarget:self action:@selector(selectSendCat) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = buttonItem;
     headLogImageView = [[UIImageView alloc]initWithFrame:CGRectMake(ScreenWidth/2-55, 27, 111, 29)];
@@ -227,8 +227,11 @@
         _tableView.delegate = self;
         _tableView.dataSource = self;
         [UIUtils setExtraCellLineHidden:_tableView];
-        _adView = [[JXBAdPageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, scaleToScreenHeight * 180)];
-        _tableView.tableHeaderView = _adView;
+        _adView = [[JXBAdPageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, scaleToScreenHeight * 100)]; //scaleToScreenHeight * 180
+        UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, (scaleToScreenHeight * 100) + 10)];
+        headerView.backgroundColor = VIEW_COLOR;
+        [headerView addSubview:_adView];
+        _tableView.tableHeaderView = headerView;
         _adView.iDisplayTime = 3;
         _adView.bWebImage = YES;
         [self.view addSubview:_tableView];
@@ -297,7 +300,7 @@
     
     TodayTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
     if ([model.imagecount intValue] > 1) {
-        return 28 + 5 + (80 *scaleToScreenHeight);
+        return 30 + 28 + 5 + (80 *scaleToScreenHeight);
     }else{
         return 85;
     }

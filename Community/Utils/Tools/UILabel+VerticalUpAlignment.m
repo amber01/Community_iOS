@@ -14,7 +14,7 @@
 {
     CGRect frame = self.frame;
     self.numberOfLines = 0;
-    //self.lineBreakMode = NSLineBreakByWordWrapping;
+    self.lineBreakMode = NSLineBreakByWordWrapping|NSLineBreakByTruncatingTail;
     CGSize size = [text sizeWithFont:self.font constrainedToSize:CGSizeMake(frame.size.width, maxHeight)];
     frame.size = CGSizeMake(frame.size.width, size.height);
     self.frame = frame;

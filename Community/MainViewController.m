@@ -45,7 +45,7 @@
     MineViewController           *mineVC          = [[MineViewController alloc]init];
 
     //TodayTopic
-    UITabBarItem *todayTopicItem =[[UITabBarItem alloc]initWithTitle:@"今日有料" image:nil tag:1];
+    UITabBarItem *todayTopicItem =[[UITabBarItem alloc]initWithTitle:@"热点" image:nil tag:1];
     
     todayTopicItem.image = [UIImage imageNamed:@"todayTopic_tabbar_normal"];
     todayTopicItem.selectedImage = [UIImage imageNamed:@"todayTopic_tabbar_high"];
@@ -54,7 +54,7 @@
     todayTopicVC.tabBarItem = todayTopicItem;
     
     //EveryoneTopic
-    UITabBarItem *everyoneTopicItem =[[UITabBarItem alloc]initWithTitle:@"大家在聊" image:nil tag:2];
+    UITabBarItem *everyoneTopicItem =[[UITabBarItem alloc]initWithTitle:@"发现" image:nil tag:2];
     everyoneTopicItem.image = [UIImage imageNamed:@"everyoneTopic_tabbar_normal"];
     everyoneTopicItem.selectedImage = [UIImage imageNamed:@"everyoneTopic_tabbar_high"];
     BaseNavigationController *everyoneTopicNav = [[BaseNavigationController alloc]initWithRootViewController:everyoneTopicVC];
