@@ -1,44 +1,45 @@
 //
-//  SendPhotoTopicViewController.m
+//  DiscoverViewController.m
 //  Community
 //
-//  Created by amber on 16/4/5.
+//  Created by shlity on 16/4/6.
 //  Copyright © 2016年 shlity. All rights reserved.
 //
 
-#import "SendPhotoTopicViewController.h"
+#import "DiscoverViewController.h"
+#import "DiscoverView.h"
 
-@interface SendPhotoTopicViewController ()<UITabBarControllerDelegate>
-{
-    BOOL     isSelect;
-}
+@interface DiscoverViewController ()
+
+@property (nonatomic,retain)DiscoverView    *discoverView;
+
 
 @end
 
-@implementation SendPhotoTopicViewController
+@implementation DiscoverViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.view.backgroundColor = VIEW_COLOR;
-    self.title = @"大家在聊";
+    self.title = @"发现";
+    [self initViews];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)initViews
 {
-    [super viewWillAppear:YES];
-    self.tabBarController.delegate = self;
-    isSelect = YES;
+    [self discoverView];
+}
+
+#pragma mark -- UI
+- (DiscoverView *)discoverView
+{
+    if (!_discoverView) {
+        _discoverView = [[DiscoverView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 55)];
+        [self.view addSubview:_discoverView];
+    }return _discoverView;
 }
 
 #pragma mark -- other
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:YES];
-    isSelect = NO;
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

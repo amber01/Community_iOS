@@ -63,9 +63,9 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginFinish) name:kSendIsLoginNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadDataList) name:kReloadDataNotification object:nil];
     
-    CustomButtonItem *buttonItem = [[CustomButtonItem alloc]initButtonItem:[UIImage imageNamed:@"today_send_topic.png"]];
+    CustomButtonItem *buttonItem = [[CustomButtonItem alloc]initButtonItem:[UIImage imageNamed:@"sendTopic_tabbar_normal"]];
     [buttonItem.itemBtn addTarget:self action:@selector(selectSendCat) forControlEvents:UIControlEventTouchUpInside];
-    //self.navigationItem.rightBarButtonItem = buttonItem;
+    self.navigationItem.rightBarButtonItem = buttonItem;
     
     UIButton *leftBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 23, 23)];
     [leftBtn setImage:[UIImage imageNamed:@"topic_search_icon"] forState:UIControlStateNormal];

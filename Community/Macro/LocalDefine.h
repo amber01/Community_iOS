@@ -12,7 +12,7 @@
 #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 
 
-#define BASE_COLOR   [UIColor colorWithRed:211 / 255.0 green:50 / 255.0 blue:52 / 255.0 alpha:1.0]
+#define BASE_COLOR   [UIColor colorWithRed:239 / 255.0 green:87 / 255.0 blue:85 / 255.0 alpha:1.0]
 #define VIEW_COLOR   [UIColor colorWithRed:239 / 255.0 green:239 / 255.0 blue:239 / 255.0 alpha:1.0]
 #define CELL_COLOR   [UIColor colorWithRed:242 / 255.0 green:242 / 255.0 blue:242 / 255.0 alpha:1.0]
 #define TEXT_COLOR   [UIColor colorWithRed:173 / 255.0 green:173 / 255.0 blue:173 / 255.0 alpha:1.0]

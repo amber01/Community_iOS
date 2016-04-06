@@ -48,11 +48,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"发帖";
     self.view.backgroundColor = [UIColor whiteColor];
     [self setupSendTopicTextView];
     Exparams = [[NSMutableDictionary alloc]init];
-    self.navigationItem.leftBarButtonItem =  [[CustomButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(closeCurrentView) andTtintColor:[UIColor whiteColor]];
     self.navigationItem.rightBarButtonItem =  [[CustomButtonItem alloc]initWithTitle:@"发布" style:UIBarButtonItemStyleDone target:self action:@selector(sendTopicAction) andTtintColor:[UIColor whiteColor]];
+    
+    [self customNaviBack];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
@@ -74,13 +76,12 @@
         [self createPhotoList];
     }
     
-    sendNavigationView = [[TopicSendNavigationView alloc]initWithFrame:CGRectMake(100, 0, ScreenWidth - 200, 64)];
-    [sendNavigationView setNavigationTitle:self.title];
-    UITapGestureRecognizer *tapGestureSinge = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeCatTap)];
-    [sendNavigationView addGestureRecognizer:tapGestureSinge];
-    [self.navigationController.view addSubview:sendNavigationView];
-    self.title = @"";
-    
+//    sendNavigationView = [[TopicSendNavigationView alloc]initWithFrame:CGRectMake(100, 0, ScreenWidth - 200, 64)];
+//    [sendNavigationView setNavigationTitle:self.title];
+//    UITapGestureRecognizer *tapGestureSinge = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeCatTap)];
+//    [sendNavigationView addGestureRecognizer:tapGestureSinge];
+//    [self.navigationController.view addSubview:sendNavigationView];
+
     imageCount = 1;
     NSLog(@"cate_id:%@",_cate_id);
 }
@@ -117,8 +118,21 @@
     [self.view addSubview:sendTopicView];
 }
 
+#pragma mark -- UI
+- (void)customNaviBack
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(0, 0, 30, 40);
+    [button setImage:[UIImage imageNamed:@"back_btn_image"] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(closeCurrentView) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithCustomView:button];
+    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    negativeSpacer.width = -12;
+    self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:negativeSpacer, backItem,nil];
+}
+
 #pragma mark -- UITextFieldDelegate
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField    
 {
     isInput = NO; //
     return YES;

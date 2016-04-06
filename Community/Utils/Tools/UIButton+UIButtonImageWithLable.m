@@ -24,8 +24,8 @@
     
     [self.titleLabel setContentMode:UIViewContentModeCenter];
     [self.titleLabel setBackgroundColor:[UIColor clearColor]];
-    [self.titleLabel setFont:font];
-    [self.titleLabel setTextColor:color];
+    self.titleLabel.font = font;
+    [self setTitleColor:color forState:UIControlStateNormal];
     [self setTitleEdgeInsets:UIEdgeInsetsMake(30.0,
                                               -image.size.width,
                                               0.0,
