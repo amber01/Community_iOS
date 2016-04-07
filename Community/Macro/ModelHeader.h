@@ -22,5 +22,7 @@
 #import "CommentLikeModel.h"
 #import "MyCollectionModel.h"
 #import "SystemNoticeModel.h"
+#import "FriendSquareModel.h"
+#import "FriendSquareImageModel.h"
 
 #endif /* ModelHeader_h */

@@ -523,6 +523,9 @@
 		DBB586601BF031FA001DBD4C /* NSString+TextSize.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB5865F1BF031FA001DBD4C /* NSString+TextSize.m */; };
 		DBBCAA641C22AE0A0044D18C /* MsgNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBCAA631C22AE0A0044D18C /* MsgNotificationViewController.m */; };
 		DBBCAA671C22AF6C0044D18C /* MsgNotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBCAA661C22AF6C0044D18C /* MsgNotificationTableViewCell.m */; };
+		DBC3AFA41CB63910001F9C0D /* DiscoverTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC3AFA31CB63910001F9C0D /* DiscoverTableViewCell.m */; };
+		DBC3AFA71CB65B02001F9C0D /* FriendSquareModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC3AFA61CB65B02001F9C0D /* FriendSquareModel.m */; };
+		DBC3AFAA1CB65C7A001F9C0D /* FriendSquareImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC3AFA91CB65C7A001F9C0D /* FriendSquareImageModel.m */; };
 		DBC59C141C28F00D00612A55 /* topic_reward_more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBC59C131C28F00D00612A55 /* topic_reward_more@2x.png */; };
 		DBC59C171C29182B00612A55 /* TopicDetailRewardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC59C161C29182B00612A55 /* TopicDetailRewardViewController.m */; };
 		DBC59C1A1C2918FA00612A55 /* TopicDetailRewardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC59C191C2918FA00612A55 /* TopicDetailRewardTableViewCell.m */; };
@@ -1409,6 +1412,12 @@
 		DBBCAA631C22AE0A0044D18C /* MsgNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MsgNotificationViewController.m; sourceTree = "<group>"; };
 		DBBCAA651C22AF6C0044D18C /* MsgNotificationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgNotificationTableViewCell.h; sourceTree = "<group>"; };
 		DBBCAA661C22AF6C0044D18C /* MsgNotificationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MsgNotificationTableViewCell.m; sourceTree = "<group>"; };
+		DBC3AFA21CB63910001F9C0D /* DiscoverTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscoverTableViewCell.h; sourceTree = "<group>"; };
+		DBC3AFA31CB63910001F9C0D /* DiscoverTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoverTableViewCell.m; sourceTree = "<group>"; };
+		DBC3AFA51CB65B02001F9C0D /* FriendSquareModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendSquareModel.h; sourceTree = "<group>"; };
+		DBC3AFA61CB65B02001F9C0D /* FriendSquareModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendSquareModel.m; sourceTree = "<group>"; };
+		DBC3AFA81CB65C7A001F9C0D /* FriendSquareImageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendSquareImageModel.h; sourceTree = "<group>"; };
+		DBC3AFA91CB65C7A001F9C0D /* FriendSquareImageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendSquareImageModel.m; sourceTree = "<group>"; };
 		DBC59C131C28F00D00612A55 /* topic_reward_more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topic_reward_more@2x.png"; sourceTree = "<group>"; };
 		DBC59C151C29182B00612A55 /* TopicDetailRewardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicDetailRewardViewController.h; sourceTree = "<group>"; };
 		DBC59C161C29182B00612A55 /* TopicDetailRewardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicDetailRewardViewController.m; sourceTree = "<group>"; };
@@ -3572,6 +3581,10 @@
 		DB96195F1CB4FB95005F8449 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				DBC3AFA51CB65B02001F9C0D /* FriendSquareModel.h */,
+				DBC3AFA61CB65B02001F9C0D /* FriendSquareModel.m */,
+				DBC3AFA81CB65C7A001F9C0D /* FriendSquareImageModel.h */,
+				DBC3AFA91CB65C7A001F9C0D /* FriendSquareImageModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3581,6 +3594,8 @@
 			children = (
 				DB9619641CB508CB005F8449 /* DiscoverView.h */,
 				DB9619651CB508CB005F8449 /* DiscoverView.m */,
+				DBC3AFA21CB63910001F9C0D /* DiscoverTableViewCell.h */,
+				DBC3AFA31CB63910001F9C0D /* DiscoverTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4250,6 +4265,7 @@
 				963DC49D1C0ACFD9005D1955 /* PSTCollectionViewData.m in Sources */,
 				963DC4A81C0ACFD9005D1955 /* EaseConversationModel.m in Sources */,
 				96B2D1131BFCD70500FE6185 /* RegisterView.m in Sources */,
+				DBC3AFA41CB63910001F9C0D /* DiscoverTableViewCell.m in Sources */,
 				DBEEE0CF1C30FB8F00DA5EF3 /* KeychainIDFA.m in Sources */,
 				969345E41C1BE9A50056072F /* WSJSObject.m in Sources */,
 				DB9A58801C20F32D00AF2340 /* MyDraftListViewController.m in Sources */,
@@ -4336,6 +4352,7 @@
 				964AA1321BEF864C007CE0E9 /* MineViewController.m in Sources */,
 				963DC4AD1C0ACFD9005D1955 /* NSObject+EaseMob.m in Sources */,
 				963DC48D1C0ACFD9005D1955 /* EMSDWebImageDownloaderOperation.m in Sources */,
+				DBC3AFA71CB65B02001F9C0D /* FriendSquareModel.m in Sources */,
 				96C8D2381C0A0C87004642FC /* SDWaitingView.m in Sources */,
 				963DC4891C0ACFD9005D1955 /* EMSDImageCache.m in Sources */,
 				963DC4B71C0ACFD9005D1955 /* EaseEmotionManager.m in Sources */,
@@ -4376,6 +4393,7 @@
 				963DC4C81C0ACFD9005D1955 /* EaseBubbleView.m in Sources */,
 				968426231C01734E00774538 /* TodayTopicImagesModel.m in Sources */,
 				969345CF1C1B1FFE0056072F /* TopicLikeViewController.m in Sources */,
+				DBC3AFAA1CB65C7A001F9C0D /* FriendSquareImageModel.m in Sources */,
 				DB0AEF271C2398FE00101EC9 /* MyCollectionTableViewCell.m in Sources */,
 				964A9F3E1BEF4198007CE0E9 /* main.m in Sources */,
 				963DC4AA1C0ACFD9005D1955 /* EaseUserModel.m in Sources */,

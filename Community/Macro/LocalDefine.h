@@ -16,6 +16,8 @@
 #define VIEW_COLOR   [UIColor colorWithRed:239 / 255.0 green:239 / 255.0 blue:239 / 255.0 alpha:1.0]
 #define CELL_COLOR   [UIColor colorWithRed:242 / 255.0 green:242 / 255.0 blue:242 / 255.0 alpha:1.0]
 #define TEXT_COLOR   [UIColor colorWithRed:173 / 255.0 green:173 / 255.0 blue:173 / 255.0 alpha:1.0]
+#define TEXT_COLOR1   [UIColor colorWithRed:163 / 255.0 green:163 / 255.0 blue:163 / 255.0 alpha:1.0]
+
 #define LINE_COLOR_CGCOLOR [UIColor colorWithRed:223/255.0f green:223/255.0f blue:223/255.0f alpha:1.0].CGColor
 #define LINE_COLOR [UIColor colorWithRed:223/255.0f green:223/255.0f blue:223/255.0f alpha:1.0]
 

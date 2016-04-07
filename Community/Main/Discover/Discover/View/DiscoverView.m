@@ -15,27 +15,28 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
-        [CommonClass setBorderWithView:self top:NO left:NO bottom:YES right:NO borderColor:LINE_COLOR borderWidth:1.0];
+        [CommonClass setBorderWithView:self top:NO left:NO bottom:YES right:NO borderColor:LINE_COLOR borderWidth:0.5];
         
-        self.friendSquareBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _friendSquareBtn.frame = CGRectMake(0, 3, ScreenWidth/4, 40);
-        [_friendSquareBtn setImage:[UIImage imageNamed:@"discover_friend_square_high.png"] withTitle:@"朋友圈" withFont:[UIFont systemFontOfSize:13] withTitleColor:BASE_COLOR forState:UIControlStateNormal];
-        [self addSubview:_friendSquareBtn];
+        NSArray *imageArray = @[@"discover_friend_square_high.png",
+                                @"discover_topic_normal.png",
+                                @"discover_find_friend_normal.png",
+                                @"discover_find_topic_normal.png"];
+        NSArray *titleArray = @[@"朋友圈",@"话题圈",@"找朋友",@"找话题"];
         
-        self.topicSquareBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _topicSquareBtn.frame = CGRectMake(_friendSquareBtn.right, 3, ScreenWidth/4, 40);
-        [_topicSquareBtn setImage:[UIImage imageNamed:@"discover_topic_normal.png"] withTitle:@"话题圈" withFont:[UIFont systemFontOfSize:13] withTitleColor:BASE_COLOR forState:UIControlStateNormal];
-        [self addSubview:_topicSquareBtn];
+        for (int i = 0; i < titleArray.count; i ++) {
+            self.topTabbarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            _topTabbarBtn.frame = CGRectMake((ScreenWidth/4) * i, 3, ScreenWidth/4, 40);
+            _topTabbarBtn.tag = i + 200;
+            [_topTabbarBtn setImage:[UIImage imageNamed:[imageArray objectAtIndex:i]] withTitle:[titleArray objectAtIndex:i] withFont:[UIFont systemFontOfSize:13] withTitleColor:TEXT_COLOR1 forState:UIControlStateNormal];
+            if (i == 0) {
+                [_topTabbarBtn setTitleColor:BASE_COLOR forState:UIControlStateNormal];
+            }
+            [self addSubview:_topTabbarBtn];
+        }
         
-        self.findFriendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _findFriendBtn.frame = CGRectMake(_topicSquareBtn.right, 5, ScreenWidth/4, 40);
-        [_findFriendBtn setImage:[UIImage imageNamed:@"discover_find_friend_normal.png"] withTitle:@"找朋友" withFont:[UIFont systemFontOfSize:13] withTitleColor:BASE_COLOR forState:UIControlStateNormal];
-        [self addSubview:_findFriendBtn];
-        
-        self.findTopicBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _findTopicBtn.frame = CGRectMake(_findFriendBtn.right, 3, ScreenWidth/4, 40);
-        [_findTopicBtn setImage:[UIImage imageNamed:@"discover_find_topic_normal.png"] withTitle:@"找话题" withFont:[UIFont systemFontOfSize:13] withTitleColor:BASE_COLOR forState:UIControlStateNormal];
-        [self addSubview:_findTopicBtn];
+        self.lineView = [[UIView alloc]initWithFrame:CGRectMake(0, frame.size.height-2.5, ScreenWidth/4, 2)];
+        _lineView.backgroundColor = BASE_COLOR;
+        [self addSubview:_lineView];
     }
     return self;
 }

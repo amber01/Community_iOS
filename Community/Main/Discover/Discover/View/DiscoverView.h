@@ -10,10 +10,7 @@
 
 @interface DiscoverView : UIView
 
-@property (nonatomic,retain)UIButton    *friendSquareBtn;
-@property (nonatomic,retain)UIButton    *topicSquareBtn;
-@property (nonatomic,retain)UIButton    *findFriendBtn;
-@property (nonatomic,retain)UIButton    *findTopicBtn;
-
+@property (nonatomic,retain)UIButton    *topTabbarBtn;
+@property (nonatomic,retain)UIView      *lineView;
 
 @end

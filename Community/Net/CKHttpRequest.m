@@ -57,8 +57,6 @@
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-    
     /**
      字典参数转换成json
      */
