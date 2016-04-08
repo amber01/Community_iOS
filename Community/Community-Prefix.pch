@@ -21,6 +21,8 @@
 
 #endif /* Community_Prefix_pch */
 
+#define kFont(size)           [UIFont systemFontOfSize:size]
+
 //***********
 //是否为空或是[NSNull null]
 #define NotNilAndNull(_ref)  (((_ref) != nil) && (![(_ref) isEqual:[NSNull null]]))
