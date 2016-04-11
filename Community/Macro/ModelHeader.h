@@ -24,5 +24,6 @@
 #import "SystemNoticeModel.h"
 #import "FriendSquareModel.h"
 #import "FriendSquareImageModel.h"
+#import "DiscoverFindFriendModel.h"
 
 #endif /* ModelHeader_h */
