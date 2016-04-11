@@ -33,6 +33,8 @@
 @property (nonatomic,copy)NSString *locationAddress;  //当前地址
 @property (nonatomic,copy)NSString *isv; //是否加v
 
+@property (nonatomic,assign)float  iamgeHeight;
+
 +(SharedInfo *)sharedDataInfo;
 
 @end

@@ -17,11 +17,11 @@
         self.backgroundColor = [UIColor whiteColor];
         [CommonClass setBorderWithView:self top:NO left:NO bottom:YES right:NO borderColor:LINE_COLOR borderWidth:0.5];
         
-        NSArray *imageArray = @[@"discover_friend_square_high.png",
-                                @"discover_topic_normal.png",
+        NSArray *imageArray = @[@"discover_topic_high.png",
+                                @"discover_friend_square_normal.png",
                                 @"discover_find_friend_normal.png",
                                 @"discover_find_topic_normal.png"];
-        NSArray *titleArray = @[@"朋友圈",@"话题圈",@"找朋友",@"找话题"];
+        NSArray *titleArray = @[@"话题圈",@"朋友圈",@"找朋友",@"找话题"];
         
         for (int i = 0; i < titleArray.count; i ++) {
             self.topTabbarBtn = [UIButton buttonWithType:UIButtonTypeCustom];

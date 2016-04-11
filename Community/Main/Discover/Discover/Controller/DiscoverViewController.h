@@ -7,7 +7,17 @@
 //
 
 #import "BaseViewController.h"
+#import "DLTabedSlideView.h"
 
-@interface DiscoverViewController : BaseViewController
+typedef enum : NSUInteger {
+    DiscoverTopic = 1,
+    DiscoverFriendSquare,
+    DiscoverFindFriend,
+    DiscoverFindTopic
+} DiscoverTabType;
+
+@interface DiscoverViewController : BaseViewController <DLTabedSlideViewDelegate>
+
+@property (nonatomic,retain)DLTabedSlideView *tabedSlideView;
 
 @end

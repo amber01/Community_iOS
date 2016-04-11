@@ -14,6 +14,7 @@
 #import "MineViewController.h"
 #import "SendPhotoTopicViewController.h"
 #import "SendTopicViewController.h"
+#import "DiscoverViewController.h"
 
 @interface MainViewController ()
 
@@ -44,7 +45,7 @@
 - (void)createdTabBarView
 {
     TodayTopicViewController     *todayTopicVC    = [[TodayTopicViewController alloc]init];
-    EveryoneTopicViewController  *everyoneTopicVC = [[EveryoneTopicViewController alloc]init];
+    DiscoverViewController       *everyoneTopicVC = [[DiscoverViewController alloc]init];
     SendPhotoTopicViewController *sendTopicVC     = [[SendPhotoTopicViewController alloc]init];
     MessageViewController        *messageVC       = [[MessageViewController alloc]init];
     MineViewController           *mineVC          = [[MineViewController alloc]init];

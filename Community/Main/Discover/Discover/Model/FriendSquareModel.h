@@ -23,6 +23,7 @@
 @property (nonatomic,retain)NSString    *hitnumber;
 @property (nonatomic,retain)NSString    *id;
 @property (nonatomic,retain)NSString    *imagecount;
+@property (nonatomic,retain)NSString    *images;
 @property (nonatomic,retain)NSString    *ip;
 @property (nonatomic,retain)NSString    *isact;
 @property (nonatomic,retain)NSString    *isessence;
@@ -36,7 +37,8 @@
 @property (nonatomic,retain)NSString    *nickname;
 @property (nonatomic,retain)NSString    *pagecount;
 @property (nonatomic,retain)NSString    *praisenum;
-@property (nonatomic,retain)NSString    *prestige;
+@property (nonatomic,retain)NSString    *ispraise;   //是否点赞
+@property (nonatomic,retain)NSString    *prestige;   //声望
 @property (nonatomic,retain)NSString    *provinceid;
 @property (nonatomic,retain)NSString    *rownumber;
 @property (nonatomic,retain)NSString    *sort;
@@ -44,6 +46,8 @@
 @property (nonatomic,retain)NSString    *tag;
 @property (nonatomic,retain)NSString    *userid;
 @property (nonatomic,retain)NSString    *username;
+@property (nonatomic,retain)NSString    *width;
+@property (nonatomic,retain)NSString    *height;
 
 
 @end

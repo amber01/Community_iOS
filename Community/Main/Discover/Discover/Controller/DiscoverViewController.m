@@ -7,18 +7,13 @@
 //
 
 #import "DiscoverViewController.h"
-#import "DiscoverView.h"
-#import "DiscoverTableViewCell.h"
+#import "DiscoverTopicViewController.h"
+#import "DiscoverFriendSquareViewController.h"
+#import "DiscoverFindFriendViewController.h"
+#import "DiscoverFindTopicViewController.h"
 
 @interface DiscoverViewController ()<UITableViewDataSource,UITableViewDelegate>
-{
-    int     page;
-}
 
-@property (nonatomic,retain)DiscoverView    *discoverView;
-@property (nonatomic,retain)UITableView     *tableView;
-@property (nonatomic,retain)NSMutableArray  *dataArray;
-@property (nonatomic,retain)NSMutableArray  *imagesArray;
 @end
 
 @implementation DiscoverViewController
@@ -28,164 +23,63 @@
     self.view.backgroundColor = VIEW_COLOR;
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.title = @"发现";
-    page  = 1;
-    [self initViews];
-    [self getDiscoverData:page];
     
-    [self setupRefreshHeader];
-    [self setupUploadMore];
-}
-
-- (void)initViews
-{
-    [self discoverView];
-    [self createTableView];
+    self.tabedSlideView = [[DLTabedSlideView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+    self.tabedSlideView.baseViewController = self;
+    self.tabedSlideView.tabItemNormalColor = TEXT_COLOR1;
+    self.tabedSlideView.tabItemSelectedColor = BASE_COLOR;
+    self.tabedSlideView.tabbarTrackColor = BASE_COLOR;
+    self.tabedSlideView.tabbarHeight = 55;
+    self.tabedSlideView.tabbarBackgroundImage = [UIImage imageWithColor:[UIColor whiteColor]];
+    self.tabedSlideView.tabbarBottomSpacing = 3.0;
+    self.tabedSlideView.delegate = self;
+    
+    DLTabedbarItem *item1 = [DLTabedbarItem itemWithTitle:@"话题圈" image:[UIImage imageNamed:@"discover_topic_normal"] selectedImage:[UIImage imageNamed:@"discover_topic_high.png"]];
+    DLTabedbarItem *item2 = [DLTabedbarItem itemWithTitle:@"朋友圈" image:[UIImage imageNamed:@"discover_friend_square_normal.png"] selectedImage:[UIImage imageNamed:@"discover_friend_square_high"]];
+    DLTabedbarItem *item3 = [DLTabedbarItem itemWithTitle:@"找朋友" image:[UIImage imageNamed:@"discover_find_friend_normal.png"] selectedImage:[UIImage imageNamed:@"discover_find_friend_high"]];
+    DLTabedbarItem *item4 = [DLTabedbarItem itemWithTitle:@"找话题" image:[UIImage imageNamed:@"discover_find_topic_normal.png"] selectedImage:[UIImage imageNamed:@"discover_find_topic_high"]];
+    self.tabedSlideView.tabbarItems = @[item1, item2, item3, item4];
+    [self.view addSubview:_tabedSlideView];
+    [self.tabedSlideView buildTabbar:DLSlideTabbarImageTop];
+    
+    self.tabedSlideView.selectedIndex = 0;
 }
 
 #pragma mark -- UI
-- (UITableView *)createTableView
-{
-    if (!_tableView) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 55, ScreenWidth, ScreenHeight - _discoverView.height - 64 - 49) style:UITableViewStylePlain];
-        _tableView.delegate = self;
-        _tableView.dataSource = self;
-        [self.view addSubview:_tableView];
+
+
+#pragma makr -- DLTabedSlideViewDelegate
+
+- (NSInteger)numberOfTabsInDLTabedSlideView:(DLTabedSlideView *)sender{
+    return 4;
+}
+- (UIViewController *)DLTabedSlideView:(DLTabedSlideView *)sender controllerAt:(NSInteger)index{
+    switch (index) {
+        case 0:
+        {
+            DiscoverTopicViewController *discoverTopicVC = [[DiscoverTopicViewController  alloc] init];
+            return discoverTopicVC;
+        }
+        case 1:
+        {
+            DiscoverFriendSquareViewController *DiscoverFriendSquareVC = [[DiscoverFriendSquareViewController alloc] init];
+            return DiscoverFriendSquareVC;
+        }
+        case 2:
+        {
+            DiscoverFindFriendViewController *DiscoverFindFriendVC = [[DiscoverFindFriendViewController alloc] init];
+            return DiscoverFindFriendVC;
+        }
+        case 3:
+        {
+            DiscoverFindTopicViewController *DiscoverFindTopic = [[DiscoverFindTopicViewController alloc]init];
+            return DiscoverFindTopic;
+        }
+        default:
+            return nil;
     }
-    return _tableView;
 }
 
-- (DiscoverView *)discoverView
-{
-    if (!_discoverView) {
-        _discoverView = [[DiscoverView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 55)];
-        for (int i = 200; i <= _discoverView.topTabbarBtn.tag; i ++) {
-            UIButton *tempBtn = (UIButton *)[_discoverView viewWithTag:i];
-            [tempBtn addTarget:self action:@selector(onClickAction:) forControlEvents:UIControlEventTouchUpInside];
-        }
-        [self.view addSubview:_discoverView];
-    }return _discoverView;
-}
-
-#pragma mark -- HTTP
-- (void)getDiscoverData:(int)pageIndex
-{
-    NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
-    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-    NSDictionary *parameters = @{@"Method":@"RePengyouQuan",
-                                 @"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
-                                 @"RunnerIsClient":@"1",
-                                 @"Detail":@[@{@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
-                                               @"PageSize":@"20",
-                                               @"IsShow":@"888",
-                                               @"PageIndex":pageStr,
-                                               @"FldSort":@"0",
-                                               @"FldSortType":@"1",
-                                               }]};
-    [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
-        NSLog(@"result:%@",result);
-        NSArray *items = [FriendSquareModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
-        NSArray *imageItems = [FriendSquareImageModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
-        
-        if (page == 1) {
-            [self.dataArray removeAllObjects];
-            [self.imagesArray removeAllObjects];
-        }
-        
-        for (int i = 0; i < items.count; i ++) {
-            if (!self.dataArray) {
-                self.dataArray = [[NSMutableArray alloc]init];
-            }
-            [self.dataArray addObject:[items objectAtIndex:i]];
-        }
-        
-        for (int i = 0; i < imageItems.count; i ++) {
-            if (!self.imagesArray) {
-                self.imagesArray = [[NSMutableArray alloc]init];
-            }
-            [self.imagesArray addObject:[imageItems objectAtIndex:i]];
-        }
-        [self.tableView reloadData];
-        
-    } failure:^(NSError *erro) {
-        
-    }];
-}
-
-#pragma mark MJRefresh
-- (void)setupRefreshHeader{
-    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
-    header.lastUpdatedTimeLabel.hidden = YES;
-    
-    self.tableView.mj_header = header;
-}
-
-- (void)setupUploadMore{
-    __unsafe_unretained __typeof(self) weakSelf = self;
-    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-        [weakSelf loadMoreData];
-    }];
-}
-
-- (void)loadNewData{
-    page = 1;
-    [self getDiscoverData:page];
-    [self.tableView.mj_header endRefreshing];
-}
-
-- (void)loadMoreData{
-    page = page + 1;
-    [self getDiscoverData:page];
-    [self.tableView.mj_footer endRefreshing];
-}
-
-#pragma mark -- UITableViewDelegate
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.dataArray.count;  
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *identifyCell = @"cell";
-    DiscoverTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifyCell];
-    if (!cell) {
-        cell = [[DiscoverTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifyCell];
-    }
-    return cell;
-}
-
-
-#pragma mark -- action
-- (void)onClickAction:(UIButton *)button
-{
-
-    NSArray *imageNormalArray = @[@"discover_friend_square_normal.png",
-                                  @"discover_topic_normal.png",
-                                  @"discover_find_friend_normal.png",
-                                  @"discover_find_topic_normal.png"];
-    
-    NSArray *imageHighArray   = @[@"discover_friend_square_high.png",
-                                  @"discover_topic_high.png",
-                                  @"discover_find_friend_high.png",
-                                  @"discover_find_topic_high.png"];
-    
-    for (int i = 200; i <= _discoverView.topTabbarBtn.tag; i ++) {
-        UIButton *tempBtn = (UIButton *)[_discoverView viewWithTag:i];
-        if (i == button.tag) {
-           [tempBtn setImage:[UIImage imageNamed:[imageHighArray objectAtIndex:i - 200]] forState:UIControlStateNormal];
-            [tempBtn setTitleColor:BASE_COLOR forState:UIControlStateNormal];
-        }else{
-            [tempBtn setImage:[UIImage imageNamed:[imageNormalArray objectAtIndex:i - 200]] forState:UIControlStateNormal];
-            [tempBtn setTitleColor:TEXT_COLOR1 forState:UIControlStateNormal];
-        }
-    }
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        CGRect frame = _discoverView.lineView.frame;
-        frame.origin.x = (button.tag - 200) * ScreenWidth/4;
-        _discoverView.lineView.frame = frame;
-    }];
-}
 
 #pragma mark -- other
 - (void)didReceiveMemoryWarning {

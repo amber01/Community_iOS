@@ -400,6 +400,8 @@
 - (NSURL *)photoBrowser:(HZPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index
 {
     NSString *urlStr = self.photoUrlArray[index];
+    NSLog(@"urlStr:%@",urlStr);
+    NSLog(@"index:%ld",index);
     return [NSURL URLWithString:urlStr];
 }
 

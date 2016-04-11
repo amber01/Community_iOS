@@ -19,14 +19,46 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Community/Main/EveryoneTopic/EveryoneTopic/EvenyoneTopView.m"
-            timestampString = "477926275.218528"
+            filePath = "Community/Vendors/DLSlideView/DLCustomSlideView.h"
+            timestampString = "481950461.39084"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
-            landmarkName = "-changeBtnTitle"
-            landmarkType = "5">
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "delegate"
+            landmarkType = "19">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[DLCustomSlideView delegate]"
+                  moduleName = "Community"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/amber/Documents/Community_iOS/Community/Vendors/DLSlideView/DLCustomSlideView.h"
+                  timestampString = "481961123.855917"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[DLCustomSlideView setDelegate:]"
+                  moduleName = "Community"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/amber/Documents/Community_iOS/Community/Vendors/DLSlideView/DLCustomSlideView.h"
+                  timestampString = "481961123.856205"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
