@@ -511,6 +511,9 @@
 		DB706B911CB3C77B001BB47E /* Overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DB706B591CB3C77B001BB47E /* Overlay@2x.png */; };
 		DB706B921CB3C77B001BB47E /* SendTopicTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB706B5B1CB3C77B001BB47E /* SendTopicTextView.m */; };
 		DB706B951CB3C7B2001BB47E /* SendTopicKeyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB706B941CB3C7B2001BB47E /* SendTopicKeyboardView.m */; };
+		DB7CB0AD1CBCD2EC00B19D05 /* SendPhotoOptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7CB0AC1CBCD2EC00B19D05 /* SendPhotoOptionView.m */; };
+		DB7CB0B41CBCE08100B19D05 /* topic_select_photo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DB7CB0B21CBCE08100B19D05 /* topic_select_photo@2x.png */; };
+		DB7CB0B51CBCE08100B19D05 /* topic_select_photo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = DB7CB0B31CBCE08100B19D05 /* topic_select_photo@3x.png */; };
 		DB84257C1BF1988D00D1C273 /* OptionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DB84257B1BF1988D00D1C273 /* OptionButton.m */; };
 		DB8425831BF19B7A00D1C273 /* SendTopicBtnView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8425821BF19B7A00D1C273 /* SendTopicBtnView.m */; };
 		DB9619631CB4FBFE005F8449 /* DiscoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9619621CB4FBFE005F8449 /* DiscoverViewController.m */; };
@@ -1429,6 +1432,10 @@
 		DB706B5B1CB3C77B001BB47E /* SendTopicTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendTopicTextView.m; sourceTree = "<group>"; };
 		DB706B931CB3C7B2001BB47E /* SendTopicKeyboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendTopicKeyboardView.h; sourceTree = "<group>"; };
 		DB706B941CB3C7B2001BB47E /* SendTopicKeyboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendTopicKeyboardView.m; sourceTree = "<group>"; };
+		DB7CB0AB1CBCD2EC00B19D05 /* SendPhotoOptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendPhotoOptionView.h; sourceTree = "<group>"; };
+		DB7CB0AC1CBCD2EC00B19D05 /* SendPhotoOptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendPhotoOptionView.m; sourceTree = "<group>"; };
+		DB7CB0B21CBCE08100B19D05 /* topic_select_photo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topic_select_photo@2x.png"; sourceTree = "<group>"; };
+		DB7CB0B31CBCE08100B19D05 /* topic_select_photo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topic_select_photo@3x.png"; sourceTree = "<group>"; };
 		DB84257A1BF1988D00D1C273 /* OptionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionButton.h; sourceTree = "<group>"; };
 		DB84257B1BF1988D00D1C273 /* OptionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionButton.m; sourceTree = "<group>"; };
 		DB8425811BF19B7A00D1C273 /* SendTopicBtnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendTopicBtnView.h; sourceTree = "<group>"; };
@@ -2405,6 +2412,8 @@
 				DBC2FF791CBB7B7B00447608 /* discover_add_follow@3x.png */,
 				DBC2FF7A1CBB7B7B00447608 /* discover_cancel_follow@2x.png */,
 				DBC2FF7B1CBB7B7B00447608 /* discover_cancel_follow@3x.png */,
+				DB7CB0B21CBCE08100B19D05 /* topic_select_photo@2x.png */,
+				DB7CB0B31CBCE08100B19D05 /* topic_select_photo@3x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -3584,6 +3593,8 @@
 				DB706B5B1CB3C77B001BB47E /* SendTopicTextView.m */,
 				DB706B931CB3C7B2001BB47E /* SendTopicKeyboardView.h */,
 				DB706B941CB3C7B2001BB47E /* SendTopicKeyboardView.m */,
+				DB7CB0AB1CBCD2EC00B19D05 /* SendPhotoOptionView.h */,
+				DB7CB0AC1CBCD2EC00B19D05 /* SendPhotoOptionView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4174,6 +4185,7 @@
 				96C8D2AE1C0A0F4E004642FC /* everyoneTopic_send_down@2x.png in Resources */,
 				96C8D2BC1C0A0F4E004642FC /* topic_send_funny@2x.png in Resources */,
 				96D2554A1C2C393D0002E650 /* UMShareEditViewController.xib in Resources */,
+				DB7CB0B51CBCE08100B19D05 /* topic_select_photo@3x.png in Resources */,
 				DB706B8E1CB3C77B001BB47E /* ELCAssetPicker.xib in Resources */,
 				DB9619741CB50B02005F8449 /* discover_topic_high@3x.png in Resources */,
 				96C5A3321C1D1B500029FC74 /* pulldown_icon@2x.png in Resources */,
@@ -4221,6 +4233,7 @@
 				96C8D2C81C0A0F4E004642FC /* topic_send_city@3x.png in Resources */,
 				96D255491C2C393D0002E650 /* UMSCommentInputControlleriPad.xib in Resources */,
 				9657DD551C2C5C4E000A243B /* mine_score_ex@3x.png in Resources */,
+				DB7CB0B41CBCE08100B19D05 /* topic_select_photo@2x.png in Resources */,
 				DB706B901CB3C77B001BB47E /* MainWindow.xib in Resources */,
 				96D5084D1C106993001DFA49 /* everyone_topic_cancel_like@2x.png in Resources */,
 				96C8D2D91C0A0F4E004642FC /* everyoneTopic_tabbar_high@2x.png in Resources */,
@@ -4487,6 +4500,7 @@
 				963DC4C11C0ACFD9005D1955 /* EaseMessageTimeCell.m in Sources */,
 				DBC59C1A1C2918FA00612A55 /* TopicDetailRewardTableViewCell.m in Sources */,
 				963DC4921C0ACFD9005D1955 /* UIButton+EMWebCache.m in Sources */,
+				DB7CB0AD1CBCD2EC00B19D05 /* SendPhotoOptionView.m in Sources */,
 				96E4A41B1C19CED7001562DF /* SearchUserInfoModel.m in Sources */,
 				963DC4AC1C0ACFD9005D1955 /* NSDateFormatter+Category.m in Sources */,
 				964AA10C1BEF7B5E007CE0E9 /* HyperlinksButton.m in Sources */,

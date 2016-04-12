@@ -17,6 +17,7 @@
 #import "TopicSendNavigationView.h"
 #import "SendTopicBtnView.h"
 #import "EaseConvertToCommonEmoticonsHelper.h"
+#import "SendPhotoOptionView.h"
 
 @interface SendTopicViewController ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate,UITextViewDelegate,AGEmojiKeyboardViewDelegate, AGEmojiKeyboardViewDataSource,ELCImagePickerControllerDelegate,UIGestureRecognizerDelegate>
 {
@@ -35,12 +36,14 @@
     TopicSendNavigationView *sendNavigationView;
     BOOL                  isHidenSendView;
     int                   imageCount;
+    UIScrollView          *scrollView;
 }
 
-@property (nonatomic,retain) NSMutableArray *locaPhotoArr;
-@property (nonatomic,retain) NSMutableArray *imagesArray;
-@property (nonatomic,copy  ) NSString       *filename;
-@property (nonatomic,retain) NSMutableArray *sendPhotoCountTitle;
+@property (nonatomic,retain) NSMutableArray      *locaPhotoArr;
+@property (nonatomic,retain) NSMutableArray      *imagesArray;
+@property (nonatomic,copy  ) NSString            *filename;
+@property (nonatomic,retain) NSMutableArray      *sendPhotoCountTitle;
+@property (nonatomic,retain) SendPhotoOptionView *sendPhotoOptionView;
 
 @end
 
@@ -48,7 +51,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"发帖";
+    self.title = @"发布";
     self.view.backgroundColor = [UIColor whiteColor];
     [self setupSendTopicTextView];
     Exparams = [[NSMutableDictionary alloc]init];
@@ -75,12 +78,7 @@
     if (!isArrEmpty(self.myDraftDataArray)) {
         [self createPhotoList];
     }
-    
-//    sendNavigationView = [[TopicSendNavigationView alloc]initWithFrame:CGRectMake(100, 0, ScreenWidth - 200, 64)];
-//    [sendNavigationView setNavigationTitle:self.title];
-//    UITapGestureRecognizer *tapGestureSinge = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeCatTap)];
-//    [sendNavigationView addGestureRecognizer:tapGestureSinge];
-//    [self.navigationController.view addSubview:sendNavigationView];
+
 
     imageCount = 1;
     NSLog(@"cate_id:%@",_cate_id);
@@ -116,6 +114,25 @@
     [photoScrollView addSubview:addImageBtn];
     
     [self.view addSubview:sendTopicView];
+    [self sendPhotoOptionView];
+}
+
+- (SendPhotoOptionView *)sendPhotoOptionView
+{
+    if (!_sendPhotoOptionView) {
+        _sendPhotoOptionView = [[SendPhotoOptionView alloc]initWithFrame:CGRectMake(0, sendTopicView.contentTextView.bottom + 10, ScreenWidth, ScreenHeight - sendTopicView.contentTextView.bottom - 10)];
+        [sendTopicView addSubview:_sendPhotoOptionView];
+        
+        scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, _sendPhotoOptionView.checkTopicBtn.bottom, ScreenWidth, sendTopicView.height - _sendPhotoOptionView.checkTopicBtn.bottom)];
+        [sendTopicView addSubview:scrollView];
+        
+        for (int i = 200; i <= _sendPhotoOptionView.checkTopicBtn.tag; i ++) {
+            UIButton *tempBtn = [_sendPhotoOptionView viewWithTag:i];
+            tempBtn.tag = i;
+            [tempBtn addTarget:self action:@selector(onClickAction:) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+    return _sendPhotoOptionView;
 }
 
 #pragma mark -- UI
@@ -156,16 +173,16 @@
         sendTopicView.defaultLabel.hidden = NO;
     }
     
-    //动态改变textView 高度
-    CGSize size = [textView sizeThatFits:CGSizeMake(CGRectGetWidth(textView.frame), MAXFLOAT)];
-    CGRect frame = textView.frame;
-    frame.size.height = size.height;
-    textView.frame = frame;
-    [textView scrollRangeToVisible:NSMakeRange(0,0)];
-    
-    CGRect q = photoBackgroundView.frame;
-    q.origin.y = (size.height) + 40;
-    photoBackgroundView.frame = q;
+//    //动态改变textView 高度
+//    CGSize size = [textView sizeThatFits:CGSizeMake(CGRectGetWidth(textView.frame), MAXFLOAT)];
+//    CGRect frame = textView.frame;
+//    frame.size.height = size.height;
+//    textView.frame = frame;
+//    [textView scrollRangeToVisible:NSMakeRange(0,0)];
+//    
+//    CGRect q = photoBackgroundView.frame;
+//    q.origin.y = (size.height) + 40;
+//    photoBackgroundView.frame = q;
 }
 
 #pragma mark -- UITextViewDelegate
@@ -189,6 +206,78 @@
 }
 
 #pragma mark -- action
+
+- (void)onClickAction:(UIButton *)button
+{
+    
+    NSLog(@"tag:%ld",button.tag);
+    for (int i = 200; i <= _sendPhotoOptionView.checkTopicBtn.tag; i ++) {
+        UIButton *tempBtn = [self.view viewWithTag:i];
+        if (button.tag == i) {
+            [tempBtn setTitleColor:BASE_COLOR forState:UIControlStateNormal];
+        }else{
+            [tempBtn setTitleColor:TEXT_COLOR forState:UIControlStateNormal];
+        }
+    }
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = _sendPhotoOptionView.lineView.frame;
+        frame.origin.x = (ScreenWidth/3) * (button.tag - 200);
+        _sendPhotoOptionView.lineView.frame = frame;
+    }];
+    
+    if (button.tag == 200) { //所有话题
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        NSDictionary *parameters = @{@"Method":@"ReHuatiClass",
+                                     @"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
+                                     @"RunnerIP":@"",
+                                     @"RunnerIsClient":@"1",
+                                     @"Detail":@[@{@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
+                                                   }]};
+        
+        [CKHttpRequest createRequest:HTTP_SUB_CLASS_CATE WithParam:parameters withMethod:@"POST" success:^(id result) {
+            NSLog(@"result:%@",result);
+            if (result) {
+                NSArray *items = [result objectForKey:@"Detail"];
+                NSLog(@"items:%@",items);
+
+//                /**
+//                 *  创建城市按钮
+//                 */
+//                float Start_X = 10.0f;           // 第一个按钮的X坐标
+//                float Start_Y = scrollView.top + 10;           // 第一个按钮的Y坐标
+//                float Width_Space = 10.0f;        // 2个按钮之间的横间距
+//                float Height_Space = 20.0f;      // 竖间距
+//                float Button_Height = 35.f;    // 高
+//                float Button_Width = (ScreenWidth - 50)/4;      // 宽
+//                
+//                for (int i = 0 ; i < items.count; i++) {
+//                    NSInteger index = i % 3;
+//                    NSInteger page = i / 3;
+//                    
+//                    NSDictionary *dic = [items objectAtIndex:i];
+//                    
+//                    // 圆角按钮
+//                    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//                    button.backgroundColor = [UIColor whiteColor];
+//                    [button setTitle:[dic objectForKey:@"area_city"] forState:UIControlStateNormal];
+//                    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//                    [UIUtils setupViewBorder:button cornerRadius:Button_Height/2 borderWidth:1 borderColor:[UIColor colorWithHexString:@"#adadad"]];
+//                    button.frame = CGRectMake(index * (Button_Width + Width_Space) + Start_X, page  * (Button_Height + Height_Space)+Start_Y, Button_Width, Button_Height);
+//                    button.tag = 100 + i;
+//                    [button addTarget:self action:@selector(selectCityAction:) forControlEvents:UIControlEventTouchUpInside];
+//                }
+            }
+        } failure:^(NSError *erro) {
+            
+        }];
+    }else if (button.tag == 201){ //我关注的话题
+        
+    }else{ //未关注的话题
+        
+    }
+    
+}
 
 - (void)changeCatTap
 {
@@ -847,11 +936,12 @@
 
 - (void)dismissKeyBoard
 {
-    if (isInput == YES) {
-        [self.view endEditing:YES];
-    }else{
-        [sendTopicView.contentTextView  becomeFirstResponder];
-    }
+    [self.view endEditing:YES];
+//    if (isInput == YES) {
+//        [self.view endEditing:YES];
+//    }else{
+//        [sendTopicView.contentTextView  becomeFirstResponder];
+//    }
 }
 
 - (void)dealloc

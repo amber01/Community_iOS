@@ -64,6 +64,8 @@ typedef NS_ENUM(NSInteger,HTTP_COMMAND_LIST){
     HTTP_SELECT_CITY,
     //供求信息下得子分类 15
     HTTP_SUB_CLASS_CATE,
+    //关注话题相关 16
+    HTTP_METHOD_CONCERN,
     
     /*******************/
     HTTP_METHOD_RESERVE,

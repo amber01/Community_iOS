@@ -52,8 +52,7 @@
                                                }]};
     
     [CKHttpRequest createRequest:HTTP_SUB_CLASS_CATE WithParam:parameters withMethod:@"POST" success:^(id result) {
-        NSLog(@"result:%@",result);
-        
+
         NSArray *items = [result objectForKey:@"Detail"];
         NSMutableArray *array1 = [NSMutableArray new];
         NSMutableArray *array2 = [NSMutableArray new];
@@ -77,7 +76,7 @@
         }
         [_dataArray addObject:dataDic1];
         [_dataArray addObject:dataDic2];
-        
+
         [self.tableView reloadData];
         
     } failure:^(NSError *erro) {
@@ -105,8 +104,18 @@
         [cell.addFollowBtn addTarget:self action:@selector(addFollowAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     
-    [cell configureCellWithInfo:self.dataArray WithIndexPath:indexPath];
+    NSMutableArray *tempArr = [[_dataArray objectAtIndex:indexPath.section] objectForKey:@"topicInfo"];
+    NSMutableDictionary *dic = [tempArr objectAtIndex:indexPath.row];
+    
+    if ([[dic objectForKey:@"isfocus"]intValue] == 1) { //已关注
+        cell.addFollowBtn.isTrue = YES;
+    }else{
+        cell.addFollowBtn.isTrue = NO;
+    }
+    cell.addFollowBtn.post_id = [dic objectForKey:@"id"];
     cell.addFollowBtn.indexPath = indexPath;
+    
+    [cell configureCellWithInfo:self.dataArray WithIndexPath:indexPath];
     
     return cell;
 }
@@ -146,7 +155,47 @@
 #pragma mark -- action
 - (void)addFollowAction:(PubliButton *)button
 {
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    if (isStrEmpty(sharedInfo.user_id)) {
+        LoginViewController *loginVC = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:loginVC animated:YES];
+        return;
+    }
     
+    if (button.isTrue) { //已关注的情况下就取消关注
+        NSDictionary *parameters = @{@"Method":@"CancelMyAttentionClass",
+                                     @"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
+                                     @"RunnerIP":@"",
+                                     @"RunnerIsClient":@"1",
+                                     @"Detail":@[@{@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
+                                                   @"ClassID":button.post_id,
+                                                   }]};
+        [CKHttpRequest createRequest:HTTP_METHOD_CONCERN WithParam:parameters withMethod:@"POST" success:^(id result) {
+            NSMutableArray *tempArr = [[_dataArray objectAtIndex:button.indexPath.section] objectForKey:@"topicInfo"];
+            NSMutableDictionary *dic = [tempArr objectAtIndex:button.indexPath.row];
+            [dic setObject:@"0" forKey:@"isfocus"];
+            [_tableView reloadData];
+        } failure:^(NSError *erro) {
+            
+        }];
+    }else{ //关注
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        NSDictionary *parameters = @{@"Method":@"AddMyAttentionClass",
+                                     @"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
+                                     @"RunnerIP":@"",
+                                     @"RunnerIsClient":@"1",
+                                     @"Detail":@[@{@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
+                                                   @"ClassID":button.post_id,
+                                                   }]};
+        [CKHttpRequest createRequest:HTTP_METHOD_CONCERN WithParam:parameters withMethod:@"POST" success:^(id result) {
+            NSMutableArray *tempArr = [[_dataArray objectAtIndex:button.indexPath.section] objectForKey:@"topicInfo"];
+            NSMutableDictionary *dic = [tempArr objectAtIndex:button.indexPath.row];
+            [dic setObject:@"1" forKey:@"isfocus"];
+            [_tableView reloadData];
+        } failure:^(NSError *erro) {
+            
+        }];
+    }
 }
 
 #pragma mark -- other
