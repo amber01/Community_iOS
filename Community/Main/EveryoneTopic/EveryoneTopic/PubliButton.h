@@ -10,20 +10,23 @@
 
 @interface PubliButton : UIButton
 
-@property (nonatomic,copy  ) NSString  *post_id;
-@property (nonatomic,copy  ) NSString  *user_id;
-@property (nonatomic,copy  ) NSString  *like_num;
-@property (nonatomic,copy  ) NSString  *nickname;
-@property (nonatomic,copy  ) NSString  *userName;
+@property (nonatomic,copy  ) NSString    *post_id;
+@property (nonatomic,copy  ) NSString    *user_id;
+@property (nonatomic,copy  ) NSString    *like_num;
+@property (nonatomic,copy  ) NSString    *nickname;
+@property (nonatomic,copy  ) NSString    *userName;
 
-@property (nonatomic,copy  ) NSString  *praisenum;
-@property (nonatomic,copy  ) NSString  *isPraise;
+@property (nonatomic,copy  ) NSString    *praisenum;
+@property (nonatomic,copy  ) NSString    *isPraise;
 
-@property (nonatomic,copy  ) NSString  *avatarUrl;
+@property (nonatomic,copy  ) NSString    *avatarUrl;
 
-@property (nonatomic,assign) NSInteger row;
-@property (nonatomic,assign) NSInteger section;
+@property (nonatomic,assign) NSInteger   row;
+@property (nonatomic,assign) NSInteger   section;
 
-@property (nonatomic,assign) NSString  *status;
+@property (nonatomic,assign) NSString    *status;
+
+@property (nonatomic,assign) BOOL        isTrue;
+@property (nonatomic,retain) NSIndexPath *indexPath;
 
 @end

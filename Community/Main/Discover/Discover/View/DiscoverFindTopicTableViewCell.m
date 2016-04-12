@@ -15,7 +15,6 @@
     UILabel     *careNumLabel;
     UILabel     *postsNumLabel;
     UILabel     *todayNumLabel;
-    PubliButton *addFollowBtn;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -50,9 +49,9 @@
         todayNumLabel.textColor = TEXT_COLOR;
         [self.contentView addSubview:todayNumLabel];
         
-        addFollowBtn = [[PubliButton alloc]initWithFrame:CGRectMake(ScreenWidth - 70 - 20, 80/2 - 15.5, 70, 31)];
-        [addFollowBtn setBackgroundImage:[UIImage imageNamed:@"discover_add_topic.png"] forState:UIControlStateNormal];
-        [self.contentView addSubview:addFollowBtn];
+        self.addFollowBtn = [[PubliButton alloc]initWithFrame:CGRectMake(ScreenWidth - 70 - 20, 80/2 - 15.5, 70, 31)];
+        [_addFollowBtn setBackgroundImage:[UIImage imageNamed:@"discover_add_topic.png"] forState:UIControlStateNormal];
+        [self.contentView addSubview:_addFollowBtn];
     }
     return self;
 }
@@ -70,9 +69,9 @@
     todayNumLabel.text = [NSString stringWithFormat:@"今日 %@",[dic objectForKey:@"todaynum"]];
     
     if ([[dic objectForKey:@"isfocus"]intValue] == 1) {
-        [addFollowBtn setBackgroundImage:[UIImage imageNamed:@"discover_cancel_topic.png"] forState:UIControlStateNormal];
+        [_addFollowBtn setBackgroundImage:[UIImage imageNamed:@"discover_cancel_topic.png"] forState:UIControlStateNormal];
     }else{
-        [addFollowBtn setBackgroundImage:[UIImage imageNamed:@"discover_add_topic.png"] forState:UIControlStateNormal];
+        [_addFollowBtn setBackgroundImage:[UIImage imageNamed:@"discover_add_topic.png"] forState:UIControlStateNormal];
     }
 }
 

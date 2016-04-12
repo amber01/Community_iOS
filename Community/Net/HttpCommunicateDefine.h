@@ -88,6 +88,7 @@ static char cHttpMethod[HTTP_METHOD_COUNT][64] = {
     "Notice",           //13
     "Installed",       //14
     "ClassInfo",       //15
+    "MyAttentionClass", //16
 };
 
 /*****************************************************************************/

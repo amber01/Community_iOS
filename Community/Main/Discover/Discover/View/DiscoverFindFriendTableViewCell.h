@@ -10,6 +10,8 @@
 
 @interface DiscoverFindFriendTableViewCell : UITableViewCell
 
+@property (nonatomic,retain)PubliButton     *addFollowBtn;
+
 - (void)configureCellWithInfo:(DiscoverFindFriendModel *)model;
 
 @end

@@ -14,7 +14,6 @@
     UILabel             *nickNameLabel;
     UILabel             *postsNumLabel;
     UILabel             *fansNumLabel;
-    PubliButton         *addFollowBtn;
     PubliButton         *avatarBtn;
 }
 
@@ -55,9 +54,9 @@
         fansNumLabel.text = @"粉丝 120";
         [self.contentView addSubview:fansNumLabel];
         
-        addFollowBtn = [[PubliButton alloc]initWithFrame:CGRectMake(ScreenWidth - 70 - 20, 80/2 - 15, 70, 30)];
-        [addFollowBtn setBackgroundImage:[UIImage imageNamed:@"discover_add_follow.png"] forState:UIControlStateNormal];
-        [self.contentView addSubview:addFollowBtn];
+        self.addFollowBtn = [[PubliButton alloc]initWithFrame:CGRectMake(ScreenWidth - 70 - 20, 80/2 - 15, 70, 30)];
+        [_addFollowBtn setBackgroundImage:[UIImage imageNamed:@"discover_add_follow.png"] forState:UIControlStateNormal];
+        [self.contentView addSubview:_addFollowBtn];
     }
     return self;
 }
@@ -74,13 +73,6 @@
     
     prestigeLabel.frame = CGRectMake(nickNameLabel.right + 10, nickNameLabel.top + 2, 32, 16);
     prestigeLabel.text = [NSString stringWithFormat:@"v%@",model.prestige];
-    
-    if ([model.isfocus intValue] == 1) { //已关注
-        [addFollowBtn setBackgroundImage:[UIImage imageNamed:@"discover_cancel_follow.png"] forState:UIControlStateNormal];
-    }else{
-        [addFollowBtn setBackgroundImage:[UIImage imageNamed:@"discover_add_follow.png"] forState:UIControlStateNormal];
-    }
-    
 }
 
 - (void)awakeFromNib {

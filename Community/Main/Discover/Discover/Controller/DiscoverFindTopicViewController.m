@@ -102,9 +102,11 @@
     DiscoverFindTopicTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifyCell];
     if (!cell) {
         cell = [[DiscoverFindTopicTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifyCell];
+        [cell.addFollowBtn addTarget:self action:@selector(addFollowAction:) forControlEvents:UIControlEventTouchUpInside];
     }
-
+    
     [cell configureCellWithInfo:self.dataArray WithIndexPath:indexPath];
+    cell.addFollowBtn.indexPath = indexPath;
     
     return cell;
 }
@@ -139,6 +141,12 @@
         return 70;
     }
     return 0;
+}
+
+#pragma mark -- action
+- (void)addFollowAction:(PubliButton *)button
+{
+    
 }
 
 #pragma mark -- other

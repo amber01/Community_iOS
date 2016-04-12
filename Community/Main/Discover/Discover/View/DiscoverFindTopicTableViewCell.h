@@ -10,6 +10,8 @@
 
 @interface DiscoverFindTopicTableViewCell : UITableViewCell
 
+@property (nonatomic,retain)PubliButton *addFollowBtn;
+
 - (void)configureCellWithInfo:(NSMutableArray *)dataArray WithIndexPath:(NSIndexPath *)indexPath;
 
 @end

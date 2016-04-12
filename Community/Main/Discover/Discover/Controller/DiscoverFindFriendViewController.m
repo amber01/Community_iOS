@@ -11,11 +11,12 @@
 
 @interface DiscoverFindFriendViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
-        int     page;
+    int     page;
 }
 
 @property (nonatomic,retain)UITableView     *tableView;
 @property (nonatomic,retain)NSMutableArray  *dataArray;
+@property (nonatomic,retain)NSMutableArray  *toFansArray;
 
 @end
 
@@ -62,9 +63,11 @@
     [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
         NSArray *items = [DiscoverFindFriendModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+        NSArray *tempArr = [result objectForKey:@"Detail"];
         
         if (page == 1) {
             [self.dataArray removeAllObjects];
+            [_toFansArray removeAllObjects];
         }
         
         for (int i = 0; i < items.count; i ++) {
@@ -72,6 +75,14 @@
                 self.dataArray = [[NSMutableArray alloc]init];
             }
             [self.dataArray addObject:[items objectAtIndex:i]];
+        }
+        
+        for (int i = 0; i < tempArr.count; i ++) {
+            if (!_toFansArray) {
+                _toFansArray = [NSMutableArray new];
+            }
+            NSDictionary *dic = [tempArr objectAtIndex:i];
+            [_toFansArray addObject:[dic objectForKey:@"isfocus"]];
         }
         
         [self.tableView reloadData];
@@ -120,11 +131,21 @@
     DiscoverFindFriendTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifyCell];
     if (!cell) {
         cell = [[DiscoverFindFriendTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifyCell];
+        [cell.addFollowBtn addTarget:self action:@selector(addFollowAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     DiscoverFindFriendModel *model = nil;
     model = [self.dataArray objectAtIndex:indexPath.row];
     [cell configureCellWithInfo:model];
+    cell.addFollowBtn.row = indexPath.row;
+    cell.addFollowBtn.user_id = model.id;
     
+    if ([_toFansArray[indexPath.row]intValue] == 1) { //已关注
+        [cell.addFollowBtn setBackgroundImage:[UIImage imageNamed:@"discover_cancel_follow.png"] forState:UIControlStateNormal];
+        cell.addFollowBtn.isTrue = YES;
+    }else{
+        [cell.addFollowBtn setBackgroundImage:[UIImage imageNamed:@"discover_add_follow.png"] forState:UIControlStateNormal];
+        cell.addFollowBtn.isTrue = NO;
+    }
     return cell;
 }
 
@@ -133,6 +154,44 @@
     return 80;
 }
 
+#pragma mark -- action
+- (void)addFollowAction:(PubliButton *)button
+{
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    if (isStrEmpty(sharedInfo.user_id)) {
+        LoginViewController *loginVC = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:loginVC animated:YES];
+    }else{
+        [self initMBProgress:@""];
+        //关注
+        if (button.isTrue == NO) {
+            NSDictionary *params = @{@"Method":@"AddMyFansInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"ToUserID":button.user_id}]};
+            [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:params withMethod:@"POST" success:^(id result) {
+                if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                    [_toFansArray removeObjectAtIndex:button.row];
+                    [_toFansArray insertObject:@"1" atIndex:button.row];
+                    [_tableView reloadData];
+                    [self setMBProgreeHiden:YES];                }
+            } failure:^(NSError *erro) {
+
+            }];
+        }else{ //取消关注
+            NSDictionary *params = @{@"Method":@"CancelMyFansInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"ToUserID":button.user_id}]};
+            [CKHttpRequest createRequest:HTTP_METHOD_FANS WithParam:params withMethod:@"POST" success:^(id result) {
+                if (result && [[result objectForKey:@"Success"]intValue] > 0) {
+                    [_toFansArray removeObjectAtIndex:button.row];
+                    [_toFansArray insertObject:@"0" atIndex:button.row];
+                    [_tableView reloadData];
+                    [self setMBProgreeHiden:YES];
+                }
+            } failure:^(NSError *erro) {
+
+            }];
+        }
+    }
+}
+
+
 #pragma mark -- other
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -140,13 +199,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
