@@ -24,6 +24,12 @@ typedef enum : NSUInteger {
     SendTopicTypeSuggestion,//提建议
 } SendTopicType;
 
+typedef enum : NSUInteger {
+    MyTopicListTypeAll,  //所有话题
+    MyTopicListTypeConcern,  //我关注的话题
+    MyTopicListTypeNotConcern, //未关注的话题
+} MyTopicListType;
+
 @interface SendTopicViewController : BaseViewController
 @property (nonatomic,copy)NSString *cate_id;
 

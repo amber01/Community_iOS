@@ -44,6 +44,8 @@
 @property (nonatomic,copy  ) NSString            *filename;
 @property (nonatomic,retain) NSMutableArray      *sendPhotoCountTitle;
 @property (nonatomic,retain) SendPhotoOptionView *sendPhotoOptionView;
+@property (nonatomic,retain) NSMutableArray      *topicArray;
+@property (nonatomic,copy  ) NSString            *selectBtnTitle;
 
 @end
 
@@ -66,7 +68,7 @@
     [sendKeyboardView.sendPhotoBtn addTarget:self action:@selector(selectPhotoAction) forControlEvents:UIControlEventTouchUpInside];
     [sendKeyboardView.sendEmojiBtn addTarget:self action:@selector(selectEmojiAction) forControlEvents:UIControlEventTouchUpInside];
     [sendKeyboardView.sendTopicBtn addTarget:self action:@selector(selectTopicAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:sendKeyboardView];
+    //[self.view addSubview:sendKeyboardView];
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyBoard)];
     tapGesture.delegate = self;
@@ -123,8 +125,12 @@
         _sendPhotoOptionView = [[SendPhotoOptionView alloc]initWithFrame:CGRectMake(0, sendTopicView.contentTextView.bottom + 10, ScreenWidth, ScreenHeight - sendTopicView.contentTextView.bottom - 10)];
         [sendTopicView addSubview:_sendPhotoOptionView];
         
-        scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, _sendPhotoOptionView.checkTopicBtn.bottom, ScreenWidth, sendTopicView.height - _sendPhotoOptionView.checkTopicBtn.bottom)];
-        [sendTopicView addSubview:scrollView];
+        scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, _sendPhotoOptionView.lineView.bottom, ScreenWidth, ScreenHeight - sendTopicView.contentTextView.height - 10 - 40 - 40 - 40 - 10 - 40 - 28)];
+        NSLog(@"height:%f",ScreenHeight - sendTopicView.contentTextView.height - 10 - 40 - 40 - 40 - 10);
+        scrollView.backgroundColor = [UIColor whiteColor];
+        [_sendPhotoOptionView addSubview:scrollView];
+        
+        [self createTopicButtonData:MyTopicListTypeAll];
         
         for (int i = 200; i <= _sendPhotoOptionView.checkTopicBtn.tag; i ++) {
             UIButton *tempBtn = [_sendPhotoOptionView viewWithTag:i];
@@ -227,54 +233,11 @@
     }];
     
     if (button.tag == 200) { //所有话题
-        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-        NSDictionary *parameters = @{@"Method":@"ReHuatiClass",
-                                     @"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
-                                     @"RunnerIP":@"",
-                                     @"RunnerIsClient":@"1",
-                                     @"Detail":@[@{@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
-                                                   }]};
-        
-        [CKHttpRequest createRequest:HTTP_SUB_CLASS_CATE WithParam:parameters withMethod:@"POST" success:^(id result) {
-            NSLog(@"result:%@",result);
-            if (result) {
-                NSArray *items = [result objectForKey:@"Detail"];
-                NSLog(@"items:%@",items);
-
-//                /**
-//                 *  创建城市按钮
-//                 */
-//                float Start_X = 10.0f;           // 第一个按钮的X坐标
-//                float Start_Y = scrollView.top + 10;           // 第一个按钮的Y坐标
-//                float Width_Space = 10.0f;        // 2个按钮之间的横间距
-//                float Height_Space = 20.0f;      // 竖间距
-//                float Button_Height = 35.f;    // 高
-//                float Button_Width = (ScreenWidth - 50)/4;      // 宽
-//                
-//                for (int i = 0 ; i < items.count; i++) {
-//                    NSInteger index = i % 3;
-//                    NSInteger page = i / 3;
-//                    
-//                    NSDictionary *dic = [items objectAtIndex:i];
-//                    
-//                    // 圆角按钮
-//                    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//                    button.backgroundColor = [UIColor whiteColor];
-//                    [button setTitle:[dic objectForKey:@"area_city"] forState:UIControlStateNormal];
-//                    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//                    [UIUtils setupViewBorder:button cornerRadius:Button_Height/2 borderWidth:1 borderColor:[UIColor colorWithHexString:@"#adadad"]];
-//                    button.frame = CGRectMake(index * (Button_Width + Width_Space) + Start_X, page  * (Button_Height + Height_Space)+Start_Y, Button_Width, Button_Height);
-//                    button.tag = 100 + i;
-//                    [button addTarget:self action:@selector(selectCityAction:) forControlEvents:UIControlEventTouchUpInside];
-//                }
-            }
-        } failure:^(NSError *erro) {
-            
-        }];
+        [self createTopicButtonData:MyTopicListTypeAll];
     }else if (button.tag == 201){ //我关注的话题
-        
+        [self createTopicButtonData:MyTopicListTypeConcern];
     }else{ //未关注的话题
-        
+        [self createTopicButtonData:MyTopicListTypeNotConcern];
     }
     
 }
@@ -350,6 +313,111 @@
             
         }];
     }
+}
+
+- (void)createTopicButtonData:(MyTopicListType)type
+{
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    NSDictionary *parameters = @{@"Method":@"ReHuatiClass",
+                                 @"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
+                                 @"RunnerIP":@"",
+                                 @"RunnerIsClient":@"1",
+                                 @"Detail":@[@{@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
+                                               }]};
+    
+    [CKHttpRequest createRequest:HTTP_SUB_CLASS_CATE WithParam:parameters withMethod:@"POST" success:^(id result) {
+        
+        if (result) {
+            NSArray *items = [result objectForKey:@"Detail"];
+            NSLog(@"items:%@",items);
+            
+            for (int i = 0; i <= _topicArray.count; i ++) {
+                UIButton *tempBtn = [scrollView viewWithTag:i + 400];
+                [tempBtn removeFromSuperview];
+            }
+            
+            [_topicArray removeAllObjects];
+            if (!_topicArray) {
+                _topicArray = [NSMutableArray new];
+            }
+            
+            
+            for (int i = 0; i < items.count; i ++) {
+                if (type == MyTopicListTypeAll) { //全部话题的
+                    _topicArray = [items mutableCopy];
+                    break;
+                }else if (type == MyTopicListTypeConcern){
+                    NSDictionary *dic = [items objectAtIndex:i];
+                    if ([[dic objectForKey:@"isfocus"]intValue] == 1) {
+                        [_topicArray addObject:items[i]];
+                    }
+                }else{
+                    NSDictionary *dic = [items objectAtIndex:i];
+                    if ([[dic objectForKey:@"isfocus"]intValue] == 0) {
+                        [_topicArray addObject:items[i]];
+                    }
+                }
+            }
+            
+            /**
+             *  创建城市按钮
+             */
+            float Start_X = 10.0f;           // 第一个按钮的X坐标
+            float Start_Y = 10;           // 第一个按钮的Y坐标
+            float Width_Space = 10.0f;        // 2个按钮之间的横间距
+            float Height_Space = 10.0f;      // 竖间距
+            float Button_Height = 35.f;    // 高
+            float Button_Width = (ScreenWidth - 40)/3;      // 宽
+            
+            for (int i = 0 ; i < _topicArray.count; i++) {
+                NSInteger index = i % 3;
+                NSInteger page = i / 3;
+                
+                NSDictionary *dic = [_topicArray objectAtIndex:i];
+                
+                // 圆角按钮
+                UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                button.backgroundColor = [UIColor whiteColor];
+                [button setTitle:[dic objectForKey:@"name"] forState:UIControlStateNormal];
+                [button setTitleColor:TEXT_COLOR forState:UIControlStateNormal];
+                [UIUtils setupViewBorder:button cornerRadius:Button_Height/2 borderWidth:1 borderColor:[UIColor colorWithHexString:@"#adadad"]];
+                button.frame = CGRectMake(index * (Button_Width + Width_Space) + Start_X, page  * (Button_Height + Height_Space)+Start_Y, Button_Width, Button_Height);
+                button.tag = 400 + i;
+                [button addTarget:self action:@selector(selectTopicAction:) forControlEvents:UIControlEventTouchUpInside];
+                [scrollView addSubview:button];
+                
+                //已经选中过的
+                if ([[dic objectForKey:@"name"] isEqualToString:self.selectBtnTitle]) {
+                    button.backgroundColor = [UIColor colorWithHexString:@"#1ad155"];
+                    [UIUtils setupViewBorder:button cornerRadius:35/2 borderWidth:1 borderColor:[UIColor whiteColor]];
+                    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                }
+                
+                if (i == (_topicArray.count - 1)) {
+                    
+                    scrollView.contentSize = CGSizeMake(ScreenWidth, button.bottom + 10);
+                }
+            }
+        }
+    } failure:^(NSError *erro) {
+        
+    }];
+}
+
+- (void)selectTopicAction:(UIButton *)button
+{
+    for (int i = 400; i <self.topicArray.count + 400;i++) {//num为总共设置单选效果按钮的数目
+        UIButton *btn = (UIButton*)[self.view viewWithTag:i];//view为这些btn的父视图
+        btn.backgroundColor = [UIColor whiteColor];
+        [btn setTitleColor:TEXT_COLOR forState:UIControlStateNormal];
+        [UIUtils setupViewBorder:btn cornerRadius:35/2 borderWidth:1 borderColor:[UIColor colorWithHexString:@"#adadad"]];
+    }
+    NSDictionary *dic = _topicArray[button.tag - 400];
+    self.selectBtnTitle = [dic objectForKey:@"name"];
+    
+    button.backgroundColor = [UIColor colorWithHexString:@"#1ad155"];
+    [UIUtils setupViewBorder:button cornerRadius:35/2 borderWidth:1 borderColor:[UIColor whiteColor]];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 }
 
 - (void)sendTopicAction{
