@@ -90,7 +90,7 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithCustomView:button];
     [self setHidesBottomBarWhenPushed:YES];
     
-    topicSearchBarView = [[TopicSearchBarView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth - 125, 25)];
+    topicSearchBarView = [[TopicSearchBarView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth - 125, 35)];
     topicSearchBarView.myTextField.delegate = self;
     
     UIBarButtonItem *searchItem = [[UIBarButtonItem alloc]initWithCustomView:topicSearchBarView];
@@ -103,7 +103,7 @@
     [serarchBtn addTarget:self action:@selector(searchAction) forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem *searchItems = [[UIBarButtonItem alloc]initWithCustomView:serarchBtn];
-    self.navigationItem.rightBarButtonItem = searchItems;
+    //self.navigationItem.rightBarButtonItem = searchItems;
 }
 
 #pragma mark MJRefresh

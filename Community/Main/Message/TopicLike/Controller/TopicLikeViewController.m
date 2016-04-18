@@ -20,6 +20,7 @@
     
     int         page;
     int         sendPage;
+    BOOL        isMyReceiveStatus;
 }
 
 @property (nonatomic,retain)NSMutableArray  *dataArray;
@@ -45,13 +46,15 @@
     
     [self setupRefreshHeaderWithSend];
     [self setupUploadMoreWithSend];
+    
+    isMyReceiveStatus = YES;
 }
 
 #pragma mark -- UI
 
 - (void)createTableView
 {
-    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 42, ScreenWidth, ScreenHeight - 64 - 42) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, ScreenWidth, ScreenHeight - 64 - 44) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.tag = 1000;
@@ -60,7 +63,7 @@
     _tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_tableView];
     
-    _sendTabelView = [[UITableView alloc]initWithFrame:CGRectMake(0, 42, ScreenWidth, ScreenHeight - 64 - 42) style:UITableViewStylePlain];
+    _sendTabelView = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, ScreenWidth, ScreenHeight - 64 - 44) style:UITableViewStylePlain];
     _sendTabelView.dataSource = self;
     _sendTabelView.delegate = self;
     _sendTabelView.hidden = YES;
@@ -71,8 +74,9 @@
 
 - (void)createCommentTopView
 {
-    commentTopView = [[MsgCommentTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 42)];
-    [commentTopView.segmentedView addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
+    commentTopView = [[MsgCommentTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 44)];
+    [commentTopView.myReceiveCommentBtn addTarget:self action:@selector(getMyReceiveCommentAction) forControlEvents:UIControlEventTouchUpInside];
+    [commentTopView.mySendCommentBtn addTarget:self action:@selector(getMySendCommentAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:commentTopView];
 }
 
@@ -91,7 +95,7 @@
 }
 
 - (void)loadNewReceiveData{
-    if (commentTopView.segmentedView.selectedSegmentIndex == 0) {
+    if (isMyReceiveStatus == YES) {
         page = 1;
         [self getMyReceiveComment:page];
     }
@@ -99,7 +103,7 @@
 }
 
 - (void)loadMoreReceiveData{
-    if (commentTopView.segmentedView.selectedSegmentIndex == 0) {
+    if (isMyReceiveStatus == YES) {
         page = page + 1;
         [self getMyReceiveComment:page];
     }
@@ -121,7 +125,7 @@
 }
 
 - (void)loadNewSendData{
-    if (commentTopView.segmentedView.selectedSegmentIndex == 1) {
+    if (isMyReceiveStatus == NO) {
         sendPage = 1;
         [self getMySendComment:sendPage];
     }
@@ -129,7 +133,7 @@
 }
 
 - (void)loadMoreSendData{
-    if (commentTopView.segmentedView.selectedSegmentIndex == 1) {
+    if (isMyReceiveStatus == NO) {
         sendPage = sendPage + 1;
         [self getMySendComment:sendPage];
     }
@@ -250,6 +254,41 @@
 }
 
 #pragma mark -- action
+- (void)getMyReceiveCommentAction
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = commentTopView.lineView.frame;
+        frame.origin.x = 0;
+        commentTopView.lineView.frame = frame;
+        [commentTopView.myReceiveCommentBtn setTitleColor:BASE_COLOR forState:UIControlStateNormal];
+        [commentTopView.mySendCommentBtn setTitleColor:TEXT_COLOR forState:UIControlStateNormal];
+    }];
+    _tableView.hidden = NO;
+    _sendTabelView.hidden = YES;
+    isMyReceiveStatus = YES;
+    if (isArrEmpty(self.dataArray)) {
+        [self getMyReceiveComment:page];
+    }
+}
+
+- (void)getMySendCommentAction
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = commentTopView.lineView.frame;
+        frame.origin.x = ScreenWidth/2;
+        commentTopView.lineView.frame = frame;
+        [commentTopView.myReceiveCommentBtn setTitleColor:TEXT_COLOR forState:UIControlStateNormal];
+        [commentTopView.mySendCommentBtn setTitleColor:BASE_COLOR forState:UIControlStateNormal];
+    }];
+    
+    isMyReceiveStatus = NO;
+    _tableView.hidden = YES;
+    _sendTabelView.hidden = NO;
+    if (isArrEmpty(self.sendCommentArray)) {
+        [self getMySendComment:sendPage];
+    }
+}
+
 -(void)segmentAction:(UISegmentedControl *)segmented{
     NSInteger index = segmented.selectedSegmentIndex;
     if (index == 0) {

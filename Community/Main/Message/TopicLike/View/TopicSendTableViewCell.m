@@ -10,7 +10,6 @@
 #import "EaseConvertToCommonEmoticonsHelper.h"
 
 @implementation TopicSendTableViewCell
-
 {
     PubliButton         *avatarImageView;
     UILabel             *nicknameLabel;
@@ -20,6 +19,7 @@
     UILabel             *commentLabel;
     
     UILabel             *likeLabel;
+    UIImageView         *topicImageView;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -38,50 +38,61 @@
         dateLabel.font = [UIFont systemFontOfSize:12];
         dateLabel.text = @"今天 12:23 iPhone6";
         
-        contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, 20)];
-        [contentLabel verticalUpAlignmentWithText: @"说的方法第三方水电费水电费水电费说的方法第三方第三方第三方的说法是法师打发" maxHeight:10];
-        contentLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        contentLabel.numberOfLines = 0;
-        contentLabel.textColor = TEXT_COLOR;
-        [contentLabel setFont:[UIFont systemFontOfSize:14]];
-        
-        commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, contentLabel.bottom + 10, ScreenHeight - 30, 20)];
-        commentLabel.textColor = [UIColor grayColor];
-        commentLabel.font = [UIFont systemFontOfSize:10];
-        //commentLabel.text = @"师傅的说法第三方";
-        
-        likeLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, contentLabel.bottom + 5,100,20)];
-        likeLabel.text = @"我顶的";
+        likeLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right + 10, avatarImageView.bottom + 10,100,20)];
+        likeLabel.text = @"给你点了赞！";
         likeLabel.font = [UIFont systemFontOfSize:15];
-        
         [self.contentView addSubview:likeLabel];
+        
+        UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(likeLabel.left, likeLabel.bottom + 5, ScreenWidth - avatarImageView.width + 15 + 10, 0.5)];
+        lineView.backgroundColor = LINE_COLOR;
+        [self.contentView addSubview:lineView];
+        
+        topicImageView = [[UIImageView alloc]initWithFrame:CGRectMake(likeLabel.left, lineView.bottom + 10, 78, 50)];
+        topicImageView.contentMode = UIViewContentModeScaleAspectFill;
+        topicImageView.clipsToBounds = YES;
+        [self.contentView addSubview:topicImageView];
+        
+        contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(topicImageView.right + 10, topicImageView.top, ScreenWidth - 20 - topicImageView.width - 10 - avatarImageView.width - 15 - 10, 50)];
+        contentLabel.textColor = TEXT_COLOR2;
+        contentLabel.backgroundColor = [UIColor colorWithHexString:@"#efefef"];
+        [contentLabel setFont:[UIFont systemFontOfSize:14]];
+        contentLabel.numberOfLines = 2;
+        contentLabel.lineBreakMode = NSLineBreakByWordWrapping|NSLineBreakByTruncatingTail;
+        
         [self.contentView addSubview:avatarImageView];
         [self.contentView addSubview:dateLabel];
         [self.contentView addSubview:contentLabel];
         [self.contentView addSubview:nicknameLabel];
-        [self.contentView addSubview:commentLabel];
     }
     return self;
 }
+
 
 - (void)configureWithCellInfo:(TopicLikeModel *)model
 {
     [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
     nicknameLabel.text = model.nickname;
     dateLabel.text = [NSString stringWithFormat:@"%@",[UIUtils format:model.createtime]];
+    [topicImageView sd_setImageWithURL:[NSURL URLWithString:model.postpicture]];
+    if (model.postpicture.length > 0) {
+        contentLabel.frame = CGRectMake(topicImageView.right + 10, topicImageView.top, ScreenWidth - 20 - topicImageView.width - 10 - avatarImageView.width - 15 - 10, 50);
+    }else{
+        contentLabel.frame = CGRectMake(topicImageView.left, topicImageView.top, ScreenWidth - 20 - topicImageView.width - 10 - 15 - 10, 50);
+    }
     /**
      *  动态计算内容高度
      */
     // 表情映射。
-    NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
-                                convertToSystemEmoticons:model.detail];
-    contentLabel.text = [NSString stringWithFormat:@"@%@:%@",model.tonickname,didReceiveText];
-    
-    NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
-    CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
-    contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, contentHeight.height);
-    likeLabel.frame = CGRectMake(15, contentLabel.bottom + 5,100,20);
-    self.frame = CGRectMake(0, 0, ScreenWidth, avatarImageView.height + 10 + 10 + contentLabel.height + likeLabel.height + 10 + 5);
+    //    NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
+    //                                convertToSystemEmoticons:model.detail];
+    //
+    //    contentLabel.text = [NSString stringWithFormat:@"@我:%@",didReceiveText];
+    //
+    //    NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
+    //    CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+    //    contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, contentHeight.height);
+    contentLabel.text = model.detail;
+    self.frame = CGRectMake(0, 0, ScreenWidth, avatarImageView.height + 10 + 10 + contentLabel.height + likeLabel.height + 10 + 5 + 30);
 }
 
 - (void)awakeFromNib {

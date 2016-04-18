@@ -10,7 +10,9 @@
 
 @interface MyReceiveCommentTableViewCell : UITableViewCell
 
-@property (nonatomic,retain)UIButton  *commentBtn;
+@property (nonatomic,retain)UIButton        *commentBtn;
+@property (nonatomic,retain)PubliButton     *addFollowBtn;
+
 
 - (void)configureWithCellInfo:(MyCommentModel *)model;
 

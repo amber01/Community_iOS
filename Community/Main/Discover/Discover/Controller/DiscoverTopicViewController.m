@@ -183,10 +183,10 @@
     model = [self.dataArray objectAtIndex:indexPath.row];
     
     NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
-    CGSize contentHeight = [model.name boundingRectWithSize:CGSizeMake(ScreenWidth - 45 - 20 - 10 - 15, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+    CGSize contentHeight = [model.describe boundingRectWithSize:CGSizeMake(ScreenWidth - 45 - 20 - 10 - 15, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
     NSArray *imageArray = [model.images componentsSeparatedByString:@","];
     
-    if (model.name.length == 0) {
+    if (model.describe.length == 0) {
         contentHeight.height = 0;
     }
     
@@ -209,7 +209,7 @@
             height = [model.height intValue];
         }
     }
-    return 70 + contentHeight.height + height + 20 + 14 + 17;
+    return 70 + contentHeight.height + height + 20 + 14 + 17 - 5;
 }
 
 #pragma mark -- action

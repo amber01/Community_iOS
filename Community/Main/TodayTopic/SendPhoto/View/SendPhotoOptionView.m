@@ -18,7 +18,7 @@
         self.addPhotoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _addPhotoBtn.frame = CGRectMake(20, 5, 40, 40);
         [_addPhotoBtn setImage:[UIImage imageNamed:@"topic_select_photo.png"] forState:UIControlStateNormal];
-        [self addSubview:_addPhotoBtn];
+        //[self addSubview:_addPhotoBtn];
         
         UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, _addPhotoBtn.bottom + 10, ScreenWidth, 40)];
         view.backgroundColor = VIEW_COLOR;

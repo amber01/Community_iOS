@@ -30,7 +30,7 @@
             mineBtn.frame = CGRectMake(start_x + (width - 45) / 2, 10, 45, 45);
             [self.contentView addSubview:mineBtn];
             
-            UILabel *btnTitle = [[UILabel alloc]initWithFrame:CGRectMake(width * i, mineBtn.bottom + 5, width, 20)];
+            UILabel *btnTitle = [[UILabel alloc]initWithFrame:CGRectMake(width * i, mineBtn.bottom, width, 20)];
             btnTitle.textColor = [UIColor blackColor];
             btnTitle.font = [UIFont systemFontOfSize:14];
             btnTitle.textAlignment = NSTextAlignmentCenter;

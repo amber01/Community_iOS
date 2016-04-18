@@ -24,5 +24,6 @@
 @property (nonatomic,copy)NSString *tousername;
 @property (nonatomic,copy)NSString *userid;
 @property (nonatomic,copy)NSString *username;
+@property (nonatomic,copy)NSString *postpicture;
 
 @end

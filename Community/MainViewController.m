@@ -144,7 +144,6 @@
 - (void)selectSendTopicAction
 {
     SendTopicViewController *sendTopicInfoVC = [[SendTopicViewController alloc]init];
-    sendTopicInfoVC.cate_id = @"0";
     BaseNavigationController *baseNav = [[BaseNavigationController alloc]initWithRootViewController:sendTopicInfoVC];
     [self.navigationController presentViewController:baseNav animated:YES completion:^{
         

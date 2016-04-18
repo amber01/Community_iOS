@@ -12,5 +12,9 @@
 
 @property (nonatomic,retain)UISegmentedControl *segmentedView;
 
+@property (nonatomic,retain)UIButton *myReceiveCommentBtn;
+@property (nonatomic,retain)UIButton *mySendCommentBtn;
+@property (nonatomic,retain)UIView   *lineView;
+
 @end
 

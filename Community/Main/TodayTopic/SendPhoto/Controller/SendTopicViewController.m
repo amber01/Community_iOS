@@ -83,37 +83,21 @@
 
 
     imageCount = 1;
-    NSLog(@"cate_id:%@",_cate_id);
 }
 
 #pragma mark -- UI
 - (void)setupSendTopicTextView
 {
     sendTopicView = [[SendTopicTextView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-    sendTopicView.titleTextField.delegate = self;
     sendTopicView.contentTextView.delegate = self;
     sendTopicView.contentTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [sendTopicView.titleTextField becomeFirstResponder];
-    
     if (!isStrEmpty(self.topicContent)) {
         sendTopicView.defaultLabel.hidden = YES;
     }
-    
-    sendTopicView.titleTextField.text = self.topicTitle;
-    sendTopicView.contentTextView.text = self.topicContent;
+        sendTopicView.contentTextView.text = self.topicContent;
     
     photoBackgroundView = [[UIView alloc]initWithFrame:CGRectMake(0, sendTopicView.contentTextView.bottom, ScreenWidth, 50)];
     [sendTopicView addSubview:photoBackgroundView];
-    
-    photoScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 50)];
-    photoScrollView.showsVerticalScrollIndicator = FALSE;
-    photoScrollView.showsHorizontalScrollIndicator = FALSE;
-    [photoBackgroundView addSubview:photoScrollView];
-    
-    addImageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [addImageBtn addTarget:self action:@selector(selectPhotoAction) forControlEvents:UIControlEventTouchUpInside];
-    [addImageBtn setBackgroundImage:[UIImage imageNamed:@"send_add_image"] forState:UIControlStateNormal];
-    [photoScrollView addSubview:addImageBtn];
     
     [self.view addSubview:sendTopicView];
     [self sendPhotoOptionView];
@@ -123,12 +107,25 @@
 {
     if (!_sendPhotoOptionView) {
         _sendPhotoOptionView = [[SendPhotoOptionView alloc]initWithFrame:CGRectMake(0, sendTopicView.contentTextView.bottom + 10, ScreenWidth, ScreenHeight - sendTopicView.contentTextView.bottom - 10)];
+        [_sendPhotoOptionView.addPhotoBtn addTarget:self action:@selector(selectPhotoAction) forControlEvents:UIControlEventTouchUpInside];
         [sendTopicView addSubview:_sendPhotoOptionView];
         
         scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, _sendPhotoOptionView.lineView.bottom, ScreenWidth, ScreenHeight - sendTopicView.contentTextView.height - 10 - 40 - 40 - 40 - 10 - 40 - 28)];
         NSLog(@"height:%f",ScreenHeight - sendTopicView.contentTextView.height - 10 - 40 - 40 - 40 - 10);
         scrollView.backgroundColor = [UIColor whiteColor];
         [_sendPhotoOptionView addSubview:scrollView];
+        
+        photoScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 50)];
+        addImageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        addImageBtn.frame = CGRectMake(5, 5, 40, 40);
+        [addImageBtn setImage:[UIImage imageNamed:@"topic_select_photo.png"] forState:UIControlStateNormal];
+        [addImageBtn addTarget:self action:@selector(selectPhotoAction) forControlEvents:UIControlEventTouchUpInside];
+        [photoScrollView addSubview:addImageBtn];
+        
+        photoScrollView.showsVerticalScrollIndicator = FALSE;
+        photoScrollView.showsHorizontalScrollIndicator = FALSE;
+        [_sendPhotoOptionView addSubview:photoScrollView];
+
         
         [self createTopicButtonData:MyTopicListTypeAll];
         
@@ -284,20 +281,14 @@
             }
         }
     }
-    NSString *tempCityName = [NSString stringWithFormat:@"%@热点",cityName];
-    self.cate_id = cateArray[button.tag - 100];
-    
-    NSLog(@"current cati :%@",_cate_id);
-    NSArray *titleArr = @[[NSString stringWithFormat:@"%@散讲",cityName],@"同城互助",@"秀自拍",@"相亲交友",tempCityName,@"吃货吧",@"去哪玩",@"供求信息",@"男女情感",@"汽车之家",@"健康养生",@"轻松一刻",@"提建议"];
-    [sendNavigationView setNavigationTitle:titleArr[button.tag - 100]];
     sendTopicBtnView.hidden = YES;
     isHidenSendView = NO;
 }
 
 - (void)closeCurrentView
 {
-    if (sendTopicView.titleTextField.text.length>0 || sendTopicView.contentTextView.text.length >0) {
-        if (![sendTopicView.titleTextField.text isEqualToString:self.topicTitle] || ![sendTopicView.contentTextView.text isEqualToString:self.topicContent]) {
+    if (sendTopicView.contentTextView.text.length >0) {
+        if ( ![sendTopicView.contentTextView.text isEqualToString:self.topicContent]) {
             UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"存为草稿", @"不保存", nil];
             sheet.actionSheetStyle =UIActionSheetStyleAutomatic;
             [sheet showInView:self.view];
@@ -414,6 +405,7 @@
     }
     NSDictionary *dic = _topicArray[button.tag - 400];
     self.selectBtnTitle = [dic objectForKey:@"name"];
+    self.cate_id = [dic objectForKey:@"id"];
     
     button.backgroundColor = [UIColor colorWithHexString:@"#1ad155"];
     [UIUtils setupViewBorder:button cornerRadius:35/2 borderWidth:1 borderColor:[UIColor whiteColor]];
@@ -651,17 +643,6 @@
         
     }else{
         if (buttonIndex == 0) {
-            NSLog(@"delete tag:%ld",actionSheet.tag);
-            int deleteTag = (int)actionSheet.tag - 500;
-            [self.sendPhotoCountTitle removeObjectAtIndex:deleteTag];
-            
-            NSString *tempContent = sendTopicView.contentTextView.text;
-            sendTopicView.contentTextView.text = [tempContent stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"[图片%d]",deleteTag+1] withString:@""];
-            
-            
-            
-            //sendTopicView.contentTextView.text = [self.sendPhotoCountTitle componentsJoinedByString:@""];
-            
             UIImageView *imageView = (UIImageView *)[self.view viewWithTag:actionSheet.tag];
             [imageView removeFromSuperview];
             if (_locaPhotoArr.count > 0) {
@@ -686,17 +667,7 @@
             _locaPhotoArr = [[NSMutableArray alloc]init];
         }
         [_locaPhotoArr addObject:[info objectAtIndex:i]];
-        
-        /**
-         *  上传照片的个数
-         */
-        if (!self.sendPhotoCountTitle) {
-            self.sendPhotoCountTitle = [[NSMutableArray alloc]init];
-        }
-        sendTopicView.defaultLabel.hidden = YES;
-        [self.sendPhotoCountTitle addObject:[NSString stringWithFormat:@"[图片%d]",i+imageCount]];
     }
-    imageCount = imageCount + (int)info.count;
     for (int i = 0; i < _locaPhotoArr.count; i ++) {
         ALAssetsLibrary *assetLibrary=[[ALAssetsLibrary alloc] init];
         [assetLibrary assetForURL:[[_locaPhotoArr objectAtIndex:i] valueForKey:UIImagePickerControllerReferenceURL] resultBlock:^(ALAsset *asset) {
@@ -730,7 +701,7 @@
         [photoImageview addGestureRecognizer:deleteImageTapGesture];
     }
     
-    sendTopicView.contentTextView.text = [NSString stringWithFormat:@"%@%@",sendTopicView.contentTextView.text,[self.sendPhotoCountTitle componentsJoinedByString:@""]];
+
     addImageBtn.frame = CGRectMake(photoImageview.right + 10, 2.5, 45, 45);
 }
 
@@ -744,10 +715,7 @@
     if (!self.sendPhotoCountTitle) {
         self.sendPhotoCountTitle = [[NSMutableArray alloc]init];
     }
-    sendTopicView.defaultLabel.hidden = YES;
-    [self.sendPhotoCountTitle addObject:[NSString stringWithFormat:@"[图片%d]",imageCount]];
 
-    imageCount = imageCount + 1;
     [picker dismissViewControllerAnimated:YES completion:^{
         
         if (!self.locaPhotoArr) {
@@ -784,8 +752,6 @@
         
         addImageBtn.frame = CGRectMake(photoImageview.right + 10, 2.5, 45, 45);
     }];
-    
-    sendTopicView.contentTextView.text = [NSString stringWithFormat:@"%@%@",sendTopicView.contentTextView.text,[self.sendPhotoCountTitle componentsJoinedByString:@""]];
 }
 
 - (void)createPhotoList
@@ -861,11 +827,11 @@
     photoScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 50)];
     photoScrollView.showsVerticalScrollIndicator = FALSE;
     photoScrollView.showsHorizontalScrollIndicator = FALSE;
-    [photoBackgroundView addSubview:photoScrollView];
+    [_sendPhotoOptionView addSubview:photoScrollView];
     
     addImageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [addImageBtn addTarget:self action:@selector(selectPhotoAction) forControlEvents:UIControlEventTouchUpInside];
-    [addImageBtn setBackgroundImage:[UIImage imageNamed:@"send_add_image"] forState:UIControlStateNormal];
+    [addImageBtn setBackgroundImage:[UIImage imageNamed:@"topic_select_photo.png"] forState:UIControlStateNormal];
     [photoScrollView addSubview:addImageBtn];
     
     photoScrollView.contentSize = CGSizeMake(((50 + 10)*_locaPhotoArr.count) + 20, 0);
@@ -890,7 +856,11 @@
         [photoImageview addGestureRecognizer:deleteImageTapGesture];
     }
     
-    addImageBtn.frame = CGRectMake(photoImageview.right + 10, 2.5, 45, 45);
+    if (_locaPhotoArr.count == 0) {
+        addImageBtn.frame = CGRectMake(10, 2.5, 45, 45);
+    }else{
+        addImageBtn.frame = CGRectMake(photoImageview.right + 10, 2.5, 45, 45);
+    }
 }
 
 /**
@@ -901,7 +871,16 @@
 - (void)sendTopicImageToServer:(NSMutableDictionary *)imageDic{
     
     NSString * currentEmoji = [EaseConvertToCommonEmoticonsHelper convertToCommonEmoticons:sendTopicView.contentTextView.text];
-    NSLog(@"currentEmoji:%@",currentEmoji);
+    if (sendTopicView.contentTextView.text.length == 0) {
+        [self initMBProgress:@"请输入分享内容" withModeType:MBProgressHUDModeText afterDelay:1.5];
+        return;
+
+    }
+    
+    if (self.cate_id.length == 0) {
+        [self initMBProgress:@"请选择话题" withModeType:MBProgressHUDModeText afterDelay:1.5];
+        return;
+    }
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
@@ -913,8 +892,6 @@
                 [formData appendPartWithFileData:[imageDic objectForKey:key] name:key fileName:[NSString stringWithFormat:@"%@.png",key] mimeType:@"image/jpeg"];
             }
             [self initMBProgress:@"图片上传中..."];
-            
-            
             NSLog(@"imageDic:%@",imageDic);
         }
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -924,13 +901,8 @@
         /**
          *  发布图片和内容到服务器
          */
-        if (sendTopicView.titleTextField.text.length<1) {
-            [self initMBProgress:@"标题不能为空" withModeType:MBProgressHUDModeText afterDelay:1];
-            return;
-        }
-        
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":sendTopicView.titleTextField.text,@"IsShow":@"1",@"Detail":currentEmoji,@"Sort":@"",@"UserID":sharedInfo.user_id,@"IP":@"",@"ProvinceID":isStrEmpty(sharedInfo.area)?@"1":sharedInfo.area,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city,@"Area":sharedInfo.city}],@"Images":self.imagesArray};
+        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":@"",@"IsShow":@"1",@"Detail":currentEmoji,@"Sort":@"",@"UserID":sharedInfo.user_id,@"IP":@"",@"ProvinceID":isStrEmpty(sharedInfo.area)?@"1":sharedInfo.area,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city,@"Area":sharedInfo.city}],@"Images":self.imagesArray};
         
         NSLog(@"paramsss:%@",params);
         
@@ -963,13 +935,8 @@
         /**
          *  发布图片和内容到服务器
          */
-        if (sendTopicView.titleTextField.text.length<1) {
-            [self initMBProgress:@"标题不能为空" withModeType:MBProgressHUDModeText afterDelay:1];
-            return;
-        }
-        
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":sendTopicView.titleTextField.text,@"Detail":currentEmoji,@"Sort":@"",@"IP":@"",@"IsShow":@"1",@"UserID":sharedInfo.user_id,@"ProvinceID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city,@"Area":sharedInfo.city}]};
+        NSDictionary *params = @{@"Method":@"AddPostInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"2",@"Detail":@[@{@"ClassID":self.cate_id,@"Name":@"",@"Detail":currentEmoji,@"Sort":@"",@"IP":@"",@"IsShow":@"1",@"UserID":sharedInfo.user_id,@"ProvinceID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city,@"CityID":isStrEmpty(sharedInfo.city)?@"1":sharedInfo.city,@"Area":sharedInfo.city}]};
 
         
         [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:params withMethod:@"POST" success:^(id result) {

@@ -14,6 +14,7 @@
 #import "SettingsViewController.h"
 #import "MyDraftListViewController.h"
 #import "MyCollectionViewController.h"
+#import "ModifyUserInfoViewController.h"
 
 @interface MineViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -142,7 +143,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (isLogin) {
-        NSInteger sections[4] = {1,1,4,1};
+        NSInteger sections[4] = {1,1,3,2};
         return sections[section];
     }else{
         NSInteger sections[3] = {1,1,1};
@@ -176,8 +177,8 @@
         }else if (indexPath.section == 2) {
             
             static NSString *identityCell = @"othercell";
-            NSArray *titleArray = @[@"积分兑换现金",@"我的物品",@"我的收藏",@"草稿箱"];
-            NSArray *imageArray = @[@"mine_score_ex",@"mine_my_gift",@"mine_my_collect",@"mine_my_draft"];
+            NSArray *titleArray = @[@"我的物品",@"我的收藏",@"草稿箱"]; //@[@"积分兑换现金",@"我的物品",@"我的收藏",@"草稿箱"];
+            NSArray *imageArray = @[@"mine_my_gift",@"mine_my_collect",@"mine_my_draft"]; //@[@"mine_score_ex",@"mine_my_gift",@"mine_my_collect",@"mine_my_draft"];
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
             if (!cell) {
                 cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
@@ -196,6 +197,16 @@
                 }
                 cell.textLabel.text = @"设置";
                 cell.imageView.image = [UIImage imageNamed:@"mine_settings"];
+                return cell;
+            }else{
+                static NSString *identityCell = @"infoCell";
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
+                if (!cell) {
+                    cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                }
+                cell.textLabel.text = @"编辑个人信息";
+                cell.imageView.image = [UIImage imageNamed:@"mine_edit_info"];
                 return cell;
             }
         }
@@ -258,14 +269,14 @@
         case 2:
         {
             if (indexPath.row == 0) {
-                return 44;
+                return 60;
             }
         }
             break;
         default:
             break;
     }
-    return 44;
+    return 60;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -300,28 +311,33 @@
                 SettingsViewController *settingsVC = [[SettingsViewController alloc]init];
                 [settingsVC setHidesBottomBarWhenPushed:YES];
                 [self.navigationController pushViewController:settingsVC animated:YES];
+            }else{
+                ModifyUserInfoViewController *modifyUserInfoVC = [[ModifyUserInfoViewController alloc]init];
+                [modifyUserInfoVC setHidesBottomBarWhenPushed:YES];
+                [self.navigationController pushViewController:modifyUserInfoVC animated:YES];
             }
         }else if (indexPath.section == 2){
-            if (indexPath.row == 3) {
+            
+            if (indexPath.row == 2){
                 MyDraftListViewController *myDraftListVC = [[MyDraftListViewController alloc]init];
                 [myDraftListVC setHidesBottomBarWhenPushed:YES];
                 [self.navigationController pushViewController:myDraftListVC animated:YES];
-            }else if (indexPath.row == 2){
+            }else if (indexPath.row == 1){
                 MyCollectionViewController *myCollectionVC = [[MyCollectionViewController alloc]init];
                 [myCollectionVC setHidesBottomBarWhenPushed:YES];
                 [self.navigationController pushViewController:myCollectionVC animated:YES];
-            }else if (indexPath.row == 1){
+            }else if (indexPath.row == 0){
                 SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
                 WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
                 webDetailVC.url = [NSString stringWithFormat:@"%@Default.aspx?mobile/my&UserID=%@",ROOT_URL,sharedInfo.user_id];
                 [webDetailVC setHidesBottomBarWhenPushed:YES];
                 [self.navigationController pushViewController:webDetailVC animated:YES];
-            }else if (indexPath.row == 0){
-                SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-                WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
-                webDetailVC.url = [NSString stringWithFormat:@"%@Default.aspx?mobile/cash&userid=%@",ROOT_URL,sharedInfo.user_id];
-                [webDetailVC setHidesBottomBarWhenPushed:YES];
-                [self.navigationController pushViewController:webDetailVC animated:YES];
+
+//                SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+//                WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
+//                webDetailVC.url = [NSString stringWithFormat:@"%@Default.aspx?mobile/cash&userid=%@",ROOT_URL,sharedInfo.user_id];
+//                [webDetailVC setHidesBottomBarWhenPushed:YES];
+//                [self.navigationController pushViewController:webDetailVC animated:YES];
             }
         }
     }else{ //未登录

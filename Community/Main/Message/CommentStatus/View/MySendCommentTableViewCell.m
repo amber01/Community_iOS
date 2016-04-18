@@ -17,6 +17,7 @@
     
     UILabel             *contentLabel;
     UILabel             *commentLabel;
+    UIImageView         *topicImageView;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -35,78 +36,71 @@
         dateLabel.font = [UIFont systemFontOfSize:12];
         dateLabel.text = @"今天 12:23 iPhone6";
         
-        contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, 30)];
-        [contentLabel verticalUpAlignmentWithText: @"说的方法第三方水电费水电费水电费说的方法第三方第三方第三方的说法是法师打发" maxHeight:10];
-        contentLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        contentLabel.numberOfLines = 2;
-        contentLabel.textColor = TEXT_COLOR;
-        [contentLabel setFont:[UIFont systemFontOfSize:14]];
-        
-        commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, contentLabel.bottom + 10, ScreenHeight - 30, 20)];
+        commentLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right+10, avatarImageView.bottom + 15, ScreenWidth - 20 - (avatarImageView.right+10), 30)];
         commentLabel.textColor = [UIColor blackColor];
         commentLabel.lineBreakMode = NSLineBreakByWordWrapping;
         commentLabel.numberOfLines = 0;
         commentLabel.font = [UIFont systemFontOfSize:15];
-        //commentLabel.text = @"师傅的说法第三方";
+        
+        topicImageView = [[UIImageView alloc]initWithFrame:CGRectMake(commentLabel.left, commentLabel.bottom + 10, 78, 50)];
+        topicImageView.contentMode = UIViewContentModeScaleAspectFill;
+        topicImageView.clipsToBounds = YES;
+        [self.contentView addSubview:topicImageView];
+        
+        contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(topicImageView.right + 10, commentLabel.bottom + 15, ScreenWidth - 20 - topicImageView.width - 10 - avatarImageView.width - 15 - 10, 50)];
+        contentLabel.textColor = TEXT_COLOR2;
+        contentLabel.backgroundColor = [UIColor colorWithHexString:@"#efefef"];
+        [contentLabel setFont:[UIFont systemFontOfSize:14]];
+        contentLabel.numberOfLines = 2;
+        contentLabel.lineBreakMode = NSLineBreakByWordWrapping|NSLineBreakByTruncatingTail;
         
         [self.contentView addSubview:avatarImageView];
         [self.contentView addSubview:dateLabel];
+        [self.contentView addSubview:commentLabel];
         [self.contentView addSubview:contentLabel];
         [self.contentView addSubview:nicknameLabel];
-        [self.contentView addSubview:commentLabel];
     }
     return self;
 }
 
-//我收到的
+//我发送的
 - (void)configureWithCellInfo:(MyCommentModel *)model
 {
     [avatarImageView sd_setBackgroundImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.logopicturedomain],BASE_IMAGE_URL,face,model.logopicture]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"mine_login.png"]];
     nicknameLabel.text = model.nickname;
     dateLabel.text = [NSString stringWithFormat:@"%@",[UIUtils format:model.createtime]];
-    /**
-     *  评论帖子
-     */
+
     if ([model.isreplay intValue] == 0) {
-        //原内容
-        contentLabel.text = [NSString stringWithFormat:@"@%@:%@",model.tonickname,model.postdetail];
-        //获取UILabel高度
-        CGFloat labelHeight = [contentLabel sizeThatFits:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT)].height;
-        contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, labelHeight);
-        
-        // 表情映射。
-        NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
-                                    convertToSystemEmoticons:model.detail];
-        
-        //评论的内容
-        commentLabel.text = didReceiveText;
-        NSDictionary *attribute1 = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
-        CGSize commentHeight = [commentLabel.text boundingRectWithSize:CGSizeMake(commentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute1 context:nil].size;
-        commentLabel.frame = CGRectMake(15, contentLabel.bottom + 2, ScreenWidth - 30, commentHeight.height);
-    }else{ //回复评论
-        
-        // 表情映射。
-        NSString *didReceiveText = [EaseConvertToCommonEmoticonsHelper
-                                    convertToSystemEmoticons:model.detail];
-        
-        //评论的内容
-        commentLabel.text = didReceiveText;
-        //原内容
-        contentLabel.text = [NSString stringWithFormat:@"@%@:%@",model.tonickname,didReceiveText];
-        //获取UILabel高度
-        CGFloat labelHeight = [contentLabel sizeThatFits:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT)].height;
-        contentLabel.frame = CGRectMake(15, avatarImageView.bottom + 10, ScreenWidth - 30, labelHeight);
-        
-        //评论的内容
+        //评论帖子评论的内容
+        commentLabel.text = model.detail;
+    }else{
+        //回复评论评论的内容
         commentLabel.text = model.replaycontent;
-        
-        NSDictionary *attribute1 = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
-        CGSize commentHeight = [commentLabel.text boundingRectWithSize:CGSizeMake(commentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute1 context:nil].size;
-        commentLabel.frame = CGRectMake(15, contentLabel.bottom + 2, ScreenWidth - 30, commentHeight.height);
     }
+
+    NSDictionary *attribute1 = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
+    CGSize commentHeight = [commentLabel.text boundingRectWithSize:CGSizeMake(commentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute1 context:nil].size;
+    commentLabel.frame = CGRectMake(avatarImageView.right+10, avatarImageView.bottom + 7, ScreenWidth - 20 - (avatarImageView.right+10), commentHeight.height);
     
+    topicImageView.frame = CGRectMake(commentLabel.left, commentLabel.bottom + 10 , 78, 50);
+    [topicImageView sd_setImageWithURL:[NSURL URLWithString:model.postpicture]];
     
-    self.frame = CGRectMake(0, 0, ScreenWidth, avatarImageView.height + 10 + 10 + contentLabel.height + 10 + commentLabel.height + 5);
+    if (model.postpicture.length > 0) {
+        contentLabel.frame = CGRectMake(topicImageView.right + 10, commentLabel.bottom + 10, ScreenWidth - 20 - topicImageView.width - 10 - avatarImageView.width - 15 - 10, 50);
+    }else{
+        contentLabel.frame = CGRectMake(topicImageView.left, commentLabel.bottom + 10, ScreenWidth - 20 - topicImageView.width - 15 - 10, 50);
+    }
+
+    //原内容
+    contentLabel.text = model.postdetail;
+    //[contentLabel verticalUpAlignmentWithText: model.postdetail maxHeight:40];
+
+    
+    //contentLabel.text = model.postdetail; //[NSString stringWithFormat:@"@%@:%@",model.tonickname,model.postdetail];
+    //获取UILabel高度
+    //CGFloat labelHeight = [contentLabel sizeThatFits:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT)].height;
+    
+    self.frame = CGRectMake(0, 0, ScreenWidth, avatarImageView.height + 10 + 10 + contentLabel.height + 10 + commentLabel.height + 5 + 20);
 }
 
 - (void)awakeFromNib {

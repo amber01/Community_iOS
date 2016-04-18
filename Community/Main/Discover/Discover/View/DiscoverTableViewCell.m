@@ -75,7 +75,7 @@
         activityImageView.image = [UIImage imageNamed:@"topic_is_activity.png"];
         [self.contentView addSubview:activityImageView];
         
-        contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right + 10, avatarImageView.bottom + 10, ScreenWidth - avatarImageView.width - 20 - 10 - 15, 20)];
+        contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right + 10, avatarImageView.bottom + 5, ScreenWidth - avatarImageView.width - 20 - 10 - 15, 20)];
         [contentLabel verticalUpAlignmentWithText: @"说的方法第三方水电费水电费水电费说的方法第三方第三方第三方的说法是法师打发" maxHeight:10];
         contentLabel.lineBreakMode = NSLineBreakByWordWrapping;
         contentLabel.numberOfLines = 0;
@@ -150,7 +150,7 @@
     avatarImageView.avatarUrl = model.logopicture;
 
     
-    NSString *deteString  = [NSString stringWithFormat:@"%@ %@",[UIUtils format:model.createtime],model.source];
+    NSString *deteString  = [NSString stringWithFormat:@"%@  #%@#",[UIUtils format:model.createtime],model.classname];
     dateLabel.text = deteString;
     CGSize textWith = [deteString sizeWithFont:[UIFont systemFontOfSize:12] maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT)];
     if ([model.isact intValue] == 1) {
@@ -163,12 +163,12 @@
     /**
      *  动态计算内容高度
      */
-    contentLabel.text = model.name;
+    contentLabel.text = model.describe;
 
     NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
     CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
 
-    if (model.name.length == 0) {
+    if (model.describe.length == 0) {
         contentHeight.height = 0;
     }
     

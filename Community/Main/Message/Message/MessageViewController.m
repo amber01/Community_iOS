@@ -122,11 +122,11 @@
             }
         }
         [_tableView reloadData];
-       // NSLog(@"result:%@",result);
+        // NSLog(@"result:%@",result);
     } failure:^(NSError *erro) {
         
     }];
-
+    
 }
 
 #pragma mark -- UITableViewDelegate
@@ -138,13 +138,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 3;
+        return 4;
     }else{
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
         if (isStrEmpty(sharedInfo.user_id)) {
             return 1;
         }else{
-            return self.arrConversations.count + 1;
+            return self.arrConversations.count;
         }
     }
 }
@@ -154,12 +154,13 @@
     if (indexPath.section == 0) {
         static NSString *identityCell = @"cell";
         MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
-        NSArray * cTitle = @[@"评论",@"帖子点赞",@"评论点赞"];
-        NSArray * cImage = @[@"msg_comment",@"msg_like",@"msg_about_me"];
+        NSArray * cTitle = @[@"评论",@"帖子点赞",@"评论点赞",@"系统消息"];
+        NSArray * cImage = @[@"msg_comment",@"msg_like",@"msg_about_me",@"msg_notification"];
         
         if (!cell) {
             cell = [[MessageTableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.detailTextLabel.font = kFont(13);
         }
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
         cell.textLabel.text = cTitle[indexPath.row];
@@ -168,112 +169,94 @@
         if (!isStrEmpty(sharedInfo.user_id)) {
             
             if (indexPath.row == 0) {
+                
                 if ([commentNumber intValue] > 0) {
-                    cell.tipsView.hidden = NO;
-                    cell.tipsLabel.text = commentNumber;
+                    cell.detailTextLabel.text = commentNumber;
                 }else{
-                    cell.tipsView.hidden = YES;
+                    cell.detailTextLabel.text = @"";
                 }
             }else if (indexPath.row == 1){
                 if ([postpraisenum intValue] > 0) {
-                    cell.tipsView.hidden = NO;
-                    cell.tipsLabel.text = postpraisenum;
+                    cell.detailTextLabel.text = postpraisenum;
                 }else{
-                    cell.tipsView.hidden = YES;
+                    cell.detailTextLabel.text = @"";
                 }
             }else if (indexPath.row == 2){
                 if ([commentpraisenum intValue] > 0) {
-                    cell.tipsView.hidden = NO;
-                    cell.tipsLabel.text = commentpraisenum;
+                    cell.detailTextLabel.text = commentpraisenum;
                 }else{
-                    cell.tipsView.hidden = YES;
+                    cell.detailTextLabel.text = @"";
+                }
+            }else{
+                if ([sysmsgnum intValue] > 0) {
+                    cell.detailTextLabel.text = sysmsgnum;
+                }else{
+                    cell.detailTextLabel.text = @"";
                 }
             }
-        }else{
-            cell.tipsView.hidden = YES;
         }
         return cell;
     }else if (indexPath.section == 1){
-        if (indexPath.row == 0) {
-            static NSString *identityCell = @"noticeCell";
-            MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
-            if (!cell) {
-                cell = [[MessageTableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            }
+        
+        static NSString *identityCell = @"chatCell";
+        TopicChatConversationCell *cell  = [tableView dequeueReusableCellWithIdentifier:identityCell];
+        if (!cell) {
+            cell = [[TopicChatConversationCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
+        }
+        SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+        if (!isStrEmpty(sharedInfo.user_id)) {
+            EMConversation *conversation = [self.arrConversations objectAtIndex:indexPath.row];
             
-            cell.textLabel.text = @"系统通知";
-            cell.imageView.image  = [UIImage imageNamed:@"msg_notification"];
+            NSLog(@"conversation:%@",conversation);
             
-            if (indexPath.row == 0) {
-                if ([sysmsgnum intValue] > 0) {
+            //单聊会话
+            if (conversation.conversationType == eConversationTypeChat) {
+                
+                cell.labMsg.text = [self subTitleMessageByConversation:conversation];
+                //cell.imgHeader.image = [UIImage imageNamed:@"chatListCellHead"];
+                NSString *nickName = [conversation.ext objectForKey:@"nickName"];
+                NSString *avatarURL = [conversation.ext objectForKey:@"avatarURL"];
+                cell.labName.text = nickName;
+                NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",sharedInfo.picturedomain],BASE_IMAGE_URL,face,avatarURL];
+                //NSLog(@"extaaa:%@",conversation.ext);
+                [cell.imgHeader sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
+                EMMessage *lastMessage = [conversation latestMessage];
+                
+                if (conversation.unreadMessagesCount > 0) {
                     cell.tipsView.hidden = NO;
-                    cell.tipsLabel.text = sysmsgnum;
+                    //获取当前用户的未读条数
+                    cell.tipsLabel.text = [NSString stringWithFormat:@"%ld",conversation.unreadMessagesCount];
                 }else{
                     cell.tipsView.hidden = YES;
                 }
-            }else{
-                cell.tipsView.hidden = YES;
-            }
-            return cell;
-        }else{
-            static NSString *identityCell = @"chatCell";
-            TopicChatConversationCell *cell  = [tableView dequeueReusableCellWithIdentifier:identityCell];
-            if (!cell) {
-                cell = [[TopicChatConversationCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identityCell];
-            }
-            SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-            if (!isStrEmpty(sharedInfo.user_id)) {
-                EMConversation *conversation = [self.arrConversations objectAtIndex:indexPath.row-1];
                 
-                NSLog(@"conversation:%@",conversation);
                 
-                //单聊会话
-                if (conversation.conversationType == eConversationTypeChat) {
+                NSLog(@"nick name:%@",nickName);
+                
+                //会话列表中收到别人的消息的时候
+                if (isStrEmpty(nickName)) {
+                    NSString *lastMegNickName = [lastMessage.ext objectForKey:@"nickName"];
+                    NSString *lastMegAvatarURL = [lastMessage.ext objectForKey:@"avatarURL"];
+                    cell.labName.text = lastMegNickName;
                     
-                    cell.labMsg.text = [self subTitleMessageByConversation:conversation];
-                    //cell.imgHeader.image = [UIImage imageNamed:@"chatListCellHead"];
-                    NSString *nickName = [conversation.ext objectForKey:@"nickName"];
-                    NSString *avatarURL = [conversation.ext objectForKey:@"avatarURL"];
-                    cell.labName.text = nickName;
-                    NSString *imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",sharedInfo.picturedomain],BASE_IMAGE_URL,face,avatarURL];
-                    //NSLog(@"extaaa:%@",conversation.ext);
-                    [cell.imgHeader sd_setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
-                    EMMessage *lastMessage = [conversation latestMessage];
-                    
-                    if (conversation.unreadMessagesCount > 0) {
-                        cell.tipsView.hidden = NO;
-                        //获取当前用户的未读条数
-                        cell.tipsLabel.text = [NSString stringWithFormat:@"%ld",conversation.unreadMessagesCount];
-                    }else{
-                        cell.tipsView.hidden = YES;
-                    }
-
-                    
-                    NSLog(@"nick name:%@",nickName);
-                    
-                    //会话列表中收到别人的消息的时候
-                    if (isStrEmpty(nickName)) {
-                        NSString *lastMegNickName = [lastMessage.ext objectForKey:@"nickName"];
-                        NSString *lastMegAvatarURL = [lastMessage.ext objectForKey:@"avatarURL"];
-                        cell.labName.text = lastMegNickName;
-                        
-                        NSString *lastMsgImageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",sharedInfo.picturedomain],BASE_IMAGE_URL,face,lastMegAvatarURL];
-                        [cell.imgHeader sd_setImageWithURL:[NSURL URLWithString:lastMsgImageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
-                    }
-                    
-                    //NSLog(@"lastMessage:%@",lastMessage.ext);
-                    cell.labTime.text = [UIUtils convertDateToString:[NSString stringWithFormat:@"%zd",lastMessage.timestamp]];
+                    NSString *lastMsgImageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",sharedInfo.picturedomain],BASE_IMAGE_URL,face,lastMegAvatarURL];
+                    [cell.imgHeader sd_setImageWithURL:[NSURL URLWithString:lastMsgImageURL] placeholderImage:[UIImage imageNamed:@"mine_login"]];
                 }
+                
+                //NSLog(@"lastMessage:%@",lastMessage.ext);
+                cell.labTime.text = [UIUtils convertDateToString:[NSString stringWithFormat:@"%zd",lastMessage.timestamp]];
             }
-            return cell;
         }
+        return cell;
     }
     return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 60;
+    if (indexPath.section == 0) {
+        return 60;
+    }
+    return 70;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -282,19 +265,22 @@
         return CGFLOAT_MIN;
     }
     
-    return 40;
+    return 60;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 1) {
-        UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40.f)];
-        CGRect frameRect = CGRectMake(15, 50/2 - 10, 100, 20);
+        UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 60.f)];
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 10, ScreenWidth, 50)];
+        view.backgroundColor = [UIColor whiteColor];
+        CGRect frameRect = CGRectMake(15, view.height/2 - 10, 100, 20);
         UILabel *label = [[UILabel alloc] initWithFrame:frameRect];
-        label.textColor = TEXT_COLOR;
+        label.textColor = [UIColor blackColor];
         [label setFont:[UIFont systemFontOfSize:14]];
-        label.text=@"私信联系人";
-        [sectionView addSubview:label];
+        label.text=@"私信";
+        [sectionView addSubview:view];
+        [view addSubview:label];
         return sectionView;
     }else{
         return nil;
@@ -330,40 +316,37 @@
             CommentLikeViewController *commentLikeVC = [[CommentLikeViewController alloc]init];
             [commentLikeVC setHidesBottomBarWhenPushed:YES];
             [self.navigationController pushViewController:commentLikeVC animated:YES];
-        }
-    }else{
-        if (indexPath.row == 0) {
+        }else{
             SystemNoticeViewController *systemNoticeView = [[SystemNoticeViewController alloc]init];
             [systemNoticeView setHidesBottomBarWhenPushed:YES];
             [self.navigationController pushViewController:systemNoticeView animated:YES];
+        }
+    }else{
+        EMConversation *conversation = [self.arrConversations objectAtIndex:indexPath.row];
+        NSString *nickName = [conversation.ext objectForKey:@"nickName"];
+        NSString *avatarURL = [conversation.ext objectForKey:@"avatarURL"];
+        
+        EMMessage *lastMessage = [conversation latestMessage];
+        NSString *lastMegNickName = [lastMessage.ext objectForKey:@"nickName"];
+        NSString *lastMegAvatarURL = [lastMessage.ext objectForKey:@"avatarURL"];
+        //NSString *lastMegUserName = [lastMessage.ext objectForKey:@"userName"];
+        
+        //查看用户发送给我的消息的情况下
+        if (isStrEmpty(nickName)) {
+            EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:conversation.chatter conversationType:eConversationTypeChat];
+            easeMessageVC.nickname = lastMegNickName;
+            easeMessageVC.avatarUrl = lastMegAvatarURL;
+            easeMessageVC.title = lastMegNickName;
+            [easeMessageVC setHidesBottomBarWhenPushed:YES];
+            [self.navigationController pushViewController:easeMessageVC animated:YES];
         }else{
             
-            EMConversation *conversation = [self.arrConversations objectAtIndex:indexPath.row-1];
-            NSString *nickName = [conversation.ext objectForKey:@"nickName"];
-            NSString *avatarURL = [conversation.ext objectForKey:@"avatarURL"];
-            
-            EMMessage *lastMessage = [conversation latestMessage];
-            NSString *lastMegNickName = [lastMessage.ext objectForKey:@"nickName"];
-            NSString *lastMegAvatarURL = [lastMessage.ext objectForKey:@"avatarURL"];
-            //NSString *lastMegUserName = [lastMessage.ext objectForKey:@"userName"];
-            
-            //查看用户发送给我的消息的情况下
-            if (isStrEmpty(nickName)) {
-                EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:conversation.chatter conversationType:eConversationTypeChat];
-                easeMessageVC.nickname = lastMegNickName;
-                easeMessageVC.avatarUrl = lastMegAvatarURL;
-                easeMessageVC.title = lastMegNickName;
-                [easeMessageVC setHidesBottomBarWhenPushed:YES];
-                [self.navigationController pushViewController:easeMessageVC animated:YES];
-            }else{
-                
-                EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:conversation.chatter conversationType:eConversationTypeChat];
-                easeMessageVC.nickname = nickName;
-                easeMessageVC.avatarUrl = avatarURL;
-                easeMessageVC.title = nickName;
-                [easeMessageVC setHidesBottomBarWhenPushed:YES];
-                [self.navigationController pushViewController:easeMessageVC animated:YES];
-            }
+            EaseMessageViewController *easeMessageVC = [[EaseMessageViewController alloc]initWithConversationChatter:conversation.chatter conversationType:eConversationTypeChat];
+            easeMessageVC.nickname = nickName;
+            easeMessageVC.avatarUrl = avatarURL;
+            easeMessageVC.title = nickName;
+            [easeMessageVC setHidesBottomBarWhenPushed:YES];
+            [self.navigationController pushViewController:easeMessageVC animated:YES];
         }
     }
 }
@@ -421,13 +404,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

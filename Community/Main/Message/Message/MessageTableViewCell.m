@@ -24,7 +24,7 @@
         _tipsLabel.textAlignment = NSTextAlignmentCenter;
         _tipsLabel.text = @"0";
         [_tipsView addSubview:_tipsLabel];
-        [self.contentView addSubview:_tipsView];
+        //[self.contentView addSubview:_tipsView];
     }
     return self;
 }

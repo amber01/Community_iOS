@@ -17,7 +17,8 @@
 #import "WebDetailViewController.h"
 #import "SelectCityViewController.h"
 #import "EveryoneLeftItemView.h"
-#import "DiscoverViewController.h"
+#import "TopicSearchViewController.h"
+
 
 @interface TodayTopicViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
 {
@@ -228,8 +229,8 @@
         _tableView.delegate = self;
         _tableView.dataSource = self;
         [UIUtils setExtraCellLineHidden:_tableView];
-        _adView = [[JXBAdPageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, scaleToScreenHeight * 100)]; //scaleToScreenHeight * 180
-        UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, (scaleToScreenHeight * 100) + 10)];
+        _adView = [[JXBAdPageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, scaleToScreenHeight * 150)]; //scaleToScreenHeight * 180
+        UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, (scaleToScreenHeight * 150) + 10)];
         headerView.backgroundColor = VIEW_COLOR;
         [headerView addSubview:_adView];
         _tableView.tableHeaderView = headerView;
@@ -343,101 +344,9 @@
 
 -(void)selectSendCat
 {
-    DiscoverViewController *discoverVC = [[DiscoverViewController alloc]init];
-    [self.navigationController pushViewController:discoverVC animated:YES];
-    
-//    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-//    if (isStrEmpty(sharedInfo.user_id)) {
-//        LoginViewController *loginVC = [[LoginViewController alloc]init];
-//        [loginVC setHidesBottomBarWhenPushed:YES];
-//        [self.navigationController pushViewController:loginVC animated:YES];
-//        return;
-//    }
-//
-//    
-//    NSString *cityName;
-//    
-//    NSRange foundObj=[sharedInfo.cityarea rangeOfString:@"城区"];  // options:NSCaseInsensitiveSearch
-//    if(foundObj.length>0){
-//        cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"城区" withString:@""];
-//    }else{
-//        NSRange foundObj2 = [sharedInfo.cityarea rangeOfString:@"县"];
-//        if (foundObj2.length > 0) {
-//            cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"县" withString:@""];
-//        }else{
-//            NSRange foundObj3 = [sharedInfo.cityarea rangeOfString:@"区"];
-//            if (foundObj3.length > 0) {
-//                cityName = [sharedInfo.cityarea stringByReplacingOccurrencesOfString:@"区" withString:@""];
-//            }else{
-//                cityName = sharedInfo.cityarea;
-//            }
-//        }
-//    }
-//    
-//    NSString *tempCityName = [NSString stringWithFormat:@"%@热点",cityName];
-//    
-//    NSMutableArray *items = [[NSMutableArray alloc] initWithCapacity:3];
-//    
-//    MenuItem *menuItem = [MenuItem itemWithTitle:[NSString stringWithFormat:@"%@散讲",cityName] iconName:@"topic_send_community"];
-//    [items addObject:menuItem];
-//    
-//    menuItem = [MenuItem itemWithTitle:@"同城互助" iconName:@"topic_send_city"];
-//    [items addObject:menuItem];
-//    
-//    menuItem = [MenuItem itemWithTitle:@"秀自拍" iconName:@"topic_send_show" glowColor:[UIColor clearColor]];
-//    [items addObject:menuItem];
-//    
-//    menuItem = [MenuItem itemWithTitle:@"相亲交友" iconName:@"topic_send_people" glowColor:[UIColor clearColor]];
-//    [items addObject:menuItem];
-//    
-//    menuItem = [MenuItem itemWithTitle:tempCityName iconName:@"topic_send_information" glowColor:[UIColor clearColor]];
-//    [items addObject:menuItem];
-//    
-//    menuItem = [MenuItem itemWithTitle:@"吃货吧" iconName:@"topic_send_food" glowColor:[UIColor clearColor]];
-//    [items addObject:menuItem];
-//    
-//    menuItem = [MenuItem itemWithTitle:@"去哪玩" iconName:@"topic_send_play" glowColor:[UIColor clearColor]];
-//    [items addObject:menuItem];
-//    
-//    menuItem = [MenuItem itemWithTitle:@"供求信息" iconName:@"topic_send_shareinfo" glowColor:[UIColor clearColor]];
-//    [items addObject:menuItem];
-//    
-//    menuItem = [MenuItem itemWithTitle:@"男女情感" iconName:@"topic_send_feeling" glowColor:[UIColor clearColor]];
-//    [items addObject:menuItem];
-//    
-//    menuItem = [MenuItem itemWithTitle:@"汽车之家" iconName:@"topic_send_education" glowColor:[UIColor clearColor]];
-//    [items addObject:menuItem];
-//    
-//    menuItem = [MenuItem itemWithTitle:@"健康养生" iconName:@"topic_send_health" glowColor:[UIColor clearColor]];
-//    [items addObject:menuItem];
-//    
-//    menuItem = [MenuItem itemWithTitle:@"轻松一刻" iconName:@"topic_send_funny" glowColor:[UIColor clearColor]];
-//    [items addObject:menuItem];
-//    
-//    menuItem = [MenuItem itemWithTitle:@"提建议" iconName:@"topic_send_suggestion" glowColor:[UIColor clearColor]];
-//    [items addObject:menuItem];
-//    
-//    if (!_popMenu | isSelectCity) {
-//        _popMenu = [[PopMenu alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) items:items];
-//        _popMenu.perRowItemCount = 4;
-//        _popMenu.menuAnimationType = kPopMenuAnimationTypeNetEase;
-//    }
-//    if (_popMenu.isShowed) {
-//        return;
-//    }
-//    @weakify(self)
-//    _popMenu.didSelectedItemCompletion = ^(MenuItem *selectedItem) {
-//        @strongify(self)
-//        SendTopicViewController *sendTopVC = [[SendTopicViewController alloc]init];
-//        sendTopVC.title = selectedItem.title;
-//        sendTopVC.cate_id = self.cateArray[selectedItem.index];
-//        BaseNavigationController *navi =[[BaseNavigationController alloc] initWithRootViewController:sendTopVC];
-//        [self.navigationController presentViewController:navi animated:YES completion:^{
-//            
-//        } ];
-//    };
-//    [_popMenu showMenuAtView:self.view.window];
-//    isSelectCity = NO;
+    TopicSearchViewController *topicSearchVC = [[TopicSearchViewController alloc]init];
+    [topicSearchVC setHidesBottomBarWhenPushed:YES];
+    [self.navigationController pushViewController:topicSearchVC animated:YES];
 }
 
 #pragma mark -- ohter
