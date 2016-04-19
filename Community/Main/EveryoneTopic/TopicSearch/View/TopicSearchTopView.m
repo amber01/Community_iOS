@@ -14,29 +14,28 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.backgroundColor = VIEW_COLOR;
+        self.searchContentBtn = [[UIButton alloc]initWithFrame:CGRectMake(ScreenWidth/3 - 48, 60, 64, 64)];
+        [_searchContentBtn setImage:[UIImage imageNamed:@"topic_search_content.png"] forState:UIControlStateNormal];
+        [self addSubview:_searchContentBtn];
         
-        self.backgroundColor = [UIColor whiteColor];
-        [CommonClass setBorderWithView:self top:NO left:NO bottom:YES right:NO borderColor:LINE_COLOR borderWidth:0.5];
-        //分隔栏视图
-        NSArray *segmentedAarray = @[@"内容",@"用户"];
-        self.segmentedView = [[UISegmentedControl alloc]initWithItems:segmentedAarray];
-        _segmentedView.segmentedControlStyle= UISegmentedControlStyleBar;
+        UILabel *contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(_searchContentBtn.left, _searchContentBtn.bottom + 20, _searchContentBtn.width, 20)];
+        contentLabel.textAlignment = NSTextAlignmentCenter;
+        contentLabel.font = kFont(15);
+        contentLabel.text = @"内容";
+        contentLabel.textColor = TEXT_COLOR2;
+        [self addSubview:contentLabel];
         
-        [_segmentedView setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"#ffffff"]] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-        [_segmentedView setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"#555555"]] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+        self.searchUserBtn = [[UIButton alloc]initWithFrame:CGRectMake(ScreenWidth - _searchContentBtn.left - 64, 60, 64, 64)];
+        [_searchUserBtn setImage:[UIImage imageNamed:@"topic_search_user.png"] forState:UIControlStateNormal];
+        [self addSubview:_searchUserBtn];
         
-        [UIUtils setupViewBorder:_segmentedView cornerRadius:5 borderWidth:0.5 borderColor:[UIColor colorWithHexString:@"#555555"]];
-        _segmentedView.tintColor= [UIColor colorWithHexString:@"#555555"];
-        _segmentedView.selectedSegmentIndex = 0;
-        _segmentedView.frame = CGRectMake(15, 6, ScreenWidth - 30, 30);
-        
-        //文字大小
-        UIFont *font = [UIFont boldSystemFontOfSize:15.0f];
-        NSDictionary *attributes = [NSDictionary dictionaryWithObject:font forKey:UITextAttributeFont];
-        [_segmentedView setTitleTextAttributes:attributes forState:UIControlStateNormal];
-        
-        [self addSubview:_segmentedView];
-        
+        UILabel *userLabel = [[UILabel alloc]initWithFrame:CGRectMake(_searchUserBtn.left, _searchUserBtn.bottom + 20, _searchUserBtn.width, 20)];
+        userLabel.textAlignment = NSTextAlignmentCenter;
+        userLabel.font = kFont(15);
+        userLabel.text = @"用户";
+        userLabel.textColor = TEXT_COLOR2;
+        [self addSubview:userLabel];
     }
     return self;
 }

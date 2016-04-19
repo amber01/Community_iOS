@@ -11,5 +11,6 @@
 @interface TopicSearchBarView : UIView
 
 @property (nonatomic,retain)UITextField *myTextField;
+@property (nonatomic,retain)UIButton    *cleaBtn;
 
 @end

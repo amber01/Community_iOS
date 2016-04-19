@@ -12,4 +12,7 @@
 
 @property (nonatomic,retain)UISegmentedControl *segmentedView;
 
+@property (nonatomic,retain)UIButton    *searchContentBtn;
+@property (nonatomic,retain)UIButton    *searchUserBtn;
+
 @end

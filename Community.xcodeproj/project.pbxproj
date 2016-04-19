@@ -550,6 +550,12 @@
 		DB9A81231C2013AA00601780 /* CommentSendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A81221C2013AA00601780 /* CommentSendTableViewCell.m */; };
 		DB9A81261C20167100601780 /* TopicSendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9A81251C20167100601780 /* TopicSendTableViewCell.m */; };
 		DB9F8E7E1C2A357E001E5659 /* TopicChatConversationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9F8E7D1C2A357E001E5659 /* TopicChatConversationCell.m */; };
+		DBA7E4941CC5D0120083FE2E /* topic_search_content@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBA7E4901CC5D0120083FE2E /* topic_search_content@2x.png */; };
+		DBA7E4951CC5D0120083FE2E /* topic_search_content@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBA7E4911CC5D0120083FE2E /* topic_search_content@3x.png */; };
+		DBA7E4961CC5D0120083FE2E /* topic_search_user@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBA7E4921CC5D0120083FE2E /* topic_search_user@2x.png */; };
+		DBA7E4971CC5D0120083FE2E /* topic_search_user@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBA7E4931CC5D0120083FE2E /* topic_search_user@3x.png */; };
+		DBA7E49A1CC603D40083FE2E /* UILabel+TextDifferentColor.m in Sources */ = {isa = PBXBuildFile; fileRef = DBA7E4991CC603D40083FE2E /* UILabel+TextDifferentColor.m */; };
+		DBA7E49D1CC6190D0083FE2E /* DiscoverFindFriendView.m in Sources */ = {isa = PBXBuildFile; fileRef = DBA7E49C1CC6190D0083FE2E /* DiscoverFindFriendView.m */; };
 		DBB586601BF031FA001DBD4C /* NSString+TextSize.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB5865F1BF031FA001DBD4C /* NSString+TextSize.m */; };
 		DBBCAA641C22AE0A0044D18C /* MsgNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBCAA631C22AE0A0044D18C /* MsgNotificationViewController.m */; };
 		DBBCAA671C22AF6C0044D18C /* MsgNotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBCAA661C22AF6C0044D18C /* MsgNotificationTableViewCell.m */; };
@@ -575,6 +581,9 @@
 		DBE54E121C0D6DBD0057D68F /* user_info_addfollow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E101C0D6DBD0057D68F /* user_info_addfollow@2x.png */; };
 		DBE54E131C0D6DBD0057D68F /* user_info_follow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E111C0D6DBD0057D68F /* user_info_follow@2x.png */; };
 		DBE54E151C0D70180057D68F /* user_info_chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBE54E141C0D70180057D68F /* user_info_chat@2x.png */; };
+		DBEEB34B1CC5BB5B00E04DB0 /* UIImageView+ImageColor.m in Sources */ = {isa = PBXBuildFile; fileRef = DBEEB34A1CC5BB5B00E04DB0 /* UIImageView+ImageColor.m */; };
+		DBEEB3511CC5C36900E04DB0 /* topic_search_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBEEB34F1CC5C36900E04DB0 /* topic_search_close@2x.png */; };
+		DBEEB3521CC5C36900E04DB0 /* topic_search_close@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = DBEEB3501CC5C36900E04DB0 /* topic_search_close@3x.png */; };
 		DBEEE0CE1C30FB8F00DA5EF3 /* KeychainHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DBEEE0CB1C30FB8F00DA5EF3 /* KeychainHelper.m */; };
 		DBEEE0CF1C30FB8F00DA5EF3 /* KeychainIDFA.m in Sources */ = {isa = PBXBuildFile; fileRef = DBEEE0CD1C30FB8F00DA5EF3 /* KeychainIDFA.m */; };
 		DBF503E71C1AA6A100AA02BE /* CommentStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF503E61C1AA6A100AA02BE /* CommentStatusViewController.m */; };
@@ -1493,6 +1502,14 @@
 		DB9A81251C20167100601780 /* TopicSendTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicSendTableViewCell.m; sourceTree = "<group>"; };
 		DB9F8E7C1C2A357E001E5659 /* TopicChatConversationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicChatConversationCell.h; sourceTree = "<group>"; };
 		DB9F8E7D1C2A357E001E5659 /* TopicChatConversationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicChatConversationCell.m; sourceTree = "<group>"; };
+		DBA7E4901CC5D0120083FE2E /* topic_search_content@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topic_search_content@2x.png"; sourceTree = "<group>"; };
+		DBA7E4911CC5D0120083FE2E /* topic_search_content@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topic_search_content@3x.png"; sourceTree = "<group>"; };
+		DBA7E4921CC5D0120083FE2E /* topic_search_user@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topic_search_user@2x.png"; sourceTree = "<group>"; };
+		DBA7E4931CC5D0120083FE2E /* topic_search_user@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topic_search_user@3x.png"; sourceTree = "<group>"; };
+		DBA7E4981CC603D40083FE2E /* UILabel+TextDifferentColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+TextDifferentColor.h"; sourceTree = "<group>"; };
+		DBA7E4991CC603D40083FE2E /* UILabel+TextDifferentColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+TextDifferentColor.m"; sourceTree = "<group>"; };
+		DBA7E49B1CC6190D0083FE2E /* DiscoverFindFriendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscoverFindFriendView.h; sourceTree = "<group>"; };
+		DBA7E49C1CC6190D0083FE2E /* DiscoverFindFriendView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoverFindFriendView.m; sourceTree = "<group>"; };
 		DBB5865E1BF031FA001DBD4C /* NSString+TextSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TextSize.h"; sourceTree = "<group>"; };
 		DBB5865F1BF031FA001DBD4C /* NSString+TextSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TextSize.m"; sourceTree = "<group>"; };
 		DBBCAA621C22AE0A0044D18C /* MsgNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgNotificationViewController.h; sourceTree = "<group>"; };
@@ -1531,6 +1548,10 @@
 		DBE54E101C0D6DBD0057D68F /* user_info_addfollow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_addfollow@2x.png"; sourceTree = "<group>"; };
 		DBE54E111C0D6DBD0057D68F /* user_info_follow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_follow@2x.png"; sourceTree = "<group>"; };
 		DBE54E141C0D70180057D68F /* user_info_chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_info_chat@2x.png"; sourceTree = "<group>"; };
+		DBEEB3491CC5BB5B00E04DB0 /* UIImageView+ImageColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ImageColor.h"; sourceTree = "<group>"; };
+		DBEEB34A1CC5BB5B00E04DB0 /* UIImageView+ImageColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ImageColor.m"; sourceTree = "<group>"; };
+		DBEEB34F1CC5C36900E04DB0 /* topic_search_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topic_search_close@2x.png"; sourceTree = "<group>"; };
+		DBEEB3501CC5C36900E04DB0 /* topic_search_close@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topic_search_close@3x.png"; sourceTree = "<group>"; };
 		DBEEE0CA1C30FB8F00DA5EF3 /* KeychainHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainHelper.h; sourceTree = "<group>"; };
 		DBEEE0CB1C30FB8F00DA5EF3 /* KeychainHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainHelper.m; sourceTree = "<group>"; };
 		DBEEE0CC1C30FB8F00DA5EF3 /* KeychainIDFA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainIDFA.h; sourceTree = "<group>"; };
@@ -2443,6 +2464,12 @@
 				965841971CC2501500FCB402 /* msg_about_me@3x.png */,
 				9643FF5E1CC51FDA002CA5F7 /* mine_edit_info@2x.png */,
 				9643FF5F1CC51FDA002CA5F7 /* mine_edit_info@3x.png */,
+				DBEEB34F1CC5C36900E04DB0 /* topic_search_close@2x.png */,
+				DBEEB3501CC5C36900E04DB0 /* topic_search_close@3x.png */,
+				DBA7E4901CC5D0120083FE2E /* topic_search_content@2x.png */,
+				DBA7E4911CC5D0120083FE2E /* topic_search_content@3x.png */,
+				DBA7E4921CC5D0120083FE2E /* topic_search_user@2x.png */,
+				DBA7E4931CC5D0120083FE2E /* topic_search_user@3x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -2699,6 +2726,8 @@
 				964AA0F71BEF7B5E007CE0E9 /* UIDevice+Resolutions.m */,
 				964AA0F81BEF7B5E007CE0E9 /* UIImage+Mycategory.h */,
 				964AA0F91BEF7B5E007CE0E9 /* UIImage+Mycategory.m */,
+				DBEEB3491CC5BB5B00E04DB0 /* UIImageView+ImageColor.h */,
+				DBEEB34A1CC5BB5B00E04DB0 /* UIImageView+ImageColor.m */,
 				964AA0FA1BEF7B5E007CE0E9 /* UIImage+Scale.h */,
 				964AA0FB1BEF7B5E007CE0E9 /* UIImage+Scale.m */,
 				964AA0FC1BEF7B5E007CE0E9 /* UILabel+VerticalUpAlignment.h */,
@@ -2725,6 +2754,8 @@
 				963F8AB31C305E110014B41B /* MACAddress.m */,
 				964938501CA8250F0086F45E /* UIButton+UIButtonImageWithLable.h */,
 				964938511CA8250F0086F45E /* UIButton+UIButtonImageWithLable.m */,
+				DBA7E4981CC603D40083FE2E /* UILabel+TextDifferentColor.h */,
+				DBA7E4991CC603D40083FE2E /* UILabel+TextDifferentColor.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -3778,6 +3809,8 @@
 				DB3639CE1CBB3F1B00C7E9B5 /* DiscoverFindFriendTableViewCell.m */,
 				DB3639D01CBB3F2B00C7E9B5 /* DiscoverFindTopicTableViewCell.h */,
 				DB3639D11CBB3F2B00C7E9B5 /* DiscoverFindTopicTableViewCell.m */,
+				DBA7E49B1CC6190D0083FE2E /* DiscoverFindFriendView.h */,
+				DBA7E49C1CC6190D0083FE2E /* DiscoverFindFriendView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4208,6 +4241,8 @@
 				DB706B721CB3C77B001BB47E /* emoji_touch.png in Resources */,
 				DB706B781CB3C77B001BB47E /* flower_n.png in Resources */,
 				96D508311C0C94A8001DFA49 /* mine_share@2x.png in Resources */,
+				DBA7E4941CC5D0120083FE2E /* topic_search_content@2x.png in Resources */,
+				DBA7E4971CC5D0120083FE2E /* topic_search_user@3x.png in Resources */,
 				96C8D2CC1C0A0F4E004642FC /* topic_send_feeling@3x.png in Resources */,
 				96C8D2B01C0A0F4E004642FC /* mine_check_in@2x.png in Resources */,
 				DB706B851CB3C77B001BB47E /* unselected_center_bg@2x.png in Resources */,
@@ -4222,7 +4257,9 @@
 				965841981CC2501500FCB402 /* msg_about_me@3x.png in Resources */,
 				DB706B8E1CB3C77B001BB47E /* ELCAssetPicker.xib in Resources */,
 				DB9619741CB50B02005F8449 /* discover_topic_high@3x.png in Resources */,
+				DBEEB3521CC5C36900E04DB0 /* topic_search_close@3x.png in Resources */,
 				96C5A3321C1D1B500029FC74 /* pulldown_icon@2x.png in Resources */,
+				DBA7E4961CC5D0120083FE2E /* topic_search_user@2x.png in Resources */,
 				965841A11CC25EF900FCB402 /* cc_default_tips@3x.png in Resources */,
 				96ED34591C1877FF0021C9C4 /* topic_search_icon@2x.png in Resources */,
 				963DC8C01C0AE410005D1955 /* chat_sender_bg@2x.png in Resources */,
@@ -4265,6 +4302,7 @@
 				96C8D2CE1C0A0F4E004642FC /* topic_send_funny@3x.png in Resources */,
 				DB706B8D1CB3C77B001BB47E /* ELCAlbumPickerController.xib in Resources */,
 				9643FF601CC51FDA002CA5F7 /* mine_edit_info@2x.png in Resources */,
+				DBEEB3511CC5C36900E04DB0 /* topic_search_close@2x.png in Resources */,
 				96D255611C2C393D0002E650 /* ios-social-sdk-share-detail.html in Resources */,
 				96C8D2C81C0A0F4E004642FC /* topic_send_city@3x.png in Resources */,
 				96D255491C2C393D0002E650 /* UMSCommentInputControlleriPad.xib in Resources */,
@@ -4280,6 +4318,7 @@
 				DB706B661CB3C77B001BB47E /* car_n.png in Resources */,
 				96C5A3341C1D1B500029FC74 /* pullup_icon@2x.png in Resources */,
 				96C8D2E51C0A0F4E004642FC /* todayTopic_tabbar_high@2x.png in Resources */,
+				DBA7E4951CC5D0120083FE2E /* topic_search_content@3x.png in Resources */,
 				96C8D2B11C0A0F4E004642FC /* mine_store_car@2x.png in Resources */,
 				9687A75C1C3AB53E007BC29B /* default_background_icon@2x.png in Resources */,
 				96C8D2B31C0A0F4E004642FC /* msg_comment@2x.png in Resources */,
@@ -4412,6 +4451,7 @@
 				963DC48E1C0ACFD9005D1955 /* EMSDWebImageManager.m in Sources */,
 				969345F01C1C602A0056072F /* TopicDetailHeadView.m in Sources */,
 				967700711C3944E6005EA280 /* UIImage+MLBrowserPhotoImageForBundle.m in Sources */,
+				DBA7E49A1CC603D40083FE2E /* UILabel+TextDifferentColor.m in Sources */,
 				96ED34571C15BE110021C9C4 /* pinyin.c in Sources */,
 				963DC4B51C0ACFD9005D1955 /* EaseEmojiEmoticons.m in Sources */,
 				963DC4BB1C0ACFD9005D1955 /* EaseRefreshTableViewController.m in Sources */,
@@ -4586,6 +4626,7 @@
 				DB706B5F1CB3C77B001BB47E /* CustomImageView.m in Sources */,
 				963DC46F1C0ACFD9005D1955 /* wav.mm in Sources */,
 				964111AB1C29797C00561223 /* SystemNoticeModel.m in Sources */,
+				DBA7E49D1CC6190D0083FE2E /* DiscoverFindFriendView.m in Sources */,
 				9662F69C1CB9EFAE0087733F /* DLFixedTabbarView.m in Sources */,
 				962D73BF1BFE0C4200412A50 /* LoginView.m in Sources */,
 				964AA1151BEF7B5E007CE0E9 /* NSString+MyCategory.m in Sources */,
@@ -4660,6 +4701,7 @@
 				963DC4C51C0ACFD9005D1955 /* EaseBubbleView+Text.m in Sources */,
 				DBF503ED1C1AAF2300AA02BE /* MySendCommentTableViewCell.m in Sources */,
 				967700761C3944E6005EA280 /* MLPhotoBrowserPhotoScrollView.m in Sources */,
+				DBEEB34B1CC5BB5B00E04DB0 /* UIImageView+ImageColor.m in Sources */,
 				963DC4931C0ACFD9005D1955 /* UIImage+EMGIF.m in Sources */,
 				9662F6A81CB9F0BD0087733F /* DiscoverFriendSquareViewController.m in Sources */,
 				963DC4911C0ACFD9005D1955 /* NSData+EMImageContentType.m in Sources */,

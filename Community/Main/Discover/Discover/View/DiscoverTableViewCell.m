@@ -25,7 +25,6 @@
     
     UIImageView         *activityImageView;
     
-    UILabel             *contentLabel;
     UILabel             *commentLabel;
     
     PubliButton         *commentBtn;
@@ -75,12 +74,12 @@
         activityImageView.image = [UIImage imageNamed:@"topic_is_activity.png"];
         [self.contentView addSubview:activityImageView];
         
-        contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right + 10, avatarImageView.bottom + 5, ScreenWidth - avatarImageView.width - 20 - 10 - 15, 20)];
-        [contentLabel verticalUpAlignmentWithText: @"说的方法第三方水电费水电费水电费说的方法第三方第三方第三方的说法是法师打发" maxHeight:10];
-        contentLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        contentLabel.numberOfLines = 0;
-        contentLabel.backgroundColor = [UIColor clearColor];
-        [contentLabel setFont:[UIFont systemFontOfSize:15]];
+        self.contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(avatarImageView.right + 10, avatarImageView.bottom + 5, ScreenWidth - avatarImageView.width - 20 - 10 - 15, 20)];
+        [_contentLabel verticalUpAlignmentWithText: @"说的方法第三方水电费水电费水电费说的方法第三方第三方第三方的说法是法师打发" maxHeight:10];
+        _contentLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        _contentLabel.numberOfLines = 0;
+        _contentLabel.backgroundColor = [UIColor clearColor];
+        [_contentLabel setFont:[UIFont systemFontOfSize:15]];
         
         
         self.likeBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
@@ -123,7 +122,7 @@
         [self.contentView addSubview:_likeBtn];
         
         [self.contentView addSubview:dateLabel];
-        [self.contentView addSubview:contentLabel];
+        [self.contentView addSubview:_contentLabel];
         [self.contentView addSubview:nicknameLabel];
         [self.contentView addSubview:avatarImageView];
     }
@@ -148,7 +147,6 @@
     avatarImageView.nickname = model.nickname;
     avatarImageView.userName = model.username;
     avatarImageView.avatarUrl = model.logopicture;
-
     
     NSString *deteString  = [NSString stringWithFormat:@"%@  #%@#",[UIUtils format:model.createtime],model.classname];
     dateLabel.text = deteString;
@@ -163,10 +161,10 @@
     /**
      *  动态计算内容高度
      */
-    contentLabel.text = model.describe;
+    _contentLabel.text = model.describe;
 
     NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
-    CGSize contentHeight = [contentLabel.text boundingRectWithSize:CGSizeMake(contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+    CGSize contentHeight = [_contentLabel.text boundingRectWithSize:CGSizeMake(_contentLabel.frame.size.width, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
 
     if (model.describe.length == 0) {
         contentHeight.height = 0;
@@ -181,9 +179,9 @@
         _likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
     }
     
-    CGRect frame = contentLabel.frame;
+    CGRect frame = _contentLabel.frame;
     frame.size.height = contentHeight.height;
-    contentLabel.frame = frame;
+    _contentLabel.frame = frame;
     //imageArray = nil;
     imageArray = [model.images componentsSeparatedByString:@","];
     
@@ -198,16 +196,16 @@
     if (imageArray.count == 1) {
         int tempWidth;
         int tempHeight;
-        if ([model.width intValue] >= contentLabel.width) {
-            tempWidth = contentLabel.width;
-            float scaleToHeight = [model.width intValue] - contentLabel.width;
+        if ([model.width intValue] >= _contentLabel.width) {
+            tempWidth = _contentLabel.width;
+            float scaleToHeight = [model.width intValue] - _contentLabel.width;
             tempHeight = ([model.height intValue]) - scaleToHeight;
         }else{
             tempWidth = [model.width intValue];
             tempHeight = [model.height intValue];
         }
         
-        imageView = [[UIImageView alloc]initWithFrame:CGRectMake(avatarImageView.right + 10, contentLabel.bottom + 5, tempWidth, tempHeight)];
+        imageView = [[UIImageView alloc]initWithFrame:CGRectMake(avatarImageView.right + 10, _contentLabel.bottom + 5, tempWidth, tempHeight)];
         imageView.userInteractionEnabled = YES;
         imageView.tag = 200;
         
@@ -226,7 +224,7 @@
             NSInteger index = i % 3;
             NSInteger page = i / 3;
             
-            imageView = [[UIImageView alloc]initWithFrame:CGRectMake(index * (Button_Width + Width_Space) + avatarImageView.right + 10, page  * (Button_Height + Height_Space)+contentLabel.bottom + 5, Button_Width, Button_Height)];
+            imageView = [[UIImageView alloc]initWithFrame:CGRectMake(index * (Button_Width + Width_Space) + avatarImageView.right + 10, page  * (Button_Height + Height_Space)+_contentLabel.bottom + 5, Button_Width, Button_Height)];
             imageView.userInteractionEnabled = YES;
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             imageView.clipsToBounds = YES;
@@ -241,7 +239,7 @@
         }
     }
     
-    _likeBtn.frame = CGRectMake(contentLabel.left, imageView.bottom + 15,50, 30);
+    _likeBtn.frame = CGRectMake(_contentLabel.left, imageView.bottom + 15,50, 30);
     commentBtn.frame = CGRectMake(_likeBtn.right, imageView.bottom + 15, 50, 30);
     shareBtn.frame = CGRectMake(commentBtn.right + 40, imageView.bottom + 15, 14, 14);
 }

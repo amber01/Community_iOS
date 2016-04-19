@@ -10,4 +10,6 @@
 
 @interface TopicSearchViewController : BaseViewController
 
+@property (nonatomic,copy)NSString *searchStatus;
+
 @end

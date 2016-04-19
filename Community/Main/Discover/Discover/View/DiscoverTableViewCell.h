@@ -19,6 +19,7 @@
 @property (nonatomic,retain) UILabel             *likeLabel;
 
 @property (nonatomic,retain) UIImageView         *likeImageView;
+@property (nonatomic,retain) UILabel             *contentLabel;
 
 - (void)configureCellWithInfo:(FriendSquareModel*)model;
 

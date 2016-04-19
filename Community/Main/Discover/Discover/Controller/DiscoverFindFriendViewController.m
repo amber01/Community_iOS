@@ -8,10 +8,13 @@
 
 #import "DiscoverFindFriendViewController.h"
 #import "DiscoverFindFriendTableViewCell.h"
+#import "DiscoverFindFriendView.h"
+#import "TopicSearchViewController.h"
 
 @interface DiscoverFindFriendViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     int     page;
+    DiscoverFindFriendView *discoverFindFriendView;
 }
 
 @property (nonatomic,retain)UITableView     *tableView;
@@ -41,7 +44,9 @@
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.backgroundColor = VIEW_COLOR;
-        _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 15)];
+        discoverFindFriendView = [[DiscoverFindFriendView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 65)];
+        [discoverFindFriendView.searchBtn addTarget:self action:@selector(searchAction) forControlEvents:UIControlEventTouchUpInside];
+        _tableView.tableHeaderView = discoverFindFriendView;
         [self.view addSubview:_tableView];
     }
     return _tableView;
@@ -155,6 +160,14 @@
 }
 
 #pragma mark -- action
+- (void)searchAction
+{
+    TopicSearchViewController *topicSearchVC = [[TopicSearchViewController alloc]init];
+    [topicSearchVC setHidesBottomBarWhenPushed:YES];
+    topicSearchVC.searchStatus = @"1";
+    [self.navigationController pushViewController:topicSearchVC animated:YES];
+}
+
 - (void)addFollowAction:(PubliButton *)button
 {
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];

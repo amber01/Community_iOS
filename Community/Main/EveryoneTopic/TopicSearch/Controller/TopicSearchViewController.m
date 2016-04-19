@@ -10,7 +10,7 @@
 #import "TopicSearchViewController.h"
 #import "TopicSearchBarView.h"
 #import "TopicSearchTopView.h"
-#import "EveryoneTopicTableViewCell.h"
+#import "DiscoverTableViewCell.h"
 #import "TopicSearchTableViewCell.h"
 #import "MineInfoViewController.h"
 
@@ -22,7 +22,8 @@
     TopicSearchTopView *searchTopView;
     int         page;
     int         userPage;
-    BOOL        isSearch;
+    BOOL        isSearchContent;
+    float       height;
 }
 
 @property (nonatomic,retain) NSMutableArray *dataArray;
@@ -41,15 +42,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self customBackView];
+    
     [self createTableView];
     page = 1;
     userPage = 1;
     self.view.backgroundColor = CELL_COLOR;
+
+    searchTopView = [[TopicSearchTopView alloc]initWithFrame:CGRectMake(0, 0 , ScreenWidth, ScreenHeight)];
+    [searchTopView.searchContentBtn addTarget:self action:@selector(searchContentAction) forControlEvents:UIControlEventTouchUpInside];
+    [searchTopView.searchUserBtn addTarget:self action:@selector(searchUserAction) forControlEvents:UIControlEventTouchUpInside];
     
-    searchTopView = [[TopicSearchTopView alloc]initWithFrame:CGRectMake(0, 0 , ScreenWidth, 42)];
-    [searchTopView.segmentedView addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:searchTopView];
+    
+    [self customBackView];
     
     //内容下拉
     [self setupRefreshHeaderWithTopic];
@@ -60,9 +65,14 @@
     [self setupUploadMoreWithUser];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+}
+
 - (void)createTableView
 {
-    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 42, ScreenWidth, ScreenHeight - 64 - 42) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64) style:UITableViewStylePlain];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.tag = 1000;
@@ -71,7 +81,7 @@
     _tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_tableView];
     
-    _userTabelView = [[UITableView alloc]initWithFrame:CGRectMake(0, 42, ScreenWidth, ScreenHeight - 64 - 42) style:UITableViewStylePlain];
+    _userTabelView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64) style:UITableViewStylePlain];
     _userTabelView.dataSource = self;
     _userTabelView.delegate = self;
     _userTabelView.hidden = YES;
@@ -83,27 +93,25 @@
 
 - (void)customBackView
 {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];  //自定义返回按钮
-    button.frame = CGRectMake(0, 0, 35, 35);
-    [button setImage:[UIImage imageNamed:@"back_btn_image"] forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithCustomView:button];
-    [self setHidesBottomBarWhenPushed:YES];
-    
-    topicSearchBarView = [[TopicSearchBarView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth - 125, 35)];
+    topicSearchBarView = [[TopicSearchBarView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth - 70, 32)];
     topicSearchBarView.myTextField.delegate = self;
-    
+    if (isStrEmpty(self.searchStatus)) {
+        topicSearchBarView.myTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"搜索内容" attributes:@{NSForegroundColorAttributeName:  [UIColor whiteColor]}];
+        _userTabelView.hidden = YES;
+        _tableView.hidden = NO;
+        _userTabelView.hidden = YES;
+        isSearchContent = YES;
+    }else{
+        topicSearchBarView.myTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"搜索用户" attributes:@{NSForegroundColorAttributeName:  [UIColor whiteColor]}];
+        _tableView.hidden = YES;
+        _userTabelView.hidden = NO;
+        isSearchContent = NO;
+        _userTabelView.hidden = NO;
+    }
+    [topicSearchBarView.cleaBtn addTarget:self action:@selector(cleaAction) forControlEvents:UIControlEventTouchUpInside];
+    [topicSearchBarView.myTextField becomeFirstResponder];
     UIBarButtonItem *searchItem = [[UIBarButtonItem alloc]initWithCustomView:topicSearchBarView];
-    self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:backItem, searchItem,nil];
-    
-    
-    UIButton *serarchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    serarchBtn.frame = CGRectMake(0, 0, 22, 22);
-    [serarchBtn setImage:[UIImage imageNamed:@"topic_search_icon"] forState:UIControlStateNormal];
-    [serarchBtn addTarget:self action:@selector(searchAction) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIBarButtonItem *searchItems = [[UIBarButtonItem alloc]initWithCustomView:serarchBtn];
-    //self.navigationItem.rightBarButtonItem = searchItems;
+    self.navigationItem.rightBarButtonItem = searchItem;
 }
 
 #pragma mark MJRefresh
@@ -121,23 +129,20 @@
 }
 
 - (void)loadNewTopicData{
-    if (isSearch) {
-        if (searchTopView.segmentedView.selectedSegmentIndex == 0) {
-            page = 1;
-            [self getSearchContent:page keyword:self.keyword];
-        }
-        [_tableView.mj_header endRefreshing];
+    
+    if (isSearchContent == YES) {
+        page = 1;
+        [self getSearchContent:page keyword:self.keyword];
     }
+    [_tableView.mj_header endRefreshing];
 }
 
 - (void)loadMoreTopicData{
-    if (isSearch) {
-        if (searchTopView.segmentedView.selectedSegmentIndex == 0) {
-            page = page + 1;
-            [self getSearchContent:page keyword:self.keyword];
-        }
-        [_tableView.mj_footer endRefreshing];
+    if (isSearchContent == YES) {
+        page = page + 1;
+        [self getSearchContent:page keyword:self.keyword];
     }
+    [_tableView.mj_footer endRefreshing];
 }
 
 //搜索用户刷新
@@ -155,23 +160,19 @@
 }
 
 - (void)loadNewUserData{
-    if (isSearch) {
-        if (searchTopView.segmentedView.selectedSegmentIndex == 1) {
-            userPage = 1;
-            [self getSearchUser:page keyword:self.keyword];
-        }
-        [_userTabelView.mj_header endRefreshing];
+    if (isSearchContent == NO) {
+        userPage = 1;
+        [self getSearchUser:page keyword:self.keyword];
     }
+    [_userTabelView.mj_header endRefreshing];
 }
 
 - (void)loadMoreUserData{
-    if (isSearch) {
-        if (searchTopView.segmentedView.selectedSegmentIndex == 1) {
-            userPage = userPage + 1;
-            [self getSearchUser:page keyword:self.keyword];
-        }
-        [_userTabelView.mj_footer endRefreshing];
+    if (isSearchContent == NO) {
+        userPage = userPage + 1;
+        [self getSearchUser:page keyword:self.keyword];
     }
+    [_userTabelView.mj_footer endRefreshing];
 }
 
 
@@ -188,31 +189,40 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView.tag == 1000) {
-        static NSString *identityCell = @"cell";
-        EveryoneTopicTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
+        static NSString *identifyCell = @"cell";
+        DiscoverTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifyCell];
         if (!cell) {
-            cell = [[EveryoneTopicTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
+            cell = [[DiscoverTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifyCell];
             [cell.likeBtn addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
         }
-        
-        EveryoneTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
+        FriendSquareModel *model = nil;
+        model = [self.dataArray objectAtIndex:indexPath.row];
         cell.likeBtn.row = indexPath.row;
+        
+        NSLog(@"names:%@",model.name);
+        
+        [cell configureCellWithInfo:model];
+        
+        [cell.contentLabel setTextColor:[UIColor greenColor] withText:topicSearchBarView.myTextField.text];
         
         if (!_likeDataArray) {
             self.likeDataArray = [[NSMutableArray alloc]init];
         }
         [_likeDataArray addObject:model.praisenum];
         
-        [cell configureCellWithInfo:model withImages:self.imagesArray andPraiseData:self.praiseDataArray andRow:indexPath.row];
+        cell.likeImageView.image = [UIImage imageNamed:@"discover_find_friend_high"];
         
-        if (!isArrEmpty(self.praiseDataArray)) {
-            NSDictionary *dic = [self.praiseDataArray objectAtIndex:indexPath.row];
-            cell.likeBtn.post_id = [dic objectForKey:@"postid"];
-            cell.likeBtn.isPraise = [dic objectForKey:@"value"];
-        }
+        cell.likeBtn.post_id = model.id;
+        cell.likeBtn.isPraise = _praiseDataArray[indexPath.row];
         
         cell.likeLabel.text = _likeDataArray[indexPath.row];
         cell.likeBtn.praisenum = _likeDataArray[indexPath.row];
+        
+        if ([_praiseDataArray[indexPath.row]intValue] > 0) {
+            cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_cancel_like"];
+        }else{
+            cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+        }
         return cell;
     }else{
         static NSString *identityCell = @"fansCell";
@@ -223,7 +233,7 @@
         }
         UserModel *model = self.userDataArray[indexPath.row];
         [cell configureCellWithInfo:model];
-        
+        [cell.textLabel setTextColor:[UIColor greenColor] withText:topicSearchBarView.myTextField.text];
         NSDictionary *dic = self.fansDtaArray[indexPath.row];
         if ([[dic objectForKey:@"value"]isEqualToString:@"1"]) {
             [cell.followBtn setImage:[UIImage imageNamed:@"user_finish_follow"] forState:UIControlStateNormal];
@@ -242,8 +252,37 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (tableView.tag == 1000) {
-        UITableViewCell * cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-        return cell.frame.size.height;
+        FriendSquareModel *model = nil;
+        model = [self.dataArray objectAtIndex:indexPath.row];
+        
+        NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
+        CGSize contentHeight = [model.describe boundingRectWithSize:CGSizeMake(ScreenWidth - 45 - 20 - 10 - 15, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+        NSArray *imageArray = [model.images componentsSeparatedByString:@","];
+        
+        if (model.describe.length == 0) {
+            contentHeight.height = 0;
+        }
+        
+        if (imageArray.count > 1) {
+            if (imageArray.count <= 3) {
+                height = (((ScreenWidth - 45 - 20 - 10 - 15)/3)-5);
+            }else if (imageArray.count >3 && imageArray.count<= 6){
+                height = ((((ScreenWidth - 45 - 20 - 10 - 15)/3)-5)*2)+5;
+            }else if (imageArray.count > 6){
+                height = ((((ScreenWidth - 45 - 20 - 10 - 15)/3)-5)*3)+10;
+            }
+        }else if (imageArray.count == 1){
+            int tempWidth;
+            int imageMaxWidth = ScreenWidth - 45 - 20 - 10 - 15;
+            if ([model.width intValue] >= imageMaxWidth) {
+                tempWidth = imageMaxWidth;
+                float scaleToHeight = [model.width intValue] - imageMaxWidth;
+                height = ([model.height intValue]) - scaleToHeight;
+            }else{
+                height = [model.height intValue];
+            }
+        }
+        return 70 + contentHeight.height + height + 20 + 14 + 17 - 5;
     }else{
         return 45 + 20;
     }
@@ -261,17 +300,16 @@
     [self.navigationController pushViewController:mineInfoVC animated:YES];
 }
 
-#pragma mark -- action
-- (void)searchAction
-{
+#pragma mark -- UITextFieldDelegate
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    
     //帖子
-    if (searchTopView.segmentedView.selectedSegmentIndex == 0) {
+    if (isSearchContent == YES) {
         if (topicSearchBarView.myTextField.text.length == 0) {
             [self initMBProgress:@"关键字不能为空" withModeType:MBProgressHUDModeText afterDelay:1.0];
         }else{
             self.keyword = topicSearchBarView.myTextField.text;
             [self getSearchContent:page keyword:self.keyword];
-            isSearch = YES;
         }
     }else{ //用户
         if (topicSearchBarView.myTextField.text.length == 0) {
@@ -279,9 +317,41 @@
         }else{
             self.keyword = topicSearchBarView.myTextField.text;
             [self getSearchUser:userPage keyword:self.keyword];
-            isSearch = YES;
         }
     }
+    
+    
+    [textField resignFirstResponder];
+    return YES;
+}
+
+#pragma mark -- action
+- (void)cleaAction
+{
+    topicSearchBarView.myTextField.text = @"";
+    searchTopView.hidden = NO;
+}
+
+- (void)searchContentAction
+{
+    topicSearchBarView.myTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"搜索内容" attributes:@{NSForegroundColorAttributeName:  [UIColor whiteColor]}];
+    _tableView.hidden = NO;
+    _userTabelView.hidden = YES;
+    isSearchContent = YES;
+    //    if (self.keyword.length > 0 && isArrEmpty(self.dataArray)) {
+    //        [self getSearchContent:page keyword:self.keyword];
+    //    }
+}
+
+- (void)searchUserAction
+{
+    topicSearchBarView.myTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"搜索用户" attributes:@{NSForegroundColorAttributeName:  [UIColor whiteColor]}];
+    _tableView.hidden = YES;
+    _userTabelView.hidden = NO;
+    isSearchContent = NO;
+    //    if (self.keyword.length > 0 && isArrEmpty(self.userDataArray)) {
+    //        [self getSearchUser:userPage keyword:self.keyword];
+    //    }
 }
 
 //帖子
@@ -296,42 +366,38 @@
             [self initMBProgress:@"未找到相关的内容" withModeType:MBProgressHUDModeText afterDelay:1.5];
             return;
         }
-        if (result) {
-            NSArray *items = [EveryoneTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
-            NSArray *imageItems = [TodayTopicImagesModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
-            NSArray *praiseItems = [result objectForKey:@"IsPraise"];
-            
-            if (page == 1) {
-                [self.dataArray removeAllObjects];
-                [self.imagesArray removeAllObjects];
-                [self.praiseDataArray removeAllObjects];
-            }
-            
-            for (int i = 0; i < items.count; i ++) {
-                if (!self.dataArray) {
-                    self.dataArray = [[NSMutableArray alloc]init];
-                }
-                [self.dataArray addObject:[items objectAtIndex:i]];
-            }
-            
-            for (int i = 0; i < imageItems.count; i ++) {
-                if (!self.imagesArray) {
-                    self.imagesArray = [[NSMutableArray alloc]init];
-                }
-                [self.imagesArray addObject:[imageItems objectAtIndex:i]];
-            }
-            
-            for (int i = 0; i < praiseItems.count; i ++) {
-                if (!self.praiseDataArray) {
-                    self.praiseDataArray = [[NSMutableArray alloc]init];
-                }
-                [self.praiseDataArray addObject:[praiseItems objectAtIndex:i]];
-            }
+        searchTopView.hidden = YES;
+        NSArray *items = [FriendSquareModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+        NSArray *tempArr = [result objectForKey:@"Detail"];
+        
+        if (page == 1) {
+            [self.dataArray removeAllObjects];
+            [_praiseDataArray removeAllObjects];
         }
+        
+        for (int i = 0; i < items.count; i ++) {
+            if (!self.dataArray) {
+                self.dataArray = [[NSMutableArray alloc]init];
+            }
+            [self.dataArray addObject:[items objectAtIndex:i]];
+        }
+        
+        for (int i = 0; i < tempArr.count; i ++) {
+            if (!_praiseDataArray) {
+                _praiseDataArray = [NSMutableArray new];
+            }
+            NSDictionary *dic = tempArr[i];
+            [_praiseDataArray insertObject:[dic objectForKey:@"ispraise"] atIndex:i];
+        }
+        
+        NSLog(@"dataArraya:%@",_dataArray);
+        
         [_tableView reloadData];
+        
     } failure:^(NSError *erro) {
         
     }];
+    
 }
 
 //用户
@@ -349,6 +415,7 @@
         if (result) {
             NSArray *items = [UserModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
             NSArray *praiseItems = [result objectForKey:@"IsPraise"];
+            searchTopView.hidden = YES;
             if (userPage == 1) {
                 [self.userDataArray removeAllObjects];
                 [self.fansDtaArray removeAllObjects];
@@ -459,14 +526,8 @@
                  *  记录点赞状态
                  */
                 [self.praiseDataArray removeObjectAtIndex:button.row];
-                [self.praiseDataArray insertObject:@{@"postid":button.post_id,@"value":@"1"} atIndex:button.row];
+                [self.praiseDataArray insertObject:@"1" atIndex:button.row];
                 
-                //点赞之后改变点赞的状态
-                NSIndexPath *index =  [NSIndexPath indexPathForItem:button.row inSection:0];
-                EveryoneTopicTableViewCell *cell =  [_tableView cellForRowAtIndexPath:index];
-                cell.likeLabel.text = _likeDataArray[button.row];
-                
-                cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_cancel_like"];
                 [_tableView reloadData];
             }else{
                 [self initMBProgress:@"你已经赞过了" withModeType:MBProgressHUDModeText afterDelay:1.5];
@@ -495,14 +556,7 @@
                  *  记录点赞状态
                  */
                 [self.praiseDataArray removeObjectAtIndex:button.row];
-                [self.praiseDataArray insertObject:@{@"postid":button.post_id,@"value":@"0"} atIndex:button.row];
-                
-                //点赞之后改变点赞的状态
-                NSIndexPath *index =  [NSIndexPath indexPathForItem:button.row inSection:0];
-                EveryoneTopicTableViewCell *cell =  [_tableView cellForRowAtIndexPath:index];
-                cell.likeLabel.text = _likeDataArray[button.row];
-                
-                cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+                [self.praiseDataArray insertObject:@"0" atIndex:button.row];
                 [_tableView reloadData];
             }else{
                 [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.5];
@@ -514,26 +568,6 @@
     }
 }
 
-
--(void)segmentAction:(UISegmentedControl *)segmented{
-    NSInteger index = segmented.selectedSegmentIndex;
-    if (index == 0) {
-        _tableView.hidden = NO;
-        _userTabelView.hidden = YES;
-        if (self.keyword.length > 0 && isArrEmpty(self.dataArray)) {
-            [self getSearchContent:page keyword:self.keyword];
-        }
-        
-    }else{
-        _tableView.hidden = YES;
-        _userTabelView.hidden = NO;
-        if (self.keyword.length > 0 && isArrEmpty(self.userDataArray)) {
-            [self getSearchUser:userPage keyword:self.keyword];
-        }
-    }
-    NSLog(@"%ld",index);
-}
-
 #pragma mark -- other
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -543,6 +577,12 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self.view endEditing:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    [topicSearchBarView.myTextField resignFirstResponder];
 }
 
 /*

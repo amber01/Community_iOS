@@ -70,7 +70,8 @@
     CGRect nicknameFrame = nickNameLabel.frame;
     nicknameFrame.size.width = textSize.width;
     nickNameLabel.frame = nicknameFrame;
-    
+    postsNumLabel.text = [NSString stringWithFormat:@"帖子 %@",model.postnum];
+    fansNumLabel.text = [NSString stringWithFormat:@"粉丝 %@",model.myfansnum];
     prestigeLabel.frame = CGRectMake(nickNameLabel.right + 10, nickNameLabel.top + 2, 32, 16);
     prestigeLabel.text = [NSString stringWithFormat:@"v%@",model.prestige];
 }
