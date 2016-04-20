@@ -43,11 +43,17 @@
         showVImageView.image = [UIImage imageNamed:@"topic_isv_icon"];
         [self addSubview:showVImageView];
         
-        UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, avatarImageView.bottom + 5, ScreenWidth, 0.5)];
+        UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, avatarImageView.bottom + 10, ScreenWidth, 0.5)];
         lineView.backgroundColor = CELL_COLOR;
         [self addSubview:lineView];
         
-        //self.titleLabel = [UILabel alloc]initWithFrame:CGRectMake(<#CGFloat x#>, <#CGFloat y#>, <#CGFloat width#>, );
+        self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, lineView.bottom + 15, ScreenWidth - 20, 30)];
+        _titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:21];
+        _titleLabel.text = @"什么情况？一大波残疾车包围了龙感加油站！";
+        _titleLabel.textAlignment = NSTextAlignmentCenter; //居中
+        _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        _titleLabel.numberOfLines = 0;
+        [self addSubview:_titleLabel];
     }
     return self;
 }
