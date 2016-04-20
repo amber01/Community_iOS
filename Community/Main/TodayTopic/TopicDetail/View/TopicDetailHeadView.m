@@ -47,13 +47,29 @@
         lineView.backgroundColor = CELL_COLOR;
         [self addSubview:lineView];
         
-        self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, lineView.bottom + 15, ScreenWidth - 20, 30)];
-        _titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:21];
+        self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, lineView.bottom + 15, ScreenWidth - 30, 30)];
+        _titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
         _titleLabel.text = @"什么情况？一大波残疾车包围了龙感加油站！";
-        _titleLabel.textAlignment = NSTextAlignmentCenter; //居中
+        //_titleLabel.textAlignment = NSTextAlignmentCenter; //居中
         _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         _titleLabel.numberOfLines = 0;
         [self addSubview:_titleLabel];
+        
+        self.likeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _likeBtn.frame = CGRectMake(_titleLabel.left, _titleLabel.bottom + 20, 200, 50);
+        UIImageView *likeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 14, 14)];
+        [likeImageView setImage:[UIImage imageNamed:@"topic_detail_like_high"]];
+        [_likeBtn addSubview:likeImageView];
+        self.likeLabel = [[UILabel alloc]initWithFrame:CGRectMake(likeImageView.right+3, _likeBtn.top, 180, 20)];
+        _likeLabel.text = @"2332";
+        _likeLabel.textColor = TEXT_COLOR2;
+        
+        
+        
+        [_likeBtn addSubview:_likeLabel];
+        [self addSubview:_likeBtn];
+        
+        
     }
     return self;
 }

@@ -15,6 +15,10 @@
 @property (nonatomic,retain)UIButton    *commentBtn;
 @property (nonatomic,retain)UIButton    *shareBtn;
 
+@property (nonatomic,retain)UILabel     *likeLabel;
+@property (nonatomic,retain)UILabel     *commentLabel;
+@property (nonatomic,retain)UILabel     *shareLabel;
+
 - (void)getUserInfoData:(NSDictionary*)data;
 
 @end
