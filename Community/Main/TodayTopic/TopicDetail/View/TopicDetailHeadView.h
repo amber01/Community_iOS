@@ -10,6 +10,11 @@
 
 @interface TopicDetailHeadView : UIView
 
+@property (nonatomic,retain)UILabel     *titleLabel;
+@property (nonatomic,retain)UIButton    *likeBtn;
+@property (nonatomic,retain)UIButton    *commentBtn;
+@property (nonatomic,retain)UIButton    *shareBtn;
+
 - (void)getUserInfoData:(NSDictionary*)data;
 
 @end

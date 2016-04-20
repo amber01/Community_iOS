@@ -27,38 +27,6 @@
             endingLineNumber = "39"
             landmarkName = "delegate"
             landmarkType = "19">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[DLCustomSlideView delegate]"
-                  moduleName = "Community"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/amber/Documents/Community_iOS/Community/Vendors/DLSlideView/DLCustomSlideView.h"
-                  timestampString = "482684326.035375"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "40"
-                  endingLineNumber = "40"
-                  offsetFromSymbolStart = "20">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[DLCustomSlideView setDelegate:]"
-                  moduleName = "Community"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/amber/Documents/Community_iOS/Community/Vendors/DLSlideView/DLCustomSlideView.h"
-                  timestampString = "482684326.035553"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "32">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

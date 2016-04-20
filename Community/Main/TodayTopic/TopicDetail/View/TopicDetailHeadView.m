@@ -42,6 +42,12 @@
         showVImageView = [[UIImageView alloc]initWithFrame:CGRectMake(avatarImageView.width - 2, avatarImageView.bottom - 15, 15, 15)];
         showVImageView.image = [UIImage imageNamed:@"topic_isv_icon"];
         [self addSubview:showVImageView];
+        
+        UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, avatarImageView.bottom + 5, ScreenWidth, 0.5)];
+        lineView.backgroundColor = CELL_COLOR;
+        [self addSubview:lineView];
+        
+        //self.titleLabel = [UILabel alloc]initWithFrame:CGRectMake(<#CGFloat x#>, <#CGFloat y#>, <#CGFloat width#>, );
     }
     return self;
 }
