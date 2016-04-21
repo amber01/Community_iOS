@@ -123,21 +123,22 @@
             
         }else{ //查看他人
             addFollowBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
-            addFollowBtn.frame = CGRectMake(30, _followBtn.bottom + 18,236/2, 75/2);
+            addFollowBtn.frame = CGRectMake(50, -100 ,70, 30);
             addFollowBtn.user_id = user_id;
+            [addFollowBtn setBackgroundColor:[UIColor clearColor]];
             [addFollowBtn addTarget:self action:@selector(addFollowAction:) forControlEvents:UIControlEventTouchUpInside];
-            [addFollowBtn setImage:[UIImage imageNamed:@"user_info_addfollow.png"] forState:UIControlStateNormal];
+            [addFollowBtn setImage:[UIImage imageNamed:@"discover_add_follow"] forState:UIControlStateNormal];
             
             addFollowLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, addFollowBtn.height/2-10, addFollowBtn.width - 50, 20)];
             addFollowLabel.textColor = [UIColor colorWithHexString:@"#62b312"];
             addFollowLabel.font = [UIFont systemFontOfSize:14];
             addFollowLabel.textAlignment = NSTextAlignmentRight;
             addFollowLabel.text = @"关注";
-            [addFollowBtn addSubview:addFollowLabel];
+            //[addFollowBtn addSubview:addFollowLabel];
             
             //
             chatBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
-            chatBtn.frame = CGRectMake((ScreenWidth - 236/2) - 30, _followBtn.bottom + 18,236/2, 75/2);
+            chatBtn.frame = CGRectMake(ScreenWidth - 50 - 70, -100 ,70, 30);
             chatBtn.user_id = user_id;
             chatBtn.userName = userName;
             chatBtn.nickname = nickname;
@@ -204,7 +205,7 @@
                 NSDictionary *dic = [detailArray objectAtIndex:i];
                 if ([sharedInfo.user_id intValue] == [[dic objectForKey:@"userid"]intValue]) {
                     isToFans = YES; //已经关注过了
-                    [addFollowBtn setImage:[UIImage imageNamed:@"user_info_follow"] forState:UIControlStateNormal];
+                    [addFollowBtn setImage:[UIImage imageNamed:@"user_info_addfollow"] forState:UIControlStateNormal];
                     addFollowLabel.text = @"已关注";
                 }else{
                     isToFans = NO;  //未关注过

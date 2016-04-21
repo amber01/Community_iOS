@@ -138,4 +138,10 @@ void RunBlockAfterDelay(NSTimeInterval delay, void (^block)(void));
  */
 + (NSString *)format:(NSString *)string;
 
+/**
+ *  让图片有毛玻璃状态
+ */
++ (UIImage *)applyBlurRadius:(CGFloat)radius toImage:(UIImage *)image;
+
+
 @end

@@ -20,6 +20,8 @@
     WSHeaderView *_header;
     int          page;
     MineInfoTopView *mineInfoTopView;
+    UILabel         *nameLabe;
+    UILabel             *prestigeLabel;  //声望
 }
 
 @property (nonatomic,retain) UITableView *tableView;
@@ -74,15 +76,59 @@
     _header = [[WSHeaderView alloc]init];
     
     //set header view
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 216/2)];
-    [imageView setImage:[UIImage imageNamed:@"mine_info_background"]];
+    UIImageView *avatarImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenWidth)];
+    NSString *imageURL;
+    if (self.avatarUrl.length == 0) { //自己的
+        SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
+        imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",shareInfo.picturedomain],BASE_IMAGE_URL,face,shareInfo.picture];
+    }else{ //他人的
+        SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
+        imageURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",shareInfo.picturedomain],BASE_IMAGE_URL,face,self.avatarUrl];
+    }
+    [avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageURL]placeholderImage:[UIImage imageWithColor:VIEW_COLOR]];
+    
+    NSLog(@"avatar url:%@",imageURL);
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 180*scaleToScreenHeight)];
+    imageView.image = [UIUtils applyBlurRadius:7 toImage:avatarImageView.image];
+    
+    /**
+     *  创建头像
+     */
+    UIImageView *avatarView = [[UIImageView alloc]initWithFrame:CGRectMake(ScreenWidth/2 - 35, 15, 70, 70)];
+    [avatarView sd_setImageWithURL:[NSURL URLWithString:imageURL]placeholderImage:[UIImage imageWithColor:VIEW_COLOR]];
+    [UIUtils setupViewBorder:avatarView cornerRadius:avatarView.height/2 borderWidth:2 borderColor:[UIColor whiteColor]];
+    [imageView addSubview:avatarView];
+    
+    /**
+     *  昵称
+     */
+    nameLabe = [[UILabel alloc]initWithFrame:CGRectMake(0, avatarView.bottom + 10 , ScreenWidth, 20)];
+    nameLabe.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
+    nameLabe.text = @"";
+    nameLabe.textColor = [UIColor whiteColor];
+    nameLabe.textAlignment = NSTextAlignmentCenter;
+    [imageView addSubview:nameLabe];
+    
+    /**
+     *  声望
+     */
+    prestigeLabel = [[UILabel alloc]initWithFrame:CGRectMake(nameLabe.right + 10, nameLabe.top + 2, 32, 16)];
+    prestigeLabel.textAlignment = NSTextAlignmentCenter;
+    prestigeLabel.textColor = [UIColor whiteColor];
+    prestigeLabel.backgroundColor = [UIColor colorWithHexString:@"#f5a623"];
+    [UIUtils setupViewRadius:prestigeLabel cornerRadius:3];
+    prestigeLabel.font = kFont(12);
+    prestigeLabel.text = @"v1";
+    [imageView addSubview:prestigeLabel];
+    
     _header = [WSHeaderView expandWithScrollView:_tableView expandView:imageView];
     
     SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
     mineInfoTopView = [[MineInfoTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 155) withUserID:isStrEmpty(self.user_id) ? shareInfo.user_id : self.user_id andNickname:isStrEmpty(self.nickname) ? @"" : self.nickname andUserName:isStrEmpty(self.userName)? @"" : self.userName andAvararUrl:isStrEmpty(self.avatarUrl) ? @"" : self.avatarUrl];
     [mineInfoTopView.topicBtn addTarget:self action:@selector(checkTopicListAction) forControlEvents:UIControlEventTouchUpInside];
     _tableView.tableHeaderView = mineInfoTopView;
-    [self getUserInfoData:isStrEmpty(self.user_id) ? @"" : self.user_id];
+    
+    [self getUserInfoData:isStrEmpty(self.user_id) ? shareInfo.user_id : self.user_id];
 }
 
 - (void)setupUploadMore{
@@ -125,6 +171,19 @@
                 NSDictionary *dic = [dataArray objectAtIndex:i];
                 self.shareImageURL = [dic objectForKey:@"picture"];
                 self.sharePicturedomain = [dic objectForKey:@"picturedomain"];
+                nameLabe.text = [dic objectForKey:@"nickname"];
+                
+                CGSize nickNameWidth = [nameLabe.text sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:17] maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT)];
+                CGRect nameFrame = nameLabe.frame;
+                nameFrame.origin.x = (ScreenWidth/2 - nickNameWidth.width/2) - 13;
+                nameFrame.size.width = nickNameWidth.width;
+                nameLabe.frame = nameFrame;
+                
+                CGRect prestigeFrame = prestigeLabel.frame;
+                prestigeFrame.origin.x = nameLabe.right + 10;
+                prestigeLabel.frame = prestigeFrame;
+
+                prestigeLabel.text = [NSString stringWithFormat:@"v%@",[dic objectForKey:@"prestige"]];
             }
         }
     } failure:^(NSError *erro) {

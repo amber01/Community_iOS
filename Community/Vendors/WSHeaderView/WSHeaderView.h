@@ -12,8 +12,9 @@
 @interface WSHeaderView : NSObject <UIScrollViewDelegate>
 {
     UIScrollView   *_scrollView;
-    UIView         *_expandView;
 }
+
+@property (nonatomic,retain)UIView *expandView;
 
 + (id)expandWithScrollView:(UIScrollView*)scrollView expandView:(UIView*)expandView;
 

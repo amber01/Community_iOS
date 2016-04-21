@@ -112,7 +112,7 @@
     detailWebView.scorollDelegate = self;
     detailWebView.scalesPageToFit = YES;
     detailWebView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal; //让webview滚动的时候流畅一些
-    headView = [[TopicDetailHeadView alloc]initWithFrame:CGRectMake(0, 0, ScreenHeight, 65 + 30)];
+    headView = [[TopicDetailHeadView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 65 + 30 + 65)];
     [self.myScrollView addSubview:detailWebView];
     
     
@@ -276,8 +276,16 @@
                 footView.commentNumLabel.frame = commentRect;
                 
                 NSString *avataURL = [NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",picturedomain],BASE_IMAGE_URL,face,logopicture];
-                NSDictionary *dataDic = @{@"date":[NSString stringWithFormat:@"%@ %@",date,source],@"avataURL":avataURL,@"nickname":nickname,@"user_id":self.user_id,@"username":username,@"avatarImage":logopicture,@"isv":isvString};
+                NSDictionary *dataDic = @{@"date":[NSString stringWithFormat:@"%@ %@",date,source],@"avataURL":avataURL,@"nickname":nickname,@"user_id":self.user_id,@"username":username,@"avatarImage":logopicture,@"isv":isvString,@"name":self.topicTitle,@"sharenum":[dic objectForKey:@"sharenum"],@"praisenum":praisenum,@"commentnum":commentnum};
                 [headView getUserInfoData:dataDic];
+                
+                CGSize  textSize = [self.topicTitle sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:18] maxSize:CGSizeMake(ScreenWidth - 40, 0)];
+                
+                if (textSize.height > 25) {
+                    detailWebView.headerView = nil;
+                    headView.frame = CGRectMake(0, 0, ScreenWidth, 65 + 30 + 65 + 20);
+                    detailWebView.headerView = headView;
+                }
                 
                 //是否可以打赏
                 NSString *isShow = [dic objectForKey:@"isshow"];

@@ -46,5 +46,6 @@
 #import "UIImage+Extras.h"
 #import "UIImageView+ImageColor.h"
 #import "UILabel+TextDifferentColor.h"
+#import "UILabel+StringFrame.h"
 
 #endif /* Commen_h */
