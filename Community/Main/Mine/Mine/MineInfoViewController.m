@@ -14,14 +14,19 @@
 #import "UMSocial.h"
 #import "UMSocialWechatHandler.h"
 #import "UMSocialQQHandler.h"
+#import "MineInfoHeadView.h"
+#import "DiscoverTableViewCell.h"
 
 @interface MineInfoViewController ()<UITableViewDataSource,UITableViewDelegate,UMSocialUIDelegate>
 {
     WSHeaderView *_header;
     int          page;
-    MineInfoTopView *mineInfoTopView;
+    MineInfoTopView *mineInfoView;
+    MineInfoHeadView *mineInfoTopView;
     UILabel         *nameLabe;
     UILabel             *prestigeLabel;  //声望
+    UIImageView *avatarImageView;
+    float   height;
 }
 
 @property (nonatomic,retain) UITableView *tableView;
@@ -53,7 +58,7 @@
     [shareBtn addTarget:self action:@selector(shareAction) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc]initWithCustomView:shareBtn];
     self.navigationItem.rightBarButtonItem = rightItem;
-
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadUserInfoData) name:@"kReloadUserDataNotification" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadUserInfoData) name:kReloadDataNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadUserInfoData) name:@"kReloadAvatarImageNotification" object:nil];
@@ -76,7 +81,7 @@
     _header = [[WSHeaderView alloc]init];
     
     //set header view
-    UIImageView *avatarImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenWidth)];
+    avatarImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenWidth)];
     NSString *imageURL;
     if (self.avatarUrl.length == 0) { //自己的
         SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
@@ -89,6 +94,7 @@
     
     NSLog(@"avatar url:%@",imageURL);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 180*scaleToScreenHeight)];
+    imageView.userInteractionEnabled = YES;
     imageView.image = [UIUtils applyBlurRadius:7 toImage:avatarImageView.image];
     
     /**
@@ -124,9 +130,14 @@
     _header = [WSHeaderView expandWithScrollView:_tableView expandView:imageView];
     
     SharedInfo *shareInfo = [SharedInfo sharedDataInfo];
-    mineInfoTopView = [[MineInfoTopView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 155) withUserID:isStrEmpty(self.user_id) ? shareInfo.user_id : self.user_id andNickname:isStrEmpty(self.nickname) ? @"" : self.nickname andUserName:isStrEmpty(self.userName)? @"" : self.userName andAvararUrl:isStrEmpty(self.avatarUrl) ? @"" : self.avatarUrl];
+    mineInfoView = [[MineInfoTopView alloc]initWithFrame:CGRectMake(0, prestigeLabel.bottom + 15*scaleToScreenHeight, ScreenWidth, 80) withUserID:isStrEmpty(self.user_id) ? shareInfo.user_id : self.user_id andNickname:isStrEmpty(self.nickname) ? @"" : self.nickname andUserName:isStrEmpty(self.userName)? @"" : self.userName andAvararUrl:isStrEmpty(self.avatarUrl) ? @"" : self.avatarUrl];
+    
+    mineInfoTopView = [[MineInfoHeadView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 70) withUserID:isStrEmpty(self.user_id) ? shareInfo.user_id : self.user_id andNickname:isStrEmpty(self.nickname) ? @"" : self.nickname andUserName:isStrEmpty(self.userName)? @"" : self.userName andAvararUrl:isStrEmpty(self.avatarUrl) ? @"" : self.avatarUrl];
+    
     [mineInfoTopView.topicBtn addTarget:self action:@selector(checkTopicListAction) forControlEvents:UIControlEventTouchUpInside];
     _tableView.tableHeaderView = mineInfoTopView;
+    
+    [imageView addSubview:mineInfoView];
     
     [self getUserInfoData:isStrEmpty(self.user_id) ? shareInfo.user_id : self.user_id];
 }
@@ -149,13 +160,14 @@
 - (void)reloadUserInfoData
 {
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-    mineInfoTopView.nicknameLabel.text = sharedInfo.nickname;
-    [mineInfoTopView.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",sharedInfo.picturedomain],BASE_IMAGE_URL,face,sharedInfo.picture]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
-    if ([sharedInfo.sex isEqualToString:@"女"]) {
-        mineInfoTopView.sexImageView.image = [UIImage imageNamed:@"user_women"];
-    }else{
-        mineInfoTopView.sexImageView.image = [UIImage imageNamed:@"user_man.png"];
-    }
+    nameLabe.text = sharedInfo.nickname;
+    [avatarImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",sharedInfo.picturedomain],BASE_IMAGE_URL,face,sharedInfo.picture]]placeholderImage:[UIImage imageNamed:@"mine_login"]];
+    
+    //    if ([sharedInfo.sex isEqualToString:@"女"]) {
+    //        mineInfoTopView.sexImageView.image = [UIImage imageNamed:@"user_women"];
+    //    }else{
+    //        mineInfoTopView.sexImageView.image = [UIImage imageNamed:@"user_man.png"];
+    //    }
 }
 
 #pragma mark -- HTTP
@@ -182,7 +194,7 @@
                 CGRect prestigeFrame = prestigeLabel.frame;
                 prestigeFrame.origin.x = nameLabe.right + 10;
                 prestigeLabel.frame = prestigeFrame;
-
+                
                 prestigeLabel.text = [NSString stringWithFormat:@"v%@",[dic objectForKey:@"prestige"]];
             }
         }
@@ -199,14 +211,12 @@
     NSDictionary *parameters = @{@"Method":@"RePostInfo",@"LoginUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"888",@"PageIndex":pageStr,@"FldSort":fldSort,@"FldSortType":@"1",@"CityID":@"0",@"ProvinceID":@"0",@"IsEssence":isEssence,@"ClassID":@"",@"UserID":isStrEmpty(self.user_id) ? sharedInfo.user_id : self.user_id}]};
     
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
-        NSArray *items = [EveryoneTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
-        NSArray *imageItems = [TodayTopicImagesModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
-        NSArray *praiseItems = [result objectForKey:@"IsPraise"];
+        NSArray *items = [FriendSquareModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+        NSArray *tempArr = [result objectForKey:@"Detail"];
         
         if (page == 1) {
             [self.dataArray removeAllObjects];
-            [self.imagesArray removeAllObjects];
-            [self.praiseDataArray removeAllObjects];
+            [_praiseDataArray removeAllObjects];
         }
         
         for (int i = 0; i < items.count; i ++) {
@@ -216,21 +226,15 @@
             [self.dataArray addObject:[items objectAtIndex:i]];
         }
         
-        for (int i = 0; i < imageItems.count; i ++) {
-            if (!self.imagesArray) {
-                self.imagesArray = [[NSMutableArray alloc]init];
+        for (int i = 0; i < tempArr.count; i ++) {
+            if (!_praiseDataArray) {
+                _praiseDataArray = [NSMutableArray new];
             }
-            [self.imagesArray addObject:[imageItems objectAtIndex:i]];
+            NSDictionary *dic = tempArr[i];
+            [_praiseDataArray insertObject:[dic objectForKey:@"ispraise"] atIndex:i];
         }
         
-        for (int i = 0; i < praiseItems.count; i ++) {
-            if (!self.praiseDataArray) {
-                self.praiseDataArray = [[NSMutableArray alloc]init];
-            }
-            [self.praiseDataArray addObject:[praiseItems objectAtIndex:i]];
-        }
-
-        [_tableView reloadData];
+        [self.tableView reloadData];
         
         if ([self.status isEqualToString:@"0"]) {
             [_tableView setContentOffset:CGPointMake(0, 155)];
@@ -254,42 +258,74 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identityCell = @"cell";
-    EveryoneTopicTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
+    static NSString *identifyCell = @"cell";
+    DiscoverTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifyCell];
     if (!cell) {
-        cell = [[EveryoneTopicTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
+        cell = [[DiscoverTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifyCell];
         [cell.likeBtn addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
     }
-    
-    EveryoneTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
-    
-    cell.likeBtn.post_id = model.id;
+    FriendSquareModel *model = nil;
+    model = [self.dataArray objectAtIndex:indexPath.row];
     cell.likeBtn.row = indexPath.row;
+    
+    [cell configureCellWithInfo:model];
     
     if (!_likeDataArray) {
         self.likeDataArray = [[NSMutableArray alloc]init];
     }
     [_likeDataArray addObject:model.praisenum];
     
-    [cell configureCellWithInfo:model withImages:self.imagesArray andPraiseData:self.praiseDataArray andRow:indexPath.row];
+    cell.likeImageView.image = [UIImage imageNamed:@"discover_find_friend_high"];
     
-    if (!isArrEmpty(self.praiseDataArray)) {
-        NSDictionary *dic = [self.praiseDataArray objectAtIndex:indexPath.row];
-        cell.likeBtn.post_id = [dic objectForKey:@"postid"];
-        cell.likeBtn.isPraise = [dic objectForKey:@"value"];
-    }
+    cell.likeBtn.post_id = model.id;
+    cell.likeBtn.isPraise = _praiseDataArray[indexPath.row];
     
     cell.likeLabel.text = _likeDataArray[indexPath.row];
     cell.likeBtn.praisenum = _likeDataArray[indexPath.row];
+    
+    if ([_praiseDataArray[indexPath.row]intValue] > 0) {
+        cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_cancel_like"];
+    }else{
+        cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+    }
     
     return cell;
 }
 
 //cell动态计算高度
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    FriendSquareModel *model = nil;
+    model = [self.dataArray objectAtIndex:indexPath.row];
     
-    UITableViewCell * cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-    return cell.frame.size.height;
+    NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
+    CGSize contentHeight = [model.describe boundingRectWithSize:CGSizeMake(ScreenWidth - 45 - 20 - 10 - 15, MAXFLOAT) options:  NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+    NSArray *imageArray = [model.images componentsSeparatedByString:@","];
+    
+    if (model.describe.length == 0) {
+        contentHeight.height = 0;
+    }
+    
+    if (imageArray.count > 1) {
+        if (imageArray.count <= 3) {
+            height = (((ScreenWidth - 45 - 20 - 10 - 15)/3)-5);
+        }else if (imageArray.count >3 && imageArray.count<= 6){
+            height = ((((ScreenWidth - 45 - 20 - 10 - 15)/3)-5)*2)+5;
+        }else if (imageArray.count > 6){
+            height = ((((ScreenWidth - 45 - 20 - 10 - 15)/3)-5)*3)+10;
+        }
+    }else if (imageArray.count == 1){
+        int tempWidth;
+        int imageMaxWidth = ScreenWidth - 45 - 20 - 10 - 15;
+        if ([model.width intValue] >= imageMaxWidth) {
+            tempWidth = imageMaxWidth;
+            float scaleToHeight = [model.width intValue] - imageMaxWidth;
+            height = ([model.height intValue]) - scaleToHeight;
+        }else{
+            height = [model.height intValue];
+        }
+    }
+    return 70 + contentHeight.height + height + 20 + 14 + 17 - 5;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -301,7 +337,7 @@
     topicDetaiVC.user_id = model.userid;
     [topicDetaiVC setHidesBottomBarWhenPushed:YES];
     [self.navigationController pushViewController:topicDetaiVC animated:YES];
-
+    
 }
 
 #pragma mark -- action
@@ -315,12 +351,13 @@
         return;
     }
     
+    [self initMBProgress:@""];
     //点赞
     if ([button.isPraise intValue] == 0) {
-        NSDictionary *parameters = @{@"Method":@"AddPostToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIp":@"1",@"Detail":@[@{@"PostID":button.post_id,@"UserID":sharedInfo.user_id}]};
+        NSDictionary *parameters = @{@"Method":@"AddPostToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"PostID":button.post_id,@"UserID":sharedInfo.user_id}]};
         
         [CKHttpRequest createRequest:HTTP_METHOD_PRAISE WithParam:parameters withMethod:@"POST" success:^(id result) {
-            
+            [self setMBProgreeHiden:YES];
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {
                 [self initMBProgress:@"点赞+1" withModeType:MBProgressHUDModeText afterDelay:1.5];
                 int praisenum = [button.praisenum intValue];
@@ -336,14 +373,8 @@
                  *  记录点赞状态
                  */
                 [self.praiseDataArray removeObjectAtIndex:button.row];
-                [self.praiseDataArray insertObject:@{@"postid":button.post_id,@"value":@"1"} atIndex:button.row];
+                [self.praiseDataArray insertObject:@"1" atIndex:button.row];
                 
-                //点赞之后改变点赞的状态
-                NSIndexPath *index =  [NSIndexPath indexPathForItem:button.row inSection:0];
-                EveryoneTopicTableViewCell *cell =  [_tableView cellForRowAtIndexPath:index];
-                cell.likeLabel.text = _likeDataArray[button.row];
-                
-                cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_cancel_like"];
                 [_tableView reloadData];
             }else{
                 [self initMBProgress:@"你已经赞过了" withModeType:MBProgressHUDModeText afterDelay:1.5];
@@ -353,10 +384,10 @@
             
         }];
     }else{  //取消点赞
-        NSDictionary *parameters = @{@"Method":@"DelPostToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIp":@"1",@"Detail":@[@{@"PostID":button.post_id,@"UserID":sharedInfo.user_id}]};
+        NSDictionary *parameters = @{@"Method":@"DelPostToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"PostID":button.post_id,@"UserID":sharedInfo.user_id}]};
         
         [CKHttpRequest createRequest:HTTP_METHOD_PRAISE WithParam:parameters withMethod:@"POST" success:^(id result) {
-            
+            [self setMBProgreeHiden:YES];
             if (result && [[result objectForKey:@"Success"]intValue] > 0) {
                 [self initMBProgress:@"取消点赞" withModeType:MBProgressHUDModeText afterDelay:1.5];
                 int praisenum = [button.praisenum intValue];
@@ -372,14 +403,7 @@
                  *  记录点赞状态
                  */
                 [self.praiseDataArray removeObjectAtIndex:button.row];
-                [self.praiseDataArray insertObject:@{@"postid":button.post_id,@"value":@"0"} atIndex:button.row];
-                
-                //点赞之后改变点赞的状态
-                NSIndexPath *index =  [NSIndexPath indexPathForItem:button.row inSection:0];
-                EveryoneTopicTableViewCell *cell =  [_tableView cellForRowAtIndexPath:index];
-                cell.likeLabel.text = _likeDataArray[button.row];
-                
-                cell.likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+                [self.praiseDataArray insertObject:@"0" atIndex:button.row];
                 [_tableView reloadData];
             }else{
                 [self initMBProgress:[result objectForKey:@"Msg"] withModeType:MBProgressHUDModeText afterDelay:1.5];
@@ -390,6 +414,7 @@
         }];
     }
 }
+
 
 #pragma mark -- action
 - (void)shareAction
@@ -443,13 +468,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

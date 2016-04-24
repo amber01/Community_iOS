@@ -224,6 +224,7 @@
 		967700761C3944E6005EA280 /* MLPhotoBrowserPhotoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9677006A1C3944E6005EA280 /* MLPhotoBrowserPhotoScrollView.m */; };
 		967700771C3944E6005EA280 /* MLPhotoBrowserPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9677006C1C3944E6005EA280 /* MLPhotoBrowserPhotoView.m */; };
 		967700781C3944E6005EA280 /* MLPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9677006D1C3944E6005EA280 /* MLPhotoBrowser.bundle */; };
+		967A995D1CCC83B30008E844 /* MineInfoHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 967A995C1CCC83B30008E844 /* MineInfoHeadView.m */; };
 		968426231C01734E00774538 /* TodayTopicImagesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 968426221C01734E00774538 /* TodayTopicImagesModel.m */; };
 		968426261C01A10B00774538 /* EveryoneTopicHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 968426251C01A10B00774538 /* EveryoneTopicHeadView.m */; };
 		9687A75A1C3AB4B4007BC29B /* topic_isv_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9687A7591C3AB4B4007BC29B /* topic_isv_icon@2x.png */; };
@@ -1048,6 +1049,8 @@
 		9677006B1C3944E6005EA280 /* MLPhotoBrowserPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLPhotoBrowserPhotoView.h; sourceTree = "<group>"; };
 		9677006C1C3944E6005EA280 /* MLPhotoBrowserPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLPhotoBrowserPhotoView.m; sourceTree = "<group>"; };
 		9677006D1C3944E6005EA280 /* MLPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MLPhotoBrowser.bundle; sourceTree = "<group>"; };
+		967A995B1CCC83B30008E844 /* MineInfoHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MineInfoHeadView.h; sourceTree = "<group>"; };
+		967A995C1CCC83B30008E844 /* MineInfoHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineInfoHeadView.m; sourceTree = "<group>"; };
 		968426211C01734E00774538 /* TodayTopicImagesModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicImagesModel.h; sourceTree = "<group>"; };
 		968426221C01734E00774538 /* TodayTopicImagesModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicImagesModel.m; sourceTree = "<group>"; };
 		968426241C01A10B00774538 /* EveryoneTopicHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EveryoneTopicHeadView.h; sourceTree = "<group>"; };
@@ -2678,6 +2681,8 @@
 				96D508361C0C9BC5001DFA49 /* ModifyUserInfoTableViewCell.m */,
 				96ED344B1C144C6E0021C9C4 /* ModifyNicknameView.h */,
 				96ED344C1C144C6E0021C9C4 /* ModifyNicknameView.m */,
+				967A995B1CCC83B30008E844 /* MineInfoHeadView.h */,
+				967A995C1CCC83B30008E844 /* MineInfoHeadView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -4534,6 +4539,7 @@
 				96B2D1131BFCD70500FE6185 /* RegisterView.m in Sources */,
 				DBC3AFA41CB63910001F9C0D /* DiscoverTableViewCell.m in Sources */,
 				DBEEE0CF1C30FB8F00DA5EF3 /* KeychainIDFA.m in Sources */,
+				967A995D1CCC83B30008E844 /* MineInfoHeadView.m in Sources */,
 				DBC2FF821CBB8BB600447608 /* DiscoverFindTopicModel.m in Sources */,
 				969345E41C1BE9A50056072F /* WSJSObject.m in Sources */,
 				DB9A58801C20F32D00AF2340 /* MyDraftListViewController.m in Sources */,
