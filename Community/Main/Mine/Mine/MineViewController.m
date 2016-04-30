@@ -328,16 +328,25 @@
                 [self.navigationController pushViewController:myCollectionVC animated:YES];
             }else if (indexPath.row == 0){
                 SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-                WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
-                webDetailVC.url = [NSString stringWithFormat:@"%@Default.aspx?mobile/my&UserID=%@",ROOT_URL,sharedInfo.user_id];
-                [webDetailVC setHidesBottomBarWhenPushed:YES];
-                [self.navigationController pushViewController:webDetailVC animated:YES];
+                NSDictionary *parameter = @{@"UserID":sharedInfo.user_id,
+                                            @"UserName":sharedInfo.username};
+                
+                [CKHttpRequest createRequest:HTTP_METHOD_ENCRYPT WithParam:parameter withMethod:@"POST" success:^(id result) {
+                    NSLog(@"result:%@",result);
+                    if ([[result objectForKey:@"UserID"]length] > 0) {
+                        NSString *userID = [result objectForKey:@"UserID"];
+                        NSString *userName = [result objectForKey:@"UserName"];
 
-//                SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-//                WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
-//                webDetailVC.url = [NSString stringWithFormat:@"%@Default.aspx?mobile/cash&userid=%@",ROOT_URL,sharedInfo.user_id];
-//                [webDetailVC setHidesBottomBarWhenPushed:YES];
-//                [self.navigationController pushViewController:webDetailVC animated:YES];
+                        WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
+                        webDetailVC.url = [NSString stringWithFormat:@"%@my.aspx?UserID=%@&UserName=%@",ROOT_URL,userID,userName];
+                        [webDetailVC setHidesBottomBarWhenPushed:YES];
+                        [self.navigationController pushViewController:webDetailVC animated:YES];
+
+                    }
+                    
+                } failure:^(NSError *erro) {
+                    
+                }];
             }
         }
     }else{ //未登录

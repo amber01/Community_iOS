@@ -14,4 +14,6 @@
 @property (nonatomic,retain)UIButton    *distanceBtn;
 @property (nonatomic,retain)UIButton    *activeBtn;
 
+@property (nonatomic,retain)UIView      *lineView;
+
 @end

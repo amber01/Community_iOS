@@ -13,5 +13,6 @@
 @property (nonatomic,retain)PubliButton     *addFollowBtn;
 
 - (void)configureCellWithInfo:(DiscoverFindFriendModel *)model;
+- (void)configureCellWithNearbyInfo:(DiscoverNearbyFriendModel *)model;
 
 @end

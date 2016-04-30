@@ -10,6 +10,8 @@
 
 @interface CCTipsView : UIView
 
-@property (nonatomic,retain)UILabel *tipsLabel;
+@property (nonatomic,retain)UILabel     *tipsLabel;
+@property (nonatomic,retain)UIButton    *onClickBtn;
+@property (nonatomic,retain)UIImageView *imageView;
 
 @end

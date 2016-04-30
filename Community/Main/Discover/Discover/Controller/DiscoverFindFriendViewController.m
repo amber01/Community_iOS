@@ -15,6 +15,7 @@
 {
     int     page;
     DiscoverFindFriendView *discoverFindFriendView;
+    BOOL    isNearby;
 }
 
 @property (nonatomic,retain)UITableView     *tableView;
@@ -29,7 +30,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = VIEW_COLOR;
     [self tableView];
-    
+    isNearby = YES;
     page  = 1;
     [self getUserListInfo:page];
     [self setupRefreshHeader];
@@ -44,8 +45,10 @@
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.backgroundColor = VIEW_COLOR;
-        discoverFindFriendView = [[DiscoverFindFriendView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 65)];
+        discoverFindFriendView = [[DiscoverFindFriendView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 70)];
         [discoverFindFriendView.searchBtn addTarget:self action:@selector(searchAction) forControlEvents:UIControlEventTouchUpInside];
+        [discoverFindFriendView.distanceBtn addTarget:self action:@selector(distanceAction) forControlEvents:UIControlEventTouchUpInside];
+        [discoverFindFriendView.activeBtn addTarget:self action:@selector(activeAction) forControlEvents:UIControlEventTouchUpInside];
         _tableView.tableHeaderView = discoverFindFriendView;
         [self.view addSubview:_tableView];
     }
@@ -55,19 +58,37 @@
 #pragma makr -- HTTP
 - (void)getUserListInfo:(int)pageIndex
 {
+    [self initMBProgress:@""];
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
-    NSDictionary *parameters = @{@"Method":@"ReUserInfo",
-                                 @"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
-                                 @"Detail":@[@{@"PageSize":@"20",
-                                               @"IsShow":@"888",
-                                               @"PageIndex":pageStr,
-                                               @"FldSort":@"4",
-                                               @"FldSortType":@"1",
-                                               }]};
+    NSDictionary *parameters;
+    if (isNearby) { //附近
+        parameters = @{@"Method":@"ReUserNearInfo",
+                       @"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
+                       @"Detail":@[@{@"PageSize":@"20",
+                                     @"PageIndex":pageStr,
+                                     @"Latitudes":isStrEmpty(sharedInfo.latitude) ? @"27.9186" : sharedInfo.latitude,
+                                     @"Longitudes":isStrEmpty(sharedInfo.longitude) ? @"120.857852" : sharedInfo.longitude,
+                                     }]};
+    }else{  //活跃
+        parameters = @{@"Method":@"ReUserInfo",
+                       @"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
+                       @"Detail":@[@{@"PageSize":@"20",
+                                     @"IsShow":@"888",
+                                     @"PageIndex":pageStr,
+                                     @"FldSort":@"4",
+                                     @"FldSortType":@"1",
+                                     }]};
+    }
+    
     [CKHttpRequest createRequest:HTTP_METHOD_REGISTER WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
-        NSArray *items = [DiscoverFindFriendModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+        NSArray *items;
+        if (isNearby) {
+            items = [DiscoverNearbyFriendModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+        }else{
+            items = [DiscoverFindFriendModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
+        }
         NSArray *tempArr = [result objectForKey:@"Detail"];
         
         if (page == 1) {
@@ -90,6 +111,7 @@
             [_toFansArray addObject:[dic objectForKey:@"isfocus"]];
         }
         
+        [self setMBProgreeHiden:YES];
         [self.tableView reloadData];
         
     } failure:^(NSError *erro) {
@@ -138,11 +160,19 @@
         cell = [[DiscoverFindFriendTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifyCell];
         [cell.addFollowBtn addTarget:self action:@selector(addFollowAction:) forControlEvents:UIControlEventTouchUpInside];
     }
-    DiscoverFindFriendModel *model = nil;
-    model = [self.dataArray objectAtIndex:indexPath.row];
-    [cell configureCellWithInfo:model];
+    if (isNearby) {
+        DiscoverNearbyFriendModel *model = nil;
+        model = [self.dataArray objectAtIndex:indexPath.row];
+        cell.addFollowBtn.user_id = model.id;
+        [cell configureCellWithNearbyInfo:model];
+    }else{
+        DiscoverFindFriendModel *model = nil;
+        model = [self.dataArray objectAtIndex:indexPath.row];
+        cell.addFollowBtn.user_id = model.id;
+        [cell configureCellWithInfo:model];
+    }
+    
     cell.addFollowBtn.row = indexPath.row;
-    cell.addFollowBtn.user_id = model.id;
     
     if ([_toFansArray[indexPath.row]intValue] == 1) { //已关注
         [cell.addFollowBtn setBackgroundImage:[UIImage imageNamed:@"discover_cancel_follow.png"] forState:UIControlStateNormal];
@@ -186,7 +216,7 @@
                     [_tableView reloadData];
                     [self setMBProgreeHiden:YES];                }
             } failure:^(NSError *erro) {
-
+                
             }];
         }else{ //取消关注
             NSDictionary *params = @{@"Method":@"CancelMyFansInfo",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"",@"Detail":@[@{@"UserID":sharedInfo.user_id,@"ToUserID":button.user_id}]};
@@ -198,12 +228,38 @@
                     [self setMBProgreeHiden:YES];
                 }
             } failure:^(NSError *erro) {
-
+                
             }];
         }
     }
 }
 
+
+- (void)distanceAction
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = discoverFindFriendView.lineView.frame;
+        frame.origin.x = 0;
+        discoverFindFriendView.lineView.frame = frame;
+    }];
+    isNearby = YES;
+    page = 1;
+    [self getUserListInfo:page];
+}
+
+- (void)activeAction
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = discoverFindFriendView.lineView.frame;
+        frame.origin.x = discoverFindFriendView.activeBtn.width;
+        discoverFindFriendView.lineView.frame = frame;
+    }];
+    
+    
+    isNearby = NO;
+    page = 1;
+    [self getUserListInfo:page];
+}
 
 #pragma mark -- other
 - (void)didReceiveMemoryWarning {

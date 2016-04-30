@@ -60,6 +60,7 @@
         self.scoreBtn = [PubliButton buttonWithType:UIButtonTypeCustom];
         _scoreBtn.frame = CGRectMake(_followBtn.right, _followBtn.top, ScreenWidth/4, (frame.size.height - 10) - 16);
         _scoreBtn.titleLabel.font = kFont(14);
+        [_scoreBtn addTarget:self action:@selector(scoreAction) forControlEvents:UIControlEventTouchUpInside];
         [_scoreBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         
         
@@ -77,7 +78,7 @@
         [_topicBtn addSubview:postsTitleLabel];
         
         fansNumLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 3, _myFansBtn.width, 16)];
-        fansNumLabel.text = @"144";
+        fansNumLabel.text = @"";
         fansNumLabel.font = kFont(18);
         fansNumLabel.textAlignment = NSTextAlignmentCenter;
         [_myFansBtn addSubview:fansNumLabel];
@@ -90,7 +91,7 @@
         [_myFansBtn addSubview:fansTitleLabel];
 
         followNumLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 3, _myFansBtn.width, 16)];
-        followNumLabel.text = @"144";
+        followNumLabel.text = @"";
         followNumLabel.font = kFont(18);
         followNumLabel.textAlignment = NSTextAlignmentCenter;
         [_followBtn addSubview:followNumLabel];
@@ -103,7 +104,7 @@
         [_followBtn addSubview:followTitleLabel];
 
         scoreNumLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 3, _myFansBtn.width, 16)];
-        scoreNumLabel.text = @"144";
+        scoreNumLabel.text = @"";
         scoreNumLabel.font = kFont(18);
         scoreNumLabel.textAlignment = NSTextAlignmentCenter;
         [_scoreBtn addSubview:scoreNumLabel];
@@ -194,6 +195,31 @@
     fansVC.status = @"1";
     fansVC.user_id = button.user_id;
     [self.viewController.navigationController pushViewController:fansVC animated:YES];
+}
+
+- (void)scoreAction
+{
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    NSDictionary *parameter = @{@"UserID":sharedInfo.user_id,
+                                @"UserName":sharedInfo.username};
+    
+    [CKHttpRequest createRequest:HTTP_METHOD_ENCRYPT WithParam:parameter withMethod:@"POST" success:^(id result) {
+        NSLog(@"result:%@",result);
+        if ([[result objectForKey:@"UserID"]length] > 0) {
+            NSString *userID = [result objectForKey:@"UserID"];
+            NSString *userName = [result objectForKey:@"UserName"];
+            
+            WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
+            webDetailVC.url = [NSString stringWithFormat:@"%@detailed.aspx?UserID=%@&UserName=%@",ROOT_URL,userID,userName];
+            [webDetailVC setHidesBottomBarWhenPushed:YES];
+            [self.viewController.navigationController pushViewController:webDetailVC animated:YES];
+            
+        }
+        
+    } failure:^(NSError *erro) {
+        
+    }];
+
 }
 
 - (void)initMBProgress:(NSString *)title

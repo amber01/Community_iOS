@@ -17,6 +17,7 @@
     UILabel       *contentLabel;
     UIImageView   *activityImageView;
     UILabel       *sendDateLabel;
+    UILabel       *activityLabel;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -36,6 +37,8 @@
         imageView1.clipsToBounds = YES;
         [self.contentView addSubview:imageView1];
         
+
+        
         imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(imageView1.right + 5, (contentLabel.bottom+10), imageWidth, 70 * scaleToScreenHeight)];
         imageView2.contentMode = UIViewContentModeScaleAspectFill;
         imageView2.clipsToBounds = YES;
@@ -52,6 +55,12 @@
         commentLabel.font = [UIFont systemFontOfSize:12];
         commentLabel.text = @"232评论";
         
+        activityLabel = [[UILabel alloc]initWithFrame:CGRectMake(imageView1.right, imageView1.bottom + 10, ScreenWidth - 210, 20)];
+        activityLabel.font = [UIFont systemFontOfSize:12];
+        activityLabel.text  = @"sdds";
+        [self.contentView addSubview:activityLabel];
+
+        
         sendDateLabel = [[UILabel alloc]initWithFrame:CGRectMake(85 + 10, imageView1.bottom + 10, ScreenWidth - 110, 20)];
         sendDateLabel.textAlignment = NSTextAlignmentCenter;
         sendDateLabel.textColor = TEXT_COLOR;
@@ -61,29 +70,68 @@
         
         [self.contentView addSubview:commentLabel];
         
-        activityImageView = [[UIImageView alloc]initWithFrame:CGRectMake(commentLabel.right, 11.5, 20*1.5, 9*1.5)];
-        activityImageView.image = [UIImage imageNamed:@"topic_is_activity.png"];
-        [self.contentView addSubview:activityImageView];
+//        activityImageView = [[UIImageView alloc]initWithFrame:CGRectMake(commentLabel.right, 11.5, 20*1.5, 9*1.5)];
+//        activityImageView.image = [UIImage imageNamed:@"topic_is_activity.png"];
+//        [self.contentView addSubview:activityImageView];
+        
     }
     return self;
 }
 
-- (void)configureCellWithInfo:(TodayTopicModel *)model withImages:(NSArray *)imageArray
+- (void)configureCellWithInfo:(TodayTopicModel *)model
 {
     contentLabel.text = model.name;
     commentLabel.text = [NSString stringWithFormat:@"%@评论",model.commentnum];
-    
+    sendDateLabel.text = [NSString stringWithFormat:@"%@",[UIUtils format:model.createtime]];
+
     if ([model.isact intValue] == 1) {
         contentLabel.frame = CGRectMake(10, 10, ScreenWidth - 55 - 25, 20);
         commentLabel.frame = CGRectMake(100 - 30 - 5,  imageView1.bottom + 10, ScreenWidth - 110, 20);
-        activityImageView.frame = CGRectMake(commentLabel.right + 5, 11.5 , 20*1.5, 9*1.5);
-        activityImageView.hidden = NO;
     }else{
         contentLabel.frame = CGRectMake(10, 10, ScreenWidth - 55, 20);
         commentLabel.frame = CGRectMake(100,  imageView1.bottom + 10, ScreenWidth - 110, 20);
-        activityImageView.hidden = YES;
     }
     
+    if ([model.isseo intValue] == 1) {
+        activityLabel.text = @"推广";
+        activityLabel.hidden = NO;
+        activityLabel.textColor = TEXT_COLOR;
+    }else{
+        if ([model.isact intValue] == 1) {
+            activityLabel.hidden = NO;
+            activityLabel.text = @"活动";
+            activityLabel.textColor = BASE_COLOR;
+        }else{
+            activityLabel.hidden = YES;
+        }
+    }
+    
+    NSArray *imageArray = [model.images componentsSeparatedByString:@","];
+    NSString *imageURL1 = imageArray[0];
+    NSString *imageURL2 = imageArray[1];
+    NSString *imageURL3 = imageArray[2];
+    if (imageURL1.length > 0) {
+        [imageView1 sd_setImageWithURL:[NSURL URLWithString:imageURL1]placeholderImage:[UIImage imageNamed:@"default_background_icon"]];
+        imageView1.hidden = NO;
+    }else{
+        imageView1.hidden = YES;
+    }
+    
+    if (imageURL2.length > 0) {
+        [imageView2 sd_setImageWithURL:[NSURL URLWithString:imageURL2]placeholderImage:[UIImage imageNamed:@"default_background_icon"]];
+        imageView2.hidden = NO;
+    }else{
+        imageView2.hidden = YES;
+    }
+    
+    if (imageURL3.length > 0) {
+        [imageView3 sd_setImageWithURL:[NSURL URLWithString:imageURL3]placeholderImage:[UIImage imageNamed:@"default_background_icon"]];
+        imageView3.hidden = NO;
+    }else{
+        imageView3.hidden = YES;
+    }
+    
+    /*
     if ([model.imagecount intValue] > 1) {
         int k=0;
         for (int i = 0; i < imageArray.count; i ++) {
@@ -101,6 +149,7 @@
             }
         }
     }
+    */
 }
 
 - (void)awakeFromNib {

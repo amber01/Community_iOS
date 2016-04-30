@@ -66,6 +66,8 @@ typedef NS_ENUM(NSInteger,HTTP_COMMAND_LIST){
     HTTP_SUB_CLASS_CATE,
     //关注话题相关 16
     HTTP_METHOD_CONCERN,
+    //对用户名和UserID加密  17
+    HTTP_METHOD_ENCRYPT,
     
     /*******************/
     HTTP_METHOD_RESERVE,
@@ -91,6 +93,7 @@ static char cHttpMethod[HTTP_METHOD_COUNT][64] = {
     "Installed",       //14
     "ClassInfo",       //15
     "MyAttentionClass", //16
+    "Encrypt",          //17
 };
 
 /*****************************************************************************/

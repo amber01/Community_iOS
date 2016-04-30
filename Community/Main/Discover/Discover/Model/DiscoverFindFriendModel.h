@@ -23,6 +23,7 @@
 @property (nonatomic,copy)NSString  *picture;
 @property (nonatomic,copy)NSString  *picturedomain;
 @property (nonatomic,copy)NSString  *nickname;
+@property (nonatomic,copy)NSString  *createtime;
 @property (nonatomic,copy)NSString  *myfansnum;
 @property (nonatomic,copy)NSString  *isv;
 @property (nonatomic,copy)NSString  *isfocus; //是否关注

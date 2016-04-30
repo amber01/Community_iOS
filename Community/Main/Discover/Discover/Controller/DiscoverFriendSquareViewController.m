@@ -8,11 +8,13 @@
 
 #import "DiscoverFriendSquareViewController.h"
 #import "DiscoverTableViewCell.h"
+#import "CCTipsView.h"
 
 @interface DiscoverFriendSquareViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
-    int     page;
-    float   height;
+    int         page;
+    float       height;
+    CCTipsView *tipsView;
 }
 
 @property (nonatomic,retain)UITableView             *tableView;
@@ -30,12 +32,32 @@
     self.view.backgroundColor = VIEW_COLOR;
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.title = @"发现";
+    
     page  = 1;
     [self initViews];
     [self getDiscoverData:page];
     
     [self setupRefreshHeader];
     [self setupUploadMore];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    if (sharedInfo.user_id.length == 0) {
+        if (!tipsView) {
+            tipsView = [[CCTipsView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+            tipsView.imageView.hidden = YES;
+            tipsView.tipsLabel.text = @"您还未登录，请登录后查看";
+            tipsView.backgroundColor = VIEW_COLOR;
+            [tipsView.onClickBtn setTitle:@"立即登录" forState:UIControlStateNormal];
+            tipsView.onClickBtn.hidden = NO;
+            [tipsView.onClickBtn addTarget:self action:@selector(loginAction) forControlEvents:UIControlEventTouchUpInside];
+            [_tableView addSubview:tipsView];
+        }
+        tipsView.hidden = NO;
+    }
 }
 
 - (void)initViews
@@ -50,6 +72,7 @@
         _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, -2, ScreenWidth, ScreenHeight  - 64 - 49  - 12) style:UITableViewStylePlain];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        [UIUtils setExtraCellLineHidden:_tableView];
         _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 15)];
         _tableView.backgroundColor = VIEW_COLOR;
         [self.view addSubview:_tableView];
@@ -214,6 +237,12 @@
     
 }
 
+- (void)loginAction
+{
+    LoginViewController *loginVC = [[LoginViewController  alloc]init];
+    [loginVC setHidesBottomBarWhenPushed:YES];
+    [self.navigationController pushViewController:loginVC animated:YES];
+}
 
 - (void)likeAction:(PubliButton *)button
 {
@@ -294,6 +323,11 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 /*

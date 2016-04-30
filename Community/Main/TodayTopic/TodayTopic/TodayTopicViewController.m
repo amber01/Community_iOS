@@ -18,9 +18,9 @@
 #import "SelectCityViewController.h"
 #import "EveryoneLeftItemView.h"
 #import "TopicSearchViewController.h"
+#import <CoreLocation/CoreLocation.h>
 
-
-@interface TodayTopicViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
+@interface TodayTopicViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate,CLLocationManagerDelegate>
 {
     PopMenu *_popMenu;
     int     page;
@@ -31,9 +31,9 @@
 @property (nonatomic,retain) UITableView          *tableView;
 @property (nonatomic,retain) JXBAdPageView        *adView;
 @property (nonatomic,retain) NSMutableArray       *dataArray;
-@property (nonatomic,retain) NSMutableArray       *imagesArray;
 @property (nonatomic,retain) NSArray              *cateArray;
 @property (nonatomic,retain) EveryoneLeftItemView *everyoneLeftItemView;
+@property (nonatomic,retain)CLLocationManager     *locationManage;
 
 @end
 
@@ -86,15 +86,61 @@
     _everyoneLeftItemView.hidden = NO;
     [self getCurrentCityName];
     [self.adView startTimerPlay];
+    
+    [self createLocationManage];
 }
+
+#pragma mark -- Location
+-(void)createLocationManage
+{
+    // 判断定位操作是否被允许
+    if([CLLocationManager locationServicesEnabled]) {
+        if (!_locationManage) {
+            //定位初始化
+            _locationManage=[[CLLocationManager alloc] init];
+            _locationManage.delegate=self;
+            _locationManage.desiredAccuracy=kCLLocationAccuracyBest;
+            _locationManage.distanceFilter=10;
+            [_locationManage startUpdatingLocation];//开启定位
+            
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0){
+                [_locationManage requestWhenInUseAuthorization];  //调用了这句,就会弹出允许框了.
+            }
+        }
+        
+    }else {
+        //提示用户无法进行定位操作
+        [[[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"请开启定位" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil]show];
+    }
+    // 开始定位
+    [_locationManage startUpdatingLocation];
+}
+
+#pragma mark - CLLocationManagerDelegate
+
+-(void)locationManager:(CLLocationManager *)manager
+   didUpdateToLocation:(CLLocation *)newLocation
+          fromLocation:(CLLocation *)oldLocation
+{
+    //    当前的经度
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    sharedInfo.latitude = [[NSString alloc]
+                       initWithFormat:@"%f",
+                       newLocation.coordinate.latitude];
+    //NSLog(@"currentLatitude:%@",currentLatitude);
+    
+    //    当前的纬度
+    sharedInfo.longitude = [[NSString alloc]
+                        initWithFormat:@"%f",
+                        newLocation.coordinate.longitude];
+}
+
 
 #pragma mark -- NSNotificationCenter
 - (void)reloadDataList
 {
-    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
-    header.lastUpdatedTimeLabel.hidden = YES;
-    [header beginRefreshing];
-    _tableView.mj_header = header;
+    page = 1;
+    [self getTodayTopicDataInfo:page];
 }
 
 #pragma mark -- HTTP
@@ -105,15 +151,11 @@
     NSDictionary *parameters = @{@"Method":@"RePostInfo",@"Detail":@[@{@"PageSize":@"20",@"IsShow":@"2",@"PageIndex":pageStr,@"FldSort":@"3",@"FldSortType":@"1",@"Area":isStrEmpty(sharedInfo.city) ? @"" : sharedInfo.city}]};
     
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
-
+        
+        NSLog(@"result:%@",result);
         NSArray *items = [TodayTopicModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
-        NSArray *imageItems = [TodayTopicImagesModel arrayOfModelsFromDictionaries:[result objectForKey:@"Images"]];
-        
-        NSLog(@"detail2:%@",result);
-        
         if (page == 1) {
             [self.dataArray removeAllObjects];
-            [self.imagesArray removeAllObjects];
         }
         
         for (int i = 0; i < items.count; i ++) {
@@ -121,13 +163,6 @@
                 self.dataArray = [[NSMutableArray alloc]init];
             }
             [self.dataArray addObject:[items objectAtIndex:i]];
-        }
-        
-        for (int i = 0; i < imageItems.count; i ++) {
-            if (!self.imagesArray) {
-                self.imagesArray = [[NSMutableArray alloc]init];
-            }
-            [self.imagesArray addObject:[imageItems objectAtIndex:i]];
         }
         [self.tableView reloadData];
     } failure:^(NSError *erro) {
@@ -279,15 +314,15 @@
 {
     TodayTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
     
-    if ([model.imagecount intValue] > 1) {
+    if ([model.istreephoto intValue] == 1) { //3张图片
         static NSString *identityCell = @"cell1";
         TodayTopicMoreTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
         if (!cell) {
             cell = [[TodayTopicMoreTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identityCell];
         }
-        [cell configureCellWithInfo:model withImages:self.imagesArray];
+        [cell configureCellWithInfo:model];
         return cell;
-    }else{
+    }else{ //1张图片
         static NSString *identityCell = @"cell2";
         TodayTopicTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identityCell];
         if (!cell) {
@@ -301,7 +336,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     TodayTopicModel *model = [self.dataArray objectAtIndex:indexPath.row];
-    if ([model.imagecount intValue] > 1) {
+    if ([model.istreephoto intValue] == 1) {
         return 30 + 28 + 5 + (80 *scaleToScreenHeight);
     }else{
         return 85;
@@ -361,6 +396,7 @@
     headLogImageView.hidden = YES;
     _everyoneLeftItemView.hidden = YES;
     [super viewWillDisappear:YES];
+    [_locationManage stopUpdatingLocation];
 }
 
 - (void)didReceiveMemoryWarning {

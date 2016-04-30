@@ -33,6 +33,9 @@
 @property (nonatomic,copy)NSString *locationAddress;  //当前地址
 @property (nonatomic,copy)NSString *isv; //是否加v
 
+@property (nonatomic,copy)NSString *latitude;//    当前的经度
+@property (nonatomic,copy)NSString *longitude;  //当前纬度
+
 @property (nonatomic,assign)float  iamgeHeight;
 
 +(SharedInfo *)sharedDataInfo;

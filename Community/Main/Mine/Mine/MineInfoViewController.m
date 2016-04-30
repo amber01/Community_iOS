@@ -237,7 +237,7 @@
         [self.tableView reloadData];
         
         if ([self.status isEqualToString:@"0"]) {
-            [_tableView setContentOffset:CGPointMake(0, 155)];
+            [_tableView setContentOffset:CGPointMake(0, mineInfoTopView.height)];
         }
         
     } failure:^(NSError *erro) {
@@ -448,7 +448,7 @@
 
 - (void)checkTopicListAction
 {
-    [_tableView setContentOffset:CGPointMake(0, 155)];
+    [_tableView setContentOffset:CGPointMake(0, mineInfoTopView.height)];
 }
 
 #pragma mark -- other

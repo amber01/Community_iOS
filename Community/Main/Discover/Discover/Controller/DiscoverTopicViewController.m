@@ -37,6 +37,8 @@
     
     [self setupRefreshHeader];
     [self setupUploadMore];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadDataInfo) name:kReloadDataNotification object:nil];
 }
 
 - (void)initViews
@@ -64,9 +66,10 @@
     NSString *pageStr = [NSString stringWithFormat:@"%d",pageIndex];
     SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
     NSDictionary *parameters = @{@"Method":@"ReHuatiQuan",
-                                 @"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
+                                 @"RunnerUserID":isStrEmpty(sharedInfo.user_id) ? @"0" : sharedInfo.user_id,
+                                 @"RunnerIP":@"",
                                  @"RunnerIsClient":@"1",
-                                 @"Detail":@[@{@"UserID":isStrEmpty(sharedInfo.user_id) ? @"" : sharedInfo.user_id,
+                                 @"Detail":@[@{@"UserID":isStrEmpty(sharedInfo.user_id) ? @"0" : sharedInfo.user_id,
                                                @"PageSize":@"20",
                                                @"IsShow":@"888",
                                                @"PageIndex":pageStr,
@@ -76,6 +79,7 @@
                                                @"ClassID":@"0",
                                                @"IsEssence":@"0",
                                                }]};
+    
     [CKHttpRequest createRequest:HTTP_COMMAND_SEND_TOPIC WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
         NSArray *items = [FriendSquareModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
@@ -106,6 +110,13 @@
     } failure:^(NSError *erro) {
         
     }];
+}
+
+#pragma mark -- NotificationCenter
+- (void)reloadDataInfo
+{
+    page = 1;
+    [self getDiscoverData:page];
 }
 
 #pragma mark MJRefresh
@@ -298,6 +309,11 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 /*

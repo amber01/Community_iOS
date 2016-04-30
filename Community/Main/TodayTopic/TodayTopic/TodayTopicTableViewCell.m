@@ -18,6 +18,7 @@
     UILabel       *likeNumLabel;
     UIImageView   *activityImageView;
     UILabel       *sendDateLabel;
+    UILabel       *activityLabel;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -35,13 +36,13 @@
         contentLabel.font = [UIFont systemFontOfSize:16.0];
         [self.contentView addSubview:contentLabel];
         
-        likeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(imageView.right + 10, imageView.bottom - 14, 17, 13)];
-        likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
-        [self.contentView addSubview:likeImageView];
-        likeNumLabel = [[UILabel alloc]initWithFrame:CGRectMake(likeImageView.right+3, imageView.bottom - 17, ScreenWidth - likeImageView.width - imageView.width - 40, 20)];
-        likeNumLabel.textColor = TEXT_COLOR;
-        likeNumLabel.font = [UIFont systemFontOfSize:12];
-        [self.contentView addSubview:likeNumLabel];
+//        likeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(imageView.right + 10, imageView.bottom - 14, 17, 13)];
+//        likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
+//        [self.contentView addSubview:likeImageView];
+//        likeNumLabel = [[UILabel alloc]initWithFrame:CGRectMake(likeImageView.right+3, imageView.bottom - 17, ScreenWidth - likeImageView.width - imageView.width - 40, 20)];
+//        likeNumLabel.textColor = TEXT_COLOR;
+//        likeNumLabel.font = [UIFont systemFontOfSize:12];
+//        [self.contentView addSubview:likeNumLabel];
         
         sendDateLabel = [[UILabel alloc]initWithFrame:CGRectMake(imageView.right, imageView.bottom - 17, ScreenWidth - 110, 20)];
         sendDateLabel.textAlignment = NSTextAlignmentCenter;
@@ -56,10 +57,14 @@
         commentLabel.text = @"232评论";
         commentLabel.textAlignment = NSTextAlignmentRight;
         [self.contentView addSubview:commentLabel];
+//        
+//        activityImageView = [[UIImageView alloc]initWithFrame:CGRectMake(commentLabel.right, imageView.bottom - 13, 20*1.5, 9*1.5)];
+//        activityImageView.image = [UIImage imageNamed:@"topic_is_activity.png"];
+//        [self.contentView addSubview:activityImageView];
         
-        activityImageView = [[UIImageView alloc]initWithFrame:CGRectMake(commentLabel.right, imageView.bottom - 13, 20*1.5, 9*1.5)];
-        activityImageView.image = [UIImage imageNamed:@"topic_is_activity.png"];
-        [self.contentView addSubview:activityImageView];
+        activityLabel = [[UILabel alloc]initWithFrame:CGRectMake(imageView.right + 10,  imageView.bottom - 17, ScreenWidth - 110, 20)];
+        activityLabel.font = [UIFont systemFontOfSize:12];
+        [self.contentView addSubview:activityLabel];
     }
     return self;
 }
@@ -67,16 +72,28 @@
 - (void)configureCellWithInfo:(TodayTopicModel *)model
 {
     contentLabel.text = model.name;
-    [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@",[NSString stringWithFormat:@"http://%@.",model.picturedomain],BASE_IMAGE_URL,postinfo,model.picture]]placeholderImage:[UIImage imageNamed:@"default_background_icon"]];
+    sendDateLabel.text = [NSString stringWithFormat:@"%@",[UIUtils format:model.createtime]];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:model.images]placeholderImage:[UIImage imageNamed:@"default_background_icon"]];
     likeNumLabel.text = model.praisenum;
     commentLabel.text = [NSString stringWithFormat:@"%@评论",model.commentnum];
     if ([model.isact intValue] == 1) {
         commentLabel.frame = CGRectMake(100 - 30 - 5,  imageView.bottom - 17, ScreenWidth - 110, 20);
-        activityImageView.frame = CGRectMake(commentLabel.right + 5, imageView.bottom - 13, 20*1.5, 9*1.5);
-        activityImageView.hidden = NO;
     }else{
         commentLabel.frame = CGRectMake(100,  imageView.bottom - 17, ScreenWidth - 110, 20);
-        activityImageView.hidden = YES;
+    }
+    
+    if ([model.isseo intValue] == 1) {
+        activityLabel.text = @"推广";
+        activityLabel.hidden = NO;
+        activityLabel.textColor = TEXT_COLOR;
+    }else{
+        if ([model.isact intValue] == 1) {
+            activityLabel.hidden = NO;
+            activityLabel.text = @"活动";
+            activityLabel.textColor = BASE_COLOR;
+        }else{
+            activityLabel.hidden = YES;
+        }
     }
 }
 

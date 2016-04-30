@@ -17,7 +17,7 @@
         self.leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         self.leftBtn.frame = CGRectMake(10, 0, frame.size.width, frame.size.height);
 
-        UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, _leftBtn.height/2-15 , 30, 30)];
+        UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, _leftBtn.height/2-12.5 , 25, 25)];
         imageView.image = [UIImage imageNamed:@"home_current_city"];
         [self.leftBtn addSubview:imageView];
         

@@ -247,6 +247,7 @@
 		969345F81C1C64270056072F /* topic_detail_like@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 969345F61C1C64270056072F /* topic_detail_like@2x.png */; };
 		969345FB1C1C71250056072F /* TopicDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 969345FA1C1C71250056072F /* TopicDetailView.m */; };
 		9697155F1BF08E4700D2364A /* TodayTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9697155E1BF08E4700D2364A /* TodayTopicViewController.m */; };
+		9698E7EB1CD4EAF800AE6171 /* DiscoverNearbyFriendModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9698E7EA1CD4EAF800AE6171 /* DiscoverNearbyFriendModel.m */; };
 		96B288281BF04C1E00F79252 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 964A9F451BEF4198007CE0E9 /* Main.storyboard */; };
 		96B288291BF04C1E00F79252 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 964A9F4A1BEF4198007CE0E9 /* LaunchScreen.storyboard */; };
 		96B2D1101BFCD66200FE6185 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B2D10F1BFCD66200FE6185 /* RegisterViewController.m */; };
@@ -1087,6 +1088,8 @@
 		969345FA1C1C71250056072F /* TopicDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicDetailView.m; sourceTree = "<group>"; };
 		9697155D1BF08E4700D2364A /* TodayTopicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicViewController.h; sourceTree = "<group>"; };
 		9697155E1BF08E4700D2364A /* TodayTopicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicViewController.m; sourceTree = "<group>"; };
+		9698E7E91CD4EAF800AE6171 /* DiscoverNearbyFriendModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscoverNearbyFriendModel.h; sourceTree = "<group>"; };
+		9698E7EA1CD4EAF800AE6171 /* DiscoverNearbyFriendModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoverNearbyFriendModel.m; sourceTree = "<group>"; };
 		96B2D10E1BFCD66200FE6185 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
 		96B2D10F1BFCD66200FE6185 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		96B2D1111BFCD70500FE6185 /* RegisterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterView.h; sourceTree = "<group>"; };
@@ -3813,6 +3816,8 @@
 				DBC2FF761CBB767300447608 /* DiscoverFindFriendModel.m */,
 				DBC2FF801CBB8BB600447608 /* DiscoverFindTopicModel.h */,
 				DBC2FF811CBB8BB600447608 /* DiscoverFindTopicModel.m */,
+				9698E7E91CD4EAF800AE6171 /* DiscoverNearbyFriendModel.h */,
+				9698E7EA1CD4EAF800AE6171 /* DiscoverNearbyFriendModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -4489,6 +4494,7 @@
 				96C8D2211C0A0AE9004642FC /* EveryoneTopicModel.m in Sources */,
 				964AA1161BEF7B5E007CE0E9 /* UIColor+MyCategory.m in Sources */,
 				963DC4D11C0ACFD9005D1955 /* EaseConversationCell.m in Sources */,
+				9698E7EB1CD4EAF800AE6171 /* DiscoverNearbyFriendModel.m in Sources */,
 				963DC4AB1C0ACFD9005D1955 /* NSDate+Category.m in Sources */,
 				DB706B951CB3C7B2001BB47E /* SendTopicKeyboardView.m in Sources */,
 				9662F6A21CB9F04B0087733F /* DiscoverTopicViewController.m in Sources */,

@@ -10,6 +10,6 @@
 
 @interface TodayTopicMoreTableViewCell : UITableViewCell
 
-- (void)configureCellWithInfo:(TodayTopicModel *)model withImages:(NSArray *)imageArray;
+- (void)configureCellWithInfo:(TodayTopicModel *)model;
 
 @end

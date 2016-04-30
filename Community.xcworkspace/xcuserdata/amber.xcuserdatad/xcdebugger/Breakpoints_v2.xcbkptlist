@@ -27,6 +27,54 @@
             endingLineNumber = "39"
             landmarkName = "delegate"
             landmarkType = "19">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[DLCustomSlideView delegate]"
+                  moduleName = "Community"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/amber/Documents/Community_iOS/Community/Vendors/DLSlideView/DLCustomSlideView.h"
+                  timestampString = "483723711.507703"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[DLCustomSlideView setDelegate:]"
+                  moduleName = "Community"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/amber/Documents/Community_iOS/Community/Vendors/DLSlideView/DLCustomSlideView.h"
+                  timestampString = "483723711.508407"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Community/Main/Message/CommentLike/View/CommentSendTableViewCell.m"
+            timestampString = "483719544.286903"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "-configureWithCellInfo:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

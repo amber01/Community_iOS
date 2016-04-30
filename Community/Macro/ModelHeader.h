@@ -25,5 +25,6 @@
 #import "FriendSquareModel.h"
 #import "FriendSquareImageModel.h"
 #import "DiscoverFindFriendModel.h"
+#import "DiscoverNearbyFriendModel.h"
 
 #endif /* ModelHeader_h */

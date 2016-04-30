@@ -20,5 +20,9 @@
 @property (nonatomic,copy)NSString *praisenum;
 @property (nonatomic,copy)NSString *userid;
 @property (nonatomic,copy)NSString *isact;  //isact=1  显示活动图标
+@property (nonatomic,copy)NSString *istreephoto; //1显示三张图片istreephoto=0 显示一张。
+@property (nonatomic,copy)NSString *images;    //
+@property (nonatomic,copy)NSString *isseo;  //isseo=1 显示推广。
+@property (nonatomic,copy)NSString *createtime;
 
 @end

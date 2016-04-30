@@ -18,6 +18,7 @@
     UILabel             *contentLabel;
     UILabel             *commentLabel;
     UIImageView         *topicImageView;
+    UIView              *contentView;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -47,17 +48,24 @@
         topicImageView.clipsToBounds = YES;
         [self.contentView addSubview:topicImageView];
         
-        contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(topicImageView.right + 10, commentLabel.bottom + 15, ScreenWidth - 20 - topicImageView.width - 10 - avatarImageView.width - 15 - 10, 50)];
+        
+        contentView = [[UIView alloc]initWithFrame:CGRectMake(topicImageView.right, topicImageView.top, ScreenWidth - 20 - topicImageView.width - 10 - avatarImageView.width - 15, 50)];
+        contentView.backgroundColor = [UIColor colorWithHexString:@"#efefef"];
+        
+        
+        contentLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, contentView.width - 10, 50)];
         contentLabel.textColor = TEXT_COLOR2;
-        contentLabel.backgroundColor = [UIColor colorWithHexString:@"#efefef"];
         [contentLabel setFont:[UIFont systemFontOfSize:14]];
         contentLabel.numberOfLines = 2;
         contentLabel.lineBreakMode = NSLineBreakByWordWrapping|NSLineBreakByTruncatingTail;
         
+        [contentView addSubview:contentLabel];
+
+        
         [self.contentView addSubview:avatarImageView];
         [self.contentView addSubview:dateLabel];
         [self.contentView addSubview:commentLabel];
-        [self.contentView addSubview:contentLabel];
+        [self.contentView addSubview:contentView];
         [self.contentView addSubview:nicknameLabel];
     }
     return self;
@@ -86,9 +94,11 @@
     [topicImageView sd_setImageWithURL:[NSURL URLWithString:model.postpicture]];
     
     if (model.postpicture.length > 0) {
-        contentLabel.frame = CGRectMake(topicImageView.right + 10, commentLabel.bottom + 10, ScreenWidth - 20 - topicImageView.width - 10 - avatarImageView.width - 15 - 10, 50);
+        contentView.frame = CGRectMake(topicImageView.right, topicImageView.top, ScreenWidth - 20 - topicImageView.width - 10 - avatarImageView.width - 15, 50);
+        contentLabel.frame = CGRectMake(10, 0, contentView.width - 10, 50);
     }else{
-        contentLabel.frame = CGRectMake(topicImageView.left, commentLabel.bottom + 10, ScreenWidth - 20 - topicImageView.width - 15 - 10, 50);
+        contentView.frame = CGRectMake(topicImageView.left, topicImageView.top, ScreenWidth - 20 - topicImageView.width - 10 - avatarImageView.width - 15 + 78, 50);
+        contentLabel.frame = CGRectMake(10, 0, contentView.width - 10, 50);
     }
     
     //原内容

@@ -52,20 +52,34 @@
         return;
     }
     
-    WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
-    if (button.tag == 0) {
-        webDetailVC.url = [NSString stringWithFormat:@"%@Default.aspx?mobile/mall&UserID=%@",ROOT_URL,sharedInfo.user_id];
-        [webDetailVC setHidesBottomBarWhenPushed:YES];
-        [self.viewController.navigationController pushViewController:webDetailVC animated:YES];
-    }else if (button.tag == 1){
-        webDetailVC.url = [NSString stringWithFormat:@"%@Default.aspx?mobile/sign&UserID=%@",ROOT_URL,sharedInfo.user_id];
-        [webDetailVC setHidesBottomBarWhenPushed:YES];
-        [self.viewController.navigationController pushViewController:webDetailVC animated:YES];
-    }else{
-        webDetailVC.url = [NSString stringWithFormat:@"%@Default.aspx?mobile/prize&UserID=%@",ROOT_URL,sharedInfo.user_id];
-        [webDetailVC setHidesBottomBarWhenPushed:YES];
-        [self.viewController.navigationController pushViewController:webDetailVC animated:YES];
-    }
+    NSDictionary *parameter = @{@"UserID":sharedInfo.user_id,
+                                @"UserName":sharedInfo.username};
+    
+    [CKHttpRequest createRequest:HTTP_METHOD_ENCRYPT WithParam:parameter withMethod:@"POST" success:^(id result) {
+        NSLog(@"result:%@",result);
+        if ([[result objectForKey:@"UserID"]length] > 0) {
+            NSString *userID = [result objectForKey:@"UserID"];
+            NSString *userName = [result objectForKey:@"UserName"];
+            
+            WebDetailViewController *webDetailVC = [[WebDetailViewController alloc]init];
+            if (button.tag == 0) {
+                webDetailVC.url = [NSString stringWithFormat:@"%@mall.aspx?UserID=%@&UserName=%@",ROOT_URL,userID,userName];
+                [webDetailVC setHidesBottomBarWhenPushed:YES];
+                [self.viewController.navigationController pushViewController:webDetailVC animated:YES];
+            }else if (button.tag == 1){
+                webDetailVC.url = [NSString stringWithFormat:@"%@sign.aspx?UserID=%@&UserName=%@",ROOT_URL,userID,userName];
+                [webDetailVC setHidesBottomBarWhenPushed:YES];
+                [self.viewController.navigationController pushViewController:webDetailVC animated:YES];
+            }else{
+                webDetailVC.url = [NSString stringWithFormat:@"%@prize.aspx?UserID=%@&UserName=%@",ROOT_URL,userID,userName];
+                [webDetailVC setHidesBottomBarWhenPushed:YES];
+                [self.viewController.navigationController pushViewController:webDetailVC animated:YES];
+            }
+        }
+        
+    } failure:^(NSError *erro) {
+        
+    }];
 }
 
 

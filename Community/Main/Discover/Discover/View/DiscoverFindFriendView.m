@@ -27,21 +27,21 @@
         [_searchBtn setTitleColor:TEXT_COLOR forState:UIControlStateNormal];
         [view addSubview:_searchBtn];
         
-        self.distanceBtn = [[UIButton alloc]initWithFrame:CGRectMake(ScreenWidth - 110, view.bottom + 8, 40, 20)];
-        [_distanceBtn setTitle:@"距离" forState:UIControlStateNormal];
+        self.distanceBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, view.bottom + 5, 50, 25)];
+        [_distanceBtn setTitle:@"附近" forState:UIControlStateNormal];
         _distanceBtn.titleLabel.font = kFont(14);
         [_distanceBtn setTitleColor:TEXT_COLOR2 forState:UIControlStateNormal];
-        [view addSubview:_distanceBtn];
+        [self addSubview:_distanceBtn];
         
-        UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(_distanceBtn.right + 5, _distanceBtn.top + 2, 0.5, 15)];
-        lineView.backgroundColor = TEXT_COLOR;
-        [view addSubview:lineView];
+        self.lineView = [[UIView alloc]initWithFrame:CGRectMake(_distanceBtn.left, _distanceBtn.bottom, _distanceBtn.width, 2)];
+        _lineView.backgroundColor = BASE_COLOR;
+        [self addSubview:_lineView];
         
-        self.activeBtn = [[UIButton alloc]initWithFrame:CGRectMake(ScreenWidth - 60, view.bottom + 8, 40, 20)];
+        self.activeBtn = [[UIButton alloc]initWithFrame:CGRectMake(_distanceBtn.right, view.bottom + 5, 50, 25)];
         [_activeBtn setTitle:@"活跃" forState:UIControlStateNormal];
         _activeBtn.titleLabel.font = kFont(14);
         [_activeBtn setTitleColor:TEXT_COLOR forState:UIControlStateNormal];
-        [view addSubview:_activeBtn];
+        [self addSubview:_activeBtn];
     }
     return self;
 }
