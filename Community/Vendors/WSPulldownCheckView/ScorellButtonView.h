@@ -34,6 +34,7 @@
 @property (nonatomic,retain  ) NSMutableArray *likeDataArray;//记录本地点赞的状态
 @property (nonatomic,retain  ) NSMutableArray *praiseDataArray;//自己是否点赞的数据
 
+
 @property (nonatomic,assign  ) id<CheckMoreDelegate> delegate;
 
 @end

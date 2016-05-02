@@ -75,7 +75,7 @@
     [CKHttpRequest createRequest:HTTP_METHOD_COMMENT WithParam:parameters withMethod:@"POST" success:^(id result) {
         NSLog(@"result:%@",result);
         NSArray *items = [CommentModel arrayOfModelsFromDictionaries:[result objectForKey:@"Detail"]];
-        NSArray *praiseItems = [result objectForKey:@"IsPraise"];
+        NSArray *tempArr = [result objectForKey:@"Detail"];
         
         if (page == 1) {
             [self.dataArray removeAllObjects];
@@ -90,11 +90,12 @@
             [self.dataArray addObject:[items objectAtIndex:i]];
         }
         
-        for (int i = 0; i < praiseItems.count; i ++) {
+        for (int i = 0; i < tempArr.count; i ++) {
             if (!self.praiseDataArray) {
                 self.praiseDataArray = [[NSMutableArray alloc]init];
             }
-            [self.praiseDataArray addObject:[praiseItems objectAtIndex:i]];
+            NSDictionary *dic = tempArr[i];
+            [_praiseDataArray insertObject:[dic objectForKey:@"ispraise"] atIndex:i];
         }
         
         [_tableView reloadData];
@@ -131,11 +132,8 @@
         [cell configureCellWithInfo:model withRow:indexPath.row andPraiseData:self.praiseDataArray withMasterID:self.userID];
     }
     
-    if (!isArrEmpty(self.praiseDataArray)) {
-        NSDictionary *dic = [self.praiseDataArray objectAtIndex:indexPath.row];
-        cell.likeBtn.post_id = [dic objectForKey:@"commentid"];
-        cell.likeBtn.isPraise = [dic objectForKey:@"value"];
-    }
+    cell.likeBtn.post_id = model.id;
+    cell.likeBtn.isPraise = _praiseDataArray[indexPath.row];
     
     cell.likeBtn.row = indexPath.row;
     cell.likeLabel.text = _likeDataArray[indexPath.row];
@@ -189,12 +187,11 @@
                  */
                 [self.likeDataArray removeObjectAtIndex:button.row];
                 [self.likeDataArray insertObject:[NSString stringWithFormat:@"%d",praisenum] atIndex:button.row];
-                
                 /**
                  *  记录点赞状态
                  */
                 [self.praiseDataArray removeObjectAtIndex:button.row];
-                [self.praiseDataArray insertObject:@{@"commentid":button.post_id,@"value":@"1"} atIndex:button.row];
+                [self.praiseDataArray insertObject:@"1" atIndex:button.row];
                 
                 //点赞之后改变点赞的状态
                 NSIndexPath *index =  [NSIndexPath indexPathForItem:button.row inSection:0];
@@ -229,7 +226,8 @@
                  *  记录点赞状态
                  */
                 [self.praiseDataArray removeObjectAtIndex:button.row];
-                [self.praiseDataArray insertObject:@{@"commentid":button.post_id,@"value":@"0"} atIndex:button.row];
+                [self.praiseDataArray insertObject:@"0" atIndex:button.row];
+
                 
                 //点赞之后改变点赞的状态
                 NSIndexPath *index =  [NSIndexPath indexPathForItem:button.row inSection:0];
@@ -297,10 +295,9 @@
         return;
     }
     if (buttonIndex == 0) {
-        NSDictionary *dic = [self.praiseDataArray objectAtIndex:actionSheet.tag];
-        NSString *commentid = [dic objectForKey:@"commentid"];
-        NSString *isPraise = [dic objectForKey:@"value"];
-        NSString *praisenumStr = _likeDataArray[actionSheet.tag];
+        NSString *isPraise = [self.praiseDataArray objectAtIndex:actionSheet.tag];
+        CommentModel *model = self.dataArray[actionSheet.tag];
+        NSString     *post_id = model.id;
         
         SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
         if (isStrEmpty(sharedInfo.user_id)) {
@@ -310,14 +307,17 @@
             return;
         }
         
+        
         //点赞
         if ([isPraise intValue] == 0) {
-            NSDictionary *parameters = @{@"Method":@"AddCommentToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"CommentID":commentid,@"UserID":sharedInfo.user_id}]};
+            
+            NSDictionary *parameters = @{@"Method":@"AddCommentToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"CommentID":post_id,@"UserID":sharedInfo.user_id}]};
             
             [CKHttpRequest createRequest:HTTP_METHOD_COMMENT_LIKE WithParam:parameters withMethod:@"POST" success:^(id result) {
+                
                 if (result && [[result objectForKey:@"Success"]intValue] > 0) {
                     [self initMBProgress:@"点赞+1" withModeType:MBProgressHUDModeText afterDelay:1.5];
-                    int praisenum = [praisenumStr intValue];
+                    int praisenum = [_likeDataArray[actionSheet.tag]intValue];
                     praisenum = praisenum + 1;
                     
                     /**
@@ -325,12 +325,11 @@
                      */
                     [self.likeDataArray removeObjectAtIndex:actionSheet.tag];
                     [self.likeDataArray insertObject:[NSString stringWithFormat:@"%d",praisenum] atIndex:actionSheet.tag];
-                    
                     /**
                      *  记录点赞状态
                      */
                     [self.praiseDataArray removeObjectAtIndex:actionSheet.tag];
-                    [self.praiseDataArray insertObject:@{@"commentid":commentid,@"value":@"1"} atIndex:actionSheet.tag];
+                    [self.praiseDataArray insertObject:@"1" atIndex:actionSheet.tag];
                     
                     //点赞之后改变点赞的状态
                     NSIndexPath *index =  [NSIndexPath indexPathForItem:actionSheet.tag inSection:0];
@@ -347,13 +346,14 @@
                 
             }];
         }else{  //取消点赞
-            NSDictionary *parameters = @{@"Method":@"DelCommentToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"CommentID":commentid,@"UserID":sharedInfo.user_id}]};
+            NSDictionary *parameters = @{@"Method":@"DelCommentToPraise",@"RunnerUserID":sharedInfo.user_id,@"RunnerIsClient":@"1",@"RunnerIP":@"1",@"Detail":@[@{@"CommentID":post_id,@"UserID":sharedInfo.user_id}]};
             
             [CKHttpRequest createRequest:HTTP_METHOD_COMMENT_LIKE WithParam:parameters withMethod:@"POST" success:^(id result) {
                 if (result && [[result objectForKey:@"Success"]intValue] > 0) {
                     [self initMBProgress:@"取消点赞" withModeType:MBProgressHUDModeText afterDelay:1.5];
-                    int praisenum = [praisenumStr intValue];
+                    int praisenum = [_likeDataArray[actionSheet.tag]intValue];
                     praisenum = praisenum - 1;
+                    
                     /**
                      *  先删除原来的点赞数，然后再重新加上
                      */
@@ -364,7 +364,8 @@
                      *  记录点赞状态
                      */
                     [self.praiseDataArray removeObjectAtIndex:actionSheet.tag];
-                    [self.praiseDataArray insertObject:@{@"commentid":commentid,@"value":@"0"} atIndex:actionSheet.tag];
+                    [self.praiseDataArray insertObject:@"0" atIndex:actionSheet.tag];
+                    
                     
                     //点赞之后改变点赞的状态
                     NSIndexPath *index =  [NSIndexPath indexPathForItem:actionSheet.tag inSection:0];

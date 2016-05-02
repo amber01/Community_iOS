@@ -91,8 +91,8 @@
     NSDictionary *dic = self.dataArray[indexPath.row];
     NSString *detail  = [dic objectForKey:@"content"];
     NSString *date    = [dic objectForKey:@"date"];
-    NSString *title   = [dic objectForKey:@"title"];
-    cell.topicDetailLabel.text = [NSString stringWithFormat:@"【%@】%@",title,detail];
+    //NSString *title   = [dic objectForKey:@"title"];
+    cell.topicDetailLabel.text = [NSString stringWithFormat:@"%@",detail];
     cell.topicDateLabel.text = date;
     return cell;
 }

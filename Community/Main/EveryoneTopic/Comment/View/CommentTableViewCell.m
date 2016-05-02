@@ -127,16 +127,12 @@
      *  获取是否点赞过的数据状态
      */
     if (!isArrEmpty(praiseArray)) {
-        NSDictionary *dic = praiseArray[row];
-        NSString *post_id = [dic objectForKey:@"commentid"];
-        NSString *isPraise = [dic objectForKey:@"value"];
+        NSString *isPraise = praiseArray[row];
         
-        if ([post_id intValue] == [model.id intValue]) {
-            if ([isPraise intValue] == 1) {
-                _likeImageView.image = [UIImage imageNamed:@"everyone_topic_cancel_like"];
-            }else{
-                _likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
-            }
+        if ([isPraise intValue] == 1) {
+            _likeImageView.image = [UIImage imageNamed:@"everyone_topic_cancel_like"];
+        }else{
+            _likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
         }
     }
     
