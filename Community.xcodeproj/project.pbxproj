@@ -462,6 +462,7 @@
 		DB0AEF2A1C239AED00101EC9 /* MyCollectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DB0AEF291C239AED00101EC9 /* MyCollectionModel.m */; };
 		DB3639CF1CBB3F1B00C7E9B5 /* DiscoverFindFriendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB3639CE1CBB3F1B00C7E9B5 /* DiscoverFindFriendTableViewCell.m */; };
 		DB3639D21CBB3F2B00C7E9B5 /* DiscoverFindTopicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB3639D11CBB3F2B00C7E9B5 /* DiscoverFindTopicTableViewCell.m */; };
+		DB4558221CD8B040000FDAB5 /* mac_wenzhou_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DB4558211CD8B040000FDAB5 /* mac_wenzhou_logo@2x.png */; };
 		DB4F25991C104B21005FBEA2 /* TodayTopicPraiseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4F25981C104B21005FBEA2 /* TodayTopicPraiseModel.m */; };
 		DB62F95C1C0C4321004AB454 /* delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DB62F95B1C0C4321004AB454 /* delete@2x.png */; };
 		DB70697D1CB3BDF7001BB47E /* home_top_search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DB70697B1CB3BDF7001BB47E /* home_top_search@2x.png */; };
@@ -1393,6 +1394,7 @@
 		DB3639CE1CBB3F1B00C7E9B5 /* DiscoverFindFriendTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoverFindFriendTableViewCell.m; sourceTree = "<group>"; };
 		DB3639D01CBB3F2B00C7E9B5 /* DiscoverFindTopicTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscoverFindTopicTableViewCell.h; sourceTree = "<group>"; };
 		DB3639D11CBB3F2B00C7E9B5 /* DiscoverFindTopicTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoverFindTopicTableViewCell.m; sourceTree = "<group>"; };
+		DB4558211CD8B040000FDAB5 /* mac_wenzhou_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mac_wenzhou_logo@2x.png"; sourceTree = "<group>"; };
 		DB4F25971C104B21005FBEA2 /* TodayTopicPraiseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayTopicPraiseModel.h; sourceTree = "<group>"; };
 		DB4F25981C104B21005FBEA2 /* TodayTopicPraiseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayTopicPraiseModel.m; sourceTree = "<group>"; };
 		DB62F95B1C0C4321004AB454 /* delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete@2x.png"; sourceTree = "<group>"; };
@@ -2981,6 +2983,7 @@
 		969345E51C1BF1960056072F /* lauchImages */ = {
 			isa = PBXGroup;
 			children = (
+				DB4558211CD8B040000FDAB5 /* mac_wenzhou_logo@2x.png */,
 				969345E61C1BF1960056072F /* launchimage_iphone4@2x.png */,
 				969345E71C1BF1960056072F /* launchimage_iphone5@2x.png */,
 				969345E81C1BF1960056072F /* launchimage_iphone6@2x.png */,
@@ -4102,6 +4105,7 @@
 				96C8D2F91C0A0F4E004642FC /* mine_login@3x.png in Resources */,
 				96C8D2C51C0A0F4E004642FC /* everyone_topic_comment@3x.png in Resources */,
 				DB96197E1CB50B7B005F8449 /* discover_find_friend_normal@3x.png in Resources */,
+				DB4558221CD8B040000FDAB5 /* mac_wenzhou_logo@2x.png in Resources */,
 				96C8D2E61C0A0F4E004642FC /* todayTopic_tabbar_high@3x.png in Resources */,
 				967700781C3944E6005EA280 /* MLPhotoBrowser.bundle in Resources */,
 				96C8D2E91C0A0F4E004642FC /* mine_settings@2x.png in Resources */,

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoginView : UIView
+@interface LoginView : UIScrollView
 
 @property (nonatomic,retain) UITextField *phoneNumTextField;
 @property (nonatomic,retain) UITextField *passwordTextField;

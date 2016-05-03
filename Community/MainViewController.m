@@ -143,6 +143,17 @@
 
 - (void)selectSendTopicAction
 {
+    SharedInfo *sharedInfo = [SharedInfo sharedDataInfo];
+    if (isStrEmpty(sharedInfo.user_id)) {
+        LoginViewController *loginVC = [[LoginViewController alloc]init];
+        loginVC.status = @"1";
+        BaseNavigationController *baseNav = [[BaseNavigationController alloc]initWithRootViewController:loginVC];
+        [self.navigationController presentViewController:baseNav animated:YES completion:^{
+            
+        }];
+        return;
+    }
+    
     SendTopicViewController *sendTopicInfoVC = [[SendTopicViewController alloc]init];
     BaseNavigationController *baseNav = [[BaseNavigationController alloc]initWithRootViewController:sendTopicInfoVC];
     [self.navigationController presentViewController:baseNav animated:YES completion:^{
