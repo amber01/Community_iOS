@@ -18,6 +18,8 @@
     LoginView *loginView;
 }
 
+@property (nonatomic,retain)UIButton *loginBtn;
+
 @end
 
 @implementation LoginViewController
@@ -27,6 +29,7 @@
     self.title = @"登录";
     self.view.backgroundColor = VIEW_COLOR;
     [self setupLoginView];
+    [self loginBtn];
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyBoard)];
     tapGesture.cancelsTouchesInView =NO;
@@ -41,11 +44,25 @@
 - (void)setupLoginView
 {
     loginView = [[LoginView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
-    [loginView.registBtn addTarget:self action:@selector(registAction) forControlEvents:UIControlEventTouchUpInside];
-    [loginView.loginBtn addTarget:self action:@selector(loginAction) forControlEvents:UIControlEventTouchUpInside];
     [loginView.findPassword addTarget:self action:@selector(findPassword) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:loginView];
 }
+
+- (UIButton *)loginBtn
+{
+    if (!_loginBtn) {
+        self.loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _loginBtn.frame = CGRectMake(0, ScreenHeight - 64 - 44, ScreenWidth, 44);
+        [_loginBtn setTitle:@"登录" forState:UIControlStateNormal];
+        [_loginBtn addTarget:self action:@selector(loginAction) forControlEvents:UIControlEventTouchUpInside];
+        [_loginBtn setBackgroundImage:[UIImage imageWithColor:BASE_COLOR] forState:UIControlStateNormal];
+        [_loginBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.view addSubview:_loginBtn];
+    }
+    return _loginBtn;
+}
+
+
 
 #pragma mark -- action
 - (void)registAction

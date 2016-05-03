@@ -13,8 +13,6 @@
 @property (nonatomic,retain) UITextField *phoneNumTextField;
 @property (nonatomic,retain) UITextField *passwordTextField;
 
-@property (nonatomic,retain) UIButton    *loginBtn;
-@property (nonatomic,retain) UIButton    *registBtn;
 @property (nonatomic,retain) UIButton    *findPassword;
 
 
