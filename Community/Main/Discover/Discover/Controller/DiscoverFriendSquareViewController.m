@@ -218,12 +218,10 @@
             height = ((((ScreenWidth - 45 - 20 - 10 - 15)/3)-5)*3)+10;
         }
     }else if (imageArray.count == 1){
-        int tempWidth;
         int imageMaxWidth = ScreenWidth - 45 - 20 - 10 - 15;
         if ([model.width intValue] >= imageMaxWidth) {
-            tempWidth = imageMaxWidth;
-            float scaleToHeight = [model.width intValue] - imageMaxWidth;
-            height = ([model.height intValue]) - scaleToHeight;
+            CGFloat tempImageWith = imageMaxWidth / [model.width floatValue];
+            height = ([model.height floatValue]) * tempImageWith;
         }else{
             height = [model.height intValue];
         }

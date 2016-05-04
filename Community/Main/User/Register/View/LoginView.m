@@ -69,7 +69,6 @@
         _passwordTextField.keyboardType = UIKeyboardTypeEmailAddress;
         [CommonClass setBorderWithView:_passwordTextField top:NO left:NO bottom:YES right:NO borderColor:LINE_COLOR borderWidth:0.5];
         
-
         self.findPassword = [UIButton buttonWithType:UIButtonTypeCustom];
         _findPassword.frame = CGRectMake(0, _passwordTextField.bottom + 15, 100, 20);
         [_findPassword setTitle:@"忘记密码?" forState:UIControlStateNormal];

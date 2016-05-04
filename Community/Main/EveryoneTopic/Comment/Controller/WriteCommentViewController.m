@@ -45,7 +45,7 @@
     sendKeyboardView.sendEmojiBtn.frame = CGRectMake(15, sendKeyboardView.height/2 - 12.5, 25, 25);
     
     [sendKeyboardView.sendEmojiBtn addTarget:self action:@selector(selectEmojiAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:sendKeyboardView];
+    //[self.view addSubview:sendKeyboardView];
     
     UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyBoard)];
     tapGesture.delegate = self;

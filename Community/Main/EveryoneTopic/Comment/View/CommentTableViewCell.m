@@ -60,7 +60,7 @@
         _likeBtn.backgroundColor = [UIColor whiteColor];
         self.likeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 26/2 - 14, 36/2, 28/2)];
         _likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
-        _likeImageView.userInteractionEnabled = YES;
+        _likeImageView.userInteractionEnabled = NO;
         [_likeBtn addSubview:_likeImageView];
         
         self.likeLabel = [[UILabel alloc]initWithFrame:CGRectMake(ScreenWidth - _likeBtn.width - 10 - 55,12, 60, 20)];

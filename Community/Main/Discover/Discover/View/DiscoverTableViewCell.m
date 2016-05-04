@@ -87,7 +87,7 @@
         _likeBtn.backgroundColor = [UIColor whiteColor];
         self.likeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 28/2, 28/2)];
         _likeImageView.image = [UIImage imageNamed:@"everyone_topic_like"];
-        _likeImageView.userInteractionEnabled = YES;
+        _likeImageView.userInteractionEnabled = NO;
         [_likeBtn addSubview:_likeImageView];
         
         self.likeLabel = [[UILabel alloc]initWithFrame:CGRectMake(_likeImageView.right + 5,-2, 70, 20)];
@@ -101,7 +101,7 @@
         commentBtn.backgroundColor = [UIColor whiteColor];
         [commentBtn addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
         UIImageView *commentImageView = [[UIImageView alloc]initWithFrame:CGRectMake(15, 26/2 - 13, 14, 14)];
-        commentImageView.userInteractionEnabled = YES;
+        commentImageView.userInteractionEnabled = NO;
         commentImageView.image = [UIImage imageNamed:@"everyone_topic_comment"];
         [commentBtn addSubview:commentImageView];
         
@@ -194,12 +194,12 @@
      *  当只有一张图片的情况下就根据图片的实际尺寸来展示
      */
     if (imageArray.count == 1) {
-        int tempWidth;
-        int tempHeight;
+        float tempWidth;
+        float tempHeight;
         if ([model.width intValue] >= _contentLabel.width) {
+            CGFloat tempImageWith = _contentLabel.width / [model.width floatValue];
             tempWidth = _contentLabel.width;
-            float scaleToHeight = [model.width intValue] - _contentLabel.width;
-            tempHeight = ([model.height intValue]) - scaleToHeight;
+            tempHeight = ([model.height floatValue]) * tempImageWith;
         }else{
             tempWidth = [model.width intValue];
             tempHeight = [model.height intValue];
