@@ -27,7 +27,7 @@
 @property (nonatomic,copy)NSString *totalscore; //我的积分
 @property (nonatomic,copy)NSString *sex;
 @property (nonatomic,copy)NSString *client;
-@property (nonatomic,copy)NSString *cityarea;  //城市名
+@property (nonatomic,copy)NSString *cityarea;  //城市名(市)
 @property (nonatomic,copy)NSString *provincearea; //省份
 @property (nonatomic,copy)NSString *picturedomain;
 @property (nonatomic,copy)NSString *locationAddress;  //当前地址
@@ -37,6 +37,9 @@
 @property (nonatomic,copy)NSString *longitude;  //当前纬度
 
 @property (nonatomic,assign)float  iamgeHeight;
+
+@property (nonatomic,copy)NSString *tempCityarea;  //城市名(市)
+@property (nonatomic,copy)NSString *tempProvincearea; //省份
 
 +(SharedInfo *)sharedDataInfo;
 

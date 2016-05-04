@@ -9,6 +9,7 @@
 #import "LoginView.h"
 #import "RegisterViewController.h"
 
+
 @implementation LoginView
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -86,18 +87,34 @@
         label.textAlignment = NSTextAlignmentCenter;
         [self addSubview:label];
         
+        self.qqLoginBtn = [[UIButton alloc]initWithFrame:CGRectMake((ScreenWidth/2 - 30) - 60, lineView.bottom + 30, 60, 60)];
+        [_qqLoginBtn setBackgroundImage:[UIImage imageNamed:@"login_qq_btn.png"] forState:UIControlStateNormal];
+        [self addSubview:_qqLoginBtn];
+        
+        self.weiChatBtn = [[UIButton alloc]initWithFrame:CGRectMake(_qqLoginBtn.right + 60, lineView.bottom + 30, 60, 60)];
+        [_weiChatBtn setBackgroundImage:[UIImage imageNamed:@"login_weiChat_btn.png"] forState:UIControlStateNormal];
+        [self addSubview:_weiChatBtn];
+        
         [self addSubview:_findPassword];
         [self addSubview:_phoneNumTextField];
         [self addSubview:_passwordTextField];
+        
+        self.alwaysBounceVertical = YES;  //默认可以上下滚动
+        
+        self.contentSize = CGSizeMake(ScreenWidth, _weiChatBtn.bottom + 150);
     }
     return self;
 }
 
+#pragma makr -- action
 - (void)registAction
 {
     RegisterViewController *registerVC = [[RegisterViewController alloc]init];
     [registerVC setHidesBottomBarWhenPushed:YES];
     [self.viewController.navigationController pushViewController:registerVC animated:NO];
 }
+
+
+
 
 @end

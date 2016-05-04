@@ -15,5 +15,7 @@
 
 @property (nonatomic,retain) UIButton    *findPassword;
 
+@property (nonatomic,retain) UIButton    *qqLoginBtn;
+@property (nonatomic,retain) UIButton    *weiChatBtn;
 
 @end

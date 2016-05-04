@@ -70,8 +70,10 @@
         if (indexPath.row == 1) {
             cell.accessoryType = UITableViewCellAccessoryNone;
             NSString *originTel = shareInfo.mobile;
-            NSString *tel = [originTel stringByReplacingCharactersInRange:NSMakeRange(3, 4) withString:@"****"];
-            cell.detailTextLabel.text = tel;
+            if (originTel.length > 0) {
+                NSString *tel = [originTel stringByReplacingCharactersInRange:NSMakeRange(3, 4) withString:@"****"];
+                cell.detailTextLabel.text = tel;
+            }
         }
     }else if (indexPath.section == 0){
         if (indexPath.row == 0) {

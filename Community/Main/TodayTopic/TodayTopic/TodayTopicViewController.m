@@ -133,6 +133,16 @@
     sharedInfo.longitude = [[NSString alloc]
                         initWithFormat:@"%f",
                         newLocation.coordinate.longitude];
+    
+    //定位城市通过CLGeocoder
+    CLGeocoder * geoCoder = [[CLGeocoder alloc] init];
+    [geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error) {
+        for (CLPlacemark * placemark in placemarks) {
+            sharedInfo.tempProvincearea = placemark.administrativeArea;
+            sharedInfo.tempCityarea = placemark.locality;
+        }
+    }];
+
 }
 
 
